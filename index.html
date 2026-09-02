@@ -13,30 +13,27 @@
 
       --brand: #592a7d;
       --brand-deep: #300b5c;
-      --brand-tint: rgba(89, 42, 125, 0.08);
+      --brand-tint: rgba(89, 42, 125, 0.07);
+      --brand-tint-strong: rgba(89, 42, 125, 0.12);
 
       --danger: #b31b1b;
+      --danger-tint: rgba(179, 27, 27, 0.06);
 
-      --page: #f7f4f8;
-      --surface: #ffffff;
+      --page: #ffffff;
+      --field: #f4f1f6;
+      --field-hover: #efebf2;
       --text: #1a1520;
       --muted: #6b6572;
       --placeholder: #a49daa;
-      --line: #e6e1e9;
-      --line-strong: #d5cede;
 
-      --radius-card: 22px;
-      --radius-field: 12px;
+      --radius-field: 14px;
 
-      --ring: 0 0 0 4px rgba(89, 42, 125, 0.13);
-      --ring-danger: 0 0 0 4px rgba(179, 27, 27, 0.11);
+      --ring: 0 0 0 3px rgba(89, 42, 125, 0.16);
+      --ring-danger: 0 0 0 3px rgba(179, 27, 27, 0.14);
 
-      --shadow-card:
-        0 1px 2px rgba(48, 11, 92, 0.04),
-        0 10px 24px -12px rgba(48, 11, 92, 0.14),
-        0 40px 72px -40px rgba(48, 11, 92, 0.22);
-      --shadow-mark: 0 4px 14px -6px rgba(48, 11, 92, 0.28);
-      --shadow-action: 0 8px 20px -10px rgba(89, 42, 125, 0.65);
+      --shadow-mark: 0 10px 24px -12px rgba(48, 11, 92, 0.45);
+      --shadow-action: 0 10px 24px -12px rgba(89, 42, 125, 0.7);
+      --shadow-header: 0 14px 28px -26px rgba(48, 11, 92, 0.7);
 
       --ease: cubic-bezier(0.32, 0.72, 0, 1);
     }
@@ -56,10 +53,10 @@
       -moz-osx-font-smoothing: grayscale;
       background-color: var(--page);
       background-image:
-        radial-gradient(120% 80% at 12% -10%, rgba(89, 42, 125, 0.10), transparent 62%),
-        radial-gradient(90% 70% at 100% 0%, rgba(48, 11, 92, 0.07), transparent 58%),
-        radial-gradient(120% 90% at 50% 118%, rgba(89, 42, 125, 0.07), transparent 60%);
+        radial-gradient(75% 55% at 50% -8%, rgba(89, 42, 125, 0.09), transparent 68%),
+        radial-gradient(90% 60% at 50% 108%, rgba(48, 11, 92, 0.06), transparent 66%);
       background-attachment: fixed;
+      background-repeat: no-repeat;
       color: var(--text);
       font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
       letter-spacing: -0.006em;
@@ -85,61 +82,35 @@
     /* ---------- Sign in ---------- */
 
     .login-screen {
-      align-items: center;
       display: grid;
-      justify-items: center;
-      padding: clamp(20px, 5vw, 56px) clamp(16px, 5vw, 32px);
+      grid-template-rows: auto minmax(0, 1fr);
     }
 
     .login-screen[hidden] {
       display: none;
     }
 
-    .card {
-      animation: rise 620ms var(--ease) both;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-card);
-      box-shadow: var(--shadow-card);
-      overflow: hidden;
-      padding: clamp(26px, 4.4vw, 40px) clamp(22px, 4.4vw, 44px) clamp(28px, 4.4vw, 40px);
-      position: relative;
-      width: min(100%, 452px);
-    }
-
-    @keyframes rise {
-      from {
-        opacity: 0;
-        transform: translateY(14px) scale(0.988);
-      }
-      to {
-        opacity: 1;
-        transform: none;
-      }
-    }
-
-    .topline {
+    .topbar {
       align-items: center;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      margin-bottom: clamp(24px, 3.6vw, 32px);
+      display: flex;
+      justify-content: space-between;
+      padding: clamp(18px, 3vw, 30px) clamp(18px, 4vw, 44px);
     }
 
     .mark {
       align-items: center;
-      background: radial-gradient(115% 115% at 30% 12%, #7a44a6, var(--brand-deep) 72%);
+      animation: fade-up 560ms var(--ease) both;
+      background: radial-gradient(120% 120% at 30% 10%, #7d47aa, var(--brand-deep) 74%);
       border-radius: 50%;
-      box-shadow: var(--shadow-mark), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+      box-shadow: var(--shadow-mark), inset 0 1px 0 rgba(255, 255, 255, 0.22);
       color: #ffffff;
       display: inline-flex;
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 600;
-      grid-column: 2;
-      height: 52px;
+      height: 48px;
       justify-content: center;
-      justify-self: center;
       line-height: 1;
-      width: 52px;
+      width: 48px;
     }
 
     .mark span {
@@ -156,18 +127,16 @@
       color: var(--muted);
       cursor: pointer;
       display: inline-flex;
-      grid-column: 3;
-      height: 36px;
+      height: 40px;
       justify-content: center;
-      justify-self: end;
       padding: 0;
       transition: background 180ms var(--ease), color 180ms var(--ease);
-      width: 36px;
+      width: 40px;
     }
 
     .close-button svg {
-      height: 17px;
-      width: 17px;
+      height: 18px;
+      width: 18px;
     }
 
     .close-button:hover {
@@ -175,30 +144,53 @@
       color: var(--brand-deep);
     }
 
+    .login-body {
+      align-items: center;
+      display: grid;
+      justify-items: center;
+      padding: 0 clamp(20px, 5vw, 44px) clamp(48px, 9vh, 96px);
+    }
+
+    .login-inner {
+      animation: fade-up 640ms var(--ease) both;
+      width: min(100%, 428px);
+    }
+
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
     .heading {
-      margin-bottom: clamp(22px, 3.4vw, 30px);
-      text-align: center;
+      margin-bottom: clamp(30px, 5vw, 42px);
     }
 
     h1 {
       color: var(--brand-deep);
-      font-size: clamp(21px, 2.6vw, 24px);
+      font-size: clamp(26px, 4.4vw, 32px);
       font-weight: 700;
-      letter-spacing: 0.1em;
-      line-height: 1.15;
+      letter-spacing: 0.09em;
+      line-height: 1.1;
       margin: 0;
       text-transform: uppercase;
     }
 
     .subtitle {
       color: var(--muted);
-      font-size: 14.5px;
-      line-height: 1.45;
-      margin: 10px 0 0;
+      font-size: 15.5px;
+      line-height: 1.5;
+      margin: 12px 0 0;
+      max-width: 34ch;
     }
 
     .field-group {
-      margin: 0 0 18px;
+      margin: 0 0 20px;
     }
 
     .field-group:last-of-type {
@@ -210,13 +202,14 @@
       display: flex;
       gap: 12px;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: 9px;
+      padding: 0 2px;
     }
 
     label {
       color: #2c2434;
       display: block;
-      font-size: 13.5px;
+      font-size: 14px;
       font-weight: 500;
       letter-spacing: 0;
       line-height: 1.3;
@@ -224,7 +217,6 @@
 
     .required {
       color: var(--danger);
-      margin-left: 1px;
     }
 
     .input-wrap {
@@ -232,21 +224,21 @@
     }
 
     input {
-      background: #fcfbfd;
-      border: 1px solid var(--line-strong);
+      background: var(--field);
+      border: 0;
       border-radius: var(--radius-field);
       color: var(--text);
       display: block;
-      font-size: 15px;
-      height: 50px;
+      font-size: 15.5px;
+      height: 56px;
       outline: 0;
-      padding: 0 16px;
-      transition: border-color 180ms var(--ease), box-shadow 180ms var(--ease), background 180ms var(--ease);
+      padding: 0 18px;
+      transition: background 180ms var(--ease), box-shadow 180ms var(--ease);
       width: 100%;
     }
 
     .input-wrap input {
-      padding-right: 48px;
+      padding-right: 56px;
     }
 
     input::placeholder {
@@ -255,20 +247,16 @@
     }
 
     input:hover:not(:focus) {
-      border-color: #c3b9cd;
+      background: var(--field-hover);
     }
 
     input:focus {
-      background: var(--surface);
-      border-color: var(--brand);
+      background: var(--brand-tint);
       box-shadow: var(--ring);
     }
 
     .field-group.has-error input {
-      border-color: var(--danger);
-    }
-
-    .field-group.has-error input:focus {
+      background: var(--danger-tint);
       box-shadow: var(--ring-danger);
     }
 
@@ -276,10 +264,11 @@
       align-items: center;
       color: var(--danger);
       display: none;
-      font-size: 12.5px;
+      font-size: 13px;
       gap: 6px;
       line-height: 1.35;
-      margin: 8px 0 0 2px;
+      margin: 9px 0 0;
+      padding: 0 2px;
     }
 
     .field-group.has-error .error {
@@ -289,8 +278,8 @@
 
     .error svg {
       flex: none;
-      height: 14px;
-      width: 14px;
+      height: 15px;
+      width: 15px;
     }
 
     @keyframes error-in {
@@ -308,11 +297,11 @@
       align-items: center;
       background: transparent;
       border: 0;
-      border-radius: 8px;
+      border-radius: 10px;
       color: #8d8695;
       cursor: pointer;
       display: inline-flex;
-      height: 34px;
+      height: 40px;
       justify-content: center;
       padding: 0;
       position: absolute;
@@ -320,27 +309,26 @@
       top: 50%;
       transform: translateY(-50%);
       transition: background 180ms var(--ease), color 180ms var(--ease);
-      width: 34px;
+      width: 40px;
     }
 
     .eye:hover {
-      background: var(--brand-tint);
+      background: var(--brand-tint-strong);
       color: var(--brand-deep);
     }
 
     .eye svg {
-      height: 19px;
-      width: 19px;
+      height: 20px;
+      width: 20px;
     }
 
     .forgot-link {
       appearance: none;
       background: transparent;
       border: 0;
-      border-radius: 6px;
       color: var(--brand);
       cursor: pointer;
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 500;
       padding: 0;
       text-decoration: none;
@@ -357,7 +345,7 @@
     button:focus-visible,
     a:focus-visible {
       outline: 2px solid var(--brand);
-      outline-offset: 2px;
+      outline-offset: 3px;
     }
 
     input:focus-visible {
@@ -367,34 +355,33 @@
     .sign-in-button {
       align-items: center;
       appearance: none;
-      background: linear-gradient(180deg, #6a3392, var(--brand) 55%, #4d2270);
+      background: linear-gradient(180deg, #6d3596, var(--brand) 55%, #4b216d);
       border: 0;
       border-radius: var(--radius-field);
       box-shadow: var(--shadow-action);
       color: #ffffff;
       cursor: pointer;
       display: inline-flex;
-      font-size: 13.5px;
+      font-size: 14px;
       font-weight: 600;
       gap: 10px;
-      height: 50px;
+      height: 56px;
       justify-content: center;
       letter-spacing: 0.09em;
-      margin-top: 28px;
-      position: relative;
+      margin-top: 32px;
       text-transform: uppercase;
       transition: transform 180ms var(--ease), box-shadow 220ms var(--ease), filter 180ms var(--ease);
       width: 100%;
     }
 
     .sign-in-button:hover {
-      box-shadow: 0 12px 26px -10px rgba(89, 42, 125, 0.7);
-      filter: brightness(1.06);
+      box-shadow: 0 16px 30px -14px rgba(89, 42, 125, 0.75);
+      filter: brightness(1.07);
       transform: translateY(-1px);
     }
 
     .sign-in-button:active {
-      box-shadow: 0 4px 12px -8px rgba(89, 42, 125, 0.7);
+      box-shadow: 0 6px 14px -10px rgba(89, 42, 125, 0.7);
       filter: brightness(0.94);
       transform: translateY(0);
     }
@@ -428,7 +415,7 @@
     /* ---------- Embedded page ---------- */
 
     .iframe-screen {
-      background: var(--surface);
+      background: var(--page);
       display: none;
       grid-template-rows: auto minmax(0, 1fr);
     }
@@ -449,15 +436,15 @@
 
     .iframe-header {
       align-items: center;
-      -webkit-backdrop-filter: saturate(180%) blur(12px);
-      backdrop-filter: saturate(180%) blur(12px);
-      background: rgba(255, 255, 255, 0.86);
-      border-bottom: 1px solid var(--line);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      backdrop-filter: saturate(180%) blur(14px);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow-header);
       display: grid;
       gap: 12px;
       grid-template-columns: 1fr auto 1fr;
-      min-height: 60px;
-      padding: 10px clamp(12px, 3vw, 22px);
+      min-height: 64px;
+      padding: 12px clamp(14px, 4vw, 32px);
       position: sticky;
       top: 0;
       z-index: 2;
@@ -466,40 +453,39 @@
     .back-button {
       align-items: center;
       appearance: none;
-      background: var(--surface);
-      border: 1px solid var(--line-strong);
+      background: var(--brand-tint);
+      border: 0;
       border-radius: 999px;
       color: var(--brand-deep);
       cursor: pointer;
       display: inline-flex;
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 500;
-      gap: 6px;
-      height: 36px;
+      gap: 7px;
+      height: 40px;
       justify-content: center;
       justify-self: start;
-      padding: 0 14px 0 11px;
-      transition: background 180ms var(--ease), border-color 180ms var(--ease), color 180ms var(--ease);
+      padding: 0 16px 0 13px;
+      transition: background 180ms var(--ease), color 180ms var(--ease);
       width: max-content;
     }
 
     .back-button:hover {
-      background: var(--brand-tint);
-      border-color: rgba(89, 42, 125, 0.32);
+      background: var(--brand-tint-strong);
     }
 
     .back-button:active {
-      background: rgba(89, 42, 125, 0.14);
+      background: rgba(89, 42, 125, 0.18);
     }
 
     .back-button svg {
-      height: 15px;
-      width: 15px;
+      height: 16px;
+      width: 16px;
     }
 
     .iframe-title {
       color: var(--brand-deep);
-      font-size: 14.5px;
+      font-size: 15px;
       font-weight: 600;
       grid-column: 2;
       letter-spacing: 0.01em;
@@ -512,7 +498,7 @@
     }
 
     .frame-wrap::after {
-      background: linear-gradient(90deg, var(--brand-deep), #8c5fae, var(--brand-deep));
+      background: linear-gradient(90deg, transparent, var(--brand), #a274c4, transparent);
       background-size: 220% 100%;
       content: "";
       height: 2px;
@@ -543,30 +529,23 @@
       border: 0;
       display: block;
       height: 100%;
-      min-height: calc(100vh - 60px);
-      min-height: calc(100svh - 60px);
+      min-height: calc(100vh - 64px);
+      min-height: calc(100svh - 64px);
       width: 100%;
     }
 
-    @media (max-width: 480px) {
-      .card {
-        border-radius: 18px;
-        padding: 24px 20px 26px;
-      }
-
-      .mark {
-        font-size: 24px;
-        height: 48px;
-        width: 48px;
+    @media (max-width: 520px) {
+      .login-body {
+        padding-bottom: clamp(40px, 12vh, 88px);
       }
 
       .subtitle {
-        font-size: 14px;
+        font-size: 15px;
       }
 
       input,
       .sign-in-button {
-        height: 48px;
+        height: 54px;
       }
 
       input {
@@ -591,68 +570,69 @@
 </head>
 <body>
   <main class="screen login-screen" id="loginScreen">
-    <div class="card">
-      <div class="topline">
-        <span></span>
-        <div class="mark" aria-label="Discovery"><span>D</span></div>
-        <button class="close-button" type="button" aria-label="Close">
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-            <path d="M6 6l12 12M18 6 6 18"></path>
-          </svg>
-        </button>
-      </div>
+    <div class="topbar">
+      <div class="mark" aria-label="Discovery"><span>D</span></div>
+      <button class="close-button" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M6 6l12 12M18 6 6 18"></path>
+        </svg>
+      </button>
+    </div>
 
-      <div class="heading">
-        <h1>Sign In</h1>
-        <p class="subtitle">Sign in to continue to your account.</p>
-      </div>
-
-      <form class="login-form" id="loginForm" action="#" method="post" novalidate>
-        <div class="field-group" id="usernameGroup">
-          <div class="field-row">
-            <label for="username">Username or email <span class="required" aria-hidden="true">*</span></label>
-          </div>
-          <input id="username" name="username" type="text" placeholder="Your username or email"
-                 autocomplete="username" autocapitalize="none" spellcheck="false"
-                 aria-describedby="usernameError">
-          <p class="error" id="usernameError">
-            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-              <circle cx="12" cy="12" r="9"></circle>
-              <path d="M12 7.5v5M12 16.2v.3"></path>
-            </svg>
-            <span>Enter your username or email</span>
-          </p>
+    <div class="login-body">
+      <div class="login-inner">
+        <div class="heading">
+          <h1>Sign In</h1>
+          <p class="subtitle">Sign in to continue to your account.</p>
         </div>
 
-        <div class="field-group" id="passwordGroup">
-          <div class="field-row">
-            <label for="password">Password <span class="required" aria-hidden="true">*</span></label>
-            <a class="forgot-link" id="forgotPassword" href="https://www.ghadiscovery.com/member/forgot_password">Forgot password?</a>
-          </div>
-          <div class="input-wrap">
-            <input id="password" name="password" type="password" placeholder="Your password"
-                   autocomplete="current-password" aria-describedby="passwordError">
-            <button class="eye" id="togglePassword" type="button" aria-label="Show password" aria-pressed="false">
-              <svg id="eyeIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2.2 12S6 5.8 12 5.8S21.8 12 21.8 12S18 18.2 12 18.2S2.2 12 2.2 12Z"></path>
-                <circle cx="12" cy="12" r="3.1"></circle>
+        <form class="login-form" id="loginForm" action="#" method="post" novalidate>
+          <div class="field-group" id="usernameGroup">
+            <div class="field-row">
+              <label for="username">Username or email <span class="required" aria-hidden="true">*</span></label>
+            </div>
+            <input id="username" name="username" type="text" placeholder="Your username or email"
+                   autocomplete="username" autocapitalize="none" spellcheck="false"
+                   aria-describedby="usernameError">
+            <p class="error" id="usernameError">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M12 7.5v5M12 16.2v.3"></path>
               </svg>
-            </button>
+              <span>Enter your username or email</span>
+            </p>
           </div>
-          <p class="error" id="passwordError">
-            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-              <circle cx="12" cy="12" r="9"></circle>
-              <path d="M12 7.5v5M12 16.2v.3"></path>
-            </svg>
-            <span>Enter your password</span>
-          </p>
-        </div>
 
-        <button class="sign-in-button" id="signInButton" type="submit">
-          <span class="spinner" aria-hidden="true"></span>
-          <span>Sign In</span>
-        </button>
-      </form>
+          <div class="field-group" id="passwordGroup">
+            <div class="field-row">
+              <label for="password">Password <span class="required" aria-hidden="true">*</span></label>
+              <a class="forgot-link" id="forgotPassword" href="https://www.ghadiscovery.com/member/forgot_password">Forgot password?</a>
+            </div>
+            <div class="input-wrap">
+              <input id="password" name="password" type="password" placeholder="Your password"
+                     autocomplete="current-password" aria-describedby="passwordError">
+              <button class="eye" id="togglePassword" type="button" aria-label="Show password" aria-pressed="false">
+                <svg id="eyeIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2.2 12S6 5.8 12 5.8S21.8 12 21.8 12S18 18.2 12 18.2S2.2 12 2.2 12Z"></path>
+                  <circle cx="12" cy="12" r="3.1"></circle>
+                </svg>
+              </button>
+            </div>
+            <p class="error" id="passwordError">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M12 7.5v5M12 16.2v.3"></path>
+              </svg>
+              <span>Enter your password</span>
+            </p>
+          </div>
+
+          <button class="sign-in-button" id="signInButton" type="submit">
+            <span class="spinner" aria-hidden="true"></span>
+            <span>Sign In</span>
+          </button>
+        </form>
+      </div>
     </div>
   </main>
 
