@@ -10,9 +10,9 @@
   <style>
     :root {
       color-scheme: light;
-      --brand: #4b176f;
-      --brand-mid: #6b3290;
-      --brand-soft: #b294c5;
+      --brand: #592a7d;
+      --brand-mid: #6b4a87;
+      --brand-soft: #b9a7c7;
       --danger: #e12525;
       --field: #c9c9ce;
       --muted: #71717a;
@@ -167,7 +167,7 @@
 
     input:focus {
       border-color: var(--brand-mid);
-      box-shadow: 0 0 0 3px rgba(107, 50, 144, 0.12);
+      box-shadow: 0 0 0 3px rgba(89, 42, 125, 0.12);
     }
 
     .error {
@@ -228,7 +228,7 @@
     button:focus-visible,
     a:focus-visible,
     input:focus-visible {
-      outline: 3px solid rgba(107, 50, 144, 0.24);
+      outline: 3px solid rgba(89, 42, 125, 0.22);
       outline-offset: 3px;
     }
 
@@ -280,7 +280,7 @@
       border-bottom: 1px solid var(--line);
       display: grid;
       gap: 14px;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: auto 1fr;
       padding: 14px clamp(14px, 4vw, 34px);
       position: sticky;
       top: 0;
@@ -328,14 +328,6 @@
       margin: 0;
       text-align: center;
       text-transform: uppercase;
-    }
-
-    .open-link {
-      color: #18181b;
-      font-size: 15px;
-      font-weight: 700;
-      text-decoration: underline;
-      white-space: nowrap;
     }
 
     iframe {
@@ -439,17 +431,12 @@
       }
 
       .iframe-header {
-        grid-template-columns: 1fr auto;
+        grid-template-columns: auto 1fr;
       }
 
       .iframe-title {
-        grid-column: 1 / -1;
-        grid-row: 2;
-        text-align: left;
-      }
-
-      .open-link {
-        justify-self: end;
+        font-size: 18px;
+        text-align: right;
       }
 
       iframe {
@@ -515,14 +502,6 @@
         width: 17px;
       }
 
-      .iframe-title {
-        font-size: 18px;
-      }
-
-      .open-link {
-        font-size: 13px;
-      }
-
       .vendor-note {
         font-size: 12px;
         padding: 8px 10px;
@@ -578,7 +557,6 @@
         Back to Sign In
       </button>
       <p class="iframe-title">Forgot Password</p>
-      <a class="open-link" href="https://www.ghadiscovery.com/member/forgot_password" target="_blank" rel="noopener">Open in New Tab</a>
     </header>
 
     <iframe
