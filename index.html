@@ -2,14 +2,180 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- viewport-fit=cover is mandatory: without it every env() inset is 0px. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
   <title>Sign In</title>
+
+  <!-- Installed web app (iOS/iPadOS). Both capable metas: the unprefixed one
+       alone does not enable startup images. -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Discovery">
+  <!-- `default` keeps the system status bar legible over this light UI.
+       Switch to `black-translucent` only alongside a dark top area: it is the
+       only edge-to-edge mode, but it draws the clock over the content. -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <!-- Safari 26 samples page colour instead, but Chrome and older Safari read this. -->
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon-180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+
+  <!-- Startup images: one per unique width x height @ dpr, per orientation.
+       Generated with the link list by tools/generate-assets.mjs. -->
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-320x568@2x-portrait.png?v1"
+          media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-320x568@2x-landscape.png?v1"
+          media="(device-width: 568px) and (device-height: 320px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-375x667@2x-portrait.png?v1"
+          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-375x667@2x-landscape.png?v1"
+          media="(device-width: 667px) and (device-height: 375px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-414x736@3x-portrait.png?v1"
+          media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-414x736@3x-landscape.png?v1"
+          media="(device-width: 736px) and (device-height: 414px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-375x812@3x-portrait.png?v1"
+          media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-375x812@3x-landscape.png?v1"
+          media="(device-width: 812px) and (device-height: 375px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-414x896@2x-portrait.png?v1"
+          media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-414x896@2x-landscape.png?v1"
+          media="(device-width: 896px) and (device-height: 414px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-414x896@3x-portrait.png?v1"
+          media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-414x896@3x-landscape.png?v1"
+          media="(device-width: 896px) and (device-height: 414px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-390x844@3x-portrait.png?v1"
+          media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-390x844@3x-landscape.png?v1"
+          media="(device-width: 844px) and (device-height: 390px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-428x926@3x-portrait.png?v1"
+          media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-428x926@3x-landscape.png?v1"
+          media="(device-width: 926px) and (device-height: 428px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-393x852@3x-portrait.png?v1"
+          media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-393x852@3x-landscape.png?v1"
+          media="(device-width: 852px) and (device-height: 393px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-430x932@3x-portrait.png?v1"
+          media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-430x932@3x-landscape.png?v1"
+          media="(device-width: 932px) and (device-height: 430px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-402x874@3x-portrait.png?v1"
+          media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-402x874@3x-landscape.png?v1"
+          media="(device-width: 874px) and (device-height: 402px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-440x956@3x-portrait.png?v1"
+          media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-440x956@3x-landscape.png?v1"
+          media="(device-width: 956px) and (device-height: 440px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-420x912@3x-portrait.png?v1"
+          media="(device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-420x912@3x-landscape.png?v1"
+          media="(device-width: 912px) and (device-height: 420px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-768x1024@2x-portrait.png?v1"
+          media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-768x1024@2x-landscape.png?v1"
+          media="(device-width: 1024px) and (device-height: 768px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-810x1080@2x-portrait.png?v1"
+          media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-810x1080@2x-landscape.png?v1"
+          media="(device-width: 1080px) and (device-height: 810px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-820x1180@2x-portrait.png?v1"
+          media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-820x1180@2x-landscape.png?v1"
+          media="(device-width: 1180px) and (device-height: 820px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-744x1133@2x-portrait.png?v1"
+          media="(device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-744x1133@2x-landscape.png?v1"
+          media="(device-width: 1133px) and (device-height: 744px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-834x1112@2x-portrait.png?v1"
+          media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-834x1112@2x-landscape.png?v1"
+          media="(device-width: 1112px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-834x1194@2x-portrait.png?v1"
+          media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-834x1194@2x-landscape.png?v1"
+          media="(device-width: 1194px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-834x1210@2x-portrait.png?v1"
+          media="(device-width: 834px) and (device-height: 1210px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-834x1210@2x-landscape.png?v1"
+          media="(device-width: 1210px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-1024x1366@2x-portrait.png?v1"
+          media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-1024x1366@2x-landscape.png?v1"
+          media="(device-width: 1366px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-1032x1376@2x-portrait.png?v1"
+          media="(device-width: 1032px) and (device-height: 1376px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+    <link rel="apple-touch-startup-image"
+          href="./assets/splash/splash-1032x1376@2x-landscape.png?v1"
+          media="(device-width: 1376px) and (device-height: 1032px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: light;
+
+      /* Mirror env() once, so there is a single source of truth and the
+         resolved value is readable from JS. Never assume the top inset is
+         greater than zero: it is 0px on an SE, in landscape, and in
+         `default` status-bar mode. */
+      --safe-area-inset-top: env(safe-area-inset-top, 0px);
+      --safe-area-inset-right: env(safe-area-inset-right, 0px);
+      --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-area-inset-left: env(safe-area-inset-left, 0px);
+
+      /* Bar heights are base + inset, never the inset alone. */
+      --header-height: calc(64px + var(--safe-area-inset-top));
 
       --brand: #592a7d;
       --brand-deep: #300b5c;
@@ -36,21 +202,29 @@
       --shadow-header: 0 14px 28px -26px rgba(48, 11, 92, 0.7);
 
       --ease: cubic-bezier(0.32, 0.72, 0, 1);
+
+      scroll-padding-top: var(--header-height);
     }
 
     * {
       box-sizing: border-box;
     }
 
+    /* Kill the grey tap flash everywhere. */
+    :where(*) {
+      -webkit-tap-highlight-color: transparent;
+    }
+
     html,
     body {
-      min-height: 100%;
+      height: 100%;
       margin: 0;
     }
 
     body {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      /* A real background colour: a transparent root tints the status bar white. */
       background-color: var(--page);
       background-image:
         radial-gradient(75% 55% at 50% -8%, rgba(89, 42, 125, 0.09), transparent 68%),
@@ -60,6 +234,25 @@
       color: var(--text);
       font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
       letter-spacing: -0.006em;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    /* Own the scroll container: one scrolling element, no document bounce
+       behind sticky bars. overscroll-behavior must be parsed before the first
+       touchstart, so it lives here and never gets set from JS. */
+    #root {
+      height: 100%;
+      min-height: 100vh;
+      isolation: isolate;
+      overflow-y: scroll;
+      overscroll-behavior-y: contain;
+    }
+
+    @media not all and (display-mode: standalone) {
+      #root {
+        min-height: -webkit-fill-available;
+      }
     }
 
     button,
@@ -69,13 +262,24 @@
       letter-spacing: inherit;
     }
 
+    /* Chrome only, never body text. */
+    .topbar,
+    .iframe-header,
+    button,
+    label {
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
+    }
+
     ::selection {
       background: rgba(89, 42, 125, 0.16);
     }
 
+    /* 100vh, not dvh/svh: dvh reports the wrong height until layout settles
+       on a cold standalone launch. */
     .screen {
       min-height: 100vh;
-      min-height: 100svh;
       width: 100%;
     }
 
@@ -94,7 +298,11 @@
       align-items: center;
       display: flex;
       justify-content: space-between;
-      padding: clamp(18px, 3vw, 30px) clamp(18px, 4vw, 44px);
+      padding:
+        calc(clamp(18px, 3vw, 30px) + var(--safe-area-inset-top))
+        calc(clamp(18px, 4vw, 44px) + var(--safe-area-inset-right))
+        clamp(18px, 3vw, 30px)
+        calc(clamp(18px, 4vw, 44px) + var(--safe-area-inset-left));
     }
 
     .mark {
@@ -127,11 +335,11 @@
       color: var(--muted);
       cursor: pointer;
       display: inline-flex;
-      height: 40px;
+      height: 44px;
       justify-content: center;
       padding: 0;
       transition: background 180ms var(--ease), color 180ms var(--ease);
-      width: 40px;
+      width: 44px;
     }
 
     .close-button svg {
@@ -139,16 +347,15 @@
       width: 18px;
     }
 
-    .close-button:hover {
-      background: var(--brand-tint);
-      color: var(--brand-deep);
-    }
-
     .login-body {
       align-items: center;
       display: grid;
       justify-items: center;
-      padding: 0 clamp(20px, 5vw, 44px) clamp(48px, 9vh, 96px);
+      padding:
+        0
+        calc(clamp(20px, 5vw, 44px) + var(--safe-area-inset-right))
+        calc(clamp(48px, 9vh, 96px) + var(--safe-area-inset-bottom))
+        calc(clamp(20px, 5vw, 44px) + var(--safe-area-inset-left));
     }
 
     .login-inner {
@@ -229,7 +436,8 @@
       border-radius: var(--radius-field);
       color: var(--text);
       display: block;
-      font-size: 15.5px;
+      /* >=16px: iOS zooms the viewport on focus below that. */
+      font-size: 16px;
       height: 56px;
       outline: 0;
       padding: 0 18px;
@@ -244,10 +452,6 @@
     input::placeholder {
       color: var(--placeholder);
       opacity: 1;
-    }
-
-    input:hover:not(:focus) {
-      background: var(--field-hover);
     }
 
     input:focus {
@@ -301,20 +505,15 @@
       color: #8d8695;
       cursor: pointer;
       display: inline-flex;
-      height: 40px;
+      height: 44px;
       justify-content: center;
       padding: 0;
       position: absolute;
-      right: 8px;
+      right: 6px;
       top: 50%;
       transform: translateY(-50%);
       transition: background 180ms var(--ease), color 180ms var(--ease);
-      width: 40px;
-    }
-
-    .eye:hover {
-      background: var(--brand-tint-strong);
-      color: var(--brand-deep);
+      width: 44px;
     }
 
     .eye svg {
@@ -332,14 +531,9 @@
       font-weight: 500;
       padding: 0;
       text-decoration: none;
+      touch-action: manipulation;
       transition: color 180ms var(--ease);
       white-space: nowrap;
-    }
-
-    .forgot-link:hover {
-      color: var(--brand-deep);
-      text-decoration: underline;
-      text-underline-offset: 3px;
     }
 
     button:focus-visible,
@@ -372,12 +566,6 @@
       text-transform: uppercase;
       transition: transform 180ms var(--ease), box-shadow 220ms var(--ease), filter 180ms var(--ease);
       width: 100%;
-    }
-
-    .sign-in-button:hover {
-      box-shadow: 0 16px 30px -14px rgba(89, 42, 125, 0.75);
-      filter: brightness(1.07);
-      transform: translateY(-1px);
     }
 
     .sign-in-button:active {
@@ -434,6 +622,8 @@
       }
     }
 
+    /* A real background (plus blur) on the sticky header: Safari samples it
+       for the status-bar tint, and content must not show through crisply. */
     .iframe-header {
       align-items: center;
       -webkit-backdrop-filter: saturate(180%) blur(14px);
@@ -443,8 +633,12 @@
       display: grid;
       gap: 12px;
       grid-template-columns: 1fr auto 1fr;
-      min-height: 64px;
-      padding: 12px clamp(14px, 4vw, 32px);
+      min-height: var(--header-height);
+      padding:
+        calc(12px + var(--safe-area-inset-top))
+        calc(clamp(14px, 4vw, 32px) + var(--safe-area-inset-right))
+        12px
+        calc(clamp(14px, 4vw, 32px) + var(--safe-area-inset-left));
       position: sticky;
       top: 0;
       z-index: 2;
@@ -468,10 +662,6 @@
       padding: 0 16px 0 13px;
       transition: background 180ms var(--ease), color 180ms var(--ease);
       width: max-content;
-    }
-
-    .back-button:hover {
-      background: var(--brand-tint-strong);
     }
 
     .back-button:active {
@@ -529,14 +719,47 @@
       border: 0;
       display: block;
       height: 100%;
-      min-height: calc(100vh - 64px);
-      min-height: calc(100svh - 64px);
+      min-height: calc(100vh - var(--header-height));
       width: 100%;
+    }
+
+    /* Hover styling only where hover really exists, so it never sticks
+       after a tap. */
+    @media (hover: hover) {
+      .close-button:hover {
+        background: var(--brand-tint);
+        color: var(--brand-deep);
+      }
+
+      input:hover:not(:focus) {
+        background: var(--field-hover);
+      }
+
+      .eye:hover {
+        background: var(--brand-tint-strong);
+        color: var(--brand-deep);
+      }
+
+      .forgot-link:hover {
+        color: var(--brand-deep);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .sign-in-button:hover {
+        box-shadow: 0 16px 30px -14px rgba(89, 42, 125, 0.75);
+        filter: brightness(1.07);
+        transform: translateY(-1px);
+      }
+
+      .back-button:hover {
+        background: var(--brand-tint-strong);
+      }
     }
 
     @media (max-width: 520px) {
       .login-body {
-        padding-bottom: clamp(40px, 12vh, 88px);
+        padding-bottom: calc(clamp(40px, 12vh, 88px) + var(--safe-area-inset-bottom));
       }
 
       .subtitle {
@@ -547,9 +770,11 @@
       .sign-in-button {
         height: 54px;
       }
+    }
 
-      input {
-        font-size: 16px;
+    @media (prefers-reduced-motion: no-preference) {
+      html {
+        scroll-behavior: smooth;
       }
     }
 
@@ -569,97 +794,100 @@
   </style>
 </head>
 <body>
-  <main class="screen login-screen" id="loginScreen">
-    <div class="topbar">
-      <div class="mark" aria-label="Discovery"><span>D</span></div>
-      <button class="close-button" type="button" aria-label="Close">
-        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M6 6l12 12M18 6 6 18"></path>
-        </svg>
-      </button>
-    </div>
-
-    <div class="login-body">
-      <div class="login-inner">
-        <div class="heading">
-          <h1>Sign In</h1>
-          <p class="subtitle">Sign in to continue to your account.</p>
-        </div>
-
-        <form class="login-form" id="loginForm" action="#" method="post" novalidate>
-          <div class="field-group" id="usernameGroup">
-            <div class="field-row">
-              <label for="username">Username or email <span class="required" aria-hidden="true">*</span></label>
-            </div>
-            <input id="username" name="username" type="text" placeholder="Your username or email"
-                   autocomplete="username" autocapitalize="none" spellcheck="false"
-                   aria-describedby="usernameError">
-            <p class="error" id="usernameError">
-              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <circle cx="12" cy="12" r="9"></circle>
-                <path d="M12 7.5v5M12 16.2v.3"></path>
-              </svg>
-              <span>Enter your username or email</span>
-            </p>
-          </div>
-
-          <div class="field-group" id="passwordGroup">
-            <div class="field-row">
-              <label for="password">Password <span class="required" aria-hidden="true">*</span></label>
-              <a class="forgot-link" id="forgotPassword" href="https://www.ghadiscovery.com/member/forgot_password">Forgot password?</a>
-            </div>
-            <div class="input-wrap">
-              <input id="password" name="password" type="password" placeholder="Your password"
-                     autocomplete="current-password" aria-describedby="passwordError">
-              <button class="eye" id="togglePassword" type="button" aria-label="Show password" aria-pressed="false">
-                <svg id="eyeIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M2.2 12S6 5.8 12 5.8S21.8 12 21.8 12S18 18.2 12 18.2S2.2 12 2.2 12Z"></path>
-                  <circle cx="12" cy="12" r="3.1"></circle>
-                </svg>
-              </button>
-            </div>
-            <p class="error" id="passwordError">
-              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <circle cx="12" cy="12" r="9"></circle>
-                <path d="M12 7.5v5M12 16.2v.3"></path>
-              </svg>
-              <span>Enter your password</span>
-            </p>
-          </div>
-
-          <button class="sign-in-button" id="signInButton" type="submit">
-            <span class="spinner" aria-hidden="true"></span>
-            <span>Sign In</span>
-          </button>
-        </form>
+  <div id="root">
+    <main class="screen login-screen" id="loginScreen">
+      <div class="topbar">
+        <div class="mark" aria-label="Discovery"><span>D</span></div>
+        <button class="close-button" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M6 6l12 12M18 6 6 18"></path>
+          </svg>
+        </button>
       </div>
-    </div>
-  </main>
 
-  <section class="screen iframe-screen" id="forgotScreen" aria-label="Forgot password">
-    <header class="iframe-header">
-      <button class="back-button" id="backButton" type="button" aria-label="Back to sign in">
-        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5"></path>
-          <path d="m12 19-7-7 7-7"></path>
-        </svg>
-        Back
-      </button>
-      <p class="iframe-title">Forgot Password</p>
-    </header>
+      <div class="login-body">
+        <div class="login-inner">
+          <div class="heading">
+            <h1>Sign In</h1>
+            <p class="subtitle">Sign in to continue to your account.</p>
+          </div>
 
-    <div class="frame-wrap" id="frameWrap">
-      <iframe
-        id="forgotFrame"
-        title="Forgot password"
-        referrerpolicy="no-referrer-when-downgrade"
-        data-src="https://www.ghadiscovery.com/member/forgot_password">
-      </iframe>
-    </div>
-  </section>
+          <form class="login-form" id="loginForm" action="#" method="post" novalidate>
+            <div class="field-group" id="usernameGroup">
+              <div class="field-row">
+                <label for="username">Username or email <span class="required" aria-hidden="true">*</span></label>
+              </div>
+              <input id="username" name="username" type="text" placeholder="Your username or email"
+                     autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"
+                     aria-describedby="usernameError">
+              <p class="error" id="usernameError">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <circle cx="12" cy="12" r="9"></circle>
+                  <path d="M12 7.5v5M12 16.2v.3"></path>
+                </svg>
+                <span>Enter your username or email</span>
+              </p>
+            </div>
+
+            <div class="field-group" id="passwordGroup">
+              <div class="field-row">
+                <label for="password">Password <span class="required" aria-hidden="true">*</span></label>
+                <a class="forgot-link" id="forgotPassword" href="https://www.ghadiscovery.com/member/forgot_password">Forgot password?</a>
+              </div>
+              <div class="input-wrap">
+                <input id="password" name="password" type="password" placeholder="Your password"
+                       autocomplete="current-password" aria-describedby="passwordError">
+                <button class="eye" id="togglePassword" type="button" aria-label="Show password" aria-pressed="false">
+                  <svg id="eyeIcon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2.2 12S6 5.8 12 5.8S21.8 12 21.8 12S18 18.2 12 18.2S2.2 12 2.2 12Z"></path>
+                    <circle cx="12" cy="12" r="3.1"></circle>
+                  </svg>
+                </button>
+              </div>
+              <p class="error" id="passwordError">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <circle cx="12" cy="12" r="9"></circle>
+                  <path d="M12 7.5v5M12 16.2v.3"></path>
+                </svg>
+                <span>Enter your password</span>
+              </p>
+            </div>
+
+            <button class="sign-in-button" id="signInButton" type="submit">
+              <span class="spinner" aria-hidden="true"></span>
+              <span>Sign In</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <section class="screen iframe-screen" id="forgotScreen" aria-label="Forgot password">
+      <header class="iframe-header">
+        <button class="back-button" id="backButton" type="button" aria-label="Back to sign in">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5"></path>
+            <path d="m12 19-7-7 7-7"></path>
+          </svg>
+          Back
+        </button>
+        <p class="iframe-title">Forgot Password</p>
+      </header>
+
+      <div class="frame-wrap" id="frameWrap">
+        <iframe
+          id="forgotFrame"
+          title="Forgot password"
+          referrerpolicy="no-referrer-when-downgrade"
+          data-src="https://www.ghadiscovery.com/member/forgot_password">
+        </iframe>
+      </div>
+    </section>
+  </div>
 
   <script>
     const forgotPasswordUrl = "https://www.ghadiscovery.com/member/forgot_password";
+    const root = document.getElementById("root");
     const loginScreen = document.getElementById("loginScreen");
     const forgotScreen = document.getElementById("forgotScreen");
     const forgotFrame = document.getElementById("forgotFrame");
@@ -715,6 +943,19 @@
       });
     });
 
+    // Focus without letting the browser scroll for us, then bring the field
+    // above the keyboard once the visual viewport has settled.
+    const revealField = (input) => {
+      input.focus({ preventScroll: true });
+      const scrollIntoView = () => input.scrollIntoView({ block: "center" });
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", scrollIntoView, { once: true });
+        window.setTimeout(scrollIntoView, 300);
+      } else {
+        scrollIntoView();
+      }
+    };
+
     loginForm.addEventListener("submit", (event) => {
       event.preventDefault();
 
@@ -722,12 +963,12 @@
       const passwordValid = validateField(passwordGroup, passwordInput);
 
       if (!usernameValid) {
-        usernameInput.focus();
+        revealField(usernameInput);
         return;
       }
 
       if (!passwordValid) {
-        passwordInput.focus();
+        revealField(passwordInput);
         return;
       }
 
@@ -740,10 +981,13 @@
       }, 900);
     });
 
-    forgotPassword.addEventListener("click", (event) => {
-      event.preventDefault();
+    // Standalone has no browser chrome and no Back button, so every screen
+    // needs its own way back: the Back control, Escape, and the hardware/edge
+    // swipe via a history entry.
+    const showForgot = () => {
       loginScreen.hidden = true;
       forgotScreen.classList.add("active");
+      root.scrollTop = 0;
 
       if (!forgotFrame.src) {
         frameWrap.classList.add("loading");
@@ -754,12 +998,32 @@
       }
 
       backButton.focus();
-    });
+    };
 
-    backButton.addEventListener("click", () => {
+    const showLogin = () => {
       forgotScreen.classList.remove("active");
       loginScreen.hidden = false;
       forgotPassword.focus();
+    };
+
+    forgotPassword.addEventListener("click", (event) => {
+      event.preventDefault();
+      history.pushState({ screen: "forgot" }, "");
+      showForgot();
+    });
+
+    backButton.addEventListener("click", () => {
+      if (history.state && history.state.screen === "forgot") {
+        history.back();
+      } else {
+        showLogin();
+      }
+    });
+
+    window.addEventListener("popstate", () => {
+      if (forgotScreen.classList.contains("active")) {
+        showLogin();
+      }
     });
 
     togglePassword.addEventListener("click", () => {
@@ -768,7 +1032,7 @@
       eyeIcon.innerHTML = reveal ? eyeClosed : eyeOpen;
       togglePassword.setAttribute("aria-label", reveal ? "Hide password" : "Show password");
       togglePassword.setAttribute("aria-pressed", reveal ? "true" : "false");
-      passwordInput.focus();
+      passwordInput.focus({ preventScroll: true });
     });
 
     document.addEventListener("keydown", (event) => {
