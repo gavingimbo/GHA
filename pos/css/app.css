@@ -1,0 +1,348 @@
+/**
+ * Shell styles.
+ *
+ * The five sibling stylesheets (hero/page/modal/burn/titanium) are the
+ * production CSS modules, copied verbatim. This file supplies what the real app
+ * gets from its global stylesheet and its component libraries: the size tokens,
+ * the Bootstrap modal shell, the MUI outlined text field, the CustomButton, and
+ * the select / checkbox controls — matched to the measured production values.
+ */
+
+:root {
+  --big-button-height: 50px;
+  --secondary-button-height: 42px;
+  --payment-method-height: 50px;
+  --small-button-height: 32px;
+  --icon-button-size: 34px;
+
+  --gha-purple: #582c83;
+  --gha-ink: #140c30;
+  --gha-heading: #300b5c;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #fafafa;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: Jost, sans-serif;
+  color: #212529;
+}
+
+img { max-width: 100%; }
+
+button { font-family: inherit; }
+
+/* ---------------------------------------------------------------- buttons */
+
+/* Mirrors the CustomButton component: colour, radius and metrics come from the
+   venue theme, so they are set inline per usage in the markup. */
+.c_btn {
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IvyMode GHA Semi Bd', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  transition: transform 0.15s, filter 0.15s, opacity 0.15s;
+}
+.c_btn:hover { filter: brightness(1.06); }
+.c_btn:active { transform: scale(0.985); }
+.c_btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; filter: none; }
+
+.c_btn_primary {
+  background: var(--gha-purple);
+  color: #fff;
+  border-radius: 8px;
+  width: 100%;
+  min-height: var(--big-button-height);
+  padding: 13px 16px;
+}
+.c_btn_outline {
+  background: transparent;
+  color: var(--gha-purple);
+  border: 1px solid var(--gha-purple);
+  border-radius: 8px;
+  width: 100%;
+  min-height: var(--big-button-height);
+  padding: 13px 16px;
+}
+.c_btn_pill {
+  background: var(--gha-purple);
+  color: #fff;
+  border-radius: 999px;
+  padding: 10px 24px;
+}
+.c_btn_pill_outline {
+  background: transparent;
+  color: var(--gha-purple);
+  border: 1px solid var(--gha-purple);
+  border-radius: 999px;
+  padding: 10px 24px;
+}
+
+/* ----------------------------------------------------------------- modals */
+
+.modal_backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  animation: modal_fade 0.15s ease forwards;
+}
+.modal_backdrop.is_fullscreen { padding: 0; align-items: stretch; }
+.modal_backdrop.is_centered { padding: 16px; }
+
+@keyframes modal_fade { from { opacity: 0; } to { opacity: 1; } }
+
+.modal_sheet {
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.modal_dialog_centered {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------ text fields */
+
+/* MUI OutlinedInput, size small: 40px control, 6px radius, 1px rgba(0,0,0,.23)
+   outline that turns 2px in the primary colour on focus. */
+.mui_field { position: relative; display: flex; flex-direction: column; }
+
+.mui_input_root {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  border-radius: 6px;
+  background: transparent;
+}
+.mui_input_root input {
+  flex: auto;
+  min-width: 0;
+  height: 23px;
+  padding: 8.5px 14px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.87);
+}
+.mui_input_root input::placeholder {
+  font-family: Jost, sans-serif;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.42);
+  opacity: 1;
+}
+.mui_notch {
+  position: absolute;
+  inset: -5px 0 0 0;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 6px;
+  padding: 0 8px;
+  pointer-events: none;
+}
+.mui_input_root:hover .mui_notch { border-color: rgba(0, 0, 0, 0.87); }
+.mui_input_root.is_focused .mui_notch { border: 2px solid var(--gha-purple); }
+.mui_input_root.is_error .mui_notch { border-color: #d32f2f; }
+
+.mui_adornment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-right: 6px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.54);
+  cursor: pointer;
+}
+.mui_adornment:hover { background: rgba(0, 0, 0, 0.04); }
+
+.mui_helper {
+  margin: 3px 14px 0;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  color: #d32f2f;
+}
+
+/* -------------------------------------------------------- select + phone  */
+
+.gha_select {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 6px;
+  background: #fff;
+  font-family: Jost, sans-serif;
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.87);
+  cursor: pointer;
+}
+.gha_select svg { color: #ccc; flex: none; }
+.gha_select_divider {
+  width: 1px;
+  height: 20px;
+  background: #e6e6e6;
+  margin-left: auto;
+}
+
+.gha_dial_box {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 48px;
+  padding: 0 12px;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  flex: none;
+}
+.gha_phone_input {
+  flex: auto;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 6px;
+  outline: 0;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  background: #fff;
+}
+.gha_phone_input::placeholder { font-family: Jost, sans-serif; font-size: 14px; color: rgba(0, 0, 0, 0.42); }
+.gha_phone_input:focus { border: 2px solid var(--gha-purple); }
+
+/* ------------------------------------------------------------- checkboxes */
+
+.gha_check_row {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  font-family: Jost, sans-serif;
+}
+.gha_check_box {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin: -9px 0 0 -9px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+.gha_check_box:hover { background: rgba(88, 44, 131, 0.06); }
+.gha_check_box.is_checked { color: var(--gha-purple); }
+
+.gha_consent_text {
+  font-family: Jost, sans-serif;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: rgba(20, 12, 48, 0.85);
+}
+.gha_consent_clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.gha_consent_toggle {
+  display: block;
+  margin-top: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--gha-purple);
+  font-family: Jost, sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------- mock controls */
+
+/* Not part of the production page: a small panel for stepping the mockup
+   through the states the real app reaches via the POS and the GHA API. */
+.mock_fab {
+  position: fixed;
+  z-index: 1200;
+  left: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(20, 12, 48, 0.55);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+.mock_panel {
+  position: fixed;
+  z-index: 1200;
+  left: 12px;
+  bottom: calc(54px + env(safe-area-inset-bottom, 0px));
+  width: 232px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(20, 12, 48, 0.22);
+  font-family: Jost, sans-serif;
+  font-size: 12px;
+}
+.mock_panel h4 {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(20, 12, 48, 0.55);
+}
+.mock_panel label { display: block; margin: 8px 0 3px; font-weight: 600; color: var(--gha-heading); }
+.mock_panel select,
+.mock_panel button {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 12px;
+}
+.mock_panel button { margin-top: 10px; background: var(--gha-purple); color: #fff; border: 0; cursor: pointer; }
