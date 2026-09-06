@@ -101,7 +101,7 @@
           '<div class="card card--quiet">' +
             '<div class="benefit"><div>' +
               '<p class="meta">' + esc(VENUE.outlet) + ' · ' + esc(VENUE.table) + '</p>' +
-              '<div class="amount" style="font-size:26px;margin-top:6px">' + fmt.money(M.bill(state).total) + '</div>' +
+              '<div class="amount amount--sm" style="margin-top:6px">' + fmt.money(M.bill(state).total) + '</div>' +
             '</div>' +
             '<span style="color:var(--purple)">' + I.receipt() + '</span></div>' +
           '</div>' +
