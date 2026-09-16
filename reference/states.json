@@ -331,10 +331,23 @@
           "category": "error",
           "trigger": "Guest types a spend under D$10.",
           "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "burned": null, "spend": 4 },
+          "full": true,
           "copyKeys": ["gha_min_bill_required", "gha_apply_ds"],
           "recovery": "Guest raises the amount. The apply button stays disabled until it reaches D$10.",
           "assets": [],
           "notes": "Inline error under the remaining-to-pay row. The apply label still interpolates the typed amount, so it reads 'APPLY D$4' while disabled."
+        },
+        {
+          "id": "burn-zero-earn",
+          "title": "Burn — nothing to redeem, so Earn",
+          "category": "screen",
+          "trigger": "Guest sets the redemption to 0, or clears the field.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "burned": null, "earnPending": false, "earned": null, "spend": 0 },
+          "full": true,
+          "copyKeys": ["gha_spend_ds_range", "gha_eligible_ds_spend", "gha_balance_left_to_pay", "gha_burn_earn_button"],
+          "ctas": ["gha_burn_earn_button"],
+          "assets": [],
+          "notes": "Redeeming nothing is a valid choice, so the primary action becomes Earn D$ rather than a dead APPLY D$0, and the minimum-redemption error is suppressed because nothing invalid has been entered. The field accepts being cleared, and blank behaves as zero. A product decision, not live behaviour — see SPEC.md section 11."
         },
         {
           "id": "burn-earn-only",
@@ -497,10 +510,10 @@
           "trigger": "Tap Earn D$ on {table} from the member landing.",
           "patch": { "signedIn": true, "screen": "earn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "earned": null, "earnPending": false, "itemsExpanded": false },
           "full": true,
-          "copyKeys": ["gha_burn_items_heading", "gha_burn_bill_heading", "gha_burn_bill_from", "gha_earn_card_title", "gha_earn_card_body", "gha_burn_potential_earn_with_rate", "gha_earn_cta"],
+          "copyKeys": ["gha_burn_items_heading", "gha_burn_bill_heading", "gha_earn_card_title", "gha_earn_card_body", "gha_burn_potential_earn_with_rate", "gha_earn_cta"],
           "ctas": ["gha_earn_cta"],
           "assets": ["assets/img/cover.jpg", "assets/img/mymenu-logo.png"],
-          "notes": "The only screen that shows the POS name to the guest: 'Live from Micros Simphony', with a pulsing dot. The earn card shows the tier rate and the D$ the guest will receive."
+          "notes": "The earn card shows the tier rate and the D$ the guest will receive. Live, this screen also carries a 'Live from {{posName}}' indicator above the bill — the only place the journey names the till to the guest. It has been removed here as a deliberate product decision; see SPEC.md section 11. The gha_burn_bill_from string is still in the copy deck."
         },
         {
           "id": "earn-bill-fetching",

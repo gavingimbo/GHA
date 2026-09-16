@@ -12,7 +12,7 @@ as still needing capture rather than inventing them.
 
 | | |
 | --- | --- |
-| Captured states | 49, as 64 images in `shots/` |
+| Captured states | 50, as 65 images in `shots/` |
 | Browse them | open `reference/index.html` from a static server |
 | Machine-readable | `reference/states.json` |
 | Regenerate images | `node reference/capture.mjs` (`--scale=2` for retina) |
@@ -377,7 +377,9 @@ Four patterns worth carrying into a guide:
    the guest to fix anything themselves, and the failure copy is written to be
    shown to a waiter. Floor process has to match.
 2. **The raw POS reason is shown to the guest verbatim** in the discount and
-   redemption failures. Whatever the till returns appears on the phone.
+   redemption failures. Whatever the till returns appears on the phone. Live,
+   the earn screen also names the till outright ("Live from Micros Simphony");
+   that indicator has been removed here — see section 11.
 3. **The member lock is the hardest state.** It offers no retry and no guest
    action, and a group where two members want to earn on one bill hits it
    immediately.
@@ -622,6 +624,21 @@ screens, from `GhaDiscoveryPage`, `GhaDiscoverySigninModal`, `GhaHeroCover`,
 wording and styling should be right; the exact live composition of those screens
 has not been confirmed. **This is the main thing to check with someone who has a
 member login.**
+
+**Deliberate deviations from live**, decided by the product owner. The mockup
+renders these, production does not:
+
+- **The "Live from {{posName}}" indicator is removed** from the earn screen.
+  Live, it sits above the bill with a pulsing dot and reads "Live from Micros
+  Simphony" — the only place in the whole journey that names the till to the
+  guest. The `gha_burn_bill_from` string is still in the copy deck, so it can be
+  put back by restoring one line in `billCard()`.
+- **A redemption of zero offers Earn instead of Apply.** Live, clearing the
+  spend field leaves a disabled "APPLY D$0" under a minimum-redemption error.
+  Here, redeeming nothing is treated as a valid choice: the primary action
+  becomes **Earn D$**, and the minimum error is suppressed because nothing
+  invalid has been entered. The field also accepts being genuinely empty rather
+  than snapping to `0`. Captured as `burn-zero-earn`.
 
 **Known to be invented**, and to be replaced before anything is published:
 

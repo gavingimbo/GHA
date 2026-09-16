@@ -353,7 +353,7 @@
     return '';
   }
 
-  function billCard({ showPosLabel }) {
+  function billCard() {
     if (state.billStatus === 'fetching') {
       return `<div class="${B.bill_card}">
         <div class="${B.bill_row}">
@@ -365,9 +365,6 @@
       return `<div class="${B.bill_card}"><div class="${B.bill_row}"><span>${t('gha_burn_no_active_bill')}</span></div></div>`;
     }
     return `<div class="${B.bill_card}">
-      ${showPosLabel
-        ? `<div class="${B.bill_pos_label}"><span class="${B.bill_pos_dot}"></span>${t('gha_burn_bill_from', { posName: VENUE.posName })}</div>`
-        : ''}
       <div class="${B.bill_row}"><span>${t('gha_burn_bill_subtotal')}</span><strong>${fmtCur(subtotal)}</strong></div>
       ${BILL.discounts
         .map(
@@ -392,10 +389,15 @@
   /* --------------------------------------------------------------- burn UI */
 
   function burnScreen() {
-    const spend = Math.min(state.spend, eligibleDD());
+    // state.spend holds the field as typed, so it can be genuinely empty.
+    const spend = Math.min(Number(state.spend) || 0, eligibleDD());
     const value = spend * VENUE.localPerDollar;
     const remaining = Math.max(billTotal - value, 0);
     const canApply = state.billStatus === 'ready' && spend >= MIN_REDEEM && spend <= eligibleDD() && !state.burned;
+    // Redeeming nothing is a valid choice, and the thing to offer then is the
+    // earn, not a dead APPLY D$0.
+    const redeemingNothing = spend === 0;
+    const canEarn = state.billStatus === 'ready' && !state.earned && !state.earnPending;
 
     let redeemBlock;
     if (state.burned) {
@@ -430,11 +432,15 @@
           <p class="${B.spend_range}">${t('gha_spend_ds_range', { min: MIN_REDEEM, max: fmtNum(eligibleDD()) })}</p>
           <div class="${B.summary_row}"><span>${t('gha_eligible_ds_spend')}</span><strong>${fmtDD(eligibleDD())} | ${fmtCur(eligibleLocal)}</strong></div>
           <p class="${B.eligible_fine_print}" style="color:${THEME.buttonColor}">${t('gha_eligible_fine_print')}</p>
-          <input type="text" inputmode="numeric" class="${B.spend_input}" data-act="spend" value="${spend}" aria-label="${t('gha_spend_ds')}">
+          <input type="text" inputmode="numeric" class="${B.spend_input}" data-act="spend" value="${state.spend}" aria-label="${t('gha_spend_ds')}">
           <div class="${B.summary_row}"><span>Value (${VENUE.currencyCode})</span><strong>${fmtCur(value)}</strong></div>
           <div class="${B.summary_row}"><span>${t('gha_balance_left_to_pay')}</span><strong>${fmtCur(remaining)}</strong></div>
-          ${spend < MIN_REDEEM ? `<p class="${B.inline_error}">${t('gha_min_bill_required', { amount: fmtCur(MIN_REDEEM * VENUE.localPerDollar) })}</p>` : ''}
-          ${btn(t('gha_apply_ds', { amount: fmtNum(spend) }), 'c_btn_primary', `data-act="confirm-burn" ${canApply ? '' : 'disabled'}`)}
+          ${spend > 0 && spend < MIN_REDEEM
+            ? `<p class="${B.inline_error}">${t('gha_min_bill_required', { amount: fmtCur(MIN_REDEEM * VENUE.localPerDollar) })}</p>`
+            : ''}
+          ${redeemingNothing
+            ? btn(t('gha_burn_earn_button'), 'c_btn_primary', `data-act="confirm-earn" ${canEarn ? '' : 'disabled'}`)
+            : btn(t('gha_apply_ds', { amount: fmtNum(spend) }), 'c_btn_primary', `data-act="confirm-burn" ${canApply ? '' : 'disabled'}`)}
         </div>`;
     }
 
@@ -445,7 +451,7 @@
           ${itemsBlock()}
           ${discountBlock()}
           <div class="${B.section_heading_row}"><h2 class="${B.section_heading}">${t('gha_burn_bill_heading')}</h2></div>
-          ${billCard({ showPosLabel: false })}
+          ${billCard()}
           ${state.earnPending
             ? `<div class="${B.burn_details_card}">
                  <div class="${B.burn_details_header}">
@@ -477,7 +483,7 @@
           ${itemsBlock()}
           ${discountBlock()}
           <div class="${B.section_heading_row}"><h2 class="${B.section_heading}">${t('gha_burn_bill_heading')}</h2></div>
-          ${billCard({ showPosLabel: true })}
+          ${billCard()}
           ${done
             ? `<div class="${B.section_heading_row}"><h2 class="${B.section_heading}">${t('gha_earn_pending_title')}</h2></div>
                <div class="${B.burn_details_card}">
@@ -507,7 +513,7 @@
   function confirmModal() {
     if (state.confirm === 'idle') return '';
     const isEarn = state.confirmKind === 'earn';
-    const spend = Math.min(state.spend, eligibleDD());
+    const spend = Math.min(Number(state.spend) || 0, eligibleDD());
     let body = '';
 
     if (state.confirm === 'confirm') {
@@ -886,7 +892,7 @@
             earnPending: true,
           });
         } else {
-          const spend = Math.min(state.spend, eligibleDD());
+          const spend = Math.min(Number(state.spend) || 0, eligibleDD());
           // The GHA dashboard is refetched after a redemption, so the balance
           // in the hero drops by what was applied.
           set({
@@ -933,9 +939,8 @@
   document.addEventListener('input', (e) => {
     if (e.target.matches('[data-act=spend]')) {
       const digits = e.target.value.replace(/[^0-9]/g, '');
-      const n = Math.min(Number(digits || 0), eligibleDD());
       const pos = e.target.selectionStart;
-      state.spend = n;
+      state.spend = digits === '' ? '' : String(Math.min(Number(digits), eligibleDD()));
       render();
       const next = document.querySelector('[data-act=spend]');
       if (next) { next.focus(); try { next.setSelectionRange(pos, pos); } catch (_) {} }

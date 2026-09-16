@@ -142,7 +142,8 @@ control:
 
 ### 3.6 Earn D$ — from source
 
-Same items and bill, a "Live from {POS name}" indicator, and a single **Earn
+Same items and bill, a "Live from {POS name}" indicator (removed from the mockup
+on 16 Sep 2026 as a product decision — see `reference/SPEC.md` section 11), and a single **Earn
 DISCOVERY Dollars** action. On success it shows transaction ID, POS check number
 and POS reference, then a pending banner: the credit is asynchronous ("Your D$
 are on the way").
