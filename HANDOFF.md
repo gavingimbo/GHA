@@ -228,7 +228,10 @@ README.md               how to run it and what each screen is
   radii and the hero/card treatments are the live values.
 - **The copy is the live copy**, taken key for key from the app's i18n bundle.
 - Fonts, cover image, tier card artwork and the GHA and myMENU marks are the
-  original assets.
+  original assets. The myMENU mark was corrected on 16 Sep 2026: the repository
+  had the reverse, white-on-transparent variant, which on the light powered-by
+  surface showed only its dark "my". It now carries what production serves
+  there — a 200 × 38 two-colour wordmark from the image CDN.
 - The MUI text field, buttons and modal shell were rebuilt to **measured**
   production values (40px control, 6px radius, `rgba(0,0,0,.23)` outline, etc.).
 

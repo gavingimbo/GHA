@@ -81,7 +81,10 @@ The presentation is the production CSS, not a re-implementation:
   select/checkbox controls — matched to the measured production values.
 
 Fonts (IvyMode GHA Semi Bd, Jost), the venue cover image, the tier cards and the
-GHA and myMENU marks are the original assets under `assets/`.
+GHA and myMENU marks are the original assets under `assets/`. The myMENU mark is
+the one production serves in the powered-by block (a 200 × 38 two-colour wordmark
+from the image CDN), not the reverse white variant the bundle also carries —
+that one is invisible on a light surface. See `reference/SPEC.md` section 6.
 
 ## Fixtures
 
