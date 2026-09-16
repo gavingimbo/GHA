@@ -200,9 +200,9 @@
   };
 
   const MEMBER = {
-    firstName: 'John',
-    lastName: 'Doe',
-    name: 'John Doe',
+    firstName: 'Gavin',
+    lastName: 'Matthew',
+    name: 'Gavin Matthew',
     cardNumber: '1346942045',
     profileId: '881204371',
     tier: 'TITANIUM',

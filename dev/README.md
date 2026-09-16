@@ -69,7 +69,11 @@ GHA API:
 - **Outcome of the next apply** — what a confirmed redemption resolves to
 - **Network and systems** — GHA offline, Simphony offline, delayed response
 - **Staff** — the "show this to your server" view
-- **Presentation** — developer notes on / guest mode / reset
+- **Presentation** — developer notes on / guest mode / reset / hide this button
+
+The ☰ can be hidden so it never lands in a screenshot: **Hide this button** under
+Presentation, `?controls=0` on the URL, or the **M** key. The choice is remembered
+per browser; `?controls=1` or another **M** brings it back.
 
 Options marked with a small dot are **concepts that require GHA capability**
 (passkey, OTP, magic link). They are marked in the drawer and in the developer

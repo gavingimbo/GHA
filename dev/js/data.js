@@ -31,9 +31,9 @@
   };
 
   const MEMBER = {
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
+    firstName: 'Gavin',
+    lastName: 'Matthew',
+    email: 'gavin.matthew@example.com',
     cardNumber: '1346942045',
     tier: 'TITANIUM'
   };

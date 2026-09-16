@@ -13,8 +13,9 @@
  *
  * The mockup exposes window.GHA_MOCK (js/app.js) so every state can be driven
  * directly, including the ones the on-page mock panel does not cover. Nothing
- * here edits the page: the mock FAB is hidden and the scroll containers are
- * unclipped for full-length shots via injected CSS only.
+ * here edits the page: it loads with ?controls=0 so the floating mock button is
+ * not rendered, and the scroll containers are unclipped for full-length shots
+ * via injected CSS only.
  */
 import { chromium } from 'playwright-core';
 import http from 'node:http';
@@ -111,7 +112,7 @@ async function main() {
   for (const s of todo) {
     // Reload per state so nothing leaks between captures — a fixture override
     // such as the member tier would otherwise persist.
-    await page.goto(`http://127.0.0.1:${PORT}/index.html`, { waitUntil: 'load' });
+    await page.goto(`http://127.0.0.1:${PORT}/index.html?controls=0`, { waitUntil: 'load' });
     await page.addStyleTag({ content: HIDE_MOCK });
 
     if (s.fixture) {

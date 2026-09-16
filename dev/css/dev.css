@@ -125,3 +125,20 @@
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+/* Shown once, when the reviewer controls are hidden, so there is a way back. */
+.devhint {
+  position: fixed;
+  z-index: 62;
+  left: 12px;
+  bottom: 12px;
+  max-width: 260px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: rgba(23, 18, 31, .92);
+  color: #eae7ef;
+  font-size: 12px;
+  line-height: 1.35;
+  transition: opacity .4s ease;
+}
+.devhint.is-out { opacity: 0; }

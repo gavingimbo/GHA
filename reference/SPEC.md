@@ -626,7 +626,7 @@ member login.**
 **Known to be invented**, and to be replaced before anything is published:
 
 - The venue and bill. Dreams & Beats, seven lines, LKR 64,433.00. The member is
-  a placeholder Titanium member — John Doe, 1346942045, D$148.
+  a placeholder Titanium member — Gavin Matthew, 1346942045, D$148.
 - The two POS failure reasons — "Check is open on another terminal" and "POS
   check is locked by another terminal". Live, these are whatever the till
   returns.
@@ -658,8 +658,16 @@ The script serves the repository, drives `window.GHA_MOCK` (the capture hook in
 plus `shots/<id>-full.png` for the states marked `"full": true`. It reports any
 console error, page error or failed request, and exits non-zero if it finds one.
 
-It changes nothing about the page: the mock-controls button is hidden and the
-scroll containers are unclipped for the full-length shots by injected CSS only.
+It changes nothing about the page: it loads with `?controls=0` so the floating
+mock button is not rendered, and the scroll containers are unclipped for the
+full-length shots by injected CSS only.
+
+**Taking your own screenshots.** The floating ☰ can be hidden three ways, so it
+never lands in a capture: add `?controls=0` to the URL, use **Hide this button**
+in the mock panel, or press **M**. The choice is remembered per browser, so a
+batch of screenshots stays clean across reloads; `?controls=1` or another press
+of **M** brings it back. The `/dev/` prototype has the same option, under
+Presentation in the reviewer drawer.
 
 To add a state, add an entry to `states.json` with the `patch` that produces it
 and re-run. The gallery picks it up with no further work.

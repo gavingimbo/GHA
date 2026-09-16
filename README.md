@@ -63,6 +63,10 @@ the real app only reaches through the POS and the GHA API:
 - **Session token** — valid / expired / check changed / no token (drives the red hint above the action cards)
 - **Member actions** — the two-card variant (Earn + Burn) or the single **View Bill** card the `redirect=gha_discovery` entry point shows
 
+The ☰ itself can be hidden so it never lands in a screenshot: **Hide this
+button** in the panel, `?controls=0` on the URL, or the **M** key. The choice is
+remembered per browser; `?controls=1` or another **M** brings it back.
+
 ## How it was built
 
 The presentation is the production CSS, not a re-implementation:

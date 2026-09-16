@@ -115,7 +115,8 @@
       opts: [
         { id: 'p-dev', label: 'Developer notes on', run: () => { window.CD.devMode = true; } },
         { id: 'p-guest', label: 'Guest mode', run: () => { window.CD.devMode = false; } },
-        { id: 'p-reset', label: 'Reset prototype', run: () => { A().reset(); } }
+        { id: 'p-reset', label: 'Reset prototype', run: () => { A().reset(); } },
+        { id: 'p-hide', label: 'Hide this button', run: () => { setHidden(true, true); } }
       ]
     }
   ];
@@ -170,6 +171,37 @@
 
   let drawer, toggle, active = { 'j-happy': true, 'm-TITANIUM': true, 'o-success': true, 'n-ok': true, 'p-dev': true };
 
+  /* The drawer button is not part of the guest experience, so it can be hidden
+     to take clean screenshots. In and out via ?controls=0, the Hide option, or
+     the M key; remembered per browser across reloads. */
+  const CONTROLS_KEY = 'cd_dev_controls_hidden';
+  let controlsHidden = false;
+
+  function readHidden() {
+    const param = new URLSearchParams(location.search).get('controls');
+    if (param === '0' || param === 'hidden') return true;
+    if (param === '1') { writeHidden(false); return false; }
+    try { return localStorage.getItem(CONTROLS_KEY) === '1'; } catch (e) { return false; }
+  }
+  function writeHidden(v) {
+    try { localStorage.setItem(CONTROLS_KEY, v ? '1' : '0'); } catch (e) { /* blocked storage */ }
+  }
+  function setHidden(v, announce) {
+    controlsHidden = v;
+    writeHidden(v);
+    if (toggle) toggle.style.display = v ? 'none' : '';
+    if (v && drawer) drawer.classList.remove('is-open');
+    if (v && announce) flashHint();
+  }
+  function flashHint() {
+    const el = document.createElement('div');
+    el.className = 'devhint';
+    el.textContent = 'Reviewer controls hidden — press M to bring them back';
+    document.body.appendChild(el);
+    setTimeout(() => el.classList.add('is-out'), 2600);
+    setTimeout(() => el.remove(), 3100);
+  }
+
   function mount() {
     toggle = document.createElement('button');
     toggle.className = 'devtoggle';
@@ -215,6 +247,16 @@
 
     document.body.appendChild(toggle);
     document.body.appendChild(drawer);
+
+    setHidden(readHidden(), false);
+
+    // M toggles the controls, which is the way back once they are hidden.
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'm' && e.key !== 'M') return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.target && e.target.closest && e.target.closest('input, textarea, select, [contenteditable]')) return;
+      setHidden(!controlsHidden, false);
+    });
   }
 
   function sync(state) {

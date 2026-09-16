@@ -48,6 +48,39 @@
   const INITIAL_SPEND = Math.min(Math.floor(eligibleLocal / VENUE.localPerDollar), MEMBER.balance);
   const potentialEarn = Math.floor((eligibleLocal / VENUE.localPerDollar) * (MEMBER.earnRatePct / 100));
 
+  /* --------------------------------------------------- mock control chrome */
+  /* The floating ☰ is not part of the production page, so it can be hidden to
+     take clean screenshots. Three ways in and out: ?controls=0 on the URL, the
+     Hide button in the panel, or the M key. The choice is remembered per
+     browser so a batch of screenshots stays clean across reloads. */
+
+  const CONTROLS_KEY = 'gha_mock_controls_hidden';
+
+  function initialControlsHidden() {
+    const param = new URLSearchParams(location.search).get('controls');
+    if (param === '0' || param === 'hidden') return true;
+    if (param === '1') { rememberControls(false); return false; }
+    try {
+      return localStorage.getItem(CONTROLS_KEY) === '1';
+    } catch (_) {
+      return false;                       // private mode, blocked storage
+    }
+  }
+
+  function rememberControls(hidden) {
+    try { localStorage.setItem(CONTROLS_KEY, hidden ? '1' : '0'); } catch (_) {}
+  }
+
+  /** Says how to get the controls back, then removes itself. */
+  function flashControlsHint() {
+    const el = document.createElement('div');
+    el.className = 'mock_hint';
+    el.textContent = 'Mock controls hidden — press M to bring them back';
+    document.body.appendChild(el);
+    setTimeout(() => el.classList.add('is_out'), 2600);
+    setTimeout(() => el.remove(), 3100);
+  }
+
   /* ------------------------------------------------------------ app state */
 
   const state = {
@@ -82,6 +115,7 @@
     confirmKind: 'burn',
     copied: false,
     mockOpen: false,
+    controlsHidden: initialControlsHidden(),
   };
 
   const set = (patch) => {
@@ -704,6 +738,7 @@
   /* -------------------------------------------------------- mock controls  */
 
   function mockControls() {
+    if (state.controlsHidden) return '';
     if (!state.mockOpen) return `<button class="mock_fab" data-act="mock-toggle" title="Mock controls">☰</button>`;
     const opt = (v, cur, label) => `<option value="${v}" ${v === cur ? 'selected' : ''}>${label}</option>`;
     return `<button class="mock_fab" data-act="mock-toggle">✕</button>
@@ -740,6 +775,7 @@
           ${opt('view_bill', state.posVariant, 'View Bill (single card)')}
         </select>
         <button data-act="mock-reset">Reset mockup</button>
+        <button data-act="mock-hide" class="mock_hide">Hide this button</button>
       </div>`;
   }
 
@@ -869,6 +905,11 @@
     'confirm-done': () => set({ confirm: 'idle' }),
 
     'mock-toggle': () => set({ mockOpen: !state.mockOpen }),
+    'mock-hide': () => {
+      rememberControls(true);
+      set({ controlsHidden: true, mockOpen: false });
+      flashControlsHint();
+    },
     'mock-reset': () =>
       set({
         signedIn: false, screen: 'page', billStatus: 'ready', discountState: 'ok', sessionHint: null,
@@ -912,6 +953,16 @@
     set(patch);
   });
 
+  // M toggles the mock controls, which is the way back once they are hidden.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'm' && e.key !== 'M') return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.target && e.target.closest && e.target.closest('input, textarea, select, [contenteditable]')) return;
+    const hidden = !state.controlsHidden;
+    rememberControls(hidden);
+    set({ controlsHidden: hidden, mockOpen: false });
+  });
+
   // Focus ring on the MUI outline, as the real fields do.
   document.addEventListener('focusin', (e) => {
     const root = e.target.closest && e.target.closest('.mui_input_root');
@@ -933,6 +984,7 @@
     fixtures: window.GHA_DATA,
     act: (name) => ACTIONS[name] && ACTIONS[name](),
     reset: () => ACTIONS['mock-reset'](),
+    hideControls: (hidden = true) => { rememberControls(hidden); set({ controlsHidden: hidden, mockOpen: false }); },
   };
 
   render();
