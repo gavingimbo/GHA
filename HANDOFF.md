@@ -93,9 +93,17 @@ HTML.
 
 Username-or-email plus password, against GHA through a venue-scoped endpoint.
 Validation is client-side first (email format, or username ≥ 3 chars).
-**Forgot Password?** does not open an in-app flow — it opens
-`ghadiscovery.com/member/settings/password` in a new tab. The bundle also carries
-unused-here modes for password reset by token and change-password.
+**Forgot Password?** opened `ghadiscovery.com/member/settings/password` in a new
+tab when this was captured on 5 Sep 2026.
+
+> **Superseded, 16 Sep 2026.** A live bundle audit (see
+> `reference/SPEC.md` sections 9.1 and 13) shows the sign-in modal now ships
+> three modes — `signin`, `forgot` and `update` — with an in-app SEND RESET LINK
+> step, an in-app Change Password screen, and a live password-rules checklist
+> whose CSS was added after this capture. A `GhaDiscoveryResetPasswordPage`
+> route completes the flow from the emailed token. The external link is still
+> present in the same chunk. The reset page carries no session and no return
+> path, so recovery still ends at sign-in rather than back at the bill.
 
 ### 3.3 Join — observed
 
@@ -229,7 +237,7 @@ README.md               how to run it and what each screen is
 - **Sign-in accepts anything.** There is no auth.
 - **No network at all.** GHA profile/dashboard fetches, the 7-second POS poll,
   and the earn and burn postings are all timers over the fixtures.
-- **The bill is invented.** Dreams & Beats, Table 12, seven lines, LKR 64,433.00
+- **The bill is invented.** Dreams & Beats, B12, seven lines, LKR 64,433.00
   after a 15% member discount, service charge and VAT. The member is a fictional
   Titanium member with D$148. Replace `js/data.js` to change any of it.
 - **The QR scanner is absent.**
@@ -244,6 +252,10 @@ the states the real app only reaches through the POS and the GHA API: session
 checking / rejected / opened by another member), session token (valid / expired /
 changed / missing), and the two action-card variants. Use it to walk a reviewer
 through the failure states without a POS.
+
+For every state as a rendered image, with its trigger, copy and recovery, see
+`reference/` — 49 captured states, a browsable gallery, and the live-bundle
+audit behind them.
 
 ---
 
@@ -268,12 +280,17 @@ who has a member login.
 
 ## 8. Open questions
 
-1. **Does the member landing show one action card or two at Cinnamon's venues?**
-   Depends on `enable_gha_home` / the `redirect` parameter, which I could not
-   read for this venue. The mockup defaults to two and can switch.
-2. **What does the guest see on a device with no camera or denied permission,
-   after a token expires?** The scanner strings imply a rescan path worth
-   mapping.
+1. ~~**Does the member landing show one action card or two at Cinnamon's
+   venues?**~~ **Closed, 16 Sep 2026.** Confirmed by the product owner: one
+   card, **View Bill on {table}**, with table labels of the form `B12`. The
+   mockup now defaults to this variant; two cards remain available as a
+   variant.
+2. ~~**What does the guest see on a device with no camera or denied permission,
+   after a token expires?**~~ **Closed, 16 Sep 2026.** Nothing: the scanner is
+   styled and written but wired to no shipped code path. Every session failure
+   in the live journey still ends at "ask staff". The full recovered copy for
+   the scanner and for the unwired full-screen session errors is in
+   `reference/SPEC.md` section 9.2.
 3. **What actually happens on the POS when a redemption succeeds?** The app shows
    a confirmation number; the POS-side representation (tender line, discount,
    comp) determines how the cashier closes the check.

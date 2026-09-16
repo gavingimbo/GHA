@@ -17,6 +17,8 @@ as still needing capture rather than inventing them.
 | Machine-readable | `reference/states.json` |
 | Regenerate images | `node reference/capture.mjs` (`--scale=2` for retina) |
 | Copy deck | 140 keys in `/js/data.js`; 121 rendered, 19 not (section 10) |
+| Live deck | 730 keys recovered from the public bundle — `reference/live-copy-deck.json` |
+| Copy fidelity | all 139 keys shared with the live deck match **exactly** |
 
 ---
 
@@ -231,7 +233,7 @@ sizes.
 
 **One thing to know before mocking anything up:** IvyMode's dollar glyph reads as
 an S at these sizes, so every display-face string containing `D$` renders as
-`DS` — "Earn DS on Table 12", "Spend DS", "Failed to apply DS on POS". Jost
+`DS` — "View Bill on B12", "Spend DS", "Failed to apply DS on POS". Jost
 renders `D$` correctly, which is why the same token looks right in body copy and
 wrong in headings on the same screen. It is in the captures because it is in
 production. Flag it in the guide; do not silently correct it.
@@ -338,7 +340,7 @@ triggers and captures for all 49 states are in `states.json` and the gallery.
 | State | Message | Retry offered | Resolved by |
 | --- | --- | --- | --- |
 | `guest-signin-error` | "Username or email is required" | n/a, inline | Guest |
-| `member-bill-empty` | "No active bill on Table 12 yet" | no | Colleague rings items in; the poll picks it up |
+| `member-bill-empty` | "No active bill on B12 yet" | no | Colleague rings items in; the poll picks it up |
 | `member-hint-expired` | "Your session has expired. Please ask staff for a new QR." | no | Colleague issues a fresh QR |
 | `member-hint-check-changed` | "The bill has changed. Please ask staff for a new QR." | no | Colleague issues a fresh QR |
 | `member-hint-no-token` | "Please ask staff for the QR to start your session." | no | Colleague hands over the QR |
@@ -371,96 +373,175 @@ Four patterns worth carrying into a guide:
 
 ## 9. Production states that are not reproduced
 
-These components are in the shipped stylesheets, so they exist in the live app,
-but the mockup never renders them. They are listed with their measured CSS and
-with what is and is not known, so a guide can mark them honestly rather than
-guess. **Do not mock these from imagination** — the styling below is real, the
-composition is not verified.
+Audited against the **live bundle** on 16 September 2026 (method in section 13),
+which sharpened this section considerably. The components below all still have
+their CSS shipped in the current build, byte-identical to what this repository
+carries. But shipped CSS is not the same as a reachable state, and the audit
+splits them into two very different groups.
 
-**A. Full-screen session error** — `session_error_root`, `_card`, `_icon`,
-`_title`, `_body` (`css/burn.css`). Measured in sections 4 and 5: `#fafafa`
-page, centred 420px card, 72px icon circle, 20px IvyMode title, 14px body. The
-mockup only shows the *inline* red hint above the action cards, so this is a
-second, heavier presentation of the same three session failures. Which one the
-live app uses when is unverified.
+### 9.1 Live, reachable, and not captured — the password flow
 
-**B. Camera QR scanner** — `qr_root`, `_topbar`, `_title`, `_close`, `_stage`,
-`_video`, `_hint`, `_error_block`, `_error_icon`, `_error_title`, `_error_body`.
-A dark (`#0d0a20`) full-screen scanner with a square 18px-radius viewfinder at
-`min(88vw, 420px)`, plus a boxed error state on `#ffffff0f`. The bundle carries
-`gha_qr_scanner_*` strings for permission denied, no camera and wrong QR — those
-strings are **not** in `js/data.js` and need capturing from the live bundle.
-This is presumably how a guest recovers from an expired token without finding a
-colleague.
+**This is the one to capture next.** The current `GhaDiscoverySigninModal` has
+three modes — `signin`, `forgot` and `update` — and it references all of their
+copy. So an in-app forgot-password flow and an in-app change-password screen
+exist in production today. The mockup reproduces only the `signin` mode, and
+`HANDOFF.md`'s statement that Forgot Password has no in-app flow is out of date.
 
-**C. GHA wallet screen** — `gha_wallet_body`, `gha_balance_hero` (260px tall),
-`_bg`, `_overlay`, `_amount`, `_label`, `_sub`, `gha_card_visual`, `_img`,
-`_meta`, `_tier`, `gha_card_silver` / `_gold` / `_platinum` / `_titanium`,
-`gha_card_bottom_row`, `_title`, `_loader`, `_spinner`, `gha_back_btn_header`,
-`gha_wordmark_btn`, `gha_txn_row`. The mockup borrows only `gha_wallet_header`
-and `_wordmark` for the sign-in and join sheet headers. A whole balance-and-card
-wallet view, with transaction rows, exists behind them.
+Recovered copy, verbatim:
 
-**D. GHA dashboard view** — `gha_dashboard_body`, `_card`, `_section`,
-`_section_header`, `_section_title`, `_section_body`, `_field`, `_field_label`,
-`_field_value`, `_json`, `_keyword_list`, `_empty`, `_loading`, `_spinner`.
-Sections of label/value fields plus a JSON block; reads like a member-data or
-diagnostic view. Sections are `#fff9` on `1px #0000001f` at 10px radius.
+| Key | Value |
+| --- | --- |
+| `gha_forgot_title` | Forgot Password |
+| `gha_forgot_description` | Enter your email and we'll send you a link to reset your password. |
+| `gha_forgot_cta` | SEND RESET LINK |
+| `gha_forgot_password_sent` | If an account exists for that email, we've sent a reset link. |
+| `gha_update_title` | Change Password |
+| `gha_update_cta` | UPDATE PASSWORD |
+| `gha_update_password_success` | Password updated successfully. |
+| `gha_field_current_password` | Current Password |
+| `gha_field_new_password` | New Password |
+| `gha_field_confirm_password` | Confirm Password |
 
-**E. Page-level load failure and spinner** — `error_block`, `error_text`,
-`spinner_block`, `spinner_ring` (`css/page.css`), with the unrendered string
-`gha_page_load_failed`: "Unable to load GHA DISCOVERY. Please try again." This
-is the state when the GHA profile fetch itself fails, as opposed to the POS
-failing. The mockup has no equivalent.
+The change-password screen carries a live rules checklist, and its CSS
+(`root`, `title`, `list`, `item`, `icon`, `met`, `unmet`, `pending`, `srOnly`
+in the modal stylesheet) was **added after this repository's 5 September
+capture** — so this flow is being actively built right now:
 
-**F. Alternative member header** — `member_summary`, `_top`, `member_avatar`,
-`member_name_block`, `member_name`, `member_card_number`, `tier_chip`,
-`user_card`, `user_card_name`, `_id`, `_id_row`, `_copy_btn`, `_copy_feedback`,
-`_balance_row`, `_balance_label`, `_balance_amount`, `_balance_local`. A second
-way of presenting the member — avatar, tier chip and a standalone user card —
-instead of the hero overlay the mockup uses.
+| Key | Value |
+| --- | --- |
+| `gha_password_requirements_title` | Your password must have: |
+| `gha_password_rule_length` | Between 8 and 50 characters |
+| `gha_password_rule_english` | English letters, numbers and symbols only |
+| `gha_password_rule_letter` | At least one letter |
+| `gha_password_rule_number` | At least one number |
+| `gha_password_rule_symbol` | At least one symbol |
+| `gha_password_rule_trimmed` | No space at the start or the end |
+| `gha_password_rule_met` / `_not_met` | met / not met yet |
 
-**G. A second page hero** — `css/page.css` carries its own `hero`, `hero_bg`,
-`hero_overlay`, `hero_content`, `hero_eyebrow`, `hero_title`, `hero_subtitle`,
-`hero_balance_block`, `hero_user_name`, `hero_user_id`, `_id_row`,
-`hero_copy_btn`, `_copy_feedback`, `topbar`, `topbar_btn`, `topbar_wordmark`,
-separate from `css/hero.css`. Two hero implementations ship; the mockup renders
-the `hero.css` one. `burn.css` has a third, with `hero_member_meta` and
-`hero_balance_block`.
+A separate route, `GhaDiscoveryResetPasswordPage`, completes the loop from the
+emailed link:
 
-**H. Guest highlight variant** — `guest_highlight_row`, `_icon`, `_text`,
-`_cta`, `_intro`, `guest_benefits_panel`, `guest_panel_row`, `_icon`,
-`_icon_text`. A different guest landing composition from the three-perk list.
+| Key | Value |
+| --- | --- |
+| `gha_reset_title` | Reset Password |
+| `gha_reset_password_page_description` | Choose a new password for your account. |
+| `gha_reset_description` | Enter the token sent to your email and choose a new password. |
+| `gha_field_token_placeholder` | Paste the token from your email |
+| `gha_reset_cta` | RESET PASSWORD |
+| `gha_reset_password_success` | Password reset successfully. Redirecting to sign in... |
+| `gha_reset_password_success_close` | Password reset successfully. You can now close this tab. |
+| `gha_reset_token_missing` | This reset link is invalid or has expired. Please request a new one. |
 
-**I. Redemption inside the GHA sheet** — `gha_spend_card`, `_input`, `_range`,
-`_title`, `gha_summary_row`, `gha_eligible_fine_print`, `gha_help_toggle`,
-`gha_help_text` (`css/modal.css`). The whole spend control exists a second time
-as a modal, which suggests an entry point where redemption happens inside the
-GHA sheet rather than on the burn screen.
+**And this is the finding that matters most.** That page's code handles a
+`token` and nothing else — no session, no return path, no redirect target. It
+succeeds into "Redirecting to sign in..." or "You can now close this tab", and
+the external `ghadiscovery.com/member/settings/password` link is still in the
+same chunk. So GHA has closed the *capability* gap — a member can now reset a
+password without leaving the app — while the *context* gap is untouched: the
+settlement session is not carried through recovery, and the guest still lands
+back at a sign-in screen rather than at their bill. That is precisely what the
+`/dev/` concept in this repository is built to fix, and it can now be argued
+from the shipped code rather than from design opinion.
 
-**J. Form states and controls** — `gha_field_error`, `gha_inline_error`,
-`gha_error_block`, `gha_error_message`, `gha_submit_error`, `gha_submit_success`,
-`gha_datepicker_wrap`, `_input` (a date field, likely date of birth),
-`custom_react_select`, `_container`, `dropdown_list`, `_content`, `_img`,
-`c_label`, `_img`, `d_dial`, `gha_dial_control`, `_country`, `_select`,
-`_row`, and `titanium.css`'s `select_wrap`, `select_label`, `required_star`,
-`hint_text`, `error_text`. The open language and dial-code dropdowns, the date
-field, and every server-side form error are all unreproduced.
+### 9.2 Shipped CSS with no shipped code path
 
-**K. Other unreproduced pieces** — `bill_remaining_row`, `section_caption`,
-`skeleton`, `skeleton_md` (`burn.css`); `items_empty` with
-`gha_burn_items_empty`; `gha_terms_empty`; `gha_powered_by`, `_logo`, `_text`
-(a Powered by inside the GHA sheet); `gha_join_body`, `_body_copy`, `_title` (a
-join intro block distinct from the form); `gha_skeleton`, `_sm`, `_md`, `_lg`;
-`gha_secondary_btn`; `gha_close_btn_overlay`.
+For these, the stylesheet rules are live but **no component in any shipped
+chunk references their copy keys**, and the keys are not constructed
+dynamically either. They are built-but-unwired, or retired. Do not present them
+as guest-facing states; they are design assets, not journeys.
 
----
+The recovered copy is nonetheless the best evidence of what each was for.
+
+**Full-screen session error** (`session_error_root`, `_card`, `_icon`, `_title`,
+`_body`). A heavier presentation of the three session failures than the inline
+red hint the app actually renders. Only the `gha_session_hint_*` strings are
+wired; these title/body pairs are not:
+
+| Key | Value |
+| --- | --- |
+| `gha_session_no_token_title` / `_body` | Your bill is not ready / Please ask the restaurant staff for the QR code and scan it to open your bill. |
+| `gha_session_expired_title` / `_body` | Session expired / Your current session has expired. Please ask the staff to create a new session and scan the new QR. |
+| `gha_session_check_changed_title` / `_body` | Check changed / The check on this table has changed. Please ask staff to regenerate the QR and scan again. |
+| `gha_session_scan_qr` | Scan QR |
+
+Note how much better these read than the wired one-liners, and that each names
+the recovery. The unwired copy is the better copy.
+
+**Camera QR scanner** (`qr_root`, `_topbar`, `_title`, `_close`, `_stage`,
+`_video`, `_hint`, `_error_block`, `_error_icon`, `_error_title`, `_error_body`).
+Dark `#0d0a20` full screen, square viewfinder at `min(88vw, 420px)`, 18px
+radius. All nine strings recovered — previously we had none of them:
+
+| Key | Value |
+| --- | --- |
+| `gha_qr_scanner_title` | Scan QR |
+| `gha_qr_scanner_hint` | Point your camera at the QR code the restaurant staff is showing you. |
+| `gha_qr_scanner_retry` | Try again |
+| `gha_qr_scanner_denied_title` / `_body` | Camera access needed / Please allow camera access in your browser to scan the QR code, then tap Try again. |
+| `gha_qr_scanner_no_camera_title` / `_body` | No camera found / This device doesn't have a camera available. Please open the link on a device with a camera to scan the QR. |
+| `gha_qr_scanner_wrong_qr_title` / `_body` | That's not the right QR / The QR you scanned doesn't include a session token. Please scan the QR the restaurant staff is showing you. |
+
+Together with the session-error set above, this was clearly designed as a
+self-service recovery path: expired session → full-screen error → Scan QR →
+scanner → back into the bill, with no colleague needed. None of it is wired.
+Every session failure in the live journey still ends at "ask staff".
+
+**Member dashboard** (`gha_dashboard_*`): Member Dashboard, with sections
+Personal Information, Address, Profile IDs, Membership & Balance, DISCOVERY
+Balance, Preferences, Memberships, Datamart Memberships, Keywords, plus
+`gha_dashboard_open` "Open member dashboard". The section names and the JSON
+block make this read as a diagnostic or data-subject view, not a guest feature.
+
+**Wallet and balance view** (`gha_wallet_*`, `gha_balance_hero*`, `gha_card_*`
+per tier, `gha_txn_row`): `gha_my_balance` "MY BALANCE",
+`gha_your_transaction` "Your transaction", `gha_discovery_dollars_title`
+"DISCOVERY Dollars" / `_subtitle` "Earn and spend rewards",
+`gha_bill_total` "Bill total (excl. tax, tips & service charge)", and
+`gha_value_gbp` "Value (£)" — note the sterling variant, evidence this module
+predates or outlives the Sri Lanka rollout.
+
+**An alternative page hero and member header** (`hero_eyebrow`, `hero_title`,
+`hero_subtitle`, `member_summary`, `member_avatar`, `tier_chip`, `user_card*`,
+`guest_highlight_*`). The copy shows what it was: `gha_page_eyebrow`
+"GHA DISCOVERY", `gha_page_title_guest` "Earn at every stay. Spend on every
+meal.", `gha_page_title_member` "Welcome back, {{name}}",
+`gha_page_section_balance` "Your balance", `gha_page_section_actions`
+"Quick actions", plus stats for tier nights, stays, next tier, revenue this
+year and D$ expired. A fuller loyalty-dashboard landing than the one that
+ships.
+
+**Other unwired pieces**, with copy where it exists: an in-sheet spend control
+(`gha_spend_card`, `_input`, `_range`); a date-of-birth field
+(`gha_datepicker_wrap`, with `gha_field_dob` "Date of Birth" and the
+placeholder `DD / MM / YYYY`); city, country and mobile fields; the open
+language and dial-code dropdowns; `gha_split_disabled` ("Bill splitting isn't
+available while DISCOVERY Dollars are applied. Remove the redemption to split
+the bill."); tier-status strings (`gha_status_keep` "Keep {{tier}}: {{amount}}
+to go", `gha_status_secured`); `items_empty`; `gha_terms_empty`; the in-sheet
+Powered by; and `gha_burn_bill_remaining` "Remaining to pay".
+
+### 9.3 What to do with this in a guide
+
+- **Document 9.1 as production.** It is reachable today. Capture it from a live
+  session and add it to the catalogue; it is the largest hole in this reference.
+- **Do not document 9.2 as guest states.** Present them, if at all, as evidence
+  of intent: a self-service recovery path that was designed, styled, written and
+  then left unwired. That is a finding worth putting in front of the programme
+  team on its own.
+- **Do not mock 9.2 up as though it shipped.** The CSS is real and the copy is
+  real, but no shipped code composes them, so any layout would be invention.
 
 ## 10. Copy the app ships but never shows
 
 19 of the 140 keys in the copy deck are never rendered by the journey as
 reproduced. Several are the missing halves of states in section 9, and they are
 the best available evidence of what those states say.
+
+The live deck holds **730 keys, 249 of them `gha_*`**, against 140 here. All 139
+keys the two decks share match **exactly, character for character**, which
+validates the original capture. The 116 `gha_*` keys we did not have are in
+`reference/live-copy-deck.json` and are quoted through section 9 where they
+explain a state.
 
 | Key | English value |
 | --- | --- |
@@ -510,6 +591,13 @@ This matters for a guide, because it bounds how much to trust each part.
 landing, the Terms & Conditions sheet, the sign-in sheet and the join form. The
 mockup matches these closely.
 
+**Verified against the live bundle** on 16 September 2026 (section 13): all copy,
+and the presence and byte-identity of every CSS module. Copy fidelity is exact.
+
+**Confirmed by the product owner:** Cinnamon's outlets run the single **View
+Bill on {table}** card, not the two-card layout, and table labels take the form
+`B12`. This settles open question 1 below, and the mockup now defaults to it.
+
 **Reconstructed from the shipped JavaScript bundles**, not observed, because
 there were no member credentials: the member landing, and the earn and burn
 screens, from `GhaDiscoveryPage`, `GhaDiscoverySigninModal`, `GhaHeroCover`,
@@ -520,8 +608,8 @@ member login.**
 
 **Known to be invented**, and to be replaced before anything is published:
 
-- The venue, table and bill. Dreams & Beats, Table 12, seven lines, LKR
-  64,433.00. The member is a fictional Titanium member with D$148.
+- The venue and bill. Dreams & Beats, seven lines, LKR 64,433.00. The member is
+  a placeholder Titanium member — John Doe, 1346942045, D$148.
 - The two POS failure reasons — "Check is open on another terminal" and "POS
   check is locked by another terminal". Live, these are whatever the till
   returns.
@@ -529,12 +617,14 @@ member login.**
 - The LKR 302 per D$ conversion rate.
 - The timestamp format on the redemption confirmation.
 
-**Open questions**, unchanged from `HANDOFF.md` section 8: whether Cinnamon's
-outlets show one action card or two; what a guest sees on a device with no
-camera after a token expires; how the POS represents a successful redemption
-when the cashier closes the check; what a colleague does if a guest changes
-their mind after redeeming; and whether "open a new check" is really the intended
-answer to two members on one bill.
+**Open questions.** Two of the five in `HANDOFF.md` section 8 are now closed:
+the card variant (confirmed above), and what a guest sees with no camera after a
+token expires — nothing, because the scanner is unwired (section 9.2). Three
+remain, and all three are operational rather than technical: how the POS
+represents a successful redemption when the cashier closes the check; what a
+colleague does if a guest changes their mind after redeeming, given the UI says
+it cannot be undone from the phone; and whether "open a new check" is really the
+intended answer to two members on one bill.
 
 ---
 
@@ -556,3 +646,48 @@ scroll containers are unclipped for the full-length shots by injected CSS only.
 
 To add a state, add an entry to `states.json` with the `patch` that produces it
 and re-run. The gallery picks it up with no further work.
+
+---
+
+## 13. Verifying against the live bundle
+
+The app is a client-rendered single-page app, and its JavaScript, CSS and
+translation files are public static assets. **No login and no member data are
+needed** to verify copy, stylesheets or which components ship — which is how
+sections 9 and 10 were checked. Nothing is uploaded; this is read-only.
+
+The chunk hashes change on every deploy, so always re-derive them rather than
+reusing the names below.
+
+```bash
+# 1. the SPA shell, for the entry bundle name
+curl -s https://qr.mydigimenu.com/ | grep -oE 'src="[^"]+\.js"'
+
+# 2. the entry bundle names every lazily-loaded chunk
+curl -s https://qr.mydigimenu.com/assets/index-<hash>.js > entry.js
+grep -oE '"assets/[^"]*[Gg]ha[^"]*\.js"' entry.js | sort -u
+grep -oE '"assets/[^"]*\.css"' entry.js | sort -u   # the five GHA CSS modules
+
+# 3. the translation file holds the whole English deck as embedded JSON
+curl -s https://qr.mydigimenu.com/assets/i18n-<hash>.js > i18n.js
+```
+
+Two traps worth knowing:
+
+- **Translation values are `"key":"value"` pairs inside the i18n chunk**, but the
+  bundler escapes `$` as `\$` so template interpolation cannot fire. That is not
+  valid JSON escaping, so a strict parser fails on exactly the strings that
+  mention `D$`. Strip `\$` to `$` before parsing.
+- **A key existing in the deck does not mean the state ships.** Check whether any
+  component chunk references the key, and whether it might be built dynamically
+  (for example `` t(`gha_session_${kind}_title`) ``). Section 9.2 exists because
+  a great deal of copy is in the deck with nothing shipped that renders it.
+
+As captured on 16 September 2026: 8 GHA JavaScript chunks
+(`GhaDiscoveryPage`, `GhaDiscoveryBurnPage`, `GhaDiscoveryEarnPage`,
+`GhaDiscoverySigninModal`, `GhaDiscoveryResetPasswordPage`, `GhaHeroCover`,
+`ghaDiscoveryHelpers`, `useGhaDiscovery`) and 5 CSS modules
+(`GhaDiscoveryPage`, `GhaDiscoverySigninModal`, `GhaHeroCover`, `burnStyles`,
+`titanium`) — the same five this repository mirrors as
+`css/{page,modal,hero,burn,titanium}.css`. Since 5 September the only CSS change
+is 9 classes added to the modal module for the password-rules checklist.

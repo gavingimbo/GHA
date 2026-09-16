@@ -13,7 +13,7 @@
   const VENUE = {
     outlet: 'Staten Bar & Grill',
     property: 'Cinnamon Life at City of Dreams Sri Lanka',
-    table: 'Table 14',
+    table: 'B14',
     currency: 'LKR',
     localPerDollar: 302,          // D$1 = USD 1; placeholder local rate
     serviceChargePct: 10,
@@ -31,10 +31,10 @@
   };
 
   const MEMBER = {
-    firstName: 'Gavin',
-    lastName: 'Gimbo',
-    email: 'gavin.gimbo@example.com',
-    cardNumber: '4407 1188 2043',
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+    cardNumber: '1346942045',
     tier: 'TITANIUM'
   };
 

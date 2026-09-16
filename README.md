@@ -45,10 +45,10 @@ and the production states that are not yet reproduced.
 | Join (language, name, email, phone, consents) | **Join now for free** |
 | Join success drawer | submit the join form |
 | Member landing (tier card, D$ stats, action cards) | sign in with anything |
-| Burn D$ — items, bill, spend field, apply | **Burn D$ on Table 12** |
+| Burn D$ — items, bill, spend field, apply | **View Bill on B12** |
 | Burn confirm → applying → applied | **APPLY D$…** |
 | Burn already applied (confirmation + timestamp) | after a redemption |
-| Earn D$ — items, live bill, earn card | **Earn D$ on Table 12** |
+| Earn D$ — items, live bill, earn card | **Earn D$ on B12** (two-card variant) |
 | Earn confirm → crediting → earned (txn IDs) | **Earn DISCOVERY Dollars** |
 | Earn pending banner | after earning |
 
@@ -85,7 +85,7 @@ GHA and myMENU marks are the original assets under `assets/`.
 
 ## Fixtures
 
-`js/data.js` — venue (Dreams & Beats, Table 12, LKR), member (Titanium, D$148),
+`js/data.js` — venue (Dreams & Beats, B12, LKR), member (Titanium, D$148),
 and a seven-line POS check totalling LKR 64,433.00 after a 15% member discount,
 service charge and VAT. Service charge and taxes are excluded from the D$
 eligible spend, as the programme rules require.

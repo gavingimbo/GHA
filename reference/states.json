@@ -145,9 +145,9 @@
         },
         {
           "id": "member-landing",
-          "title": "Member landing — Earn + Burn",
-          "category": "screen",
-          "trigger": "Signed in, valid session token, open check with items on the table.",
+          "title": "Member landing — Earn + Burn (two-card variant)",
+          "category": "variant",
+          "trigger": "The two-card layout. Not what Cinnamon's outlets run — see member-landing-view-bill for the live default.",
           "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "sessionHint": null, "posVariant": "earn_burn", "burned": null, "earnPending": false },
           "full": true,
           "copyKeys": ["gha_page_stat_dd_accrued", "gha_page_stat_dd_redeemed", "gha_page_action_earn_title_with_table", "gha_page_action_earn_subtitle", "gha_page_action_burn_title_with_table", "gha_page_action_burn_subtitle_total"],
@@ -157,14 +157,15 @@
         },
         {
           "id": "member-landing-view-bill",
-          "title": "Member landing — View Bill (single card)",
-          "category": "variant",
-          "trigger": "Entry carries ?redirect=gha_discovery, or the venue has the GHA-home flag set.",
+          "title": "Member landing — View Bill",
+          "category": "screen",
+          "trigger": "Signed in, valid session token, open check with items. This single-card layout is what Cinnamon's outlets run, and is the mockup's default.",
           "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "posVariant": "view_bill", "sessionHint": null },
+          "full": true,
           "copyKeys": ["gha_page_action_apply_reward_title_with_table", "gha_page_action_burn_subtitle_total"],
           "ctas": ["gha_page_action_apply_reward_title_with_table"],
           "assets": ["assets/img/titanium.webp"],
-          "notes": "One card, 'View Bill on Table 12', going to the burn screen. Which variant Cinnamon's venues actually use is an open question in HANDOFF.md section 8."
+          "notes": "One card, 'View Bill on B12', going to the burn screen. Confirmed by the product owner as the variant Cinnamon's outlets run, which settles open question 1 in HANDOFF.md section 8 — so this is now the mockup's default and the two-card layout is the variant."
         },
         {
           "id": "member-copied",
@@ -207,7 +208,7 @@
           "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "burned": { "dd_redeemed": 62, "local_amount_redeemed": 18724, "confirmation_number": "BRN4182655", "burned_at": "05 Sep 2026, 21:14" }, "balance": 86 },
           "copyKeys": ["gha_page_action_burn_subtitle_already_with_table"],
           "assets": [],
-          "notes": "Burn subtitle becomes 'DISCOVERY Dollars already applied on Table 12'. The hero balance has dropped by the redeemed amount, because the GHA dashboard is refetched after a redemption."
+          "notes": "Burn subtitle becomes 'DISCOVERY Dollars already applied on B12'. The hero balance has dropped by the redeemed amount, because the GHA dashboard is refetched after a redemption."
         },
         {
           "id": "member-hint-expired",

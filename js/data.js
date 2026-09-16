@@ -185,7 +185,7 @@
   // Venue + theme, as returned by the venue config on the live session link.
   const VENUE = {
     name: 'Dreams & Beats',
-    table: 'Table 12',
+    table: 'B12',
     posName: 'Micros Simphony',
     currency: 'LKR ',
     currencyCode: 'LKR',
@@ -200,10 +200,10 @@
   };
 
   const MEMBER = {
-    firstName: 'Gavin',
-    lastName: 'Gimbo',
-    name: 'Gavin Gimbo',
-    cardNumber: '4407 1188 2043',
+    firstName: 'John',
+    lastName: 'Doe',
+    name: 'John Doe',
+    cardNumber: '1346942045',
     profileId: '881204371',
     tier: 'TITANIUM',
     balance: 148,

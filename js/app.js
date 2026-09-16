@@ -60,7 +60,8 @@
     earnPending: false,
     sessionHint: null,         // null | expired | check_changed | no_token
     discountState: 'ok',       // ok | checking | failed | other_member
-    posVariant: 'earn_burn',   // earn_burn (two cards) | view_bill (single card)
+    // The single View Bill card is the variant Cinnamon's outlets run.
+    posVariant: 'view_bill',   // view_bill (single card) | earn_burn (two cards)
     // modals
     modal: null,               // signin | signup | terms | null
     signinMode: 'signin',
@@ -871,7 +872,7 @@
     'mock-reset': () =>
       set({
         signedIn: false, screen: 'page', billStatus: 'ready', discountState: 'ok', sessionHint: null,
-        posVariant: 'earn_burn', burned: null, earned: null, earnPending: false,
+        posVariant: 'view_bill', burned: null, earned: null, earnPending: false,
         balance: MEMBER.balance, spend: INITIAL_SPEND, confirm: 'idle', modal: null, mockOpen: false,
       }),
   };
