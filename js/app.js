@@ -921,5 +921,18 @@
     if (root) root.classList.remove('is_focused');
   });
 
+  /* ---------------------------------------------------------- capture hook */
+  /* Not part of the production page, and it renders nothing. The mock panel
+     covers five state dimensions through <select>s; this exposes all of them,
+     so reference/capture.mjs can drive every documented state directly. */
+  window.GHA_MOCK = {
+    state,
+    set,
+    render,
+    fixtures: window.GHA_DATA,
+    act: (name) => ACTIONS[name] && ACTIONS[name](),
+    reset: () => ACTIONS['mock-reset'](),
+  };
+
   render();
 })();

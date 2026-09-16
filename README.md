@@ -28,6 +28,12 @@ manifest.
 experience built on the same check-bound QR architecture, with a reviewer
 drawer covering every state. See `dev/README.md`.
 
+`reference/` is a capture of this production flow for making mockups and a
+guide: 49 states rendered to `reference/shots/`, a browsable gallery at
+`reference/index.html`, a machine-readable catalogue in `reference/states.json`,
+and `reference/SPEC.md` for the assets, measured layout values, error catalogue
+and the production states that are not yet reproduced.
+
 ## Screens
 
 | Screen | How to reach it |

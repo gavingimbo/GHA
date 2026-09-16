@@ -1,0 +1,601 @@
+{
+  "meta": {
+    "title": "Cinnamon DISCOVERY — Dine with D$ (production flow) state catalogue",
+    "source": "../index.html",
+    "viewport": { "width": 393, "height": 852 },
+    "scale": 1,
+    "retina": "Re-run capture.mjs with --scale=2 for retina versions.",
+    "note": "Every state below is reachable in the production mockup and is captured from it. Copy is referenced by i18n key and resolved from js/data.js at render time, so no string here is transcribed by hand. Production states that exist in the shipped bundle but are NOT reproduced are listed in SPEC.md section 9, not here."
+  },
+
+  "groups": [
+    {
+      "id": "guest",
+      "title": "1 — Guest entry",
+      "intro": "What a non-member, or a member who has not signed in, sees after scanning the table QR.",
+      "states": [
+        {
+          "id": "guest-landing",
+          "title": "Guest landing",
+          "category": "screen",
+          "trigger": "Table QR scanned. Session token valid, no GHA session on the device.",
+          "patch": { "signedIn": false, "screen": "page", "modal": null },
+          "full": true,
+          "copyKeys": ["gha_join_title", "gha_join_heading_desc", "gha_join_cta_secondary", "gha_join_not_member_prompt", "gha_join_cta_primary", "gha_member_perks_title", "gha_join_benefit_discount_title", "gha_join_benefit_discount_body", "gha_member_perk_pay_title", "gha_member_perk_pay", "gha_member_perk_earn_title", "gha_member_perk_earn", "gha_terms_link"],
+          "ctas": ["gha_join_cta_secondary", "gha_join_cta_primary"],
+          "assets": ["assets/img/cover.jpg"],
+          "notes": "Hero cover (aspect-ratio 1200/630) with a bottom gradient; the guest card pulls up over it with margin-top:-32px. Venue chip sits inside the card. Three-perk panel on #f4eff9. T&C is a text button, not a link."
+        },
+        {
+          "id": "guest-terms",
+          "title": "Terms & Conditions sheet",
+          "category": "screen",
+          "trigger": "Tap Terms & Conditions on the guest landing.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "terms" },
+          "copyKeys": ["gha_terms_title", "close"],
+          "assets": [],
+          "notes": "Full-screen sheet over the page. Body is the venue's own T&C HTML from the venue config (js/terms.js), not a GHA document. gha_terms_empty covers a venue with no T&C configured — not reproduced."
+        },
+        {
+          "id": "guest-signin",
+          "title": "Sign in",
+          "category": "screen",
+          "trigger": "Tap Sign in to continue.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "formError": "", "showPassword": false, "submitting": false },
+          "copyKeys": ["gha_signin_title", "gha_field_username_or_email", "gha_field_username_or_email_placeholder", "password", "gha_forgot_password_link", "gha_signin_cta"],
+          "ctas": ["gha_signin_cta"],
+          "assets": ["assets/img/gha-logo.jpg"],
+          "notes": "Full-screen white sheet with the GHA DISCOVERY wordmark centred in the header and a close button at the right. Title is uppercased in code (gha_signin_title is 'Sign In'). Both fields carry a required star. MUI outlined fields, 40px control, 6px radius."
+        },
+        {
+          "id": "guest-signin-error",
+          "title": "Sign in — field validation",
+          "category": "error",
+          "trigger": "Submit with an empty username/email field. Client-side, before any request.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "formError": "Username or email is required" },
+          "copyKeys": ["gha_signin_title", "gha_field_username_or_email", "gha_signin_cta"],
+          "literalCopy": ["Username or email is required"],
+          "recovery": "Guest fixes the field. No staff involvement.",
+          "assets": ["assets/img/gha-logo.jpg"],
+          "notes": "The error renders in the MUI helper slot under the field and turns the notch #d32f2f. gha_auth_generic_error ('Something went wrong. Please try again.') is the server-side equivalent and is NOT reproduced."
+        },
+        {
+          "id": "guest-signin-password-shown",
+          "title": "Sign in — password revealed",
+          "category": "variant",
+          "trigger": "Tap the eye adornment in the password field.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "showPassword": true },
+          "copyKeys": ["password"],
+          "assets": [],
+          "notes": "Input type flips to text and the adornment icon becomes eye-off."
+        },
+        {
+          "id": "guest-signin-submitting",
+          "title": "Sign in — submitting",
+          "category": "transient",
+          "trigger": "Sign-in request in flight (900 ms in the mockup).",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "submitting": true },
+          "copyKeys": ["gha_submitting"],
+          "assets": [],
+          "notes": "Button is disabled and shows a spinner plus 'Submitting...' (note the three-dot ellipsis in the live string, not a single character)."
+        },
+        {
+          "id": "guest-signup",
+          "title": "Join — enrolment form",
+          "category": "screen",
+          "trigger": "Tap Join now for free.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signup", "signupDone": false, "consentOpen": false, "marketingOpen": false, "marketingOptIn": false, "submitting": false },
+          "full": true,
+          "copyKeys": ["gha_signup_title", "gha_field_language", "gha_field_language_hint", "first_name", "gha_field_first_name_placeholder", "last_name", "gha_field_last_name_placeholder", "email_address", "gha_field_email_placeholder", "gha_field_phone", "gha_field_phone_placeholder", "password", "gha_enrollment_agreement", "gha_read_more", "gha_marketing_title", "gha_marketing_body", "gha_marketing_optin", "gha_cinnamon_marketing", "gha_marketing_footnote", "gha_signup_consent_cinnamon_1", "gha_link_terms", "gha_signup_consent_cinnamon_2", "gha_link_gha_privacy", "gha_signup_consent_cinnamon_3", "gha_link_cinnamon_privacy", "gha_signup_cta"],
+          "ctas": ["gha_signup_cta"],
+          "assets": ["assets/img/gha-logo.jpg"],
+          "notes": "Order: language select, first name, last name, email, phone (dial-code box defaulted to +94 with flag), password, enrolment consent (clamped, Read more), marketing block with checkbox, Cinnamon marketing statement (clamped), footnote, then the consent sentence with three links. Enrolment is with GHA Loyalty FZCO. Every field carries a required star. The live form also has a datepicker field (gha_datepicker_wrap) that is NOT reproduced."
+        },
+        {
+          "id": "guest-signup-expanded",
+          "title": "Join — consents expanded, opt-in checked",
+          "category": "variant",
+          "trigger": "Tap Read more on both consent blocks and tick the marketing checkbox.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signup", "consentOpen": true, "marketingOpen": true, "marketingOptIn": true },
+          "full": true,
+          "copyKeys": ["gha_enrollment_agreement", "gha_read_less", "gha_cinnamon_marketing", "gha_marketing_optin"],
+          "assets": [],
+          "notes": "Both consent bodies un-clamp and the toggles read 'Read less'. The checkbox is a filled MUI check square in the venue theme colour."
+        },
+        {
+          "id": "guest-signup-submitting",
+          "title": "Join — submitting",
+          "category": "transient",
+          "trigger": "Enrolment request in flight (1100 ms in the mockup).",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signup", "submitting": true },
+          "copyKeys": ["gha_submitting"],
+          "assets": [],
+          "notes": "No server-side enrolment failure state is reproduced. gha_submit_error and gha_inline_error exist in the bundle for it."
+        },
+        {
+          "id": "guest-signup-success",
+          "title": "Join — success drawer",
+          "category": "screen",
+          "trigger": "Enrolment accepted.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signup", "signupDone": true, "submitting": false },
+          "copyKeys": ["gha_redeem_success_title", "gha_continue"],
+          "literalCopy": ["Welcome to GHA DISCOVERY. Your membership is ready — you can now earn and redeem D$ on this bill."],
+          "ctas": ["gha_continue"],
+          "assets": [],
+          "notes": "Bottom drawer (16px 16px 0 0, slide-up animation) over a dimmed backdrop, with a circular check. The title reuses gha_redeem_success_title ('Congratulations'). The body sentence is the mockup's own — the live bundle's gha_redeem_success_body is the redemption string ('D$… will be applied to the bill when you pay'), so the real enrolment body is UNVERIFIED."
+        }
+      ]
+    },
+
+    {
+      "id": "member",
+      "title": "2 — Member landing",
+      "intro": "The same page after sign-in. Hero gains the member overlay; the body swaps to the member view. The page polls the POS every 7 seconds while a member is signed in against a valid table.",
+      "states": [
+        {
+          "id": "member-loading",
+          "title": "Member landing — loading profile",
+          "category": "transient",
+          "trigger": "Immediately after sign-in, while the GHA profile and dashboard are fetched (1200 ms in the mockup).",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": true, "modal": null },
+          "full": true,
+          "copyKeys": [],
+          "assets": [],
+          "notes": "Hero shows four skeleton bars (name, id, balance amount, balance local) and the tier card is replaced by a spinner in card_visual_loader. Stats and action cards render immediately with final values."
+        },
+        {
+          "id": "member-landing",
+          "title": "Member landing — Earn + Burn",
+          "category": "screen",
+          "trigger": "Signed in, valid session token, open check with items on the table.",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "sessionHint": null, "posVariant": "earn_burn", "burned": null, "earnPending": false },
+          "full": true,
+          "copyKeys": ["gha_page_stat_dd_accrued", "gha_page_stat_dd_redeemed", "gha_page_action_earn_title_with_table", "gha_page_action_earn_subtitle", "gha_page_action_burn_title_with_table", "gha_page_action_burn_subtitle_total"],
+          "ctas": ["gha_page_action_earn_title_with_table", "gha_page_action_burn_title_with_table"],
+          "assets": ["assets/img/cover.jpg", "assets/img/titanium.webp"],
+          "notes": "Default variant: two action cards. Hero overlay carries name, membership card number with a copy button, and live D$ balance with local value. Tier card is 320px max, aspect 1.6, with name, number and tier name overlaid. Two stat cards: D$ Earned, D$ Redeemed. Burn subtitle is the live bill total."
+        },
+        {
+          "id": "member-landing-view-bill",
+          "title": "Member landing — View Bill (single card)",
+          "category": "variant",
+          "trigger": "Entry carries ?redirect=gha_discovery, or the venue has the GHA-home flag set.",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "posVariant": "view_bill", "sessionHint": null },
+          "copyKeys": ["gha_page_action_apply_reward_title_with_table", "gha_page_action_burn_subtitle_total"],
+          "ctas": ["gha_page_action_apply_reward_title_with_table"],
+          "assets": ["assets/img/titanium.webp"],
+          "notes": "One card, 'View Bill on Table 12', going to the burn screen. Which variant Cinnamon's venues actually use is an open question in HANDOFF.md section 8."
+        },
+        {
+          "id": "member-copied",
+          "title": "Member landing — card number copied",
+          "category": "transient",
+          "trigger": "Tap the copy button beside the membership card number.",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "copied": true },
+          "copyKeys": [],
+          "literalCopy": ["Copied"],
+          "assets": [],
+          "notes": "Icon flips to a check and a 'Copied' label appears for 1500 ms."
+        },
+        {
+          "id": "member-bill-fetching",
+          "title": "Member landing — fetching bill from POS",
+          "category": "transient",
+          "trigger": "POS poll in flight, or the check is being re-read after a change.",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "fetching", "sessionHint": null, "posVariant": "earn_burn" },
+          "copyKeys": ["gha_page_action_burn_subtitle_fetching"],
+          "recovery": "Resolves itself on the next poll. Both action cards are disabled meanwhile.",
+          "assets": [],
+          "notes": "Burn subtitle shows a pulsing dot plus 'Fetching new bill from POS…'. Both cards carry the disabled attribute."
+        },
+        {
+          "id": "member-bill-empty",
+          "title": "Member landing — no active bill",
+          "category": "error",
+          "trigger": "Session token is valid but the POS has no open check on the table, or no items rung in yet.",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "empty", "sessionHint": null, "posVariant": "earn_burn" },
+          "copyKeys": ["gha_page_action_burn_subtitle_empty_with_table"],
+          "recovery": "Staff ring items into the check; the 7-second poll picks it up. No guest action.",
+          "assets": [],
+          "notes": "Actions disabled. gha_page_action_burn_subtitle_empty is the no-table variant of this string and is not reproduced."
+        },
+        {
+          "id": "member-already-applied",
+          "title": "Member landing — D$ already applied",
+          "category": "screen",
+          "trigger": "A redemption has already landed on this check.",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "burned": { "dd_redeemed": 62, "local_amount_redeemed": 18724, "confirmation_number": "BRN4182655", "burned_at": "05 Sep 2026, 21:14" }, "balance": 86 },
+          "copyKeys": ["gha_page_action_burn_subtitle_already_with_table"],
+          "assets": [],
+          "notes": "Burn subtitle becomes 'DISCOVERY Dollars already applied on Table 12'. The hero balance has dropped by the redeemed amount, because the GHA dashboard is refetched after a redemption."
+        },
+        {
+          "id": "member-hint-expired",
+          "title": "Session hint — token expired",
+          "category": "error",
+          "trigger": "Session token past its exp (one hour after issue).",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "sessionHint": "expired", "posVariant": "earn_burn" },
+          "copyKeys": ["gha_session_hint_expired"],
+          "recovery": "Staff issue a fresh QR for the table. The bundle also carries a full-screen session-error card and a camera scanner for this, neither reproduced — see SPEC.md section 9.",
+          "assets": [],
+          "notes": "Red hint on #b0002014, 10px radius, above the action cards; both cards disabled."
+        },
+        {
+          "id": "member-hint-check-changed",
+          "title": "Session hint — check changed",
+          "category": "error",
+          "trigger": "The POS check behind the token is no longer the one the guest opened.",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "sessionHint": "check_changed", "posVariant": "earn_burn" },
+          "copyKeys": ["gha_session_hint_check_changed"],
+          "recovery": "Staff issue a fresh QR. Note the live copy tells the guest the bill changed and to ask for a new QR, even where the check identity may not have changed — this is the state the /dev/ redesign softens into a refresh.",
+          "assets": [],
+          "notes": "Same hint treatment as expired."
+        },
+        {
+          "id": "member-hint-no-token",
+          "title": "Session hint — no session token",
+          "category": "error",
+          "trigger": "Page opened without a token — a bookmarked or shared URL rather than a scan.",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "sessionHint": "no_token", "posVariant": "earn_burn" },
+          "copyKeys": ["gha_session_hint_no_token"],
+          "recovery": "Staff hand over the table QR to start a session.",
+          "assets": [],
+          "notes": "Same hint treatment. This is the state a guest reaches by re-opening the page from history after the token is gone."
+        },
+        {
+          "id": "tier-silver",
+          "title": "Tier card — Silver",
+          "category": "variant",
+          "trigger": "Member's GHA tier. Tier sets the card artwork, the dining discount and the earn rate (4–7%).",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "sessionHint": null },
+          "fixture": { "member": { "tier": "SILVER" } },
+          "copyKeys": [],
+          "assets": ["assets/img/silver.webp"],
+          "notes": "Tier name renders title-cased under the card number."
+        },
+        {
+          "id": "tier-gold",
+          "title": "Tier card — Gold",
+          "category": "variant",
+          "trigger": "Member's GHA tier.",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "sessionHint": null },
+          "fixture": { "member": { "tier": "GOLD" } },
+          "copyKeys": [],
+          "assets": ["assets/img/gold.webp"]
+        },
+        {
+          "id": "tier-platinum",
+          "title": "Tier card — Platinum",
+          "category": "variant",
+          "trigger": "Member's GHA tier.",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "sessionHint": null },
+          "fixture": { "member": { "tier": "PLATINUM" } },
+          "copyKeys": [],
+          "assets": ["assets/img/platinum.webp"]
+        },
+        {
+          "id": "tier-titanium",
+          "title": "Tier card — Titanium",
+          "category": "variant",
+          "trigger": "Member's GHA tier. Titanium is the only tier that gets the discount at Plates and The Dining Room.",
+          "patch": { "signedIn": true, "screen": "page", "loadingProfile": false, "billStatus": "ready", "sessionHint": null },
+          "fixture": { "member": { "tier": "TITANIUM" } },
+          "copyKeys": [],
+          "assets": ["assets/img/titanium.webp"]
+        }
+      ]
+    },
+
+    {
+      "id": "burn",
+      "title": "3 — Burn D$ (redeem)",
+      "intro": "Items, bill and the spend control. Reached from Burn D$ on {table}, or from View Bill in the single-card variant.",
+      "states": [
+        {
+          "id": "burn-default",
+          "title": "Burn — spend control",
+          "category": "screen",
+          "trigger": "Open check, discount applied on the POS, balance and eligible spend both at or above D$10.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "burned": null, "earnPending": false, "itemsExpanded": false, "helpOpen": false, "spend": 62 },
+          "full": true,
+          "copyKeys": ["gha_burn_items_heading", "gha_burn_items_show_all", "gha_burn_bill_heading", "gha_burn_bill_subtotal", "gha_burn_bill_discount_named", "gha_burn_bill_total", "gha_spend_ds", "gha_spend_ds_range", "gha_eligible_ds_spend", "gha_eligible_fine_print", "gha_balance_left_to_pay", "gha_apply_ds"],
+          "ctas": ["gha_apply_ds"],
+          "assets": ["assets/img/cover.jpg", "assets/img/mymenu-logo.png"],
+          "notes": "Order: Items (n) with the first four rows, discount block, Your bill, bill card, spend card, Powered by myMENU. The eligible figure is shown in both D$ and local currency, computed on discounted item spend only — service charge and taxes are excluded. Spend input is a centre-aligned text input, 18px bold, 1.5px border. It arrives pre-filled with the maximum (D$148 here — the lower of eligible spend and live balance); this capture shows D$62 to make the partial-redemption maths legible."
+        },
+        {
+          "id": "burn-items-expanded",
+          "title": "Burn — all items shown",
+          "category": "variant",
+          "trigger": "Tap 'Show all 7'.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "burned": null, "itemsExpanded": true, "spend": 62 },
+          "full": true,
+          "copyKeys": ["gha_burn_items_show_less"],
+          "assets": [],
+          "notes": "Rows beyond the first carry a 1px top rule. Collapsed at four rows by default; the toggle only renders above four items. gha_burn_items_empty covers an empty check and is not reproduced."
+        },
+        {
+          "id": "burn-help-open",
+          "title": "Burn — redemption help",
+          "category": "variant",
+          "trigger": "Tap the info button beside 'Spend D$'.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "burned": null, "helpOpen": true, "spend": 62 },
+          "copyKeys": ["gha_transaction_help"],
+          "assets": [],
+          "notes": "Help paragraph appears between the section heading and the spend card."
+        },
+        {
+          "id": "burn-below-min",
+          "title": "Burn — below the minimum",
+          "category": "error",
+          "trigger": "Guest types a spend under D$10.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "burned": null, "spend": 4 },
+          "copyKeys": ["gha_min_bill_required", "gha_apply_ds"],
+          "recovery": "Guest raises the amount. The apply button stays disabled until it reaches D$10.",
+          "assets": [],
+          "notes": "Inline error under the remaining-to-pay row. The apply label still interpolates the typed amount, so it reads 'APPLY D$4' while disabled."
+        },
+        {
+          "id": "burn-earn-only",
+          "title": "Burn — earn only, balance too low",
+          "category": "error",
+          "trigger": "Eligible redemption (the lower of eligible spend and live balance) is under D$10.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "burned": null, "balance": 6, "spend": 6 },
+          "full": true,
+          "copyKeys": ["gha_eligible_ds_spend", "gha_eligible_fine_print", "gha_burn_earn_only_low_balance", "gha_burn_earn_only_title", "gha_burn_earn_button"],
+          "ctas": ["gha_burn_earn_button"],
+          "recovery": "Nothing to fix — the guest can still earn. The spend control is replaced by a single Earn D$ button.",
+          "assets": [],
+          "notes": "Two sibling strings cover the other two causes and are NOT reproduced: gha_burn_earn_only_body (bill below the D$10 equivalent) and gha_burn_earn_only_no_eligible (nothing on the bill is eligible). gha_no_eligible_spend is a third, shorter variant, also unused."
+        },
+        {
+          "id": "burn-bill-fetching",
+          "title": "Burn — bill loading",
+          "category": "transient",
+          "trigger": "POS poll in flight on the burn screen.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "fetching", "discountState": "ok", "burned": null, "spend": 62 },
+          "copyKeys": ["gha_page_action_burn_subtitle_fetching"],
+          "recovery": "Resolves on the next poll.",
+          "assets": [],
+          "notes": "The whole bill card collapses to one row with a pulsing dot. The spend card stays but apply is disabled."
+        },
+        {
+          "id": "burn-bill-empty",
+          "title": "Burn — no active bill",
+          "category": "error",
+          "trigger": "No open check on the POS for this table.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "empty", "discountState": "ok", "burned": null, "spend": 62 },
+          "copyKeys": ["gha_burn_no_active_bill"],
+          "recovery": "Staff ring items in. The poll picks it up.",
+          "assets": [],
+          "notes": "Bill card shows a single line. Apply is disabled because billStatus is not ready."
+        },
+        {
+          "id": "burn-discount-checking",
+          "title": "Discount — checking",
+          "category": "transient",
+          "trigger": "The member discount is being applied to the check on the POS.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "checking", "burned": null, "spend": 62 },
+          "copyKeys": ["gha_burn_checking_discount"],
+          "recovery": "Resolves to applied or to the failure card below.",
+          "assets": [],
+          "notes": "Grey card with a spinner, above the bill. The bill total shown alongside still includes the discount line from the fixture."
+        },
+        {
+          "id": "burn-discount-failed",
+          "title": "Discount — rejected by the POS",
+          "category": "error",
+          "trigger": "The POS refused the discount posting. The mockup shows the reason 'Check is open on another terminal'; the live app renders whatever reason the POS returns.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "failed", "burned": null, "spend": 62 },
+          "full": true,
+          "copyKeys": ["gha_burn_discount_failed_title", "gha_burn_discount_failed_reason", "gha_burn_discount_failed_instruction", "gha_burn_discount_retry"],
+          "ctas": ["gha_burn_discount_retry"],
+          "recovery": "Staff close the check on the POS, then the guest taps Retry. This is the clearest example of the live app handing the guest an operational instruction: the raw POS reason is shown to the guest verbatim.",
+          "assets": [],
+          "notes": "Red card (#fdecee, 1px #b000202e), alert icon beside the title, reason line, instruction, then a pill Retry button. gha_burn_discount_retrying ('Retrying…') covers the in-flight retry and is not separately reproduced."
+        },
+        {
+          "id": "burn-discount-other-member",
+          "title": "Discount — check locked by another member",
+          "category": "error",
+          "trigger": "Another GHA member scanned this check first. First member locks the check.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "other_member", "burned": null, "spend": 62 },
+          "full": true,
+          "copyKeys": ["gha_burn_discount_different_member_title", "gha_burn_discount_different_member_body"],
+          "recovery": "Staff must open a new check. No retry is offered — this is the only failure state in the flow with no guest-side action at all.",
+          "assets": [],
+          "notes": "Same red card, but with no reason line and no Retry button. The single most operationally significant rule in the flow: groups where two members want to earn on one bill hit this immediately."
+        },
+        {
+          "id": "burn-already-applied",
+          "title": "Burn — already redeemed on this check",
+          "category": "screen",
+          "trigger": "A redemption has already landed. Redemption is one-way from the phone.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "burned": { "dd_redeemed": 62, "local_amount_redeemed": 18724, "confirmation_number": "BRN4182655", "burned_at": "05 Sep 2026, 21:14" }, "balance": 86 },
+          "full": true,
+          "copyKeys": ["gha_burn_already_applied", "gha_burn_details_confirmation", "gha_burn_details_at"],
+          "recovery": "None from the phone. Reversal is a POS/venue action, and the live UI does not say what staff should do — an open question in HANDOFF.md section 8.",
+          "assets": [],
+          "notes": "The spend control is replaced by a details card: check badge, title, amount in D$ with the local value, confirmation number and applied-at timestamp."
+        },
+        {
+          "id": "burn-earn-pending-banner",
+          "title": "Burn — earn pending banner",
+          "category": "screen",
+          "trigger": "The guest earned on this bill, then returned to the burn screen.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "burned": null, "earnPending": true, "spend": 62 },
+          "full": true,
+          "copyKeys": ["gha_earn_pending_title", "gha_earn_pending_body", "gha_burn_potential_earn_with_rate"],
+          "assets": [],
+          "notes": "Details card between the bill and the spend control, showing the pending credit and the tier earn rate. Earning is asynchronous — the D$ are not in the balance yet."
+        }
+      ]
+    },
+
+    {
+      "id": "burn-confirm",
+      "title": "4 — Redemption dialog",
+      "intro": "Centred modal over the burn screen. The guest is spending stored value, so it takes one explicit confirmation.",
+      "states": [
+        {
+          "id": "burn-confirm-dialog",
+          "title": "Confirm redemption",
+          "category": "screen",
+          "trigger": "Tap APPLY D$…",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "burned": null, "spend": 62, "confirm": "confirm", "confirmKind": "burn" },
+          "copyKeys": ["gha_burn_confirm_title", "gha_burn_confirm_body", "gha_burn_cancel", "gha_burn_confirm_cta"],
+          "ctas": ["gha_burn_confirm_cta", "gha_burn_cancel"],
+          "assets": [],
+          "notes": "Wallet icon, title, amount pill, body carrying the amount and bill total, then Cancel / Confirm as pill buttons. The body states plainly that it cannot be undone from the phone."
+        },
+        {
+          "id": "burn-confirm-submitting",
+          "title": "Applying D$",
+          "category": "transient",
+          "trigger": "Redemption posting in flight (1600 ms in the mockup).",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "burned": null, "spend": 62, "confirm": "submitting", "confirmKind": "burn" },
+          "copyKeys": ["gha_burn_applying"],
+          "assets": [],
+          "notes": "Spinner in the icon slot, title only, no actions. Backdrop dismissal is blocked while submitting."
+        },
+        {
+          "id": "burn-confirm-success",
+          "title": "D$ applied",
+          "category": "screen",
+          "trigger": "The POS accepted the redemption.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "spend": 62, "burned": { "dd_redeemed": 62, "local_amount_redeemed": 18724, "confirmation_number": "BRN4182655", "burned_at": "05 Sep 2026, 21:14" }, "balance": 86, "confirm": "success", "confirmKind": "burn" },
+          "copyKeys": ["gha_burn_success_title", "gha_burn_success_body", "gha_burn_done"],
+          "ctas": ["gha_burn_done"],
+          "assets": [],
+          "notes": "Green check in the icon slot, amount pill, body telling the guest to show the confirmation to the venue if asked, single Done button."
+        },
+        {
+          "id": "burn-confirm-error",
+          "title": "D$ could not be applied",
+          "category": "error",
+          "trigger": "The POS refused the redemption posting.",
+          "patch": { "signedIn": true, "screen": "burn", "loadingProfile": false, "billStatus": "ready", "burned": null, "spend": 62, "confirm": "error", "confirmKind": "burn" },
+          "copyKeys": ["gha_burn_pos_failed_title", "gha_burn_discount_failed_reason", "gha_burn_discount_failed_instruction", "gha_burn_cancel", "retry"],
+          "ctas": ["retry", "gha_burn_cancel"],
+          "recovery": "Cancel, or Retry after staff clear the check on the POS. The mockup shows the reason 'POS check is locked by another terminal'; live, this is the POS's own message.",
+          "assets": [],
+          "notes": "Red alert icon. This state reuses the discount failure reason and instruction strings rather than having its own. gha_burn_failed ('We couldn't apply your DISCOVERY Dollars. Please try again.') exists in the bundle as a simpler alternative and is not reproduced. Whether a failed posting can leave the transaction in an unknown state — the case the /dev/ redesign adds a confirming state for — is not represented here at all."
+        }
+      ]
+    },
+
+    {
+      "id": "earn",
+      "title": "5 — Earn D$",
+      "intro": "Same items and bill, with a live-from-POS indicator, and a single earn action. One earn per bill.",
+      "states": [
+        {
+          "id": "earn-default",
+          "title": "Earn — from this bill",
+          "category": "screen",
+          "trigger": "Tap Earn D$ on {table} from the member landing.",
+          "patch": { "signedIn": true, "screen": "earn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "earned": null, "earnPending": false, "itemsExpanded": false },
+          "full": true,
+          "copyKeys": ["gha_burn_items_heading", "gha_burn_bill_heading", "gha_burn_bill_from", "gha_earn_card_title", "gha_earn_card_body", "gha_burn_potential_earn_with_rate", "gha_earn_cta"],
+          "ctas": ["gha_earn_cta"],
+          "assets": ["assets/img/cover.jpg", "assets/img/mymenu-logo.png"],
+          "notes": "The only screen that shows the POS name to the guest: 'Live from Micros Simphony', with a pulsing dot. The earn card shows the tier rate and the D$ the guest will receive."
+        },
+        {
+          "id": "earn-bill-fetching",
+          "title": "Earn — bill loading",
+          "category": "transient",
+          "trigger": "POS poll in flight on the earn screen.",
+          "patch": { "signedIn": true, "screen": "earn", "loadingProfile": false, "billStatus": "fetching", "discountState": "ok", "earned": null, "earnPending": false },
+          "copyKeys": ["gha_page_action_burn_subtitle_fetching"],
+          "recovery": "Resolves on the next poll. Earn is disabled meanwhile.",
+          "assets": []
+        },
+        {
+          "id": "earn-discount-failed",
+          "title": "Earn — discount rejected",
+          "category": "error",
+          "trigger": "Same POS discount failure, seen from the earn screen. The discount block is shared by both screens.",
+          "patch": { "signedIn": true, "screen": "earn", "loadingProfile": false, "billStatus": "ready", "discountState": "failed", "earned": null, "earnPending": false },
+          "full": true,
+          "copyKeys": ["gha_burn_discount_failed_title", "gha_burn_discount_failed_instruction", "gha_burn_discount_retry"],
+          "recovery": "Staff close the check, guest retries. Earning still works — the failure blocks the discount, not the earn.",
+          "assets": []
+        },
+        {
+          "id": "earn-done",
+          "title": "Earn — already credited",
+          "category": "screen",
+          "trigger": "The guest has earned on this bill. One earn per bill.",
+          "patch": { "signedIn": true, "screen": "earn", "loadingProfile": false, "billStatus": "ready", "discountState": "ok", "earnPending": true, "earned": { "transaction_id": "GHA-41882045", "pos_check_number": "2408", "pos_check_ref": "DB-418255" } },
+          "full": true,
+          "copyKeys": ["gha_earn_pending_title", "gha_earn_pending_body"],
+          "assets": [],
+          "notes": "The earn card is replaced by a pending details card. The credit is asynchronous, so the hero balance does not move."
+        }
+      ]
+    },
+
+    {
+      "id": "earn-confirm",
+      "title": "6 — Earn dialog",
+      "intro": "Same centred modal component as the redemption dialog, with the earn copy set.",
+      "states": [
+        {
+          "id": "earn-confirm-dialog",
+          "title": "Confirm earn",
+          "category": "screen",
+          "trigger": "Tap Earn DISCOVERY Dollars.",
+          "patch": { "signedIn": true, "screen": "earn", "loadingProfile": false, "billStatus": "ready", "earned": null, "earnPending": false, "confirm": "confirm", "confirmKind": "earn" },
+          "copyKeys": ["gha_earn_confirm_title", "gha_earn_confirm_body", "gha_burn_cancel", "gha_burn_confirm_cta"],
+          "ctas": ["gha_burn_confirm_cta", "gha_burn_cancel"],
+          "assets": [],
+          "notes": "No amount pill on the earn path — the credit is calculated server-side. The body warns that a bill can only be earned from once."
+        },
+        {
+          "id": "earn-confirm-submitting",
+          "title": "Crediting your account",
+          "category": "transient",
+          "trigger": "Earn posting in flight (1600 ms in the mockup).",
+          "patch": { "signedIn": true, "screen": "earn", "loadingProfile": false, "billStatus": "ready", "earned": null, "confirm": "submitting", "confirmKind": "earn" },
+          "copyKeys": ["gha_earn_processing"],
+          "assets": []
+        },
+        {
+          "id": "earn-confirm-success",
+          "title": "D$ earned",
+          "category": "screen",
+          "trigger": "The earn request was accepted.",
+          "patch": { "signedIn": true, "screen": "earn", "loadingProfile": false, "billStatus": "ready", "earnPending": true, "earned": { "transaction_id": "GHA-41882045", "pos_check_number": "2408", "pos_check_ref": "DB-418255" }, "confirm": "success", "confirmKind": "earn" },
+          "copyKeys": ["gha_earn_success_title", "gha_earn_success_body", "gha_earn_details_transaction", "gha_earn_details_pos_check", "gha_earn_details_pos_ref", "gha_burn_done"],
+          "ctas": ["gha_burn_done"],
+          "assets": [],
+          "notes": "The only guest-facing screen in the flow that shows POS identifiers: transaction ID, POS check number and POS reference, in a details card inside the dialog."
+        },
+        {
+          "id": "earn-confirm-already",
+          "title": "D$ already earned",
+          "category": "error",
+          "trigger": "A second earn attempt on a bill that has already been credited.",
+          "patch": { "signedIn": true, "screen": "earn", "loadingProfile": false, "billStatus": "ready", "earnPending": true, "earned": null, "confirm": "already", "confirmKind": "earn" },
+          "copyKeys": ["gha_earn_already_title", "gha_earn_already_body", "gha_burn_done"],
+          "ctas": ["gha_burn_done"],
+          "recovery": "Nothing to do — the credit is already in flight. Rendered as a success, not a failure: green check, not an alert.",
+          "assets": [],
+          "notes": "No UI path reaches this in the mockup; it is driven directly. In the live app it is the server's answer to a duplicate earn."
+        },
+        {
+          "id": "earn-confirm-error",
+          "title": "Earn failed",
+          "category": "error",
+          "trigger": "The earn request failed.",
+          "patch": { "signedIn": true, "screen": "earn", "loadingProfile": false, "billStatus": "ready", "earned": null, "confirm": "error", "confirmKind": "earn" },
+          "copyKeys": ["gha_earn_failed", "gha_burn_discount_failed_reason", "gha_burn_discount_failed_instruction", "gha_burn_cancel", "retry"],
+          "ctas": ["retry", "gha_burn_cancel"],
+          "recovery": "Cancel or Retry. The earn failure is generic — unlike the discount failure it has no dedicated reason string, so the dialog borrows the discount reason and instruction lines.",
+          "assets": []
+        }
+      ]
+    }
+  ]
+}
