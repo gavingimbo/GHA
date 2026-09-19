@@ -1,0 +1,116 @@
+{
+  "meta": {
+    "title": "Dine with D$ — component library",
+    "source": "../index.html",
+    "note": "Each entry is harvested from the running production mockup, so the markup and CSS are the production ones — nothing here is redrawn by hand. 'state' is applied through window.GHA_MOCK before the element named by 'sel' is lifted out of the page. Add an entry and re-run export.mjs to get a new component.",
+    "pngScale": 3
+  },
+
+  "groups": [
+    {
+      "id": "foundations",
+      "title": "Foundations",
+      "components": [
+        { "id": "colour-palette", "label": "Colour palette", "synthetic": "palette", "bg": "#ffffff" },
+        { "id": "type-scale", "label": "Type scale", "synthetic": "type", "bg": "#ffffff" },
+        { "id": "button-primary", "label": "Button — primary", "state": { "signedIn": false, "screen": "page", "modal": null }, "sel": ".c_btn_primary", "bg": "transparent", "pad": 8 },
+        { "id": "button-outline", "label": "Button — outline", "state": { "signedIn": false, "screen": "page", "modal": null }, "sel": ".c_btn_outline", "bg": "transparent", "pad": 8 },
+        { "id": "button-pill", "label": "Button — pill (dialog primary)", "state": { "signedIn": true, "screen": "burn", "confirm": "confirm", "confirmKind": "burn", "spend": 62 }, "sel": ".c_btn_pill", "bg": "transparent", "pad": 8 },
+        { "id": "button-pill-outline", "label": "Button — pill outline (dialog secondary)", "state": { "signedIn": true, "screen": "burn", "confirm": "confirm", "confirmKind": "burn", "spend": 62 }, "sel": ".c_btn_pill_outline", "bg": "transparent", "pad": 8 },
+        { "id": "button-disabled", "label": "Button — disabled", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "burned": null, "spend": 4 }, "sel": ".c_btn_primary[disabled]", "bg": "transparent", "pad": 8 }
+      ]
+    },
+
+    {
+      "id": "chrome",
+      "title": "Chrome",
+      "components": [
+        { "id": "hero-guest", "label": "Hero — guest", "state": { "signedIn": false, "screen": "page", "modal": null }, "sel": "[class*=\"_hero_1mjl8_\"]", "pad": 0 },
+        { "id": "hero-member", "label": "Hero — member, with balance overlay", "state": { "signedIn": true, "screen": "page", "loadingProfile": false }, "sel": "[class*=\"_hero_1mjl8_\"]", "pad": 0 },
+        { "id": "hero-member-loading", "label": "Hero — member, skeletons", "state": { "signedIn": true, "screen": "page", "loadingProfile": true }, "sel": "[class*=\"_hero_1mjl8_\"]", "pad": 0 },
+        { "id": "venue-chip", "label": "Venue chip", "state": { "signedIn": true, "screen": "page", "loadingProfile": false }, "sel": "[class*=\"_venue_chip_\"]", "bg": "transparent", "pad": 8 },
+        { "id": "powered-by", "label": "Powered by myMENU", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready" }, "sel": "[class*=\"_powered_by_\"]", "pad": 8 },
+        { "id": "sheet-header", "label": "Sheet header — GHA wordmark + close", "state": { "signedIn": false, "screen": "page", "modal": "signin" }, "sel": "[class*=\"_gha_wallet_header_\"]", "bg": "#ffffff", "pad": 0 }
+      ]
+    },
+
+    {
+      "id": "member",
+      "title": "Member landing",
+      "components": [
+        { "id": "tier-card-silver", "label": "Tier card — Silver", "state": { "signedIn": true, "screen": "page", "loadingProfile": false }, "fixture": { "member": { "tier": "SILVER" } }, "sel": "[class*=\"_card_visual_wrap_\"]", "pad": 12 },
+        { "id": "tier-card-gold", "label": "Tier card — Gold", "state": { "signedIn": true, "screen": "page", "loadingProfile": false }, "fixture": { "member": { "tier": "GOLD" } }, "sel": "[class*=\"_card_visual_wrap_\"]", "pad": 12 },
+        { "id": "tier-card-platinum", "label": "Tier card — Platinum", "state": { "signedIn": true, "screen": "page", "loadingProfile": false }, "fixture": { "member": { "tier": "PLATINUM" } }, "sel": "[class*=\"_card_visual_wrap_\"]", "pad": 12 },
+        { "id": "tier-card-titanium", "label": "Tier card — Titanium", "state": { "signedIn": true, "screen": "page", "loadingProfile": false }, "fixture": { "member": { "tier": "TITANIUM" } }, "sel": "[class*=\"_card_visual_wrap_\"]", "pad": 12 },
+        { "id": "tier-card-loading", "label": "Tier card — loading", "state": { "signedIn": true, "screen": "page", "loadingProfile": true }, "sel": "[class*=\"_card_visual_wrap_\"]", "pad": 12 },
+        { "id": "stats-grid", "label": "Stats — D$ earned / redeemed", "state": { "signedIn": true, "screen": "page", "loadingProfile": false }, "sel": "[class*=\"_stats_grid_\"]", "pad": 8 },
+        { "id": "action-card-viewbill", "label": "Action card — View Bill", "state": { "signedIn": true, "screen": "page", "loadingProfile": false, "posVariant": "view_bill", "billStatus": "ready", "sessionHint": null }, "sel": "[class*=\"_action_card_\"]", "pad": 8 },
+        { "id": "action-card-earn", "label": "Action card — Earn D$", "state": { "signedIn": true, "screen": "page", "loadingProfile": false, "posVariant": "earn_burn", "billStatus": "ready", "sessionHint": null }, "sel": "[class*=\"_action_card_\"]", "index": 0, "pad": 8 },
+        { "id": "action-card-burn", "label": "Action card — Burn D$", "state": { "signedIn": true, "screen": "page", "loadingProfile": false, "posVariant": "earn_burn", "billStatus": "ready", "sessionHint": null }, "sel": "[class*=\"_action_card_\"]", "index": 1, "pad": 8 },
+        { "id": "action-card-fetching", "label": "Action card — fetching from POS", "state": { "signedIn": true, "screen": "page", "loadingProfile": false, "posVariant": "view_bill", "billStatus": "fetching" }, "sel": "[class*=\"_action_card_\"]", "pad": 8 },
+        { "id": "action-card-empty", "label": "Action card — no active bill", "state": { "signedIn": true, "screen": "page", "loadingProfile": false, "posVariant": "view_bill", "billStatus": "empty" }, "sel": "[class*=\"_action_card_\"]", "pad": 8 },
+        { "id": "session-hint-expired", "label": "Session hint — expired", "state": { "signedIn": true, "screen": "page", "loadingProfile": false, "sessionHint": "expired" }, "sel": "[class*=\"_action_session_hint_\"]", "pad": 8 },
+        { "id": "session-hint-changed", "label": "Session hint — check changed", "state": { "signedIn": true, "screen": "page", "loadingProfile": false, "sessionHint": "check_changed" }, "sel": "[class*=\"_action_session_hint_\"]", "pad": 8 },
+        { "id": "session-hint-no-token", "label": "Session hint — no token", "state": { "signedIn": true, "screen": "page", "loadingProfile": false, "sessionHint": "no_token" }, "sel": "[class*=\"_action_session_hint_\"]", "pad": 8 }
+      ]
+    },
+
+    {
+      "id": "guest",
+      "title": "Guest landing",
+      "components": [
+        { "id": "guest-card", "label": "Guest card — whole", "state": { "signedIn": false, "screen": "page", "modal": null }, "sel": "[class*=\"_guest_card_\"]", "pad": 12 },
+        { "id": "perks-panel", "label": "Perks panel", "state": { "signedIn": false, "screen": "page", "modal": null }, "sel": "[class*=\"_guest_perks_card_\"]", "pad": 12 }
+      ]
+    },
+
+    {
+      "id": "bill",
+      "title": "Bill and redemption",
+      "components": [
+        { "id": "items-card", "label": "Items — collapsed", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "itemsExpanded": false }, "sel": "[class*=\"_items_card_\"]", "pad": 12 },
+        { "id": "items-card-expanded", "label": "Items — all seven", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "itemsExpanded": true }, "sel": "[class*=\"_items_card_\"]", "pad": 12 },
+        { "id": "bill-card", "label": "Bill card", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "discountState": "ok" }, "sel": "[class*=\"_bill_card_\"]", "pad": 12 },
+        { "id": "bill-card-fetching", "label": "Bill card — loading", "state": { "signedIn": true, "screen": "burn", "billStatus": "fetching" }, "sel": "[class*=\"_bill_card_\"]", "pad": 12 },
+        { "id": "bill-card-empty", "label": "Bill card — no active bill", "state": { "signedIn": true, "screen": "burn", "billStatus": "empty" }, "sel": "[class*=\"_bill_card_\"]", "pad": 12 },
+        { "id": "spend-card", "label": "Spend card", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "burned": null, "spend": 62 }, "sel": "[class*=\"_spend_card_\"]", "pad": 12 },
+        { "id": "spend-card-below-min", "label": "Spend card — below the minimum", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "burned": null, "spend": 4 }, "sel": "[class*=\"_spend_card_\"]", "pad": 12 },
+        { "id": "spend-card-zero", "label": "Spend card — nothing to redeem, so Earn", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "burned": null, "earned": null, "earnPending": false, "spend": 0 }, "sel": "[class*=\"_spend_card_\"]", "pad": 12 },
+        { "id": "discount-checking", "label": "Discount — checking", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "discountState": "checking" }, "sel": "[class*=\"_discount_checking_card_\"]", "pad": 12 },
+        { "id": "discount-error", "label": "Discount — rejected by the POS", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "discountState": "failed" }, "sel": "[class*=\"_discount_error_card_\"]", "pad": 12 },
+        { "id": "discount-other-member", "label": "Discount — locked by another member", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "discountState": "other_member" }, "sel": "[class*=\"_discount_error_card_\"]", "pad": 12 },
+        { "id": "burn-details", "label": "Redemption details — already applied", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "discountState": "ok", "balance": 86, "burned": { "dd_redeemed": 62, "local_amount_redeemed": 18724, "confirmation_number": "BRN4182655", "burned_at": "05 Sep 2026, 21:14" } }, "sel": "[class*=\"_burn_details_card_\"]", "pad": 12 },
+        { "id": "earn-card", "label": "Earn card", "state": { "signedIn": true, "screen": "earn", "billStatus": "ready", "discountState": "ok", "earned": null, "earnPending": false }, "sel": "[class*=\"_spend_card_\"]", "pad": 12 },
+        { "id": "earn-pending", "label": "Earn pending card", "state": { "signedIn": true, "screen": "earn", "billStatus": "ready", "discountState": "ok", "earnPending": true, "earned": { "transaction_id": "GHA-41882045", "pos_check_number": "2408", "pos_check_ref": "DB-418255" } }, "sel": "[class*=\"_burn_details_card_\"]", "pad": 12 }
+      ]
+    },
+
+    {
+      "id": "dialogs",
+      "title": "Dialogs and drawers",
+      "components": [
+        { "id": "dialog-confirm-burn", "label": "Dialog — confirm redemption", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "burned": null, "spend": 62, "confirm": "confirm", "confirmKind": "burn" }, "sel": "[class*=\"_confirm_modal_content_\"]", "pad": 16 },
+        { "id": "dialog-applying", "label": "Dialog — applying", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "burned": null, "spend": 62, "confirm": "submitting", "confirmKind": "burn" }, "sel": "[class*=\"_confirm_modal_content_\"]", "pad": 16 },
+        { "id": "dialog-success", "label": "Dialog — D$ applied", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "spend": 62, "balance": 86, "burned": { "dd_redeemed": 62, "local_amount_redeemed": 18724, "confirmation_number": "BRN4182655", "burned_at": "05 Sep 2026, 21:14" }, "confirm": "success", "confirmKind": "burn" }, "sel": "[class*=\"_confirm_modal_content_\"]", "pad": 16 },
+        { "id": "dialog-error", "label": "Dialog — could not apply", "state": { "signedIn": true, "screen": "burn", "billStatus": "ready", "burned": null, "spend": 62, "confirm": "error", "confirmKind": "burn" }, "sel": "[class*=\"_confirm_modal_content_\"]", "pad": 16 },
+        { "id": "dialog-confirm-earn", "label": "Dialog — confirm earn", "state": { "signedIn": true, "screen": "earn", "billStatus": "ready", "earned": null, "confirm": "confirm", "confirmKind": "earn" }, "sel": "[class*=\"_confirm_modal_content_\"]", "pad": 16 },
+        { "id": "dialog-earn-success", "label": "Dialog — D$ earned, with POS references", "state": { "signedIn": true, "screen": "earn", "billStatus": "ready", "earnPending": true, "earned": { "transaction_id": "GHA-41882045", "pos_check_number": "2408", "pos_check_ref": "DB-418255" }, "confirm": "success", "confirmKind": "earn" }, "sel": "[class*=\"_confirm_modal_content_\"]", "pad": 16 },
+        { "id": "drawer-join-success", "label": "Drawer — welcome to DISCOVERY", "state": { "signedIn": false, "screen": "page", "modal": "signup", "signupDone": true }, "sel": "[class*=\"_gha_success_drawer_\"]", "pad": 16 }
+      ]
+    },
+
+    {
+      "id": "forms",
+      "title": "Form controls",
+      "components": [
+        { "id": "field-text", "label": "Text field", "state": { "signedIn": false, "screen": "page", "modal": "signin", "formError": "" }, "sel": "[class*=\"_gha_field_l72lm_\"]", "index": 0, "bg": "#ffffff", "pad": 10 },
+        { "id": "field-error", "label": "Text field — error", "state": { "signedIn": false, "screen": "page", "modal": "signin", "formError": "Username or email is required" }, "sel": "[class*=\"_gha_field_l72lm_\"]", "index": 0, "bg": "#ffffff", "pad": 10 },
+        { "id": "field-password", "label": "Password field — with reveal", "state": { "signedIn": false, "screen": "page", "modal": "signin", "showPassword": false }, "sel": "[class*=\"_gha_field_l72lm_\"]", "index": 1, "bg": "#ffffff", "pad": 10 },
+        { "id": "field-select", "label": "Select — language", "state": { "signedIn": false, "screen": "page", "modal": "signup", "signupDone": false }, "sel": ".gha_select", "bg": "#ffffff", "pad": 10 },
+        { "id": "field-dial", "label": "Dial code box", "state": { "signedIn": false, "screen": "page", "modal": "signup", "signupDone": false }, "sel": ".gha_dial_box", "bg": "#ffffff", "pad": 10 },
+        { "id": "checkbox-off", "label": "Checkbox — unchecked", "state": { "signedIn": false, "screen": "page", "modal": "signup", "signupDone": false, "marketingOptIn": false }, "sel": ".gha_check_row", "bg": "#ffffff", "pad": 10 },
+        { "id": "checkbox-on", "label": "Checkbox — checked", "state": { "signedIn": false, "screen": "page", "modal": "signup", "signupDone": false, "marketingOptIn": true }, "sel": ".gha_check_row", "bg": "#ffffff", "pad": 10 }
+      ]
+    }
+  ]
+}

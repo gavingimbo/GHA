@@ -28,6 +28,10 @@ manifest.
 experience built on the same check-bound QR architecture, with a reviewer
 drawer covering every state. See `dev/README.md`.
 
+`design/` holds every component on its own — vector PDFs for Illustrator, 3×
+PNGs for slides, the icon set as SVG, and an Adobe swatch file. Browse
+`design/components.html`; see `design/README.md`.
+
 `reference/` is a capture of this production flow for making mockups and a
 guide: 49 states rendered to `reference/shots/`, a browsable gallery at
 `reference/index.html`, a machine-readable catalogue in `reference/states.json`,

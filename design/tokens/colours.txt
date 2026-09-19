@@ -1,0 +1,18 @@
+#14102e  ink              GHA ink — hero fill, titles, bill total
+#300b5c  heading          Heading purple — guest heading, action titles
+#582c83  venue-theme      Venue theme button colour, from the venue config
+#3d0b40  accent           Accent purple — amount pill, spend input border
+#fafafa  page-bg          Page background
+#f4eff9  perks-bg         Perks panel
+#b00020  error            Error — session hint, discount error title
+#fdecee  error-surface    Error card surface
+#d32f2f  field-error      MUI field error
+#1c8c4e  success          Success
+#0e6e3c  success-deep     Success, pressed
+#0d0a20  scanner-bg       QR scanner surface
+#ffffff  white            Card surface
+#140c30  ink-85           at 85% — Body copy
+#140c30  ink-75           at 75% — Secondary copy
+#140c30  ink-65           at 65% — Action subtitles
+#140c30  ink-55           at 55% — Muted
+#140c30  ink-06           at 6% — Hairlines

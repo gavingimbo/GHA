@@ -1,0 +1,668 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dine with D$ — component library</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#f6f5f8;color:#14102e;
+       font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  header{background:#14102e;color:#fff;padding:38px 32px}
+  header h1{margin:0 0 8px;font-size:26px;font-weight:600}
+  header p{margin:0;max-width:78ch;color:#ffffffb8}
+  header a{color:#c9a3ea}
+  nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #e4e1ea;
+      padding:12px 32px;display:flex;gap:6px;flex-wrap:wrap;z-index:2}
+  nav a{font-size:13px;text-decoration:none;color:#4a4560;border:1px solid #e4e1ea;
+        border-radius:7px;padding:6px 11px}
+  main{padding:28px 32px 70px;max-width:1500px;margin:0 auto}
+  section{margin-bottom:40px;scroll-margin-top:60px}
+  section h2{font-size:19px;margin:0 0 16px;font-weight:600}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;align-items:start}
+  figure{margin:0;background:#fff;border:1px solid #e4e1ea;border-radius:10px;overflow:hidden}
+  .shot{padding:10px;display:flex;justify-content:center;align-items:center;min-height:90px;
+        border-bottom:1px solid #e4e1ea}
+  .shot img{max-width:100%;height:auto;display:block}
+  figcaption{padding:11px 12px 13px;font-size:12.5px;display:flex;flex-direction:column;gap:3px}
+  figcaption b{font-weight:600}
+  figcaption code{font:11px ui-monospace,Menlo,monospace;color:#7b7690}
+  figcaption span{font-size:11px;color:#7b7690}
+  figcaption .links{font-size:12px;color:#c3bfcd}
+  figcaption a{color:#582c83;font-size:12px}
+</style></head><body>
+<header>
+  <h1>Dine with D$ — component library</h1>
+  <p>Every component lifted out of the production mockup, as a <b>vector PDF</b> for
+     Illustrator and a 3× PNG for slides. The icon set is in
+     <code>icons/</code> as real SVG. See <a href="./README.md">README.md</a> for how
+     to open these in Illustrator, and <a href="../reference/index.html">reference/</a>
+     for whole screens with their copy and triggers.</p>
+</header>
+<nav><a href="#foundations">Foundations</a><a href="#chrome">Chrome</a><a href="#member">Member landing</a><a href="#guest">Guest landing</a><a href="#bill">Bill and redemption</a><a href="#dialogs">Dialogs and drawers</a><a href="#forms">Form controls</a><a href="./all-components.pdf">all-components.pdf</a></nav>
+<main><section id="foundations"><h2>Foundations</h2><div class="grid">
+        <figure>
+          <div class="shot" style="background:#ffffff">
+            <img src="./png/colour-palette.png" alt="Colour palette">
+          </div>
+          <figcaption>
+            <b>Colour palette</b>
+            <code>colour-palette</code>
+            <span>706 × 554 px</span>
+            <span class="links"><a href="./pdf/colour-palette.pdf">PDF</a> · <a href="./png/colour-palette.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#ffffff">
+            <img src="./png/type-scale.png" alt="Type scale">
+          </div>
+          <figcaption>
+            <b>Type scale</b>
+            <code>type-scale</code>
+            <span>584 × 491 px</span>
+            <span class="links"><a href="./pdf/type-scale.pdf">PDF</a> · <a href="./png/type-scale.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:repeating-conic-gradient(#f0eef3 0% 25%, #fff 0% 50%) 50%/16px 16px">
+            <img src="./png/button-primary.png" alt="Button — primary">
+          </div>
+          <figcaption>
+            <b>Button — primary</b>
+            <code>button-primary</code>
+            <span>339 × 63 px</span>
+            <span class="links"><a href="./pdf/button-primary.pdf">PDF</a> · <a href="./png/button-primary.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:repeating-conic-gradient(#f0eef3 0% 25%, #fff 0% 50%) 50%/16px 16px">
+            <img src="./png/button-outline.png" alt="Button — outline">
+          </div>
+          <figcaption>
+            <b>Button — outline</b>
+            <code>button-outline</code>
+            <span>339 × 66 px</span>
+            <span class="links"><a href="./pdf/button-outline.pdf">PDF</a> · <a href="./png/button-outline.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:repeating-conic-gradient(#f0eef3 0% 25%, #fff 0% 50%) 50%/16px 16px">
+            <img src="./png/button-pill.png" alt="Button — pill (dialog primary)">
+          </div>
+          <figcaption>
+            <b>Button — pill (dialog primary)</b>
+            <code>button-pill</code>
+            <span>170 × 57 px</span>
+            <span class="links"><a href="./pdf/button-pill.pdf">PDF</a> · <a href="./png/button-pill.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:repeating-conic-gradient(#f0eef3 0% 25%, #fff 0% 50%) 50%/16px 16px">
+            <img src="./png/button-pill-outline.png" alt="Button — pill outline (dialog secondary)">
+          </div>
+          <figcaption>
+            <b>Button — pill outline (dialog secondary)</b>
+            <code>button-pill-outline</code>
+            <span>170 × 59 px</span>
+            <span class="links"><a href="./pdf/button-pill-outline.pdf">PDF</a> · <a href="./png/button-pill-outline.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:repeating-conic-gradient(#f0eef3 0% 25%, #fff 0% 50%) 50%/16px 16px">
+            <img src="./png/button-disabled.png" alt="Button — disabled">
+          </div>
+          <figcaption>
+            <b>Button — disabled</b>
+            <code>button-disabled</code>
+            <span>335 × 66 px</span>
+            <span class="links"><a href="./pdf/button-disabled.pdf">PDF</a> · <a href="./png/button-disabled.png">PNG</a></span>
+          </figcaption>
+        </figure></div></section><section id="chrome"><h2>Chrome</h2><div class="grid">
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/hero-guest.png" alt="Hero — guest">
+          </div>
+          <figcaption>
+            <b>Hero — guest</b>
+            <code>hero-guest</code>
+            <span>393 × 207 px</span>
+            <span class="links"><a href="./pdf/hero-guest.pdf">PDF</a> · <a href="./png/hero-guest.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/hero-member.png" alt="Hero — member, with balance overlay">
+          </div>
+          <figcaption>
+            <b>Hero — member, with balance overlay</b>
+            <code>hero-member</code>
+            <span>393 × 207 px</span>
+            <span class="links"><a href="./pdf/hero-member.pdf">PDF</a> · <a href="./png/hero-member.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/hero-member-loading.png" alt="Hero — member, skeletons">
+          </div>
+          <figcaption>
+            <b>Hero — member, skeletons</b>
+            <code>hero-member-loading</code>
+            <span>393 × 207 px</span>
+            <span class="links"><a href="./pdf/hero-member-loading.pdf">PDF</a> · <a href="./png/hero-member-loading.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:repeating-conic-gradient(#f0eef3 0% 25%, #fff 0% 50%) 50%/16px 16px">
+            <img src="./png/venue-chip.png" alt="Venue chip">
+          </div>
+          <figcaption>
+            <b>Venue chip</b>
+            <code>venue-chip</code>
+            <span>143 × 43 px</span>
+            <span class="links"><a href="./pdf/venue-chip.pdf">PDF</a> · <a href="./png/venue-chip.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/powered-by.png" alt="Powered by myMENU">
+          </div>
+          <figcaption>
+            <b>Powered by myMENU</b>
+            <code>powered-by</code>
+            <span>369 × 91 px</span>
+            <span class="links"><a href="./pdf/powered-by.pdf">PDF</a> · <a href="./png/powered-by.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#ffffff">
+            <img src="./png/sheet-header.png" alt="Sheet header — GHA wordmark + close">
+          </div>
+          <figcaption>
+            <b>Sheet header — GHA wordmark + close</b>
+            <code>sheet-header</code>
+            <span>393 × 56 px</span>
+            <span class="links"><a href="./pdf/sheet-header.pdf">PDF</a> · <a href="./png/sheet-header.png">PNG</a></span>
+          </figcaption>
+        </figure></div></section><section id="member"><h2>Member landing</h2><div class="grid">
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/tier-card-silver.png" alt="Tier card — Silver">
+          </div>
+          <figcaption>
+            <b>Tier card — Silver</b>
+            <code>tier-card-silver</code>
+            <span>385 × 224 px</span>
+            <span class="links"><a href="./pdf/tier-card-silver.pdf">PDF</a> · <a href="./png/tier-card-silver.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/tier-card-gold.png" alt="Tier card — Gold">
+          </div>
+          <figcaption>
+            <b>Tier card — Gold</b>
+            <code>tier-card-gold</code>
+            <span>385 × 224 px</span>
+            <span class="links"><a href="./pdf/tier-card-gold.pdf">PDF</a> · <a href="./png/tier-card-gold.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/tier-card-platinum.png" alt="Tier card — Platinum">
+          </div>
+          <figcaption>
+            <b>Tier card — Platinum</b>
+            <code>tier-card-platinum</code>
+            <span>385 × 224 px</span>
+            <span class="links"><a href="./pdf/tier-card-platinum.pdf">PDF</a> · <a href="./png/tier-card-platinum.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/tier-card-titanium.png" alt="Tier card — Titanium">
+          </div>
+          <figcaption>
+            <b>Tier card — Titanium</b>
+            <code>tier-card-titanium</code>
+            <span>385 × 224 px</span>
+            <span class="links"><a href="./pdf/tier-card-titanium.pdf">PDF</a> · <a href="./png/tier-card-titanium.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/tier-card-loading.png" alt="Tier card — loading">
+          </div>
+          <figcaption>
+            <b>Tier card — loading</b>
+            <code>tier-card-loading</code>
+            <span>385 × 224 px</span>
+            <span class="links"><a href="./pdf/tier-card-loading.pdf">PDF</a> · <a href="./png/tier-card-loading.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/stats-grid.png" alt="Stats — D$ earned / redeemed">
+          </div>
+          <figcaption>
+            <b>Stats — D$ earned / redeemed</b>
+            <code>stats-grid</code>
+            <span>377 × 75 px</span>
+            <span class="links"><a href="./pdf/stats-grid.pdf">PDF</a> · <a href="./png/stats-grid.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/action-card-viewbill.png" alt="Action card — View Bill">
+          </div>
+          <figcaption>
+            <b>Action card — View Bill</b>
+            <code>action-card-viewbill</code>
+            <span>369 × 86 px</span>
+            <span class="links"><a href="./pdf/action-card-viewbill.pdf">PDF</a> · <a href="./png/action-card-viewbill.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/action-card-earn.png" alt="Action card — Earn D$">
+          </div>
+          <figcaption>
+            <b>Action card — Earn D$</b>
+            <code>action-card-earn</code>
+            <span>369 × 98 px</span>
+            <span class="links"><a href="./pdf/action-card-earn.pdf">PDF</a> · <a href="./png/action-card-earn.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/action-card-burn.png" alt="Action card — Burn D$">
+          </div>
+          <figcaption>
+            <b>Action card — Burn D$</b>
+            <code>action-card-burn</code>
+            <span>369 × 86 px</span>
+            <span class="links"><a href="./pdf/action-card-burn.pdf">PDF</a> · <a href="./png/action-card-burn.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/action-card-fetching.png" alt="Action card — fetching from POS">
+          </div>
+          <figcaption>
+            <b>Action card — fetching from POS</b>
+            <code>action-card-fetching</code>
+            <span>369 × 86 px</span>
+            <span class="links"><a href="./pdf/action-card-fetching.pdf">PDF</a> · <a href="./png/action-card-fetching.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/action-card-empty.png" alt="Action card — no active bill">
+          </div>
+          <figcaption>
+            <b>Action card — no active bill</b>
+            <code>action-card-empty</code>
+            <span>369 × 86 px</span>
+            <span class="links"><a href="./pdf/action-card-empty.pdf">PDF</a> · <a href="./png/action-card-empty.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/session-hint-expired.png" alt="Session hint — expired">
+          </div>
+          <figcaption>
+            <b>Session hint — expired</b>
+            <code>session-hint-expired</code>
+            <span>369 × 57 px</span>
+            <span class="links"><a href="./pdf/session-hint-expired.pdf">PDF</a> · <a href="./png/session-hint-expired.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/session-hint-changed.png" alt="Session hint — check changed">
+          </div>
+          <figcaption>
+            <b>Session hint — check changed</b>
+            <code>session-hint-changed</code>
+            <span>369 × 57 px</span>
+            <span class="links"><a href="./pdf/session-hint-changed.pdf">PDF</a> · <a href="./png/session-hint-changed.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/session-hint-no-token.png" alt="Session hint — no token">
+          </div>
+          <figcaption>
+            <b>Session hint — no token</b>
+            <code>session-hint-no-token</code>
+            <span>369 × 57 px</span>
+            <span class="links"><a href="./pdf/session-hint-no-token.pdf">PDF</a> · <a href="./png/session-hint-no-token.png">PNG</a></span>
+          </figcaption>
+        </figure></div></section><section id="guest"><h2>Guest landing</h2><div class="grid">
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/guest-card.png" alt="Guest card — whole">
+          </div>
+          <figcaption>
+            <b>Guest card — whole</b>
+            <code>guest-card</code>
+            <span>385 × 546 px</span>
+            <span class="links"><a href="./pdf/guest-card.pdf">PDF</a> · <a href="./png/guest-card.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/perks-panel.png" alt="Perks panel">
+          </div>
+          <figcaption>
+            <b>Perks panel</b>
+            <code>perks-panel</code>
+            <span>347 × 192 px</span>
+            <span class="links"><a href="./pdf/perks-panel.pdf">PDF</a> · <a href="./png/perks-panel.png">PNG</a></span>
+          </figcaption>
+        </figure></div></section><section id="bill"><h2>Bill and redemption</h2><div class="grid">
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/items-card.png" alt="Items — collapsed">
+          </div>
+          <figcaption>
+            <b>Items — collapsed</b>
+            <code>items-card</code>
+            <span>377 × 224 px</span>
+            <span class="links"><a href="./pdf/items-card.pdf">PDF</a> · <a href="./png/items-card.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/items-card-expanded.png" alt="Items — all seven">
+          </div>
+          <figcaption>
+            <b>Items — all seven</b>
+            <code>items-card-expanded</code>
+            <span>377 × 336 px</span>
+            <span class="links"><a href="./pdf/items-card-expanded.pdf">PDF</a> · <a href="./png/items-card-expanded.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/bill-card.png" alt="Bill card">
+          </div>
+          <figcaption>
+            <b>Bill card</b>
+            <code>bill-card</code>
+            <span>377 × 196 px</span>
+            <span class="links"><a href="./pdf/bill-card.pdf">PDF</a> · <a href="./png/bill-card.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/bill-card-fetching.png" alt="Bill card — loading">
+          </div>
+          <figcaption>
+            <b>Bill card — loading</b>
+            <code>bill-card-fetching</code>
+            <span>377 × 74 px</span>
+            <span class="links"><a href="./pdf/bill-card-fetching.pdf">PDF</a> · <a href="./png/bill-card-fetching.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/bill-card-empty.png" alt="Bill card — no active bill">
+          </div>
+          <figcaption>
+            <b>Bill card — no active bill</b>
+            <code>bill-card-empty</code>
+            <span>377 × 77 px</span>
+            <span class="links"><a href="./pdf/bill-card-empty.pdf">PDF</a> · <a href="./png/bill-card-empty.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/spend-card.png" alt="Spend card">
+          </div>
+          <figcaption>
+            <b>Spend card</b>
+            <code>spend-card</code>
+            <span>377 × 349 px</span>
+            <span class="links"><a href="./pdf/spend-card.pdf">PDF</a> · <a href="./png/spend-card.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/spend-card-below-min.png" alt="Spend card — below the minimum">
+          </div>
+          <figcaption>
+            <b>Spend card — below the minimum</b>
+            <code>spend-card-below-min</code>
+            <span>377 × 394 px</span>
+            <span class="links"><a href="./pdf/spend-card-below-min.pdf">PDF</a> · <a href="./png/spend-card-below-min.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/spend-card-zero.png" alt="Spend card — nothing to redeem, so Earn">
+          </div>
+          <figcaption>
+            <b>Spend card — nothing to redeem, so Earn</b>
+            <code>spend-card-zero</code>
+            <span>377 × 349 px</span>
+            <span class="links"><a href="./pdf/spend-card-zero.pdf">PDF</a> · <a href="./png/spend-card-zero.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/discount-checking.png" alt="Discount — checking">
+          </div>
+          <figcaption>
+            <b>Discount — checking</b>
+            <code>discount-checking</code>
+            <span>377 × 74 px</span>
+            <span class="links"><a href="./pdf/discount-checking.pdf">PDF</a> · <a href="./png/discount-checking.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/discount-error.png" alt="Discount — rejected by the POS">
+          </div>
+          <figcaption>
+            <b>Discount — rejected by the POS</b>
+            <code>discount-error</code>
+            <span>377 × 211 px</span>
+            <span class="links"><a href="./pdf/discount-error.pdf">PDF</a> · <a href="./png/discount-error.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/discount-other-member.png" alt="Discount — locked by another member">
+          </div>
+          <figcaption>
+            <b>Discount — locked by another member</b>
+            <code>discount-other-member</code>
+            <span>377 × 157 px</span>
+            <span class="links"><a href="./pdf/discount-other-member.pdf">PDF</a> · <a href="./png/discount-other-member.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/burn-details.png" alt="Redemption details — already applied">
+          </div>
+          <figcaption>
+            <b>Redemption details — already applied</b>
+            <code>burn-details</code>
+            <span>377 × 205 px</span>
+            <span class="links"><a href="./pdf/burn-details.pdf">PDF</a> · <a href="./png/burn-details.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/earn-card.png" alt="Earn card">
+          </div>
+          <figcaption>
+            <b>Earn card</b>
+            <code>earn-card</code>
+            <span>377 × 205 px</span>
+            <span class="links"><a href="./pdf/earn-card.pdf">PDF</a> · <a href="./png/earn-card.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/earn-pending.png" alt="Earn pending card">
+          </div>
+          <figcaption>
+            <b>Earn pending card</b>
+            <code>earn-pending</code>
+            <span>377 × 149 px</span>
+            <span class="links"><a href="./pdf/earn-pending.pdf">PDF</a> · <a href="./png/earn-pending.png">PNG</a></span>
+          </figcaption>
+        </figure></div></section><section id="dialogs"><h2>Dialogs and drawers</h2><div class="grid">
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/dialog-confirm-burn.png" alt="Dialog — confirm redemption">
+          </div>
+          <figcaption>
+            <b>Dialog — confirm redemption</b>
+            <code>dialog-confirm-burn</code>
+            <span>393 × 334 px</span>
+            <span class="links"><a href="./pdf/dialog-confirm-burn.pdf">PDF</a> · <a href="./png/dialog-confirm-burn.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/dialog-applying.png" alt="Dialog — applying">
+          </div>
+          <figcaption>
+            <b>Dialog — applying</b>
+            <code>dialog-applying</code>
+            <span>393 × 173 px</span>
+            <span class="links"><a href="./pdf/dialog-applying.pdf">PDF</a> · <a href="./png/dialog-applying.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/dialog-success.png" alt="Dialog — D$ applied">
+          </div>
+          <figcaption>
+            <b>Dialog — D$ applied</b>
+            <code>dialog-success</code>
+            <span>393 × 332 px</span>
+            <span class="links"><a href="./pdf/dialog-success.pdf">PDF</a> · <a href="./png/dialog-success.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/dialog-error.png" alt="Dialog — could not apply">
+          </div>
+          <figcaption>
+            <b>Dialog — could not apply</b>
+            <code>dialog-error</code>
+            <span>393 × 323 px</span>
+            <span class="links"><a href="./pdf/dialog-error.pdf">PDF</a> · <a href="./png/dialog-error.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/dialog-confirm-earn.png" alt="Dialog — confirm earn">
+          </div>
+          <figcaption>
+            <b>Dialog — confirm earn</b>
+            <code>dialog-confirm-earn</code>
+            <span>393 × 309 px</span>
+            <span class="links"><a href="./pdf/dialog-confirm-earn.pdf">PDF</a> · <a href="./png/dialog-confirm-earn.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/dialog-earn-success.png" alt="Dialog — D$ earned, with POS references">
+          </div>
+          <figcaption>
+            <b>Dialog — D$ earned, with POS references</b>
+            <code>dialog-earn-success</code>
+            <span>393 × 424 px</span>
+            <span class="links"><a href="./pdf/dialog-earn-success.pdf">PDF</a> · <a href="./png/dialog-earn-success.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#fafafa">
+            <img src="./png/drawer-join-success.png" alt="Drawer — welcome to DISCOVERY">
+          </div>
+          <figcaption>
+            <b>Drawer — welcome to DISCOVERY</b>
+            <code>drawer-join-success</code>
+            <span>425 × 253 px</span>
+            <span class="links"><a href="./pdf/drawer-join-success.pdf">PDF</a> · <a href="./png/drawer-join-success.png">PNG</a></span>
+          </figcaption>
+        </figure></div></section><section id="forms"><h2>Form controls</h2><div class="grid">
+        <figure>
+          <div class="shot" style="background:#ffffff">
+            <img src="./png/field-text.png" alt="Text field">
+          </div>
+          <figcaption>
+            <b>Text field</b>
+            <code>field-text</code>
+            <span>373 × 89 px</span>
+            <span class="links"><a href="./pdf/field-text.pdf">PDF</a> · <a href="./png/field-text.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#ffffff">
+            <img src="./png/field-error.png" alt="Text field — error">
+          </div>
+          <figcaption>
+            <b>Text field — error</b>
+            <code>field-error</code>
+            <span>373 × 106 px</span>
+            <span class="links"><a href="./pdf/field-error.pdf">PDF</a> · <a href="./png/field-error.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#ffffff">
+            <img src="./png/field-password.png" alt="Password field — with reveal">
+          </div>
+          <figcaption>
+            <b>Password field — with reveal</b>
+            <code>field-password</code>
+            <span>373 × 89 px</span>
+            <span class="links"><a href="./pdf/field-password.pdf">PDF</a> · <a href="./png/field-password.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#ffffff">
+            <img src="./png/field-select.png" alt="Select — language">
+          </div>
+          <figcaption>
+            <b>Select — language</b>
+            <code>field-select</code>
+            <span>373 × 68 px</span>
+            <span class="links"><a href="./pdf/field-select.pdf">PDF</a> · <a href="./png/field-select.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#ffffff">
+            <img src="./png/field-dial.png" alt="Dial code box">
+          </div>
+          <figcaption>
+            <b>Dial code box</b>
+            <code>field-dial</code>
+            <span>119 × 68 px</span>
+            <span class="links"><a href="./pdf/field-dial.pdf">PDF</a> · <a href="./png/field-dial.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#ffffff">
+            <img src="./png/checkbox-off.png" alt="Checkbox — unchecked">
+          </div>
+          <figcaption>
+            <b>Checkbox — unchecked</b>
+            <code>checkbox-off</code>
+            <span>373 × 75 px</span>
+            <span class="links"><a href="./pdf/checkbox-off.pdf">PDF</a> · <a href="./png/checkbox-off.png">PNG</a></span>
+          </figcaption>
+        </figure>
+        <figure>
+          <div class="shot" style="background:#ffffff">
+            <img src="./png/checkbox-on.png" alt="Checkbox — checked">
+          </div>
+          <figcaption>
+            <b>Checkbox — checked</b>
+            <code>checkbox-on</code>
+            <span>373 × 75 px</span>
+            <span class="links"><a href="./pdf/checkbox-on.pdf">PDF</a> · <a href="./png/checkbox-on.png">PNG</a></span>
+          </figcaption>
+        </figure></div></section></main>
+</body></html>
