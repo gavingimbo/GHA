@@ -178,7 +178,32 @@ async function harvest(page, c) {
     const el = all[index || 0];
     if (!el) return null;
     const r = el.getBoundingClientRect();
-    return { html: el.outerHTML, width: Math.round(r.width), height: Math.round(r.height), count: all.length };
+
+    // Some components hang a decoration outside their own box — the join
+    // drawer's check badge sits at top:-32px, for one — and a box-sized frame
+    // would slice it off. Measure the union of the element and everything
+    // inside it, and hand back how far each side overhangs.
+    let minX = r.left, minY = r.top, maxX = r.right, maxY = r.bottom;
+    for (const d of el.querySelectorAll('*')) {
+      const b = d.getBoundingClientRect();
+      if (!b.width && !b.height) continue;
+      if (b.left < minX) minX = b.left;
+      if (b.top < minY) minY = b.top;
+      if (b.right > maxX) maxX = b.right;
+      if (b.bottom > maxY) maxY = b.bottom;
+    }
+    return {
+      html: el.outerHTML,
+      width: Math.round(r.width),
+      height: Math.round(r.height),
+      overflow: {
+        top: Math.max(0, Math.ceil(r.top - minY)),
+        right: Math.max(0, Math.ceil(maxX - r.right)),
+        bottom: Math.max(0, Math.ceil(maxY - r.bottom)),
+        left: Math.max(0, Math.ceil(r.left - minX)),
+      },
+      count: all.length,
+    };
   }, { sel: c.sel, index: c.index });
 
   if (!got) throw new Error(`${c.id}: nothing matched ${c.sel}`);
@@ -188,10 +213,12 @@ async function harvest(page, c) {
 /** A bare page holding one component at the exact width it has in the app, so
  *  an isolated export is the same geometry as the real screen rather than a
  *  shrink-to-fit approximation. */
-const wrap = (c, html, width) => {
+const wrap = (c, html, width, overflow) => {
   const pad = c.pad == null ? 12 : c.pad;
+  const o = overflow || { top: 0, right: 0, bottom: 0, left: 0 };
+  const padding = `${pad + o.top}px ${pad + o.right}px ${pad + o.bottom}px ${pad + o.left}px`;
   const sizing = width
-    ? `display:flex;width:${width + pad * 2}px`
+    ? `display:flex;width:${width + pad * 2 + o.left + o.right}px`
     : 'display:inline-block';
   return `<!doctype html><html><head><meta charset="utf-8">
 <base href="${BASE}/">
@@ -203,7 +230,7 @@ const wrap = (c, html, width) => {
 <link rel="stylesheet" href="css/titanium.css">
 <style>
   html,body{margin:0;padding:0;background:${c.bg || '#fafafa'}}
-  #frame{${sizing};padding:${pad}px;background:${c.bg || '#fafafa'}}
+  #frame{${sizing};padding:${padding};background:${c.bg || '#fafafa'}}
   #frame > *{flex:1 1 auto;min-width:0}
   /* The app pins these to the viewport; in isolation they have to flow. */
   [class*="_action_row_"]{position:static!important;backdrop-filter:none!important}
@@ -211,11 +238,11 @@ const wrap = (c, html, width) => {
 </style></head><body><div id="frame">${html}</div></body></html>`;
 };
 
-async function exportOne(page, c, html, width) {
+async function exportOne(page, c, html, width, overflow) {
   // Roomy enough that nothing is constrained by the viewport; the frame's own
   // width is what fixes the geometry.
   await page.setViewportSize(ROOMY);
-  await page.setContent(wrap(c, html, width), { waitUntil: 'load' });
+  await page.setContent(wrap(c, html, width, overflow), { waitUntil: 'load' });
   await settle(page);
   await page.waitForTimeout(90);
 
@@ -341,7 +368,7 @@ async function main() {
 
   for (const c of todo) {
     const got = await harvest(page, c);
-    const size = await exportOne(page, c, got.html, got.width);
+    const size = await exportOne(page, c, got.html, got.width, got.overflow);
     rows[c.id] = size;
     process.stdout.write(`  ${c.id.padEnd(26)} ${size.w} × ${size.h}\n`);
   }

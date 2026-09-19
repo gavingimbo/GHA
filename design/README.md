@@ -64,6 +64,12 @@ the phone.
   **including** the padding the export adds around it. Subtract the padding
   (8–16 px, per component) for the component's own box.
 
+Where a component hangs a decoration outside its own box — the join drawer's
+check badge sits at `top:-32px` — the export measures the union of the element
+and everything inside it, so the overhang is included rather than sliced off.
+That is why a few components carry more space on one side than the padding
+alone would give.
+
 Components are exported on their production background — `#fafafa` for anything
 that sits on the page, `#ffffff` inside sheets — because the cards are white and
 would vanish on white. Buttons, chips and the venue chip are exported
