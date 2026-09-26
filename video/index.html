@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dine with D$ — 30s film</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+  :root {
+    --purple: #612D87;
+    --midnight: #202A66;
+    --dune: #A39383;
+    --sky: #8DCBDB;
+    --orchid: #9A1A81;
+    --lilac: #CDB6E8;
+    --ink: #120E24;
+    --black: #05040A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #000; height: 100%; overflow: hidden; }
+  body { display: grid; place-items: center; font-family: Manrope, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+
+  #stage {
+    position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background: var(--black); transform-origin: 50% 50%; color: #fff;
+  }
+  .abs { position: absolute; }
+  .layer { position: absolute; inset: 0; }
+  .will { will-change: transform, opacity, filter; }
+
+  /* ---------------------------------------------------------------- backgrounds */
+  #glow {
+    background:
+      radial-gradient(900px 700px at var(--gx, 70%) var(--gy, 55%), rgba(97, 45, 135, .55), transparent 70%),
+      radial-gradient(700px 600px at calc(100% - var(--gx, 70%)) 20%, rgba(32, 42, 102, .55), transparent 70%);
+  }
+  #white { background: #fff; }
+
+  /* ---------------------------------------------------------------------- type */
+  .mega { font-weight: 800; font-size: 230px; letter-spacing: -.055em; line-height: 1; white-space: nowrap; }
+  .h1 { font-weight: 750; font-size: 92px; letter-spacing: -.04em; line-height: 1.02; }
+  .h2 { font-weight: 700; font-size: 64px; letter-spacing: -.03em; line-height: 1.08; }
+  .sub { font-weight: 450; font-size: 36px; letter-spacing: -.01em; line-height: 1.35; color: rgba(255, 255, 255, .72); }
+  .eyebrow { font-weight: 700; font-size: 22px; letter-spacing: .32em; text-transform: uppercase; }
+  .serif { font-family: Fraunces, Georgia, serif; font-weight: 350; letter-spacing: -.02em; }
+  .w { display: inline-block; will-change: transform, opacity, filter; }
+  .centerX { left: 0; right: 0; text-align: center; }
+  .grad { background: linear-gradient(180deg, #fff 10%, var(--lilac) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .purple { color: var(--purple); }
+
+  /* --------------------------------------------------------------------- photo */
+  #photo { left: 50%; top: 50%; overflow: hidden; transform: translate(-50%, -50%); }
+  #photo img, #endPhoto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  #photoShade {
+    background: linear-gradient(180deg, rgba(5, 4, 10, 0) 45%, rgba(5, 4, 10, .78) 100%);
+  }
+
+  /* --------------------------------------------------------------------- phone */
+  .scene3d { perspective: 2400px; }
+  #phone {
+    width: 420px; height: 876px; left: 0; top: 0; border-radius: 72px; padding: 15px;
+    background: linear-gradient(145deg, #3a3940, #121216 40%, #26252b);
+    box-shadow:
+      inset 0 0 0 2px rgba(255, 255, 255, .10),
+      inset 0 0 0 6px #050507,
+      0 80px 140px rgba(0, 0, 0, .55),
+      0 30px 60px rgba(0, 0, 0, .35);
+    transform-style: preserve-3d;
+  }
+  #screen { position: relative; width: 390px; height: 846px; border-radius: 58px; overflow: hidden; background: #fff; }
+  #screen img { position: absolute; left: 0; top: 0; width: 100%; height: auto; }
+  #island { position: absolute; left: 50%; top: 13px; width: 118px; height: 34px; margin-left: -59px; border-radius: 20px; background: #000; z-index: 5; }
+  #glare {
+    position: absolute; inset: 0; z-index: 6; pointer-events: none;
+    background: linear-gradient(115deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, .16) 45%, rgba(255, 255, 255, 0) 60%);
+  }
+  #spot {
+    position: absolute; z-index: 4; border-radius: 14px;
+    border: 3px solid #B58DDB;
+    box-shadow: 0 0 0 2000px rgba(8, 4, 18, .42), 0 0 24px rgba(181, 141, 219, .9);
+  }
+
+  /* --------------------------------------------------------------------- cards */
+  .card { width: 520px; height: 325px; left: 50%; top: 50%; margin: -162px 0 0 -260px; border-radius: 26px; overflow: hidden;
+          box-shadow: 0 40px 80px rgba(18, 14, 36, .28), 0 12px 24px rgba(18, 14, 36, .16); }
+  /* design/png tier cards are 1155×672 at 3× with the card at (99,36) 960×600 — crop to the card */
+  .card img { position: absolute; width: 625.6px; left: -53.6px; top: -19.5px; }
+
+  /* ---------------------------------------------------------------- marquee */
+  .row { white-space: nowrap; font-family: Fraunces, Georgia, serif; font-style: italic; font-weight: 300; font-size: 76px; color: var(--dune); letter-spacing: -.01em; }
+  .row span { margin: 0 34px; }
+  .row i { font-style: normal; color: rgba(163, 147, 131, .45); }
+  #venues { -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); }
+
+  #endPhoto { overflow: hidden; }
+  #endShade { background: radial-gradient(ellipse at 50% 45%, rgba(5, 4, 10, .15), rgba(5, 4, 10, .72) 80%); }
+  #fade { background: #000; }
+
+  /* --------------------------------------------------------------- preview UI */
+  #ui { position: fixed; left: 16px; right: 16px; bottom: 12px; display: flex; gap: 12px; align-items: center; color: #aaa; font: 13px Manrope, sans-serif; }
+  #ui input { flex: 1; accent-color: #9b6fd0; }
+  #ui button { background: #222; color: #eee; border: 0; border-radius: 6px; padding: 6px 12px; font: inherit; cursor: pointer; }
+  .render #ui { display: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="layer" id="glow"></div>
+
+  <!-- S1 · Dine. Earn. Redeem. -->
+  <div class="abs mega centerX" id="w1" style="top:415px">Dine.</div>
+  <div class="abs mega centerX" id="w2" style="top:415px">Earn.</div>
+  <div class="abs mega centerX" id="w3" style="top:415px">Redeem.</div>
+  <div class="abs centerX" id="trio" style="top:480px; font-weight:800; font-size:120px; letter-spacing:-.05em; line-height:1">
+    <span class="w">Dine.</span> <span class="w" style="color:var(--lilac)">Earn.</span> <span class="w" style="color:var(--dune)">Redeem.</span>
+  </div>
+
+  <!-- S2 · photo reveal -->
+  <div class="abs will" id="photo">
+    <img id="photoImg" src="../assets/img/cover.jpg" alt="">
+    <div class="layer" id="photoShade"></div>
+  </div>
+  <div class="abs centerX" id="s2title" style="top:760px">
+    <div class="eyebrow" id="s2eye" style="color:rgba(255,255,255,.78)">GHA DISCOVERY members</div>
+    <div class="serif" id="s2head" style="font-size:128px; line-height:1.1; margin-top:14px">Dine with D$</div>
+  </div>
+
+  <!-- S3/S4/S6 · copy beside the phone -->
+  <div class="abs" id="s3copy" style="left:170px; top:330px; width:860px">
+    <div class="h1" id="s3h">Scan the QR <br>at your table.</div>
+    <div class="sub" id="s3s" style="margin-top:34px; width:700px">Sign in with GHA DISCOVERY and your bill appears on your phone, live from the restaurant.</div>
+  </div>
+
+  <div class="abs" id="s4copy" style="left:1000px; top:250px; width:820px">
+    <div class="h2" id="s4up" style="color:var(--lilac)">Up to</div>
+    <div class="grad" id="s4num" style="font-weight:800; font-size:330px; letter-spacing:-.06em; line-height:.95; margin-left:-12px">15%</div>
+    <div class="sub" id="s4s" style="margin-top:22px; width:640px">off the bill, applied automatically for GHA DISCOVERY members.</div>
+  </div>
+
+  <div class="abs" id="s6copy" style="left:170px; top:300px; width:900px">
+    <div class="h1" id="s6h">Then pay <br>with them.</div>
+    <div class="grad" id="s6rate" style="font-weight:800; font-size:120px; letter-spacing:-.045em; line-height:1; margin-top:44px">D$1 = USD 1</div>
+    <div class="sub" id="s6s" style="margin-top:30px; width:680px">Redeem your balance against the bill, right from your phone.</div>
+  </div>
+
+  <!-- phone -->
+  <div class="layer scene3d" id="phoneScene">
+    <div class="abs will" id="phone">
+      <div id="screen">
+        <img id="sc-guest" src="screens/guest-landing.png" alt="">
+        <img id="sc-member" src="screens/member-landing.png" alt="">
+        <img id="sc-burn" src="screens/burn-default.png" alt="">
+        <img id="sc-paid" src="screens/burn-confirm-success.png" alt="">
+        <div id="spot"></div>
+        <div id="island"></div>
+        <div id="glare"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5 · white · tiers -->
+  <div class="layer will" id="white"></div>
+  <div class="abs centerX" id="s5copy" style="top:120px; color:var(--ink)">
+    <div class="h1" id="s5h">Earn <span class="purple">4–7%</span> back in D$</div>
+    <div class="sub" id="s5s" style="color:#6d667c; margin-top:22px">on eligible spend, depending on your tier.</div>
+  </div>
+  <div class="layer scene3d" id="cards" style="perspective:2000px">
+    <div class="abs card will"><img src="../design/png/tier-card-silver.png" alt=""></div>
+    <div class="abs card will"><img src="../design/png/tier-card-gold.png" alt=""></div>
+    <div class="abs card will"><img src="../design/png/tier-card-platinum.png" alt=""></div>
+    <div class="abs card will"><img src="../design/png/tier-card-titanium.png" alt=""></div>
+  </div>
+
+  <!-- S7 · venues -->
+  <div class="abs centerX" id="s7copy" style="top:200px">
+    <div class="h1" id="s7h">24 restaurants. <span style="color:var(--lilac)">Four hotels.</span></div>
+  </div>
+  <div class="abs" id="venues" style="left:0; right:0; top:450px; height:260px">
+    <div class="abs row" id="rowA" style="top:0">
+      <span>Sapphire Dragon</span><i>·</i><span>Nuga Gama</span><i>·</i><span>London Grill</span><i>·</i><span>Long Feng</span><i>·</i><span>Yoroko</span><i>·</i><span>Lagoon</span><i>·</i><span>Royal Thai</span><i>·</i><span>Indya</span><i>·</i><span>Dreams &amp; Beats</span><i>·</i><span>Plates</span><i>·</i><span>Gatz</span><i>·</i><span>Flavoured</span>
+    </div>
+    <div class="abs row" id="rowB" style="top:130px">
+      <span>The Dining Room</span><i>·</i><span>Staten</span><i>·</i><span>Cheers</span><i>·</i><span>Bistro</span><i>·</i><span>Colombar</span><i>·</i><span>Flux</span><i>·</i><span>Quizine</span><i>·</i><span>CloudRed</span><i>·</i><span>Breeze Bar</span><i>·</i><span>Pool+Bar 09</span><i>·</i><span>Pool Bar</span>
+    </div>
+  </div>
+  <div class="abs centerX eyebrow" id="s7hotels" style="top:800px; font-size:19px; letter-spacing:.24em; line-height:2.1; color:rgba(255,255,255,.62)">
+    Cinnamon Grand Colombo &nbsp;·&nbsp; Cinnamon Life at City of Dreams Sri Lanka<br>Cinnamon Lakeside Colombo &nbsp;·&nbsp; Cinnamon Red Colombo
+  </div>
+
+  <!-- S8 · end card -->
+  <div class="layer will" id="endPhoto">
+    <img id="endImg" src="../assets/img/cover.jpg" alt="">
+    <div class="layer" id="endShade"></div>
+  </div>
+  <div class="abs centerX" id="endCopy" style="top:720px">
+    <div class="serif" id="endHead" style="font-size:96px; line-height:1.1">Dine with D$</div>
+    <div id="endUrl" style="margin-top:26px; font-weight:600; font-size:30px; letter-spacing:.06em; color:rgba(255,255,255,.85)">cinnamonhotels.com</div>
+  </div>
+  <div class="abs centerX eyebrow" id="endTc" style="top:1016px; font-size:14px; letter-spacing:.3em; color:rgba(255,255,255,.55)">Terms &amp; Conditions apply</div>
+
+  <div class="layer" id="fade"></div>
+</div>
+
+<div id="ui"><button id="play">Pause</button><input id="scrub" type="range" min="0" max="30" step="0.001" value="0"><span id="tc">0.00s</span></div>
+
+<script>
+(() => {
+  const DURATION = 30;
+  const $ = (id) => document.getElementById(id);
+
+  // ------------------------------------------------------------------ maths
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const p = (t, a, b) => clamp((t - a) / (b - a));
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const outExpo = (x) => (x >= 1 ? 1 : 1 - Math.pow(2, -10 * x));
+  const outCubic = (x) => 1 - Math.pow(1 - x, 3);
+  const inCubic = (x) => x * x * x;
+  const inOutCubic = (x) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+  const inOutQuart = (x) => (x < .5 ? 8 * x ** 4 : 1 - Math.pow(-2 * x + 2, 4) / 2);
+  // Apple's signature curve, cubic-bezier(.25,.1,.25,1)-ish but snappier: cubic-bezier(.2,.8,.2,1)
+  const bez = (x1, y1, x2, y2) => (x) => {
+    let t = x;
+    for (let i = 0; i < 8; i++) {
+      const cx = 3 * x1 * t * (1 - t) ** 2 + 3 * x2 * t * t * (1 - t) + t ** 3 - x;
+      const d = 3 * x1 * (1 - t) ** 2 + 6 * (x2 - x1) * t * (1 - t) + 3 * (1 - x2) * t * t;
+      if (Math.abs(d) < 1e-6) break;
+      t = clamp(t - cx / d);
+    }
+    return 3 * y1 * t * (1 - t) ** 2 + 3 * y2 * t * t * (1 - t) + t ** 3;
+  };
+  const apple = bez(.2, .8, .2, 1);
+
+  const set = (el, o) => {
+    if (typeof el === 'string') el = $(el);
+    const { x = 0, y = 0, s = 1, blur = 0, op = 1, rx = 0, ry = 0, rz = 0, extra = '' } = o;
+    el.style.opacity = op.toFixed(4);
+    el.style.visibility = op <= 0.001 ? 'hidden' : 'visible';
+    el.style.filter = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : 'none';
+    el.style.transform = `${extra} translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) rotateX(${rx.toFixed(3)}deg) rotateY(${ry.toFixed(3)}deg) rotateZ(${rz.toFixed(3)}deg) scale(${s.toFixed(4)})`;
+  };
+
+  // Standard in/out: blur-rise entrance, blur-lift exit.
+  const io = (t, tin, tout, { dur = .9, odur = .45, dy = 44, oy = -24, blur = 18, s0 = 1, s1 = 1 } = {}) => {
+    const a = apple(p(t, tin, tin + dur));
+    const b = inCubic(p(t, tout, tout + odur));
+    return { op: a * (1 - b), y: (1 - a) * dy + b * oy, blur: (1 - a) * blur + b * blur, s: lerp(s0, 1, a) * lerp(1, s1, b) };
+  };
+
+  // Word-by-word stagger for any element's direct text: split once into .w spans.
+  const split = (el) => {
+    if (el.dataset.split) return [...el.querySelectorAll('.w')];
+    const walk = (node) => {
+      [...node.childNodes].forEach((n) => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach((part) => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
+            else { const s = document.createElement('span'); s.className = 'w'; s.textContent = part; frag.appendChild(s); }
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1 && !n.classList.contains('w') && n.tagName !== 'BR') {
+          if (n.children.length === 0 && !/\s/.test(n.textContent.trim())) n.classList.add('w'); else walk(n);
+        }
+      });
+    };
+    walk(el);
+    el.dataset.split = '1';
+    return [...el.querySelectorAll('.w')];
+  };
+  const words = (el, t, tin, tout, stagger = .07, opts = {}) => {
+    split(el).forEach((w, i) => set(w, io(t, tin + i * stagger, tout, opts)));
+    el.style.visibility = t < tin - .01 || t > tout + (opts.odur || .45) + .05 ? 'hidden' : 'visible';
+  };
+
+  ['s3h', 's3s', 's4s', 's5h', 's5s', 's6h', 's6s', 's7h', 'endHead', 's2head'].forEach((id) => split($(id)));
+
+  // ---------------------------------------------------------------- scenes
+  const cards = [...document.querySelectorAll('.card')];
+
+  function seek(t) {
+    // Background glow drifts all the way through.
+    const glow = $('glow');
+    glow.style.setProperty('--gx', `${50 + 22 * Math.sin(t * .21)}%`);
+    glow.style.setProperty('--gy', `${55 + 12 * Math.cos(t * .17)}%`);
+    glow.style.opacity = (0.35 + 0.65 * p(t, 8.2, 9.4)) * (1 - p(t, 27.3, 28)) * (t < 4.2 ? 0.6 : 1);
+
+    // S1 — one word at a time, then all three together.
+    const beat = (el, a) => set(el, io(t, a, a + .82, { dur: .7, odur: .3, dy: 60, oy: -40, blur: 26, s0: 1.08, s1: .96 }));
+    beat('w1', .25); beat('w2', 1.3); beat('w3', 2.35);
+    const trio = $('trio');
+    [...trio.children].forEach((w, i) => set(w, io(t, 3.35 + i * .08, 4.25, { dur: .6, odur: .45, dy: 30, oy: 0, blur: 16, s1: 1.25 })));
+    trio.style.visibility = t > 3.2 && t < 4.8 ? 'visible' : 'hidden';
+
+    // S2 — the photo card opens from the centre to full frame.
+    {
+      const appear = apple(p(t, 3.95, 4.5));
+      const grow = inOutQuart(p(t, 4.2, 5.5));
+      const leave = inOutCubic(p(t, 7.9, 8.7));
+      const w = lerp(560, 1920, grow), h = lerp(315, 1080, grow);
+      const el = $('photo');
+      el.style.width = `${w}px`; el.style.height = `${h}px`;
+      el.style.borderRadius = `${lerp(34, 0, grow) + 40 * leave}px`;
+      set(el, { op: appear * (1 - leave), s: lerp(.92, 1, appear) * lerp(1, .9, leave), blur: 10 * leave, extra: 'translate(-50%, -50%)' });
+      set('photoImg', { s: lerp(1.32, 1.08, outCubic(p(t, 3.95, 8.7))) });
+      $('photoShade').style.opacity = p(t, 5.2, 6.2);
+      set('s2eye', io(t, 5.85, 7.65, { dur: .8 }));
+      words($('s2head'), t, 6.05, 7.7, .09, { dur: 1, dy: 50, blur: 20 });
+    }
+
+    // Phone — one continuous object through S3 → S4, re-entering for S6.
+    {
+      let x = 1300, y = 102, ry = -16, rx = 6, rz = 0, s = 1, op = 1;
+      // S3 entrance: rises and stands up.
+      const inA = apple(p(t, 8.45, 9.9));
+      y += (1 - inA) * 900; rx += (1 - inA) * 34; ry += (1 - inA) * -14;
+      // idle float
+      y += Math.sin(t * 1.3) * 6; ry += Math.sin(t * .7) * 1.5;
+      // S4 move: across to the left, turning to face the number.
+      const mv = inOutCubic(p(t, 12.85, 14.0));
+      x = lerp(x, 520, mv); ry = lerp(ry, 16 + Math.sin(t * .7) * 1.5, mv);
+      // S4 exit: sinks as the white panel rises.
+      const outA = inCubic(p(t, 17.35, 18.1));
+      y += outA * 380; op *= 1 - outA; s *= lerp(1, .94, outA);
+      // S6: re-enter from below on the right.
+      const inB = apple(p(t, 22.45, 23.6));
+      const outB = inCubic(p(t, 25.05, 25.65));
+      if (t > 20) {
+        x = 1290; y = 102 + (1 - inB) * 900 - outB * 900 + Math.sin(t * 1.3) * 6;
+        rx = 6 + (1 - inB) * 30 - outB * 20; ry = -14 + (1 - inB) * 18 + Math.sin(t * .7) * 1.5; rz = 0;
+        op = inB; s = 1;
+        // tiny "bump" when the redemption lands
+        s *= 1 + .025 * Math.sin(Math.PI * p(t, 23.9, 24.35));
+      }
+      const visible = (t > 8.3 && t < 18.2) || (t > 22.3 && t < 25.7);
+      set('phone', { x, y, rx, ry, rz, s, op: visible ? op : 0 });
+
+      // Screens
+      const show = (id, o) => { const el = $(id); el.style.opacity = o; el.style.visibility = o > 0.001 ? 'visible' : 'hidden'; };
+      const toMember = p(t, 10.9, 11.35), toBurn = p(t, 13.2, 13.6), toPaid = p(t, 23.85, 24.2);
+      const s6 = t > 20;
+      show('sc-guest', s6 ? 0 : 1);
+      show('sc-member', s6 ? 0 : toMember);
+      show('sc-burn', s6 ? 1 : toBurn);
+      show('sc-paid', s6 ? toPaid : 0);
+      // glare sweeps across on entrances
+      const g = $('glare');
+      const sweep = t > 20 ? p(t, 22.9, 24.3) : p(t, 9.2, 10.8);
+      g.style.transform = `translateX(${lerp(-110, 110, sweep)}%)`;
+
+      // spotlight on the discount row of burn-default (row centre ≈ 65.8% down, 3× capture)
+      const sp = $('spot');
+      const spIn = apple(p(t, 14.5, 15.1)) * (1 - p(t, 16.9, 17.3));
+      const rowY = 846 * (1681 / 2556);
+      const pad = lerp(26, 0, spIn);
+      sp.style.left = `${16 - pad}px`; sp.style.width = `${358 + pad * 2}px`;
+      sp.style.top = `${rowY - 21 - pad}px`; sp.style.height = `${42 + pad * 2}px`;
+      sp.style.opacity = spIn;
+    }
+
+    // S3 copy
+    words($('s3h'), t, 9.0, 12.55, .07, { dur: 1 });
+    words($('s3s'), t, 9.75, 12.6, .018, { dur: .9, dy: 24, blur: 10 });
+
+    // S4 — the number.
+    set('s4up', io(t, 13.9, 17.2, { dur: .8 }));
+    {
+      const k = apple(p(t, 14.05, 15.5));
+      $('s4num').textContent = `${Math.round(15 * k)}%`;
+      set('s4num', io(t, 14.0, 17.25, { dur: 1, dy: 70, blur: 30, s0: .9, s1: 1.04 }));
+    }
+    words($('s4s'), t, 14.7, 17.3, .03, { dur: .9, dy: 24, blur: 10 });
+
+    // S5 — white panel up, tier cards fan out, panel away.
+    {
+      const up = inOutQuart(p(t, 17.55, 18.3));
+      const away = inOutQuart(p(t, 22.05, 22.8));
+      set('white', { y: (1 - up) * 1080 - away * 1080, op: t > 17.5 && t < 22.85 ? 1 : 0 });
+      words($('s5h'), t, 18.2, 21.8, .08, { dur: 1, dy: 50, oy: -60 });
+      words($('s5s'), t, 18.75, 21.8, .03, { dur: .9, dy: 24, oy: -40, blur: 10 });
+
+      const rise = apple(p(t, 18.25, 19.4));
+      const fan = apple(p(t, 19.15, 20.5));
+      const exit = inCubic(p(t, 21.75, 22.45));
+      const X = [-570, -190, 190, 570], RZ = [-9, -3, 3, 9], RY = [18, 6, -6, -18], Y = [70, 20, 20, 70];
+      cards.forEach((c, i) => {
+        const drift = Math.sin(t * .9 + i) * 6;
+        const e = apple(p(t, 18.25 + i * .06, 19.4 + i * .06));
+        set(c, {
+          x: X[i] * fan,
+          y: 150 + (1 - e) * 520 + Y[i] * fan + drift - exit * (900 + i * 60),
+          rx: (1 - e) * 55 + 8 * (1 - fan),
+          ry: RY[i] * fan,
+          rz: RZ[i] * fan + (i - 1.5) * 2 * (1 - fan),
+          s: lerp(.72, .94, rise) * lerp(.86, 1, fan),
+          op: e * (t < 22.6 ? 1 : 0),
+        });
+        c.style.zIndex = 10 + i;
+      });
+    }
+
+    // S6 copy
+    words($('s6h'), t, 22.75, 25.1, .07, { dur: 1 });
+    set('s6rate', io(t, 23.35, 25.15, { dur: 1, dy: 50, blur: 24 }));
+    words($('s6s'), t, 23.8, 25.15, .025, { dur: .9, dy: 24, blur: 10 });
+
+    // S7 — venues drift past in opposite directions.
+    {
+      words($('s7h'), t, 25.75, 27.45, .08, { dur: .9 });
+      const vIn = apple(p(t, 25.95, 26.8)), vOut = inCubic(p(t, 27.35, 27.8));
+      $('venues').style.opacity = vIn * (1 - vOut);
+      const k = p(t, 25.6, 28);
+      set('rowA', { x: lerp(40, -1400, k), blur: vOut * 12 });
+      set('rowB', { x: lerp(-2500, -1100, k), blur: vOut * 12 });
+      set('s7hotels', io(t, 26.25, 27.4, { dur: .8, dy: 20, blur: 10 }));
+    }
+
+    // S8 — end card over the photo; the logo is in the image.
+    {
+      const e = outCubic(p(t, 27.55, 28.5));
+      set('endPhoto', { op: e, s: lerp(1.12, 1.0, outCubic(p(t, 27.55, 30))) });
+      words($('endHead'), t, 28.15, 40, .1, { dur: 1.1, dy: 40, blur: 20 });
+      set('endUrl', io(t, 28.6, 40, { dur: .9, dy: 20, blur: 10 }));
+      set('endTc', io(t, 28.85, 40, { dur: .9, dy: 0, blur: 6 }));
+    }
+
+    $('fade').style.opacity = Math.max(1 - p(t, 0, .2), p(t, 29.6, 30));
+  }
+
+  window.seek = seek;
+  window.DURATION = DURATION;
+
+  // --------------------------------------------------------------- preview
+  const render = new URLSearchParams(location.search).has('render');
+  if (render) { document.body.classList.add('render'); seek(0); return; }
+
+  const stage = $('stage');
+  const fit = () => { const k = Math.min(innerWidth / 1920, (innerHeight - 48) / 1080); stage.style.transform = `scale(${k})`; };
+  addEventListener('resize', fit); fit();
+  let playing = true, t0 = performance.now(), cur = 0;
+  const scrub = $('scrub'), tc = $('tc'), btn = $('play');
+  scrub.oninput = () => { cur = +scrub.value; t0 = performance.now() - cur * 1000; seek(cur); tc.textContent = cur.toFixed(2) + 's'; };
+  btn.onclick = () => { playing = !playing; btn.textContent = playing ? 'Pause' : 'Play'; t0 = performance.now() - cur * 1000; };
+  const loop = (now) => {
+    if (playing) { cur = ((now - t0) / 1000) % DURATION; seek(cur); scrub.value = cur; tc.textContent = cur.toFixed(2) + 's'; }
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

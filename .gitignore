@@ -1,3 +1,5 @@
 node_modules/
 package-lock.json
 design/pdf/screens/
+video/out/stills/
+video/out/sheet.jpg
