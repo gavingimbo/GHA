@@ -69,8 +69,6 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
 
   <!-- the product -->
   <div id="phone" class="abs"><div id="screen">
-    <div id="vGuest" class="view"><div class="lay" style="background-image:url(assets/screen-guest.png)"></div></div>
-    <div id="vMember" class="view"><div class="lay" style="background-image:url(assets/screen-member.png)"></div></div>
     <div id="vBill" class="view">
       <div class="lay" style="background-image:url(assets/screen-failed.png);clip-path:inset(0 0 380px 0)"></div>
       <div id="cardF" class="lay" style="background-image:url(assets/screen-failed.png)"></div>
@@ -81,8 +79,6 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
       <div id="retryPress"></div>
     </div>
     <div id="island"></div>
-    <div id="dotA" class="dot" style="left:196.5px;top:360px"></div>
-    <div id="dotB" class="dot" style="left:196.5px;top:801px"></div>
     <div id="dotR" class="dot" style="left:196.5px;top:609.4px"></div>
   </div></div>
 
@@ -102,19 +98,20 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
   <div id="liftErr" class="abs lift"><img src="../design/png/discount-error.png"><div class="mark" style="left:30px;top:86px;width:462px;height:44px;background:#f3d9df"></div></div>
   <div id="liftBill" class="abs lift"><img src="../design/png/bill-card.png"><div class="mark" style="left:30px;top:84px;width:652px;height:50px"></div></div>
 
-  <!-- words: one statement per shot -->
-  <div id="w1" class="title"><span class="ln"><span class="say">Guests scan the table QR.</span></span></div>
-  <div id="w2" class="title"><span class="ln"><span class="say">They sign in as members.</span></span></div>
-  <div id="w3" class="title"><span class="ln"><span class="say">Their bill comes</span></span><span class="ln"><span class="say">straight from the POS.</span></span></div>
-  <div id="w4" class="title"><span class="ln"><span class="say">The member discount</span></span><span class="ln"><span class="say">applies itself.</span></span></div>
-  <div id="w5" class="title"><span class="ln"><span class="say">Unless the check is open</span></span><span class="ln"><span class="say">on a POS terminal.</span></span></div>
-  <div id="w5s" class="title" style="top:1110px"><span class="ln"><span class="sup">While a terminal holds the check,</span></span><span class="ln"><span class="sup">the app can’t add the discount.</span></span></div>
-  <div id="w6" class="title"><span class="ln"><span class="say">Minimise the check.</span></span></div>
-  <div id="w6a" class="title" style="top:232px"><span class="ln"><span class="sup">Tap Cancel/Exit. Not Void, not Make Payment.</span></span></div>
-  <div id="w6b" class="title" style="top:232px"><span class="ln"><span class="sup">It stays open on Home, free for the app.</span></span></div>
-  <div id="w7" class="title"><span class="ln"><span class="say">Then the guest taps Retry.</span></span></div>
-  <div id="w7s" class="title" style="top:1110px"><span class="ln"><span class="sup">The discount is on the bill.</span></span></div>
+  <!-- words: one statement per shot, told from the team member's side -->
+  <div id="w1" class="title"><span class="ln"><span class="say">A guest shows you this.</span></span></div>
+  <div id="w2" class="title"><span class="ln"><span class="say">It means the check is open</span></span><span class="ln"><span class="say">on a POS terminal.</span></span></div>
+  <div id="w2s" class="title" style="top:1110px"><span class="ln"><span class="sup">While a terminal holds the check,</span></span><span class="ln"><span class="sup">the app can’t add the discount.</span></span></div>
+  <div id="w3" class="title"><span class="ln"><span class="say">Find the check on the POS.</span></span></div>
+  <div id="w3s" class="title" style="top:232px"><span class="ln"><span class="sup">Here it is open on this terminal: Table B12/1.</span></span></div>
+  <div id="w4" class="title"><span class="ln"><span class="say">Tap Cancel/Exit.</span></span></div>
+  <div id="w4s" class="title" style="top:232px"><span class="ln"><span class="sup">Not Void. Not Make Payment.</span></span></div>
+  <div id="w5" class="title"><span class="ln"><span class="say">The check is minimised.</span></span></div>
+  <div id="w5s" class="title" style="top:232px"><span class="ln"><span class="sup">It stays open on Home, and the app can reach it.</span></span></div>
+  <div id="w6" class="title"><span class="ln"><span class="say">Ask the guest to tap Retry.</span></span></div>
+  <div id="w7" class="title"><span class="ln"><span class="say">The discount is on the bill.</span></span></div>
   <div id="w8" class="title"><span class="ln"><span class="say">The same fix works for</span></span><span class="ln"><span class="say">DISCOVERY Dollars.</span></span></div>
+  <div id="w8s" class="title" style="top:1110px"><span class="ln"><span class="sup">Minimise the check, then the guest taps Retry.</span></span></div>
 
   <!-- brand: opening and close, the same purple -->
   <div id="cover" class="abs panel onPurple"><div id="coverIn" class="abs" style="left:0;top:0;width:var(--W);height:var(--H)">
@@ -124,7 +121,8 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
   </div></div>
   <div id="endPanel" class="abs panel onPurple">
     <div id="e1" class="title" style="top:520px"><span class="ln"><span class="say" style="font-size:84px">Minimise the check.</span></span><span class="ln"><span class="say" style="font-size:84px">Tap Retry.</span></span></div>
-    <div id="endLogo" class="abs" style="left:330px;top:820px;width:420px;height:66px;overflow:hidden"><img id="endLogoImg" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="width:420px;display:block;will-change:transform"></div>
+    <div id="e2" class="title" style="top:760px"><span class="ln"><span class="sup">Still showing? Let your supervisor know.</span></span></div>
+    <div id="endLogo" class="abs" style="left:330px;top:1180px;width:420px;height:66px;overflow:hidden"><img id="endLogoImg" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="width:420px;display:block;will-change:transform"></div>
   </div>
 </div>
 <script>
@@ -273,9 +271,9 @@ function lift(id, t, up, from, toW, toCY, hgt, dx = 0) {
 const DF = 202.8, DC = 65.55;
 function bill(t) {
   let D = 0, card = '', low = 'Ok';
-  if (t >= 10.2) { D = lerp(0, DF, spring(t, 10.2, .9, .88)); card = 'F'; low = 'F'; }
-  if (t >= 26.55) { D = lerp(DF, DC, spring(t, 26.55, .75, .88)); card = 'C'; }
-  if (t >= 27.5) { D = lerp(DC, 0, spring(t, 27.5, .85, .88)); low = 'Ok'; }
+  if (t >= 3.9) { D = lerp(0, DF, spring(t, 3.9, .9, .88)); card = 'F'; low = 'F'; }
+  if (t >= 20.95) { D = lerp(DF, DC, spring(t, 20.95, .75, .88)); card = 'C'; }
+  if (t >= 22.5) { D = lerp(DC, 0, spring(t, 22.5, .85, .88)); low = 'Ok'; }
   const h = Math.max(0, D - 28);
   $('cardF').style.display = card === 'F' ? 'block' : 'none';
   $('cardC').style.display = card === 'C' ? 'block' : 'none';
@@ -285,8 +283,8 @@ function bill(t) {
   $('lowOk').style.display = low === 'Ok' ? 'block' : 'none';
   $('lowF').style.transform = `translateY(${(D - DF).toFixed(2)}px)`;
   $('lowOk').style.transform = `translateY(${D.toFixed(2)}px)`;
-  $('markDisc').style.transform = `scaleX(${(t < 10.2 ? clamp(glide(t, 8.25, .8)) : 0).toFixed(4)})`;
-  $('retryPress').style.display = t >= 26.4 && t < 26.55 ? 'block' : 'none';
+  $('markDisc').style.transform = 'scaleX(0)';
+  $('retryPress').style.display = t >= 20.8 && t < 20.95 ? 'block' : 'none';
 }
 
 const SW = 988, SHT = 556, BASE = SW / 1802;
@@ -296,93 +294,86 @@ const PC_FULL = posCam(901, 507, 1), PC_EXIT = posCam(1411, 905, 2.4), PC_TILE =
 const REST = { x: 540 - 208.5, y: 440 };
 
 /* ---------------------------------------------------------------- the film
-   0     Brand. Dine with DISCOVERY Dollars.                         calm
-   2.5   The product, quickly: scan, sign in, the bill, the discount  quick, 1.7 s a beat
-   10.2  The exception: the check is open on a POS terminal           slow, held
-   15.0  The fix on the POS: minimise the check                       steady
-   25.0  The guest taps Retry; the discount lands                     lift
-   30.0  The same for DISCOVERY Dollars                               brief
-   32.7  Brand. Minimise the check. Tap Retry.                        calm            */
+   Told from the team member's side: what you see, what it means, what you do.
+   0     Brand. Dine with DISCOVERY Dollars. When the check is open on the POS.   calm
+   2.5   A guest shows you this: the discount error opens on their phone           steady
+   5.6   What it means: the error stands alone, its reason marked                 held
+   9.5   Find the check on the POS                                                steady
+   11.7  Tap Cancel/Exit (in, ring, out, tap); the POS repaints to Home           precise
+   14.8  The check is minimised: in to the table on Home                         settle
+   18.5  Ask the guest to tap Retry; checking; the discount lands (22.5)          lift
+   23.0  The discount is on the bill                                              held
+   25.5  The same fix works for DISCOVERY Dollars                                 brief
+   28.5  Brand. Minimise the check. Tap Retry.                                    calm   */
 function render(t) {
-  // brand open: the purple ground lifts away and the product rises into its place
   const cv = glide(t, 2.45, 1.0);
   $('cover').style.transform = `translate3d(0,${(-H * cv).toFixed(2)}px,0)`;
   $('coverIn').style.transform = `translate3d(0,${(-150 * cv).toFixed(2)}px,0)`;
   $('cover').style.display = cv > .999 ? 'none' : 'block';
 
-  // phone: rises; steps down out of frame so the error can stand alone; returns from the right; steps down again
+  // the phone: rises; steps down so the error can stand alone; returns from the right; steps down again
   let px = 0, py = (1 - spring(t, 2.55, 1.35, .86)) * 1150;
-  if (t >= 11.5) py = 1300 * glide(t, 11.5, 1.1);
-  if (t >= 24) { py = 0; px = 1300 * (1 - glide(t, 25.0, 1.0)); }
-  if (t >= 28.2) py = 1300 * glide(t, 28.2, 1.1);
+  if (t >= 5.75) py = 1300 * glide(t, 5.75, 1.1);
+  if (t >= 17.5) { py = 0; px = 1300 * (1 - glide(t, 18.5, 1.0)); }
+  if (t >= 23.15) py = 1300 * glide(t, 23.15, 1.1);
   $('phone').style.transform = `translate3d(${(REST.x + px).toFixed(2)}px,${(REST.y + py).toFixed(2)}px,0)`;
   $('phone').style.display = Math.abs(px) > 1250 || py > 1150 ? 'none' : 'block';
-  // inside the phone: the app's own navigation, a push from the right
-  const n1 = glide(t, 4.62, .7), n2 = glide(t, 6.32, .7);
-  $('vGuest').style.transform = `translateX(${(-393 * n1).toFixed(2)}px)`;
-  $('vMember').style.transform = `translateX(${(393 * (1 - n1) - 393 * n2).toFixed(2)}px)`;
-  $('vBill').style.transform = `translateX(${(393 * (1 - n2)).toFixed(2)}px)`;
-  touch($('dotA'), t, 4.2, 4.5, 4.62);
-  touch($('dotB'), t, 5.9, 6.2, 6.32);
-  touch($('dotR'), t, 26.1, 26.4, 26.55);
+  touch($('dotR'), t, 20.45, 20.8, 20.95);
   bill(t);
 
-  // the error, alone; then the bill, alone
-  const errDx = t >= 15.0 ? -1300 * glide(t, 15.0, 1.0) : 0;
-  lift('liftErr', t, 11.35, { x: REST.x + 32, y: REST.y + 12 + 472, w: 353 }, 900, 760, 351, errDx);
-  $('liftErr').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 12.35, .8)).toFixed(4)})`;
-  const billDx = t >= 30.0 ? -1300 * glide(t, 30.0, 1.0) : 0;
-  lift('liftBill', t, 28.05, { x: REST.x + 32, y: REST.y + 12 + 506, w: 353 }, 900, 760, 347, billDx);
-  $('liftBill').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 28.85, .8)).toFixed(4)})`;
+  const errDx = t >= 9.5 ? -1300 * glide(t, 9.5, 1.0) : 0;
+  lift('liftErr', t, 5.6, { x: REST.x + 32, y: REST.y + 12 + 472, w: 353 }, 900, 760, 351, errDx);
+  $('liftErr').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 6.6, .8)).toFixed(4)})`;
+  const billDx = t >= 25.5 ? -1300 * glide(t, 25.5, 1.0) : 0;
+  lift('liftBill', t, 23.0, { x: REST.x + 32, y: REST.y + 12 + 506, w: 353 }, 900, 760, 347, billDx);
+  $('liftBill').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 23.8, .8)).toFixed(4)})`;
 
-  // POS: in from the right as the error leaves; out to the left as the phone returns
-  let qx = t < 15 ? 1300 : 1300 * (1 - glide(t, 15.0, 1.0));
-  if (t >= 25.0) qx = -1300 * glide(t, 25.0, 1.0);
+  let qx = t < 9.5 ? 1300 : 1300 * (1 - glide(t, 9.5, 1.0));
+  if (t >= 18.5) qx = -1300 * glide(t, 18.5, 1.0);
   $('pos').style.transform = `translate3d(${(32 + qx).toFixed(2)}px,478px,0)`;
   $('pos').style.display = Math.abs(qx) > 1250 ? 'none' : 'block';
   let pc = PC_FULL;
-  if (t >= 16.1) pc = pmix(PC_FULL, PC_EXIT, glide(t, 16.1, 1.1));
-  if (t >= 17.7) pc = pmix(PC_EXIT, PC_FULL, glide(t, 17.7, 1.0));
-  if (t >= 19.6) pc = pmix(PC_FULL, PC_TILE, glide(t, 19.6, 1.2));
+  if (t >= 11.7) pc = pmix(PC_FULL, PC_EXIT, glide(t, 11.7, 1.1));
+  if (t >= 13.2) pc = pmix(PC_EXIT, PC_FULL, glide(t, 13.2, 1.0));
+  if (t >= 15.0) pc = pmix(PC_FULL, PC_TILE, glide(t, 15.0, 1.2));
   $('ui').style.transform = `translate(${pc.tx.toFixed(2)}px,${pc.ty.toFixed(2)}px) scale(${pc.s.toFixed(5)})`;
-  const onHome = t >= 19.1;                          // the terminal repaints a beat after the release
+  const onHome = t >= 14.6;                          // the terminal repaints a beat after the release
   $('pick').style.display = onHome ? 'none' : 'block';
-  $('exitKey').classList.toggle('down', t >= 18.8 && t < 18.97);
-  draw($('ringExit'), onHome ? 0 : glide(t, 16.95, .6));
-  draw($('ringTile'), glide(t, 20.5, .65));
-  touch($('dotPos'), t, 18.45, 18.8, 18.97);
+  $('exitKey').classList.toggle('down', t >= 14.3 && t < 14.47);
+  draw($('ringExit'), onHome ? 0 : glide(t, 12.5, .6));
+  draw($('ringTile'), glide(t, 15.9, .65));
+  touch($('dotPos'), t, 13.95, 14.3, 14.47);
 
-  // D$ dialog
-  let gx = t < 30 ? 1300 : 1300 * (1 - glide(t, 30.0, 1.0));
+  let gx = t < 25.5 ? 1300 : 1300 * (1 - glide(t, 25.5, 1.0));
   $('dlg').style.transform = `translate3d(${(223 + gx).toFixed(2)}px,520px,0)`;
   $('dlg').style.display = Math.abs(gx) > 1250 ? 'none' : 'block';
 
-  // words
-  lines('w1', t, 2.85, 4.55);
-  lines('w2', t, 4.75, 6.25);
-  lines('w3', t, 6.45, 7.95);
-  lines('w4', t, 8.1, 10.0);
-  lines('w5', t, 10.3, 14.85);
-  lines('w5s', t, 12.55, 14.85);
-  lines('w6', t, 15.2, 24.8);
-  lines('w6a', t, 15.45, 19.25);
-  lines('w6b', t, 19.55, 24.8);
-  lines('w7', t, 25.25, 29.8);
-  lines('w7s', t, 28.4, 29.8);
-  lines('w8', t, 30.2, 32.55);
+  lines('w1', t, 2.85, 5.5);
+  lines('w2', t, 5.85, 9.35);
+  lines('w2s', t, 7.0, 9.35);
+  lines('w3', t, 9.7, 11.55);
+  lines('w3s', t, 9.95, 11.55);
+  lines('w4', t, 11.75, 14.6);
+  lines('w4s', t, 11.95, 14.6);
+  lines('w5', t, 14.8, 18.35);
+  lines('w5s', t, 15.0, 18.35);
+  lines('w6', t, 18.7, 22.6);
+  lines('w7', t, 22.8, 25.35);
+  lines('w8', t, 25.7, 28.35);
+  lines('w8s', t, 26.3, 28.35);
 
-  // brand close: the purple rises; the two actions; the mark
-  const en = glide(t, 32.7, 1.0);
+  const en = glide(t, 28.5, 1.0);
   $('endPanel').style.transform = `translate3d(0,${(H * (1 - en)).toFixed(2)}px,0)`;
   $('endPanel').style.display = en > 0 ? 'block' : 'none';
-  lines('e1', t, 33.35, 99, .14);
-  $('endLogoImg').style.transform = `translate3d(0,${((1 - spring(t, 35.0, 1.0, .96, 9)) * 140).toFixed(2)}%,0)`;
+  lines('e1', t, 29.1, 99, .14);
+  lines('e2', t, 29.6, 99);
+  $('endLogoImg').style.transform = `translate3d(0,${((1 - spring(t, 30.0, 1.0, .96, 9)) * 140).toFixed(2)}%,0)`;
 }
 window.render = render;
-window.DURATION = 40;
+window.DURATION = 34;
 window.SIZE = { w: W, h: H };
 const q = new URLSearchParams(location.search);
 if (q.has('t')) render(+q.get('t'));
-else if (!q.has('record')) { const s0 = performance.now(); (function f() { render(((performance.now() - s0) / 1000) % 40.5); requestAnimationFrame(f); })(); }
+else if (!q.has('record')) { const s0 = performance.now(); (function f() { render(((performance.now() - s0) / 1000) % 34.5); requestAnimationFrame(f); })(); }
 else render(0);
 </script></body></html>

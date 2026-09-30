@@ -16,7 +16,7 @@ import wave
 import numpy as np
 
 SR = 48000
-DUR = 40.0
+DUR = 34.0
 N = int(SR * DUR)
 HERE = os.path.dirname(os.path.abspath(__file__))
 rng = np.random.default_rng(11)
@@ -157,22 +157,20 @@ def thump():
 BPM = 96; BEAT = 60 / BPM; BAR = 4 * BEAT
 # (bass root, chord voicing, section): one line per 2.5 s bar
 SCORE = [
-    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'open'),      # 0  brand: Dine with DISCOVERY Dollars
-    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'groove'),    # 1  scan, sign in
-    ('B1', ['D3', 'F#3', 'A3', 'C#4'], 'groove'),    # 2  the bill
-    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'groove'),     # 3  the discount applies itself
-    ('E2', ['D3', 'G3', 'B3', 'E4'], 'drop'),        # 4  unless the check is open
-    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'drop'),       # 5  held
-    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'build'),      # 6  the POS
-    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'build'),      # 7  Cancel/Exit
-    ('F#1', ['D3', 'F#3', 'A3', 'E4'], 'build'),     # 8  on Home
-    ('B1', ['D3', 'F#3', 'A3', 'C#4'], 'build'),     # 9
-    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'lift'),       # 10 Retry
-    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'full'),      # 11 the discount lands
-    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'full'),       # 12 DISCOVERY Dollars
-    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'open'),       # 13 brand close
-    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'end'),       # 14 the mark
-    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'tail'),      # 15
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'open'),      # 0  brand
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'groove'),    # 1  a guest shows you this
+    ('E2', ['D3', 'G3', 'B3', 'E4'], 'drop'),        # 2  what it means
+    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'drop'),       # 3  held; find the check
+    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'build'),      # 4  Cancel/Exit
+    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'build'),      # 5  the tap; Home
+    ('F#1', ['D3', 'F#3', 'A3', 'E4'], 'build'),     # 6  minimised
+    ('B1', ['D3', 'F#3', 'A3', 'C#4'], 'build'),     # 7  back to the guest
+    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'lift'),       # 8  Retry
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'full'),      # 9  the discount lands
+    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'full'),       # 10 DISCOVERY Dollars
+    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'open'),       # 11 brand close
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'end'),       # 12 the mark
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'tail'),      # 13
 ]
 STABS = [(0, 1.6, 1.0), (1.5, .5, .7), (2.5, .9, .8), (3.5, .45, .6)]   # beat, length, velocity
 PANS = (-.3, -.1, .1, .3)
@@ -217,17 +215,15 @@ for b, (root, voicing, sec) in enumerate(SCORE):
 for i, (n, beat) in enumerate([('F#5', 0), ('A5', .5), ('E5', 1.5), ('D5', 2.5)]):
     add(marimba(hz(n), 1.6), .3 + beat * BEAT, .08, (-.2, .2, -.1, .1)[i], .6)
 for i, (n, beat) in enumerate([('D5', 0), ('F#5', .5), ('A5', 1), ('D6', 1.5)]):
-    add(marimba(hz(n), 1.6), 11 * BAR + beat * BEAT, .07, (-.2, .2, -.1, .1)[i], .6)
+    add(marimba(hz(n), 1.6), 9 * BAR + beat * BEAT, .07, (-.2, .2, -.1, .1)[i], .6)
 for i, (n, d) in enumerate([('A5', 0), ('D6', .18), ('F#6', .36)]):
-    add(bell(hz(n), 3.0), 35.0 + d, .05, (-.2, 0, .2)[i], .8)
+    add(bell(hz(n), 3.0), 30.0 + d, .05, (-.2, 0, .2)[i], .8)
 
 # ------------------------------------------------------------------ effects, on the picture
 FX = [
-    (4.50, tap(), .22, 0, .1),                            # guest taps Sign in (soft: context)
-    (6.20, tap(), .22, 0, .1),                            # guest taps View Bill (soft: context)
-    (18.80, tap(), .6, .15, .1),                          # Cancel/Exit: the action that matters
-    (26.40, tap(), .6, 0, .1),                            # Retry
-    (27.50, bell(hz('D6')), .14, -.15, .7), (27.62, bell(hz('F#6')), .11, .15, .7),   # the discount lands
+    (14.30, tap(), .6, .15, .1),                          # Cancel/Exit: the action that matters
+    (20.80, tap(), .6, 0, .1),                            # Retry
+    (22.50, bell(hz('D6')), .14, -.15, .7), (22.62, bell(hz('F#6')), .11, .15, .7),   # the discount lands
 ]
 for t, sg, g, p, v in FX:
     add(sg, t, g, p, v, fx=True)
@@ -243,7 +239,7 @@ def reverb(x, secs=2.3):
 VLr, VRr = reverb(VL), reverb(VR)
 ta = np.arange(N) / SR
 duck = np.ones(N)
-for c, depth in ((18.8, .5), (26.4, .5), (27.5, .65)):
+for c, depth in ((14.3, .5), (20.8, .5), (22.5, .65)):
     d = np.where(ta < c, np.exp(-np.maximum(c - ta, 0) / .03), np.exp(-(ta - c) / .4))
     duck *= 1 - (1 - depth) * d
 L = (ML + VLr * .45) * duck + FL + VLr * .1
