@@ -8,9 +8,9 @@ assets, so what you place in a guide is what the app renders.
 | | |
 | --- | --- |
 | Browse | open `design/components.html` from a static server |
-| Vector | `design/pdf/<id>.pdf` — 57 components |
+| Vector | `design/pdf/<id>.pdf` — 62 components |
 | Raster | `design/png/<id>.png` — 3×, transparent where it makes sense |
-| Icons | `design/icons/<name>.svg` — 15, true vector |
+| Icons | `design/icons/<name>.svg` — 18, true vector |
 | Swatches | `design/tokens/cinnamon-discovery.ase` |
 | Tokens | `design/tokens/tokens.json`, `colours.txt` |
 | Whole screens | `node design/export.mjs --screens` (see below) |
@@ -108,7 +108,7 @@ fix, call it out as a fix.
 | Guest landing | Guest card, perks panel |
 | Bill and redemption | Items (collapsed and expanded), bill card ×3 states, spend card ×3 states, discount checking and both error cards, redemption details, earn card, earn pending |
 | Dialogs and drawers | All six dialog states, plus the join success drawer |
-| Form controls | Text field, error field, password field, select, dial code, checkbox on and off |
+| Form controls | Text field, error field, password field, verification-code boxes (plain and rejected), password-rules checklist (as you type and after submit), resend row, select, dial code, checkbox on and off |
 
 The colour palette and type scale are the only two sheets drawn for this folder
 rather than harvested; their values come from the measured production CSS in
@@ -123,7 +123,7 @@ npm i playwright-core
 node design/export.mjs                     # all components, icons, contact sheet
 node design/export.mjs --only=bill-card    # just one
 node design/export.mjs --scale=2           # lighter PNGs
-node design/export.mjs --screens           # + all 50 whole screens as vector PDFs
+node design/export.mjs --screens           # + all 61 whole screens as vector PDFs
 ```
 
 `--screens` writes `design/pdf/screens/*.pdf`, one per state in

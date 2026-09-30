@@ -39,16 +39,19 @@ confirm.
 | --- | --- | --- |
 | Landing | Marketing hero, three perk cards, then a sign-in link | The bill, the amount, and one action |
 | Authentication | Password form first | Existing session → passkey → OTP or magic link → password → recovery |
-| Forgot password | Opens ghadiscovery.com in a new tab; the guest finds their own way back | Stays inside the settlement session and resumes it automatically |
+| Forgot password | Since 30 Sep 2026: an emailed 6-digit code inside the sign-in sheet; a successful reset signs the member straight back into the table session | The same principle, reached through passkey / OTP first, with the recovery tied to the settlement session explicitly |
 | Earn and burn | Two separate journeys from a member dashboard | One bill screen; earning is attached automatically after authentication |
 | "Burn D$" | Programme vocabulary on screen | Use D$ |
 | Failure copy | POS reasons, token states, retry instructions | Guest language, with a clean handoff to a colleague where operations are genuinely needed |
 | Check changed | Implies a new QR is needed | Refreshes the same bill; a new QR only when the check identity itself changes |
 
-The **highest-priority improvement** is password recovery. The reviewer journey
-for it is in the drawer under **Journeys → Forgot password**: wrong password →
-reset → holding screen → return → straight back to the same bill. No second QR
-scan, no re-entered email, no GHA account homepage.
+Password recovery was the **highest-priority improvement**, and production has
+now largely caught up: since 30 Sep 2026 MyMenu's reset is an in-sheet 6-digit
+code that signs the member straight back into the same bill (see
+`../reference/SPEC.md` section 9.1). The reviewer journey here, under
+**Journeys → Forgot password** (wrong password → reset → holding screen → return
+→ straight back to the same bill), is kept as the design reference; the gap that
+remains is mainly ordering — live still leads with the password form.
 
 ---
 

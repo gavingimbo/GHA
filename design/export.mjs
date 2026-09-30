@@ -8,7 +8,7 @@
  *
  * Options:
  *   --only=<id[,id]>   just these components
- *   --screens          also export all 50 reference states as whole-screen PDFs
+ *   --screens          also export all 61 reference states as whole-screen PDFs
  *                      (~20 MB, not committed — generate them when you need them)
  *   --scale=3          PNG device pixel ratio (default from components.json)
  *   --chromium=<path>  browser executable
