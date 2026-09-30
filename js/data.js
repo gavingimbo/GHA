@@ -85,7 +85,7 @@
     gha_transaction_help:
       'Your D$ balance can be redeemed directly against your bill. Minimum redemption D${{min}}.',
     gha_min_bill_required:
-      'Your bill must be at least {{amount}} (D$10) to redeem DISCOVERY Dollars on this check.',
+      'The eligible portion of your bill must be at least {{amount}} (D$10) to redeem DISCOVERY Dollars.',
     gha_no_eligible_spend: 'Nothing on this bill is eligible for DISCOVERY Dollar redemption.',
     gha_burn_confirm_title: 'Apply DISCOVERY Dollars?',
     gha_burn_confirm_body:
@@ -105,7 +105,7 @@
     gha_burn_earn_button: 'Earn D$',
     gha_burn_earn_only_title: 'Earn DISCOVERY Dollars',
     gha_burn_earn_only_body:
-      'Your bill must be at least {{amount}} (D$10) to redeem DISCOVERY Dollars on this check. You can still earn D$ from this visit.',
+      'The eligible portion of your bill must be at least {{amount}} (D$10) to redeem DISCOVERY Dollars. You can still earn D$ on this visit.',
     gha_burn_earn_only_low_balance:
       "You don't have enough DISCOVERY Dollars to redeem on this check (a minimum of D${{min}} is required). You can still earn D$ from this visit.",
     gha_burn_earn_only_no_eligible:
@@ -121,7 +121,7 @@
     gha_earn_cta: 'Earn DISCOVERY Dollars',
     gha_earn_confirm_title: 'Confirm earn',
     gha_earn_confirm_body:
-      'DISCOVERY Dollars will be credited to your account for this bill of {{bill}}. You can earn from a bill only once.',
+      'DISCOVERY Dollars will be credited to your account based on the eligible portion of your bill. You can only earn DISCOVERY Dollars once per bill.',
     gha_earn_processing: 'Crediting your account…',
     gha_earn_success_title: 'DISCOVERY Dollars earned',
     gha_earn_success_body:
@@ -145,29 +145,41 @@
     password: 'Password',
     gha_auth_generic_error: 'Something went wrong. Please try again.',
 
-    // Password recovery — a 6-digit emailed code, entered inside the sign-in modal
+    // Password recovery, inside the sign-in modal: a 6-digit emailed code is
+    // verified on its own step, then a new password is chosen, then a done step
     gha_forgot_title: 'Forgot Password',
     gha_forgot_description:
-      "Enter your email and we'll send you a 6-digit code to reset your password.",
+      "Enter your email or username and we'll send a 6-digit code to the email address on your account.",
     gha_forgot_cta: 'SEND CODE',
+    gha_field_email_or_username: 'Email or Username',
+    gha_field_email_or_username_placeholder: 'Your email or username',
     gha_reset_title: 'Reset Password',
     gha_reset_cta: 'RESET PASSWORD',
+    gha_reset_verify_cta: 'VERIFY CODE',
+    gha_reset_password_description: 'Code verified. Choose a new password.',
+    gha_reset_expired: 'Your reset session has expired. Tap Send code to get a new code.',
     gha_field_otp: 'Verification Code',
     gha_field_new_password: 'New Password',
     gha_field_confirm_password: 'Confirm Password',
-    gha_reset_otp_sent: 'We sent a 6-digit code to {{email}}',
+    gha_reset_otp_sent: "If an account matches, we've sent a 6-digit code to the email address on that account.",
+    gha_reset_otp_resend_prompt: "Didn't get the code?",
     gha_reset_otp_resend: 'Resend code',
-    gha_reset_otp_resend_in: 'Resend code in {{seconds}}s',
-    gha_reset_otp_resent: "We've sent you a new code.",
-    gha_reset_otp_change_email: 'Use a different email',
+    gha_reset_otp_resend_in: 'Resend in {{time}}',
+    gha_reset_otp_resend_ready: 'You can request a new code now.',
+    gha_reset_otp_resent: "If an account matches, we've sent a new code to the email address on that account.",
+    gha_reset_otp_change_login: 'Use a different email or username',
     gha_reset_otp_mismatch: "That code isn't right. {{attempts}} attempts left.",
     gha_reset_otp_mismatch_generic: "That code isn't right. Please check it and try again.",
-    gha_reset_otp_expired: 'That code has expired. Tap Resend code to get a new one.',
-    gha_reset_otp_locked: 'Too many incorrect attempts. Tap Resend code to get a new one.',
+    gha_reset_otp_expired: 'That code has expired. Tap Send code to get a new one.',
+    gha_reset_otp_locked: 'Too many incorrect attempts. Tap Send code to get a new one.',
     gha_reset_otp_cooldown: 'Please wait a moment before asking for another code.',
-    gha_reset_otp_turnstile_failed: "We couldn't confirm you're not a robot. Please try again.",
+    gha_reset_otp_turnstile_failed: "We couldn't verify this request. If you're using a VPN, turn it off and try again.",
     gha_reset_otp_password_policy: 'Your new password still needs: {{rules}}',
     gha_reset_otp_success_signin: 'Password updated. Sign in now.',
+    gha_reset_done_title: 'Password updated',
+    gha_reset_done_description: 'Your password has been reset. Would you like to sign in now?',
+    gha_reset_done_cta: 'YES, SIGN ME IN',
+    gha_reset_done_not_now: 'Not now',
     gha_password_requirements_title: 'Your password must have:',
     gha_password_rule_length: 'Between 8 and 50 characters',
     gha_password_rule_english: 'English letters, numbers and symbols only',
@@ -228,6 +240,9 @@
     coverImageUrl: './assets/img/cover.jpg',
     theme: {
       buttonColor: '#582c83',
+      // top_buttons_background_color: the OTP boxes' and fields' focus outline
+      // (black on the live venue, as captured on 30 Sep 2026)
+      topButtonsColor: '#000000',
       buttonTextColor: '#ffffff',
       headingColor: '#300b5c',
     },

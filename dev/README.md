@@ -39,7 +39,7 @@ confirm.
 | --- | --- | --- |
 | Landing | Marketing hero, three perk cards, then a sign-in link | The bill, the amount, and one action |
 | Authentication | Password form first | Existing session → passkey → OTP or magic link → password → recovery |
-| Forgot password | Since 30 Sep 2026: an emailed 6-digit code inside the sign-in sheet; a successful reset signs the member straight back into the table session | The same principle, reached through passkey / OTP first, with the recovery tied to the settlement session explicitly |
+| Forgot password | Since 30 Sep 2026: an emailed 6-digit code inside the sign-in sheet, verified on its own step, then a new password; **Yes, sign me in** returns the member straight to the table session | The same principle, reached through passkey / OTP first, with the recovery tied to the settlement session explicitly |
 | Earn and burn | Two separate journeys from a member dashboard | One bill screen; earning is attached automatically after authentication |
 | "Burn D$" | Programme vocabulary on screen | Use D$ |
 | Failure copy | POS reasons, token states, retry instructions | Guest language, with a clean handoff to a colleague where operations are genuinely needed |

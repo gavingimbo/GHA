@@ -33,7 +33,7 @@ PNGs for slides, the icon set as SVG, and an Adobe swatch file. Browse
 `design/components.html`; see `design/README.md`.
 
 `reference/` is a capture of this production flow for making mockups and a
-guide: 61 states rendered to `reference/shots/`, a browsable gallery at
+guide: 63 states rendered to `reference/shots/`, a browsable gallery at
 `reference/index.html`, a machine-readable catalogue in `reference/states.json`,
 and `reference/SPEC.md` for the assets, measured layout values, error catalogue
 and the production states that are not yet reproduced.
@@ -45,8 +45,8 @@ and the production states that are not yet reproduced.
 | Guest landing (hero, venue chip, perks) | first load |
 | Terms & Conditions (full-screen) | **Terms & Conditions** |
 | Sign in (+ password reveal, validation) | **Sign in to continue** |
-| Forgot password — email → 6-digit code + new password (rules checklist, resend countdown, errors) | **Forgot Password?** on the sign-in sheet |
-| Reset done — signed straight back into the table session | submit the reset (or pick the fallback under **Reset code — verify**) |
+| Forgot password — email or username → 6-digit code (VERIFY CODE, resend countdown) → new password (rules checklist) → Password updated | **Forgot Password?** on the sign-in sheet |
+| Password updated → **YES, SIGN ME IN** signs straight back into the table session | submit each step (or pick the fallback under **New password — set**) |
 | Join (language, name, email, phone, consents) | **Join now for free** |
 | Join success drawer | submit the join form |
 | Member landing (tier card, D$ stats, action cards) | sign in with anything |
@@ -67,7 +67,7 @@ the real app only reaches through the POS and the GHA API:
 - **Member discount** — applied / checking / POS rejected / opened by another member
 - **Session token** — valid / expired / check changed / no token (drives the red hint above the action cards)
 - **Member actions** — the two-card variant (Earn + Burn) or the single **View Bill** card the `redirect=gha_discovery` entry point shows
-- **Reset code — send / verify** — what the mocked GHA endpoints answer: code sent, cooldown or bot-check failure; then signed straight in, reset-then-sign-in, wrong / expired / locked code, or a server-side password-policy rejection
+- **Reset code — send / verify, New password — set** — what the mocked GHA endpoints answer: code sent, cooldown or bot-check failure; code verified, wrong / expired / locked code; then updated with Yes signing straight in, updated with Yes opening sign in, a server-side password-policy rejection, or an expired reset session
 
 The ☰ itself can be hidden so it never lands in a screenshot: **Hide this
 button** in the panel, `?controls=0` on the URL, or the **M** key. The choice is

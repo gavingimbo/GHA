@@ -167,7 +167,7 @@ button { font-family: inherit; }
   pointer-events: none;
 }
 .mui_input_root:hover .mui_notch { border-color: rgba(0, 0, 0, 0.87); }
-.mui_input_root.is_focused .mui_notch { border: 2px solid var(--gha-purple); }
+.mui_input_root.is_focused .mui_notch { border: 2px solid #000; }
 .mui_input_root.is_error .mui_notch { border-color: #d32f2f; }
 
 .mui_adornment {

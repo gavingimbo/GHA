@@ -47,6 +47,10 @@
     check: (s = 20) =>
       md('M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z', s),
 
+    // react-icons MdCheck: the mark inside the reset done step's ring
+    tick: (s = 30) =>
+      md('M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z', s),
+
     alert: (s = 22) =>
       md('M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z', s),
 

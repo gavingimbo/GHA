@@ -12,13 +12,13 @@ as still needing capture rather than inventing them.
 
 | | |
 | --- | --- |
-| Captured states | 50, as 65 images in `shots/` |
+| Captured states | 63, as 81 images in `shots/` |
 | Browse them | open `reference/index.html` from a static server |
 | Machine-readable | `reference/states.json` |
 | Regenerate images | `node reference/capture.mjs` (`--scale=2` for retina) |
-| Copy deck | 140 keys in `/js/data.js`; 121 rendered, 19 not (section 10) |
-| Live deck | 730 keys recovered from the public bundle — `reference/live-copy-deck.json` |
-| Copy fidelity | all 139 keys shared with the live deck match **exactly** |
+| Copy deck | 181 keys in `/js/data.js`; the ones not rendered are in section 10 |
+| Live deck | 747 keys recovered from the public bundle (30 Sep 2026, 13:08 GMT build) — `reference/live-copy-deck.json` |
+| Copy fidelity | all 180 keys shared with the live deck match **exactly** |
 
 ---
 
@@ -81,7 +81,7 @@ QR scan
   └─ page (guest)                    §1 in the gallery
        ├─ Terms & Conditions sheet
        ├─ Sign in sheet ──────────┐
-       │    └─ Forgot → code ─────┤   §1b: a reset signs straight in
+       │    └─ Forgot → code → new password → done ─┤   §1b: Yes, sign me in returns to the table
        └─ Join sheet ─────────────┤
             └─ success drawer ────┤
                                   ▼
@@ -93,8 +93,8 @@ QR scan
 ```
 
 Three screens (`state.screen`: `page`, `burn`, `earn`), three full-screen sheets
-(`state.modal`: `signin`, `signup`, `terms`; the sign-in sheet has three modes in
-`state.signinMode`: `signin`, `forgot`, `reset_otp`), and one centred dialog shared by
+(`state.modal`: `signin`, `signup`, `terms`; the sign-in sheet has five modes in
+`state.signinMode`: `signin`, `forgot`, `reset_otp`, `reset_password`, `reset_done`), and one centred dialog shared by
 the redemption and earn paths (`state.confirm`). The member landing has two
 variants: two action cards by default, or a single **View Bill** card when the
 entry carries `?redirect=gha_discovery`.
@@ -354,16 +354,15 @@ reversed from the phone; and the first member to scan locks the check.
 ## 8. Error and state catalogue
 
 The error states, with what triggers each and who can resolve it. Full copy,
-triggers and captures for all 61 states are in `states.json` and the gallery.
+triggers and captures for all 63 states are in `states.json` and the gallery.
 
 | State | Message | Retry offered | Resolved by |
 | --- | --- | --- | --- |
 | `guest-signin-error` | "Username or email is required" | n/a, inline | Guest |
-| `reset-forgot-error` | "Invalid email format" | n/a, inline | Guest |
-| `reset-otp-validation` | "Enter the 6-digit code from your email", rules in red | n/a, inline | Guest |
+| `reset-forgot-error` | "Enter a valid email address" | n/a, inline | Guest |
 | `reset-otp-mismatch` | "That code isn't right. 2 attempts left." | **yes** | Guest re-enters the code |
-| `reset-otp-expired` | "That code has expired. Tap Resend code to get a new one." | **yes**, resend | Guest resends |
-| `reset-otp-policy` | "Your new password still needs: At least one symbol" | **yes** | Guest |
+| `reset-otp-expired` | "That code has expired. Tap Send code to get a new one." (back on step 1) | **yes**, send again | Guest taps Send code |
+| `reset-password-policy` | "Your new password still needs: At least one symbol" | **yes** | Guest |
 | `member-bill-empty` | "No active bill on B12 yet" | no | Colleague rings items in; the poll picks it up |
 | `member-hint-expired` | "Your session has expired. Please ask staff for a new QR." | no | Colleague issues a fresh QR |
 | `member-hint-check-changed` | "The bill has changed. Please ask staff for a new QR." | no | Colleague issues a fresh QR |
@@ -414,40 +413,58 @@ session and ended at "You can now close this tab". MyMenu has since replaced it,
 and the old route, its copy keys and the external
 `ghadiscovery.com/member/settings/password` link are all gone from the bundle.
 
-What ships now, and what the mockup reproduces (catalogue group **1b —
-Password recovery**, 11 states):
+**Re-audited again on 30 September 2026 against the 13:08 GMT build**, after
+MyMenu split the one-screen reset into steps. (A CDN edge can still serve the
+earlier build for a few days: fetch the shell with `Cache-Control: no-cache` and
+a cache-busting query when verifying.)
 
-1. **Forgot Password?** switches the sign-in sheet to a `forgot` mode — a back
-   arrow appears at the left of the header, and the email field is seeded with
-   whatever was typed as the username/email. **SEND CODE** posts
+What ships now, and what the mockup reproduces (catalogue group **1b —
+Password recovery**, 13 states). Four steps inside the sign-in sheet:
+
+1. **Forgot Password** (`forgot`). *"Enter your email or username and we'll send
+   a 6-digit code to the email address on your account."* One field, **Email or
+   Username**, seeded with whatever was typed on sign-in. A back arrow at the left
+   of the header returns to sign in. **SEND CODE** posts
    `/api/gha/forgot-password/` with `{ login }` and a Cloudflare Turnstile token
-   (minted in the background on entering the mode; the slot stays empty unless
+   (minted in the background on entering the step; the slot stays empty unless
    Cloudflare wants an interactive challenge).
-2. The sheet moves to `reset_otp`: *"We sent a 6-digit code to {{email}}"*, six
-   52 px code boxes (`autocomplete=one-time-code`, numeric, paste fills all six),
-   **New Password** with a live rules checklist, **Confirm Password**, a
-   **Resend code** link that counts down from the API's `resend_after` (60 s by
-   default), and **Use a different email**.
-3. **RESET PASSWORD** posts `/api/gha/forgot-password/verify/` with
-   `{ login, otp, password }`. If the response carries a login payload the
-   member is **signed straight in and the sheet closes onto the member landing
-   of the same table session** — no fresh QR, no lost bill. Otherwise the sheet
-   returns to sign-in with the email prefilled and *"Password updated. Sign in
-   now."*
+2. **Reset Password: the code** (`reset_otp`). *"If an account matches, we've
+   sent a 6-digit code to the email address on that account."* (the address is
+   no longer echoed back). Six 52 px code boxes (`autocomplete=one-time-code`,
+   numeric, paste fills all six), then *"Didn't get the code? Resend in 0:59"*,
+   counting down in m:ss from the API's `resend_after` (60 s by default) until it
+   becomes a **Resend code** link. **VERIFY CODE** posts
+   `/api/gha/forgot-password/verify-code/` with `{ login, otp }` and receives a
+   `reset_grant`. **Use a different email or username** returns to step 1.
+3. **Reset Password: the new password** (`reset_password`). *"Code verified.
+   Choose a new password."* One **New Password** field with the live rules
+   checklist; there is no confirm field. **RESET PASSWORD** posts
+   `/api/gha/forgot-password/set-password/` with `{ reset_grant, password }`.
+4. **Password updated** (`reset_done`). A check in a 64 px ring (the venue's
+   button colour), *"Your password has been reset. Would you like to sign in
+   now?"*, **YES, SIGN ME IN** and **Not now**; no back arrow. If set-password
+   returned a login payload, Yes **signs the member straight into the same table
+   session** — no fresh QR, no lost bill. Otherwise it opens sign-in with the
+   email or username prefilled and *"Password updated. Sign in now."* **Not now**
+   closes the sheet.
+
+The focused field and the focused code box take the venue's
+`top_buttons_background_color` (black on the captured venue), not the purple.
 
 This closes the context gap the earlier audit called out: recovery no longer
 leaves the table session.
 
-**Error bodies** from the two endpoints, mapped to copy by `error`:
+**Error bodies** from the three endpoints, mapped to copy by `error`:
 
 | `error` | Copy | Also |
 | --- | --- | --- |
 | `otp_mismatch` | That code isn't right. {{attempts}} attempts left. | from `attempts_left`; code boxes go red until edited |
 | `otp_mismatch` (no count) | That code isn't right. Please check it and try again. | boxes red |
-| `otp_expired` | That code has expired. Tap Resend code to get a new one. | boxes red |
-| `otp_locked` | Too many incorrect attempts. Tap Resend code to get a new one. | boxes red |
+| `otp_expired` | That code has expired. Tap Send code to get a new one. | **back to step 1**, login kept |
+| `otp_locked` | Too many incorrect attempts. Tap Send code to get a new one. | back to step 1 |
+| `reset_expired` | Your reset session has expired. Tap Send code to get a new code. | set-password; back to step 1 |
 | `otp_cooldown` | Please wait a moment before asking for another code. | restarts the countdown from `retry_after` |
-| `turnstile_failed` | We couldn't confirm you're not a robot. Please try again. | |
+| `turnstile_failed` | We couldn't verify this request. If you're using a VPN, turn it off and try again. | |
 | `password_policy` | Your new password still needs: {{rules}} | `failed_rules`, joined with commas |
 | anything else | the server message, or Something went wrong. Please try again. | |
 
@@ -465,10 +482,10 @@ red. Met rules are `#1f7a4d`, unmet `#b00020`, 12 px text:
 | `gha_password_rule_symbol` | At least one symbol |
 | `gha_password_rule_trimmed` | No space at the start or the end |
 
-The client-side messages are literals in the bundle, not keys: *Email is
-required*, *Invalid email format*, *Verification code is required*, *Enter the
-6-digit code from your email*, *Please confirm your new password*, *Passwords
-do not match*.
+The client-side messages are literals in the bundle, not keys: *Email or
+username is required*, *Enter a valid email address*, *Usernames can't contain
+spaces*, *Must be at most 254 characters*, *Verification code is required*,
+*Enter the 6-digit code from your email*.
 
 **The email** is in `reference/email/` — the message as received on 30 Sep 2026
 (`password-reset-code.eml`) and its HTML body on its own
@@ -700,7 +717,7 @@ intended answer to two members on one bill.
 ## 12. Regenerating
 
 ```bash
-node reference/capture.mjs                 # all 61 states, 1×
+node reference/capture.mjs                 # all 63 states, 1×
 node reference/capture.mjs --scale=2       # retina
 node reference/capture.mjs --only=burn-discount-failed,earn-confirm-success
 ```
@@ -769,6 +786,10 @@ As captured on 30 September 2026: 7 GHA JavaScript chunks
 `titanium`) — the same five this repository mirrors as
 `css/{page,modal,hero,burn,titanium}.css`. The page and modal modules were
 rehashed in that deploy (`kqptn` → `11cwm`, `l72lm` → `19phd`), so
-`js/css-maps.js` was regenerated with them; the password-rules checklist is its
+`js/css-maps.js` was regenerated with them. The 13:08 GMT build of the same day
+rehashed the modal again (`19phd` → `1bs73`, adding the resend line, the quiet
+buttons and the done step), and `css/modal.css` and its map were re-synced from
+it; that build also changed `page` and `burn` (a QR scanner sheet and a session
+error card, outside this flow), which are not re-synced here; the password-rules checklist is its
 own module (`w5xn3`) concatenated into the modal stylesheet, mapped as
 `GHA_CSS.pwr`.

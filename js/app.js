@@ -97,18 +97,17 @@
     posVariant: 'view_bill',   // view_bill (single card) | earn_burn (two cards)
     // modals
     modal: null,               // signin | signup | terms | null
-    signinMode: 'signin',      // signin | forgot | reset_otp (the sign-in modal's modes)
+    signinMode: 'signin',      // signin | forgot | reset_otp | reset_password | reset_done (the sign-in modal's modes)
     loginValue: '',
     passwordValue: '',
     showPassword: false,
-    // password recovery (forgot → reset_otp), one form shared across both modes
-    resetEmail: '',
+    // password recovery (forgot → reset_otp → reset_password → reset_done), one form across the steps
+    resetLogin: '',            // email or username
     otp: '',
     newPassword: '',
-    confirmPassword: '',
     showNewPassword: false,
-    showConfirmPassword: false,
     newPasswordFocused: false, // the rules checklist appears on focus
+    resetSession: null,        // after set-password: 'session' (a login came back) | 'signin' | null
     touched: {},               // Formik-style: errors show once a field is blurred
     validated: false,          // any change/blur/submit has run validation
     submitCount: 0,
@@ -117,9 +116,10 @@
     submitError: '',
     submitSuccess: '',
     // What the mocked GHA API answers. send: forgot-password (and resend);
-    // verify: forgot-password/verify.
+    // verify: forgot-password/verify-code; set: forgot-password/set-password.
     resetSendOutcome: 'ok',    // ok | otp_cooldown | turnstile_failed
-    resetVerifyOutcome: 'signed_in', // signed_in | signin | otp_mismatch | otp_mismatch_generic | otp_expired | otp_locked | password_policy
+    resetVerifyOutcome: 'ok',  // ok | otp_mismatch | otp_mismatch_generic | otp_expired | otp_locked
+    resetSetOutcome: 'signed_in', // signed_in | signin | password_policy | reset_expired
     signupPassword: false,
     consentOpen: false,
     marketingOpen: false,
@@ -634,28 +634,36 @@
     { key: 'trimmed', labelKey: 'gha_password_rule_trimmed', message: 'must not start or end with a space', test: (v) => v === v.trim() },
   ];
 
-  /** Formik + yup errors for the current mode, with the live schema's messages. */
+  /** Formik + yup errors for the current step, with the live schemas' messages. */
   function resetErrors() {
     const e = {};
-    if (state.signinMode === 'forgot') {
-      const email = state.resetEmail.trim();
-      if (!email) e.email = 'Email is required';
-      else if (!EMAIL_RE.test(email)) e.email = 'Invalid email format';
-      return e;
+    const mode = state.signinMode;
+    if (mode === 'forgot') {
+      const login = state.resetLogin.trim();
+      if (!login) e.login = 'Email or username is required';
+      else if (login.length > 254) e.login = 'Must be at most 254 characters';
+      else if (login.includes('@') && !EMAIL_RE.test(login)) e.login = 'Enter a valid email address';
+      else if (!login.includes('@') && /\s/.test(login)) e.login = "Usernames can't contain spaces";
+    } else if (mode === 'reset_otp') {
+      const otp = state.otp.trim();
+      if (!otp) e.otp = 'Verification code is required';
+      else if (!/^\d{6}$/.test(otp)) e.otp = 'Enter the 6-digit code from your email';
+    } else if (mode === 'reset_password') {
+      const pw = state.newPassword;
+      if (!pw) e.password = 'Password is required';
+      else {
+        const failed = PASSWORD_RULES.find((r) => !r.test(pw));
+        if (failed) e.password = 'Password ' + failed.message;
+      }
     }
-    const otp = state.otp.trim();
-    if (!otp) e.otp = 'Verification code is required';
-    else if (!/^\d{6}$/.test(otp)) e.otp = 'Enter the 6-digit code from your email';
-    const pw = state.newPassword;
-    if (!pw) e.password = 'Password is required';
-    else {
-      const failed = PASSWORD_RULES.find((r) => !r.test(pw));
-      if (failed) e.password = 'Password ' + failed.message;
-    }
-    if (!state.confirmPassword) e.confirmPassword = 'Please confirm your new password';
-    else if (state.confirmPassword !== pw) e.confirmPassword = 'Passwords do not match';
     return e;
   }
+
+  /** The resend countdown as the live modal prints it: m:ss. */
+  const fmtCountdown = (sec) => {
+    const n = Math.max(0, Math.ceil(Number(sec) || 0));
+    return `${Math.floor(n / 60)}:${String(n % 60).padStart(2, '0')}`;
+  };
 
   const fieldError = (errors, name) => (state.touched[name] && errors[name]) || '';
 
@@ -684,7 +692,7 @@
 
   /** react-otp-input as the live modal configures it: six square boxes. */
   function otpInput(errored) {
-    const accent = THEME.buttonColor;
+    const accent = THEME.topButtonsColor || THEME.buttonColor;
     const boxes = [];
     for (let i = 0; i < RESET_OTP_LENGTH; i++) {
       boxes.push(`<div style="display:flex;align-items:center;flex:1 1 0;min-width:0">
@@ -703,56 +711,63 @@
     const errors = mode === 'signin' ? {} : resetErrors();
     const invalid = state.validated && Object.keys(errors).length > 0;
     const disabled = state.submitting || invalid;
-    const recovering = mode === 'forgot' || mode === 'reset_otp';
+    const recovering = mode !== 'signin';
+    const done = mode === 'reset_done';
 
-    const title = { signin: 'gha_signin_title', forgot: 'gha_forgot_title', reset_otp: 'gha_reset_title' }[mode];
-    const cta = { signin: 'gha_signin_cta', forgot: 'gha_forgot_cta', reset_otp: 'gha_reset_cta' }[mode];
+    const title = {
+      signin: 'gha_signin_title', forgot: 'gha_forgot_title', reset_otp: 'gha_reset_title',
+      reset_password: 'gha_reset_title', reset_done: 'gha_reset_done_title',
+    }[mode];
+    const cta = {
+      signin: 'gha_signin_cta', forgot: 'gha_forgot_cta', reset_otp: 'gha_reset_verify_cta',
+      reset_password: 'gha_reset_cta', reset_done: 'gha_reset_done_cta',
+    }[mode];
     const hint = (text) => `<p class="${M.gha_field_hint}" style="margin-bottom:12px">${text}</p>`;
+    const quiet = (act, label) =>
+      `<button type="button" class="${M.gha_quiet_btn}" data-act="${act}" style="color:${THEME.buttonColor}">${label}</button>`;
 
     let body;
     if (mode === 'forgot') {
       body = `
         ${hint(t('gha_forgot_description'))}
-        ${field('email', t('email_address'), {
-          type: 'email',
-          placeholder: t('gha_field_email_placeholder'),
-          value: state.resetEmail,
-          bind: 'resetEmail',
-          error: fieldError(errors, 'email'),
+        ${field('login', t('gha_field_email_or_username'), {
+          placeholder: t('gha_field_email_or_username_placeholder'),
+          value: state.resetLogin,
+          bind: 'resetLogin',
+          error: fieldError(errors, 'login'),
+          attrs: 'autocapitalize="none" spellcheck="false"',
         })}`;
     } else if (mode === 'reset_otp') {
       const otpError = fieldError(errors, 'otp');
-      const pwError = fieldError(errors, 'password');
+      const waiting = state.resendIn > 0;
       body = `
-        ${hint(t('gha_reset_otp_sent', { email: esc(state.resetEmail) }))}
+        ${hint(t('gha_reset_otp_sent'))}
         <div class="${M.gha_field}">
           <p class="${M.gha_field_label}">${t('gha_field_otp')}<span class="${M.gha_required_star}"> *</span></p>
           ${otpInput(state.otpErrored || !!otpError)}
           ${otpError ? `<p class="${M.gha_inline_error}">${otpError}</p>` : ''}
-        </div>
+          <p class="${M.gha_resend_line}">
+            <span class="${M.gha_resend_prompt}">${t('gha_reset_otp_resend_prompt')}</span>
+            <button type="button" class="${M.gha_resend_btn}" data-act="reset-resend" ${waiting || state.submitting ? 'disabled' : ''}
+              ${waiting ? '' : `style="color:${THEME.buttonColor}"`}>${waiting ? t('gha_reset_otp_resend_in', { time: fmtCountdown(state.resendIn) }) : t('gha_reset_otp_resend')}</button>
+          </p>
+        </div>`;
+    } else if (mode === 'reset_password') {
+      body = `
+        ${hint(t('gha_reset_password_description'))}
         ${field('password', t('gha_field_new_password'), {
           type: state.showNewPassword ? 'text' : 'password',
           value: state.newPassword,
           bind: 'newPassword',
           // The checklist stands in for the field's helper text; only the
           // outline turns red.
-          error: pwError ? true : '',
+          error: fieldError(errors, 'password') ? true : '',
           adornment: eyeAdornment(state.showNewPassword, 'toggle-new-password', 'toggle new password visibility'),
-          attrs: 'id="gha-new-password" aria-describedby="gha-new-password-requirements"',
+          attrs: 'id="gha-new-password" autocomplete="new-password" aria-describedby="gha-new-password-requirements"',
           after: passwordRules(),
-        })}
-        ${field('confirmPassword', t('gha_field_confirm_password'), {
-          type: state.showConfirmPassword ? 'text' : 'password',
-          value: state.confirmPassword,
-          bind: 'confirmPassword',
-          error: fieldError(errors, 'confirmPassword'),
-          adornment: eyeAdornment(state.showConfirmPassword, 'toggle-confirm-password', 'toggle confirm password visibility'),
-        })}
-        <div class="${M.gha_otp_actions}">
-          <button type="button" class="${M.gha_link_btn}" data-act="reset-resend" ${state.resendIn > 0 || state.submitting ? 'disabled' : ''}
-            style="color:${THEME.buttonColor}">${state.resendIn > 0 ? t('gha_reset_otp_resend_in', { seconds: state.resendIn }) : t('gha_reset_otp_resend')}</button>
-          <button type="button" class="${M.gha_link_btn}" data-act="reset-change-email" style="color:${THEME.buttonColor}">${t('gha_reset_otp_change_email')}</button>
-        </div>`;
+        })}`;
+    } else if (done) {
+      body = hint(t('gha_reset_done_description'));
     } else {
       body = `
         ${field('login', t('gha_field_username_or_email'), {
@@ -770,28 +785,38 @@
         <button type="button" class="${M.gha_link_btn}" data-act="forgot" style="color:${THEME.buttonColor}">${t('gha_forgot_password_link')}</button>`;
     }
 
+    // Below the primary button: a way back to the first step while waiting for
+    // the code, and a way out once the password is reset.
+    const after = mode === 'reset_otp' ? quiet('reset-change-login', t('gha_reset_otp_change_login'))
+      : done ? quiet('close-modal', t('gha_reset_done_not_now')) : '';
+    const doneIcon = done
+      ? `<div class="${M.gha_done_icon}" style="color:${THEME.buttonColor}" aria-hidden="true">${I.tick(30)}</div>` : '';
+    const submitAttrs = done ? 'type="button" data-act="reset-signin"' : 'type="submit"';
+
     return `<div class="modal_backdrop is_fullscreen">
       <div class="modal_sheet ${M.gha_modal_content}">
         <div class="${M.gha_modal_root}" style="height:100%;background-color:#ffffff">
           <div class="${M.gha_wallet_header}">
-            ${recovering
+            ${recovering && !done
               ? `<button type="button" class="${M.gha_back_btn_header}" data-act="reset-back" aria-label="Back to sign in" style="color:#1a1a1a">${I.back(22)}</button>`
               : ''}
             <img class="${M.gha_wallet_wordmark}" src="./assets/img/gha-logo.jpg" alt="GHA DISCOVERY">
             <button type="button" class="${M.gha_close_btn_header}" data-act="close-modal" aria-label="Close">${I.close(24)}</button>
           </div>
-          <form class="${M.gha_signup_body}" data-submit="${mode === 'signin' ? 'do-signin' : 'do-reset'}" novalidate>
+          <form class="${M.gha_signup_body}${done ? ' ' + M.gha_done_body : ''}" data-submit="${mode === 'signin' ? 'do-signin' : 'do-reset'}" novalidate>
+            ${doneIcon}
             <h2 class="${M.gha_signup_title}" style="color:#14102e;font-size:22px">${t(title).toUpperCase()}</h2>
             ${body}
             ${state.submitError ? `<div class="${M.gha_submit_error}" role="alert">${esc(state.submitError)}</div>` : ''}
             ${state.submitSuccess ? `<div class="${M.gha_submit_success}" style="color:${THEME.buttonColor}">${esc(state.submitSuccess)}</div>` : ''}
-            <button type="submit" class="${M.gha_primary_btn} c_btn c_btn_primary" ${disabled ? 'disabled' : ''}
+            <button ${submitAttrs} class="${M.gha_primary_btn} c_btn c_btn_primary" ${disabled ? 'disabled' : ''}
               style="font-size:16px;font-weight:700">
               ${state.submitting
                 ? `<span class="${M.gha_btn_content}"><span class="${M.gha_btn_spinner}"></span>${t('gha_submitting')}</span>`
                 : t(cta)}
             </button>
-            ${recovering ? `<div class="${M.gha_turnstile_slot}" aria-hidden="true"></div>` : ''}
+            ${after}
+            ${recovering && !done ? `<div class="${M.gha_turnstile_slot}" aria-hidden="true"></div>` : ''}
           </form>
         </div>
       </div>
@@ -959,13 +984,18 @@
         </select>
         <label>Reset code — verify</label>
         <select data-mock="resetVerifyOutcome">
-          ${opt('signed_in', state.resetVerifyOutcome, 'Reset + signed straight in')}
-          ${opt('signin', state.resetVerifyOutcome, 'Reset, then sign in')}
+          ${opt('ok', state.resetVerifyOutcome, 'Code verified')}
           ${opt('otp_mismatch', state.resetVerifyOutcome, 'Wrong code (attempts left)')}
           ${opt('otp_mismatch_generic', state.resetVerifyOutcome, 'Wrong code')}
           ${opt('otp_expired', state.resetVerifyOutcome, 'Code expired')}
           ${opt('otp_locked', state.resetVerifyOutcome, 'Too many attempts')}
-          ${opt('password_policy', state.resetVerifyOutcome, 'Server rejects password')}
+        </select>
+        <label>New password — set</label>
+        <select data-mock="resetSetOutcome">
+          ${opt('signed_in', state.resetSetOutcome, 'Updated; Yes signs straight in')}
+          ${opt('signin', state.resetSetOutcome, 'Updated; Yes opens sign in')}
+          ${opt('password_policy', state.resetSetOutcome, 'Server rejects password')}
+          ${opt('reset_expired', state.resetSetOutcome, 'Reset session expired')}
         </select>
         <button data-act="mock-reset">Reset mockup</button>
         <button data-act="mock-hide" class="mock_hide">Hide this button</button>
@@ -1043,8 +1073,8 @@
   /** Everything the sign-in modal's form holds, as it is when first opened. */
   const SIGNIN_FORM = () => ({
     signinMode: 'signin', loginValue: '', passwordValue: '', showPassword: false, formError: '',
-    resetEmail: '', otp: '', newPassword: '', confirmPassword: '',
-    showNewPassword: false, showConfirmPassword: false, newPasswordFocused: false,
+    resetLogin: '', otp: '', newPassword: '',
+    showNewPassword: false, newPasswordFocused: false, resetSession: null,
     touched: {}, validated: false, submitCount: 0, otpErrored: false,
     submitError: '', submitSuccess: '', submitting: false,
   });
@@ -1075,19 +1105,23 @@
     return false;
   }
 
-  /** forgot-password/verify error bodies, mapped to copy the way the live modal does. */
-  function verifyError(outcome) {
+  /** verify-code and set-password error bodies, mapped to copy the way the live
+   *  modal does. An expired or locked code, or an expired reset, sends the guest
+   *  back to the first step with the message showing there. */
+  function resetFailed(outcome) {
+    const back = (key) => switchSigninMode('forgot', { resetLogin: state.resetLogin, submitError: t(key) });
     switch (outcome) {
-      case 'otp_mismatch': return { submitError: t('gha_reset_otp_mismatch', { attempts: 2 }), otpErrored: true };
-      case 'otp_mismatch_generic': return { submitError: t('gha_reset_otp_mismatch_generic'), otpErrored: true };
-      case 'otp_expired': return { submitError: t('gha_reset_otp_expired'), otpErrored: true };
-      case 'otp_locked': return { submitError: t('gha_reset_otp_locked'), otpErrored: true };
+      case 'otp_mismatch': return set({ submitting: false, submitError: t('gha_reset_otp_mismatch', { attempts: 2 }), otpErrored: true });
+      case 'otp_mismatch_generic': return set({ submitting: false, submitError: t('gha_reset_otp_mismatch_generic'), otpErrored: true });
+      case 'otp_expired': return back('gha_reset_otp_expired');
+      case 'otp_locked': return back('gha_reset_otp_locked');
+      case 'reset_expired': return back('gha_reset_expired');
       case 'password_policy': {
         // The server re-checks the policy and names the rules still failing.
         const rules = ['symbol'].map((k) => t(PASSWORD_RULES.find((r) => r.key === k).labelKey));
-        return { submitError: t('gha_reset_otp_password_policy', { rules: rules.join(', ') }) };
+        return set({ submitting: false, submitError: t('gha_reset_otp_password_policy', { rules: rules.join(', ') }) });
       }
-      default: return { submitError: t('gha_auth_generic_error') };
+      default: return set({ submitting: false, submitError: t('gha_auth_generic_error') });
     }
   }
 
@@ -1102,14 +1136,14 @@
     'toggle-marketing-text': () => set({ marketingOpen: !state.marketingOpen }),
     'toggle-marketing': () => set({ marketingOptIn: !state.marketingOptIn }),
 
-    // Password recovery stays inside the modal: an emailed 6-digit code, then a
-    // new password, and a successful reset signs the member straight in — so
-    // the guest lands back on this table's session, not on a sign-in screen.
-    forgot: () => switchSigninMode('forgot', { resetEmail: state.loginValue.trim() }),
+    // Password recovery stays inside the modal, in four steps: send a code to
+    // the email on the account, verify it, choose a new password, then offer to
+    // sign in. When set-password returns a login, "Yes, sign me in" signs the
+    // member straight into this table's session.
+    forgot: () => switchSigninMode('forgot', { resetLogin: state.loginValue.trim() }),
     'reset-back': () => switchSigninMode('signin'),
-    'reset-change-email': () => switchSigninMode('forgot', { resetEmail: state.resetEmail }),
+    'reset-change-login': () => switchSigninMode('forgot', { resetLogin: state.resetLogin }),
     'toggle-new-password': () => set({ showNewPassword: !state.showNewPassword }),
-    'toggle-confirm-password': () => set({ showConfirmPassword: !state.showConfirmPassword }),
 
     'do-reset': () => {
       const errors = resetErrors();
@@ -1120,24 +1154,31 @@
         return;
       }
       set({ submitting: true, submitError: '', submitSuccess: '', submitCount: state.submitCount + 1 });
+      const mode = state.signinMode;
       setTimeout(() => {
-        if (state.signinMode === 'forgot') {
+        if (mode === 'forgot') {
           if (sendFailed()) return;
-          switchSigninMode('reset_otp', { resetEmail: state.resetEmail.trim(), resendIn: RESEND_AFTER });
-          return;
-        }
-        const outcome = state.resetVerifyOutcome;
-        if (outcome === 'signed_in') {
-          // forgot-password/verify returned a login payload: the member is in.
-          closeSigninModal();
-          set({ signedIn: true, loadingProfile: true });
-          setTimeout(() => set({ loadingProfile: false }), 1200);
-        } else if (outcome === 'signin') {
-          switchSigninMode('signin', { loginValue: state.resetEmail.trim(), submitSuccess: t('gha_reset_otp_success_signin') });
-        } else {
-          set({ submitting: false, ...verifyError(outcome) });
+          switchSigninMode('reset_otp', { resetLogin: state.resetLogin.trim(), resendIn: RESEND_AFTER });
+        } else if (mode === 'reset_otp') {
+          if (state.resetVerifyOutcome !== 'ok') return resetFailed(state.resetVerifyOutcome);
+          switchSigninMode('reset_password', { resetLogin: state.resetLogin });
+        } else if (mode === 'reset_password') {
+          const outcome = state.resetSetOutcome;
+          if (outcome !== 'signed_in' && outcome !== 'signin') return resetFailed(outcome);
+          switchSigninMode('reset_done', { resetLogin: state.resetLogin, resetSession: outcome === 'signed_in' ? 'session' : 'signin' });
         }
       }, 900);
+    },
+
+    'reset-signin': () => {
+      if (state.resetSession === 'session') {
+        // set-password returned a login payload: the member is in.
+        closeSigninModal();
+        set({ signedIn: true, loadingProfile: true });
+        setTimeout(() => set({ loadingProfile: false }), 1200);
+      } else {
+        switchSigninMode('signin', { loginValue: state.resetLogin, submitSuccess: t('gha_reset_otp_success_signin') });
+      }
     },
 
     'reset-resend': () => {
@@ -1238,7 +1279,7 @@
     },
     'mock-reset': () =>
       set({
-        ...SIGNIN_FORM(), resendIn: 0, resetSendOutcome: 'ok', resetVerifyOutcome: 'signed_in',
+        ...SIGNIN_FORM(), resendIn: 0, resetSendOutcome: 'ok', resetVerifyOutcome: 'ok', resetSetOutcome: 'signed_in',
         signedIn: false, screen: 'page', billStatus: 'ready', discountState: 'ok', sessionHint: null,
         posVariant: 'view_bill', burned: null, earned: null, earnPending: false,
         balance: MEMBER.balance, spend: INITIAL_SPEND, confirm: 'idle', modal: null, mockOpen: false,
@@ -1267,8 +1308,8 @@
 
   // Fields whose value changes what else is on screen re-render as you type;
   // the rest just keep their value in state.
-  const LIVE_FIELDS = new Set(['resetEmail', 'newPassword', 'confirmPassword']);
-  const FIELD_NAME = { resetEmail: 'email', newPassword: 'password', confirmPassword: 'confirmPassword' };
+  const LIVE_FIELDS = new Set(['resetLogin', 'newPassword']);
+  const FIELD_NAME = { resetLogin: 'login', newPassword: 'password' };
 
   /** One OTP box changed: react-otp-input's rules for typing, deleting and pasting. */
   function otpInputChanged(box, raw) {

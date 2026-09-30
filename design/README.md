@@ -10,7 +10,7 @@ assets, so what you place in a guide is what the app renders.
 | Browse | open `design/components.html` from a static server |
 | Vector | `design/pdf/<id>.pdf` — 62 components |
 | Raster | `design/png/<id>.png` — 3×, transparent where it makes sense |
-| Icons | `design/icons/<name>.svg` — 18, true vector |
+| Icons | `design/icons/<name>.svg` — 19, true vector |
 | Swatches | `design/tokens/cinnamon-discovery.ase` |
 | Tokens | `design/tokens/tokens.json`, `colours.txt` |
 | Whole screens | `node design/export.mjs --screens` (see below) |
