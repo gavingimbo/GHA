@@ -167,27 +167,29 @@ add(bell(hz('A5'), 3.2), 32.95, .04, .2, .8)
 
 # ------------------------------------------------------------------- effects
 FX = [  # time, sound, gain, pan, reverb
-    (3.30, whoosh(1.2, True), .22, 0, .3),        # phone rises
+    (3.05, whoosh(1.2, True), .22, 0, .3),        # phone rises
     (5.45, whoosh(1.5, True), .20, 0, .3),        # zoom into the error card
     (7.30, tick(), .22, -.1, .4),                 # reason highlighted
-    (10.75, whoosh(.9, False), .20, 0, .3),       # phone leaves
-    (11.45, whoosh(.8, True), .10, 0, .3),        # step 1 heading
-    (11.85, whoosh(.9, True), .16, .2, .3),       # terminal card in
-    (13.15, whoosh(1.1, True), .12, .2, .3),      # zoom in to Cancel/Exit
-    (14.10, tick(), .16, .2, .4),                 # Cancel/Exit highlighted
-    (14.60, tap(), .45, .2, .15),                 # tap Cancel/Exit
-    (14.90, whoosh(.9, False), .12, 0, .3),       # pull back to the whole screen
-    (15.80, whoosh(.9, False), .16, -.1, .3),     # check minimises into its table on Home
-    (16.80, tick(), .20, -.1, .4),                # B12/1 highlighted on Home
-    (16.85, bell(hz('A5'), 1.6), .10, -.1, .6),
-    (20.25, whoosh(1.1, True), .20, 0, .3),       # phone returns
+    (10.50, whoosh(.9, False), .20, 0, .3),       # phone leaves
+    (11.15, whoosh(.8, True), .10, 0, .3),        # step 1 heading
+    (10.90, whoosh(1.1, True), .16, .2, .3),       # terminal card in
+    (12.85, whoosh(1.1, True), .12, .2, .3),      # zoom in to Cancel/Exit
+    (13.85, tick(), .16, .2, .4),                 # Cancel/Exit highlighted
+    (14.45, tap(), .45, .2, .15),                 # tap Cancel/Exit
+    (14.75, whoosh(.9, False), .12, 0, .3),       # pull back to the whole screen
+    (15.50, whoosh(.9, False), .16, -.1, .3),     # check minimises into its table on Home
+    (16.33, tick(), .20, -.1, .4),                # B12/1 highlighted on Home
+    (16.35, bell(hz('A5'), 1.6), .10, -.1, .6),
+    (16.75, whoosh(1.1, True), .08, -.2, .3),     # camera moves in to the table
+    (17.20, tick(), .14, -.2, .4),                # table ringed
+    (19.85, whoosh(1.1, True), .20, 0, .3),       # phone returns
     (22.00, tap(), .55, 0, .15),                  # tap Retry
     (23.55, whoosh(1.3, False), .14, 0, .3),      # zoom out to the bill
     (24.80, bell(hz('D6')), .17, -.15, .7),       # discount applied
     (24.95, bell(hz('F#6')), .14, .15, .7),
     (27.30, whoosh(.9, False), .18, 0, .3),       # phone leaves
-    (28.45, whoosh(1.0, True), .18, 0, .3),       # D$ dialog in
-    (32.20, whoosh(.9, True), .10, 0, .3),        # recap
+    (27.90, whoosh(1.0, True), .18, 0, .3),       # D$ dialog in
+    (31.95, whoosh(.9, True), .10, 0, .3),        # recap
     (35.85, whoosh(1.2, True), .07, 0, .5),       # end card
     (35.95, bell(hz('D6'), 2.6), .07, 0, .8),     # logo
 ]
@@ -207,7 +209,7 @@ L += reverb(VL) * .55; R += reverb(VR) * .55
 
 # duck the music a few dB under the tap and the chime so they read clearly
 duck = np.ones(N); tt = np.arange(N) / SR
-for c, depth in ((22.0, .55), (24.8, .6), (14.6, .7), (16.8, .8)):
+for c, depth in ((22.0, .55), (24.8, .6), (14.45, .7), (16.33, .8)):
     d = np.where(tt < c, np.exp(-np.maximum(c - tt, 0) / .04), np.exp(-(tt - c) / .45))
     duck *= 1 - (1 - depth) * d
 L = L * duck + FL; R = R * duck + FR

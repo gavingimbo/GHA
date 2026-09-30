@@ -8,9 +8,11 @@ terminal" error: minimise the check on the POS, then the guest taps Retry.
   from `../index.html` into `assets/`, with element rects in `assets/rects.json`.
   The discount bill row is removed from the pre-retry captures, since the POS has
   not taken the discount yet.
-- `explainer.html` — the motion piece. Step one rebuilds our POS's Pick Up Check
-  and Home screens in HTML at the terminal's native 1802 × 1014 (team member names
-  and the workstation address replaced with placeholders); every frame is `render(t)`. Open it in a
+- `explainer.html` — the motion piece. Step one draws a visualiser of our POS's
+  Pick Up Check and Home screens from the reference screenshots, at the terminal's
+  native 1802 × 1014 layout with type set larger to read in the video (names are
+  placeholders). Motion is spring-based: arrivals settle with momentum, exits
+  accelerate away, camera moves are critically damped, and scenes overlap; every frame is `render(t)`. Open it in a
   browser to preview, or `?t=8.5` to hold a frame.
 - `audio.py` — the soundtrack and sound effects, synthesised (no licensed music):
   a 96 bpm D major bed that turns to B minor while the error is on screen and
