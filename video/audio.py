@@ -1,12 +1,15 @@
-"""Soundtrack and sound effects for the explainer, synthesised so there are no
-licensing questions. Every cue is placed on the timeline in explainer.html.
+"""Soundtrack and sound effects for the explainer, synthesised here so there is no
+licensing to clear. Scored to the story in explainer.html (times in seconds).
 
     python3 video/audio.py        # writes video/soundtrack.wav
 
-Music: 96 bpm, D major, a soft pad, bass and marimba-like arpeggio. The harmony
-darkens to B minor while the error is on screen and resolves back to D when the
-discount is applied. Effects: whooshes on camera moves, a tap on Retry, a tick on
-highlights, and a chime when the discount lands.
+Music: 96 bpm (2.5 s bars) in D major. An electric piano carries the harmony with
+a light groove (kick, snap, hats) and a round bass; a bell-like motif asks a
+question on the cover and answers it when the discount lands and on the logo.
+The arc follows the story: warm open, a drop and a darker turn at the error, the
+groove building while the team member acts on the POS, a lift into the fix, and a
+resolved end. Effects mark each on-screen action, and the music ducks under taps
+and chimes so they read.
 """
 import os
 import wave
@@ -16,216 +19,264 @@ SR = 48000
 DUR = 38.5
 N = int(SR * DUR)
 HERE = os.path.dirname(os.path.abspath(__file__))
-rng = np.random.default_rng(7)
+rng = np.random.default_rng(11)
 
-L = np.zeros(N); R = np.zeros(N)          # dry music bus
-FL = np.zeros(N); FR = np.zeros(N)        # dry effects bus
+ML = np.zeros(N); MR = np.zeros(N)        # music
+FL = np.zeros(N); FR = np.zeros(N)        # effects
 VL = np.zeros(N); VR = np.zeros(N)        # reverb send
 
 
 def hz(note):
     names = {'C': 0, 'C#': 1, 'D': 2, 'D#': 3, 'E': 4, 'F': 5, 'F#': 6, 'G': 7, 'G#': 8, 'A': 9, 'A#': 10, 'B': 11}
-    n, o = note[:-1], int(note[-1])
-    return 440.0 * 2 ** ((names[n] + 12 * (o + 1) - 69) / 12)
+    return 440.0 * 2 ** ((names[note[:-1]] + 12 * (int(note[-1]) + 1) - 69) / 12)
 
 
 def add(sig, t, gain=1.0, pan=0.0, verb=0.0, fx=False):
     i = int(t * SR)
-    if i >= N: return
-    sig = sig[: N - i]
+    if i >= N or i < 0: return
+    sig = sig[: N - i] * gain
     gl, gr = np.cos((pan + 1) * np.pi / 4), np.sin((pan + 1) * np.pi / 4)
-    bl, br = (FL, FR) if fx else (L, R)
-    bl[i:i + len(sig)] += sig * gain * gl; br[i:i + len(sig)] += sig * gain * gr
+    L, R = (FL, FR) if fx else (ML, MR)
+    L[i:i + len(sig)] += sig * gl; R[i:i + len(sig)] += sig * gr
     if verb:
-        VL[i:i + len(sig)] += sig * gain * gl * verb; VR[i:i + len(sig)] += sig * gain * gr * verb
+        VL[i:i + len(sig)] += sig * gl * verb; VR[i:i + len(sig)] += sig * gr * verb
 
 
-def env(n, a, d_curve):
-    e = np.exp(-np.arange(n) / (SR * d_curve))
+def tt(d): return np.arange(int(d * SR)) / SR
+
+
+def env(n, a, dec):
+    e = np.exp(-np.arange(n) / (SR * dec))
     na = max(1, int(a * SR)); e[:na] *= np.linspace(0, 1, na)
     return e
 
 
-# ---------------------------------------------------------------- instruments
-def pluck(f, dur=1.6):
-    n = int(dur * SR); t = np.arange(n) / SR
-    s = np.sin(2 * np.pi * f * t) + .28 * np.sin(2 * np.pi * 2 * f * t) * np.exp(-t * 9) \
-        + .12 * np.sin(2 * np.pi * 4.01 * f * t) * np.exp(-t * 22)
-    return s * env(n, .004, .42)
+def fade_tail(x, r=.03):
+    k = int(r * SR); x[-k:] *= np.linspace(1, 0, k); return x
 
 
-def pad(freqs, dur, detune=0.0):
-    n = int(dur * SR); t = np.arange(n) / SR
-    s = np.zeros(n)
+# ------------------------------------------------------------------ instruments
+def ep(f, d=1.4, bright=1.0):
+    """FM electric piano: a tine that softens as it rings."""
+    t = tt(d)
+    idx = (1.6 * bright) * np.exp(-t * 3.2) + .25
+    s = np.sin(2 * np.pi * f * t + idx * np.sin(2 * np.pi * f * t))
+    s += .18 * np.sin(2 * np.pi * 2 * f * t) * np.exp(-t * 6)
+    s *= env(len(t), .004, .55) * (1 + .04 * np.sin(2 * np.pi * 5.2 * t))
+    return fade_tail(s)
+
+
+def bell(f, d=2.4):
+    t = tt(d)
+    s = np.sin(2 * np.pi * f * t) + .5 * np.sin(2 * np.pi * 2.76 * f * t) * np.exp(-t * 4) \
+        + .22 * np.sin(2 * np.pi * 5.4 * f * t) * np.exp(-t * 9)
+    return fade_tail(s * env(len(t), .002, .75))
+
+
+def marimba(f, d=1.2):
+    t = tt(d)
+    s = np.sin(2 * np.pi * f * t) + .3 * np.sin(2 * np.pi * 4 * f * t) * np.exp(-t * 25)
+    return fade_tail(s * env(len(t), .002, .32))
+
+
+def pad(freqs, d):
+    t = tt(d); s = np.zeros(len(t))
     for f in freqs:
-        f = f * (1 + detune)
-        s += np.sin(2 * np.pi * f * t) + .35 * np.sin(2 * np.pi * 2 * f * t + 1.3) + .12 * np.sin(2 * np.pi * 3 * f * t)
-    a = int(.9 * SR); r = int(1.1 * SR)
-    e = np.ones(n); e[:a] = np.linspace(0, 1, a) ** 2; e[-r:] *= np.linspace(1, 0, r) ** 2
-    return s * e / len(freqs) * (1 + .08 * np.sin(2 * np.pi * .23 * t))
+        for det in (-.0018, .0018):
+            s += np.sin(2 * np.pi * f * (1 + det) * t) + .3 * np.sin(2 * np.pi * 2 * f * (1 + det) * t + 1.1)
+    a, r = int(.8 * SR), int(1.0 * SR)
+    e = np.ones(len(t)); e[:a] = np.linspace(0, 1, a) ** 2; e[-r:] *= np.linspace(1, 0, r) ** 2
+    return s * e / (2 * len(freqs))
 
 
-def bass(f, dur):
-    n = int(dur * SR); t = np.arange(n) / SR
-    s = np.sin(2 * np.pi * f * t) + .2 * np.sin(2 * np.pi * 2 * f * t)
-    e = env(n, .02, 1.4); r = int(.15 * SR); e[-r:] *= np.linspace(1, 0, r)
-    return s * e
+def bass(f, d):
+    t = tt(d)
+    s = np.tanh(1.6 * (np.sin(2 * np.pi * f * t) + .25 * np.sin(2 * np.pi * 2 * f * t)))
+    return fade_tail(s * env(len(t), .006, .9), .04)
 
 
 def kick():
-    n = int(.35 * SR); t = np.arange(n) / SR
-    f = 42 + 70 * np.exp(-t * 30)
-    return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 11)
+    t = tt(.4)
+    f = 45 + 85 * np.exp(-t * 32)
+    return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 9) + .15 * np.exp(-t * 200) * rng.standard_normal(len(t))
 
 
-def shaker():
-    n = int(.07 * SR); x = rng.standard_normal(n)
-    x = np.diff(x, prepend=0)                     # tilt towards highs
-    return x * env(n, .003, .018) * .5
-
-
-def lowpass_sweep(x, f0, f1):
-    """One-pole low-pass whose cutoff glides from f0 to f1 over the signal."""
-    y = np.zeros_like(x); z = 0.0
-    fc = np.geomspace(f0, f1, len(x)); a = 1 - np.exp(-2 * np.pi * fc / SR)
+def onepole(x, fc, hp=False):
+    a = np.exp(-2 * np.pi * fc / SR); y = np.zeros_like(x); z = 0.0
     for i in range(len(x)):
+        z = (1 - a) * x[i] + a * z; y[i] = z
+    return x - y if hp else y
+
+
+_noise = rng.standard_normal(int(.3 * SR))
+_snap = onepole(onepole(_noise[: int(.18 * SR)], 900, hp=True), 5000)
+_hat = onepole(_noise[: int(.05 * SR)], 7000, hp=True)
+
+
+def snap():
+    t = tt(.18)
+    return _snap[: len(t)] * np.exp(-t * 30) * 2.2 + .35 * np.sin(2 * np.pi * 190 * t) * np.exp(-t * 40)
+
+
+def hat():
+    t = tt(.05)
+    return _hat[: len(t)] * np.exp(-t * 140)
+
+
+def sweep(d, f0, f1, up=True):
+    n = int(d * SR); x = rng.standard_normal(n)
+    y = np.zeros(n); z = 0.0
+    fc = np.geomspace(f0, f1, n); a = 1 - np.exp(-2 * np.pi * fc / SR)
+    for i in range(n):
         z += a[i] * (x[i] - z); y[i] = z
-    return y
-
-
-def whoosh(dur=.9, up=True):
-    n = int(dur * SR); x = rng.standard_normal(n)
-    x = lowpass_sweep(x, 300, 3800) if up else lowpass_sweep(x, 3200, 260)
-    t = np.linspace(0, 1, n)
-    e = np.sin(np.pi * t ** (.65 if up else 1.2)) ** 2
-    return x * e
+    k = np.linspace(0, 1, n)
+    return y * (np.sin(np.pi * k ** (.6 if up else 1.4)) ** 2)
 
 
 def tap():
-    n = int(.12 * SR); t = np.arange(n) / SR
-    click = np.sin(2 * np.pi * 2100 * t) * np.exp(-t * 180)
-    body = np.sin(2 * np.pi * (180 + 260 * np.exp(-t * 60)) * t) * np.exp(-t * 45)
-    return .55 * click + body
+    t = tt(.12)
+    return .5 * np.sin(2 * np.pi * 2300 * t) * np.exp(-t * 200) + np.sin(2 * np.pi * (170 + 260 * np.exp(-t * 60)) * t) * np.exp(-t * 48)
 
 
-def tick():
-    n = int(.08 * SR); t = np.arange(n) / SR
-    return np.sin(2 * np.pi * 1320 * t) * np.exp(-t * 70)
+def click():
+    t = tt(.05)
+    return np.sin(2 * np.pi * 1600 * t) * np.exp(-t * 160) + .4 * _hat[: len(t)] * np.exp(-t * 200)
 
 
-def bell(f, dur=2.4):
-    n = int(dur * SR); t = np.arange(n) / SR
-    s = np.sin(2 * np.pi * f * t) + .45 * np.sin(2 * np.pi * 2.76 * f * t) * np.exp(-t * 4) \
-        + .2 * np.sin(2 * np.pi * 5.4 * f * t) * np.exp(-t * 9)
-    return s * env(n, .002, .7)
+def tick(f=1320):
+    t = tt(.09)
+    return np.sin(2 * np.pi * f * t) * np.exp(-t * 60)
 
 
-# --------------------------------------------------------------------- music
-BPM = 96; BEAT = 60 / BPM; BAR = 4 * BEAT            # 2.5 s bars
-CH = [  # (bass, pad voicing, arpeggio notes) per bar
-    ('D2', ['D3', 'A3', 'C#4', 'E4'], ['D4', 'A4', 'E5', 'F#5']),    # 0 intro
-    ('D2', ['D3', 'A3', 'C#4', 'E4'], ['D4', 'A4', 'E5', 'F#5']),    # 1 phone
-    ('B1', ['B2', 'F#3', 'A3', 'D4'], ['B3', 'F#4', 'D5', 'A4']),    # 2 zoom to error
-    ('G1', ['G2', 'D3', 'F#3', 'B3'], ['G3', 'D4', 'B4', 'F#5']),    # 3 reason
-    ('E2', ['E3', 'B3', 'D4', 'G4'], ['E4', 'B4', 'G4', 'D5']),      # 4 step 1
-    ('C2', ['C3', 'G3', 'B3', 'E4'], ['C4', 'G4', 'E5', 'B4']),      # 5 POS: zoom in, tap Cancel/Exit
-    ('A1', ['A2', 'E3', 'G3', 'C#4'], ['A3', 'E4', 'C#5', 'E5']),    # 6 check minimised to Home
-    ('F#1', ['F#2', 'C#3', 'E3', 'A3'], ['F#3', 'C#4', 'A4', 'E5']), # 7 hold on Home, lead into step 2
-    ('B1', ['B2', 'F#3', 'A3', 'D4'], ['B3', 'F#4', 'D5', 'A4']),    # 8 step 2
-    ('G1', ['G2', 'D3', 'F#3', 'B3'], ['G3', 'D4', 'B4', 'A4']),     # 9 tap Retry, checking
-    ('D2', ['D3', 'A3', 'C#4', 'F#4'], ['D4', 'A4', 'F#5', 'E5']),   # 10 applied
-    ('G1', ['G2', 'D3', 'F#3', 'B3'], ['G3', 'D4', 'B4', 'F#5']),    # 11 D$ dialog
-    ('A1', ['A2', 'E3', 'G3', 'C#4'], ['A3', 'E4', 'C#5', 'E5']),    # 12
-    ('D2', ['D3', 'A3', 'C#4', 'F#4'], ['D4', 'A4', 'F#5', 'A5']),   # 13 recap
-    ('D2', ['D3', 'A3', 'C#4', 'F#4'], []),                           # 14 ring out
+def thump():
+    t = tt(.3)
+    return np.sin(2 * np.pi * (60 + 60 * np.exp(-t * 25)) * t) * np.exp(-t * 14)
+
+
+# ------------------------------------------------------------------ the score
+BPM = 96; BEAT = 60 / BPM; BAR = 4 * BEAT
+# (bass root, chord voicing, section): one line per 2.5 s bar
+SCORE = [
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'open'),      # 0  cover
+    ('D2', ['F#3', 'A3', 'B3', 'E4'], 'groove'),     # 1  the guest applies the discount
+    ('B1', ['D3', 'F#3', 'A3', 'C#4'], 'drop'),      # 2  the error opens
+    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'drop'),       # 3  why: the check is open
+    ('E2', ['D3', 'G3', 'B3', 'E4'], 'build'),       # 4  the POS
+    ('A1', ['D3', 'G3', 'B3', 'E4'], 'build'),       # 5  Cancel/Exit
+    ('F#1', ['D3', 'F#3', 'A3', 'E4'], 'build'),     # 6  minimised
+    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'build'),      # 7  back to the guest
+    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'lift'),       # 8  Retry
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'full'),      # 9  the discount lands
+    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'full'),       # 10 DISCOVERY Dollars
+    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'full'),       # 11
+    ('F#1', ['D3', 'F#3', 'A3', 'C#4'], 'full'),     # 12 recap
+    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'full'),       # 13
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'end'),       # 14 the logo
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'tail'),      # 15
 ]
-ARP = [0, 1, 2, 3, 2, 1, 3, 1]                       # eighth-note pattern index into the bar's notes
+STABS = [(0, 1.6, 1.0), (1.5, .5, .7), (2.5, .9, .8), (3.5, .45, .6)]   # beat, length, velocity
+PANS = (-.3, -.1, .1, .3)
 
-for b, (bn, voicing, notes) in enumerate(CH):
+for b, (root, voicing, sec) in enumerate(SCORE):
     t0 = b * BAR
-    d = min(BAR + 1.2, DUR - t0)
-    if d <= 0: break
-    fr = [hz(x) for x in voicing]
-    add(pad(fr, d, -.0015), t0, .075, -.35, .5); add(pad(fr, d, .0015), t0, .075, .35, .5)
-    if b >= 1:
-        add(bass(hz(bn), BAR * .5 - .02), t0, .09); add(bass(hz(bn), BAR * .5 - .02), t0 + BAR / 2, .07)
-    if b >= 1 and notes and b < 14:
-        dens = 8 if b >= 2 else 4                     # sparser in the first phone bar
-        for k in range(8):
-            if dens == 4 and k % 2: continue
-            f = hz(notes[ARP[k]])
-            add(pluck(f), t0 + k * BEAT / 2, .085 if k % 2 == 0 else .06, (-.3, .3)[k % 2], .45)
-    if 1 <= b <= 12 and b not in (4, 5, 6, 7):       # step 1 breathes: no pulse
+    if t0 >= DUR: break
+    fr = [hz(n) for n in voicing]
+    add(pad(fr, min(BAR + 1.0, DUR - t0)), t0, .07 if sec == 'drop' else .05, 0, .5)
+    # electric piano
+    if sec == 'open':
+        for i, f in enumerate(fr): add(ep(f, 2.6, .8), t0 + .15 + i * .05, .07, PANS[i], .5)
+    elif sec == 'drop':
+        for i, f in enumerate(fr): add(ep(f, 2.4, .6), t0, .055, PANS[i], .6)
+    elif sec in ('groove', 'build', 'lift', 'full'):
+        for beat, ln, vel in STABS:
+            for i, f in enumerate(fr):
+                add(ep(f, ln + .4, .9 + .3 * (sec == 'full')), t0 + beat * BEAT, .06 * vel, PANS[i], .35)
+    elif sec == 'end':
+        for i, f in enumerate(fr + [hz('A4')]):
+            add(ep(f, 3.4, 1.0), t0 + i * .04, .07, (-.35, -.15, .05, .2, .35)[i], .6)
+    # bass
+    if sec in ('groove', 'build', 'lift', 'full'):
+        for beat, ln in ((0, .9), (1.5, .45), (3.0, .4), (3.5, .45)):
+            add(bass(hz(root), ln * BEAT * 1.6), t0 + beat * BEAT, .12)
+    elif sec in ('drop', 'open', 'end'):
+        add(bass(hz(root), BAR * .95), t0, .07 if sec == 'open' else .12)
+    # drums
+    if sec in ('groove', 'build', 'lift', 'full'):
         for q in range(4):
-            if q % 2 == 0: add(kick(), t0 + q * BEAT, .10)
-            add(shaker(), t0 + q * BEAT + BEAT / 2, .06, .4)
-# intro sparkle and the final chord's top note
-for i, n_ in enumerate(['A4', 'D5', 'F#5']):
-    add(pluck(hz(n_), 2.2), .25 + i * .32, .07, (-.4, 0, .4)[i], .7)
-add(bell(hz('D6'), 3.2), 32.55, .05, 0, .8)
-add(bell(hz('A5'), 3.2), 32.95, .04, .2, .8)
+            tq = t0 + q * BEAT
+            if tq < 3.0: continue
+            if q in (0, 2) or (sec == 'full' and q == 3 and b % 2): add(kick(), tq, .15)
+            if sec in ('build', 'lift', 'full') and q in (1, 3): add(snap(), tq, .09, .1, .25)
+            add(hat(), tq, .03, .35); add(hat(), tq + BEAT / 2, .05, .35)
+        if sec == 'full':
+            for s16 in range(16): add(hat(), t0 + s16 * BEAT / 4 + .01, .012, -.4)
+    elif sec == 'drop':
+        add(kick(), t0, .14)
 
-# ------------------------------------------------------------------- effects
-FX = [  # time, sound, gain, pan, reverb
-    (3.05, whoosh(1.2, True), .22, 0, .3),        # phone rises
-    (5.45, whoosh(1.5, True), .20, 0, .3),        # zoom into the error card
-    (7.30, tick(), .22, -.1, .4),                 # reason highlighted
-    (10.50, whoosh(.9, False), .20, 0, .3),       # phone leaves
-    (11.15, whoosh(.8, True), .10, 0, .3),        # step 1 heading
-    (10.90, whoosh(1.1, True), .16, .2, .3),       # terminal card in
-    (12.85, whoosh(1.1, True), .12, .2, .3),      # zoom in to Cancel/Exit
-    (13.85, tick(), .16, .2, .4),                 # Cancel/Exit highlighted
-    (14.45, tap(), .45, .2, .15),                 # tap Cancel/Exit
-    (14.75, whoosh(.9, False), .12, 0, .3),       # pull back to the whole screen
-    (15.50, whoosh(.9, False), .16, -.1, .3),     # check minimises into its table on Home
-    (16.33, tick(), .20, -.1, .4),                # B12/1 highlighted on Home
-    (16.35, bell(hz('A5'), 1.6), .10, -.1, .6),
-    (16.75, whoosh(1.1, True), .08, -.2, .3),     # camera moves in to the table
-    (17.20, tick(), .14, -.2, .4),                # table ringed
-    (19.85, whoosh(1.1, True), .20, 0, .3),       # phone returns
-    (22.00, tap(), .55, 0, .15),                  # tap Retry
-    (23.55, whoosh(1.3, False), .14, 0, .3),      # zoom out to the bill
-    (24.80, bell(hz('D6')), .17, -.15, .7),       # discount applied
-    (24.95, bell(hz('F#6')), .14, .15, .7),
-    (27.30, whoosh(.9, False), .18, 0, .3),       # phone leaves
-    (27.90, whoosh(1.0, True), .18, 0, .3),       # D$ dialog in
-    (31.95, whoosh(.9, True), .10, 0, .3),        # recap
-    (35.85, whoosh(1.2, True), .07, 0, .5),       # end card
-    (35.95, bell(hz('D6'), 2.6), .07, 0, .8),     # logo
+# motif: a question on the cover, the answer when the discount lands, and on the logo
+for i, (n, beat) in enumerate([('F#5', 0), ('A5', .5), ('E5', 1.5), ('D5', 2.5)]):
+    add(marimba(hz(n), 1.6), .25 + beat * BEAT, .09, (-.2, .2, -.1, .1)[i], .6)
+for i, (n, beat) in enumerate([('D5', 0), ('F#5', .5), ('A5', 1), ('D6', 1.5)]):
+    add(marimba(hz(n), 1.6), 9 * BAR + beat * BEAT, .08, (-.2, .2, -.1, .1)[i], .6)
+for i, (n, d) in enumerate([('A5', 0), ('D6', .18), ('F#6', .36)]):
+    add(bell(hz(n), 3.0), 35.0 + d, .06, (-.2, 0, .2)[i], .8)
+
+# ------------------------------------------------------------------ effects, on the picture
+FX = [
+    (2.90, sweep(1.0, 300, 4200), .20, 0, .3),            # the cover lifts away
+    (3.55, thump(), .12, 0, .1),                           # the phone settles
+    (5.00, tick(988), .16, 0, .3), (5.12, tick(784), .14, 0, .3),   # the error opens: a small falling pair
+    (6.25, sweep(.8, 500, 3500), .12, 0, .3),             # the error lifts out
+    (7.25, sweep(.5, 1500, 6000), .07, .2, .2),           # its reason is marked
+    (9.70, sweep(.7, 3000, 400, False), .08, 0, .3),      # it settles back
+    (10.55, sweep(1.0, 400, 3000), .18, -.3, .3),         # push to the POS
+    (12.15, sweep(1.0, 600, 2500), .08, .2, .3),          # in to Cancel/Exit
+    (13.15, tick(1175), .14, .2, .4),                     # the ring draws
+    (13.90, sweep(.9, 2500, 500, False), .07, 0, .3),     # back out
+    (15.10, tap(), .75, .15, .1),                         # the tap
+    (15.40, click(), .30, .15, .15),                      # the screen changes to Home
+    (15.95, sweep(1.0, 600, 2500), .08, -.2, .3),         # in to the table
+    (16.85, tick(1320), .16, -.2, .4), (16.88, bell(hz('A5'), 1.6), .08, -.2, .6),   # B12/1 ringed
+    (18.75, sweep(1.0, 400, 3000), .18, .3, .3),          # push back to the guest
+    (19.95, sweep(1.5, 200, 5000), .06, 0, .4),           # a riser into the fix
+    (20.35, tap(), .7, 0, .1),                           # Retry
+    (20.52, sweep(.6, 2500, 600, False), .06, 0, .2),     # the card folds to checking
+    (21.50, bell(hz('D6')), .16, -.15, .7), (21.62, bell(hz('F#6')), .13, .15, .7),   # the discount lands
+    (22.25, sweep(.8, 500, 3500), .12, 0, .3),            # the bill lifts out
+    (23.00, sweep(.5, 1500, 6000), .07, .2, .2),          # the discount is marked
+    (24.70, sweep(.7, 3000, 400, False), .08, 0, .3),     # it settles back
+    (25.35, sweep(1.0, 400, 3000), .18, -.3, .3),         # push to the D$ dialog
+    (29.55, sweep(1.0, 400, 3000), .15, .3, .3),          # push to the recap
+    (34.35, sweep(1.1, 250, 4500), .16, 0, .4),           # the end card rises
+    (35.00, thump(), .10, 0, .3),
 ]
-for t, s, g, p, v in FX:
-    add(s, t, g, p, v, fx=True)
+for t, sg, g, p, v in FX:
+    add(sg, t, g, p, v, fx=True)
 
-# ------------------------------------------------------------------ reverb
-def reverb(x, secs=2.2):
+# ------------------------------------------------------------------ mix
+def reverb(x, secs=2.3):
     n = int(secs * SR); t = np.arange(n) / SR
-    ir = rng.standard_normal(n) * np.exp(-t * 3.2)
-    ir = np.convolve(ir, np.ones(6) / 6, 'same')   # darken
+    ir = rng.standard_normal(n) * np.exp(-t * 3.0)
+    ir = np.convolve(ir, np.ones(8) / 8, 'same')
     m = len(x) + n
-    y = np.fft.irfft(np.fft.rfft(x, m) * np.fft.rfft(ir, m), m)[: len(x)]
-    return y / np.sqrt(np.sum(ir ** 2))
+    return np.fft.irfft(np.fft.rfft(x, m) * np.fft.rfft(ir, m), m)[: len(x)] / np.sqrt(np.sum(ir ** 2))
 
-L += reverb(VL) * .55; R += reverb(VR) * .55
-
-# duck the music a few dB under the tap and the chime so they read clearly
-duck = np.ones(N); tt = np.arange(N) / SR
-for c, depth in ((22.0, .55), (24.8, .6), (14.45, .7), (16.33, .8)):
-    d = np.where(tt < c, np.exp(-np.maximum(c - tt, 0) / .04), np.exp(-(tt - c) / .45))
+VLr, VRr = reverb(VL), reverb(VR)
+ta = np.arange(N) / SR
+duck = np.ones(N)
+for c, depth in ((15.1, .45), (15.4, .7), (20.35, .45), (21.5, .65), (16.85, .8), (5.0, .8)):
+    d = np.where(ta < c, np.exp(-np.maximum(c - ta, 0) / .03), np.exp(-(ta - c) / .4))
     duck *= 1 - (1 - depth) * d
-L = L * duck + FL; R = R * duck + FR
+L = (ML + VLr * .45) * duck + FL + VLr * .1
+R = (MR + VRr * .45) * duck + FR + VRr * .1
 
-# high-pass at ~35 Hz: phone speakers cannot play it and it only eats headroom
-def hp(x, fc=35):
-    a = np.exp(-2 * np.pi * fc / SR); y = np.zeros_like(x)
+def hp(x, fc=32):
     X = np.fft.rfft(x); f = np.fft.rfftfreq(len(x), 1 / SR)
     return np.fft.irfft(X * (f / np.sqrt(f ** 2 + fc ** 2)) ** 2, len(x))
 L, R = hp(L), hp(R)
-
-# master: fade in/out, gentle limiter, -1 dBFS peak
-t = np.arange(N) / SR
-fade = np.clip(t / .15, 0, 1) * np.clip((DUR - t) / 1.4, 0, 1)
+fade = np.clip(ta / .05, 0, 1) * np.clip((DUR - ta) / 1.6, 0, 1)
 mix = np.stack([L, R], 1) * fade[:, None]
-mix = np.tanh(mix * 1.6) / 1.6
+mix = np.tanh(mix * 1.5) / 1.5
 mix *= .89 / np.max(np.abs(mix))
 out = os.path.join(HERE, 'soundtrack.wav')
 with wave.open(out, 'wb') as w:

@@ -11,13 +11,15 @@ terminal" error: minimise the check on the POS, then the guest taps Retry.
 - `explainer.html` — the motion piece. Step one draws a clean, minimal illustration
   of our POS's Pick Up Check and Home screens, based on the reference screenshots:
   same regions, order and colours on the terminal's 1802 × 1014 grid, with words
-  only where the story needs them. Motion is spring-based: arrivals settle with momentum, exits
-  accelerate away, camera moves are critically damped, and scenes overlap; every frame is `render(t)`. Open it in a
+  only where the story needs them. Nothing fades: words rise out of masks, scenes change by
+  a push, components lift out of the phone enlarged, rings draw on, and the POS
+  changes screens on release like the real terminal; every frame is `render(t)`. Open it in a
   browser to preview, or `?t=8.5` to hold a frame.
-- `audio.py` — the soundtrack and sound effects, synthesised (no licensed music):
-  a 96 bpm D major bed that turns to B minor while the error is on screen and
-  resolves when the discount lands, plus whooshes on camera moves, a tap on Retry,
-  ticks on highlights and a chime on success. Writes `soundtrack.wav` (not committed).
+- `audio.py` — the score and sound effects, synthesised (no licensed music): a
+  96 bpm D major piece on electric piano, bass and a light groove that follows the
+  story (a warm open, a drop at the error, a build on the POS, a lift into the fix,
+  a resolved end with a logo sting), plus a sound for every on-screen action.
+  Writes `soundtrack.wav` (not committed).
 - `audit.mjs` — renders the timeline small and flags frames that jump; run it after
   changing timings, then diff the frames (see the commit that added it).
 - `record.mjs` — renders each frame through Chromium, encodes H.264 with ffmpeg,

@@ -41,6 +41,7 @@ for (const [name, ds] of [['failed','failed'],['checking','checking'],['ok','ok'
       checking: r(document.querySelector('[class*="_discount_checking_card_"]')),
       discountRow: r(rows.find(x => /Discount/.test(x.textContent))),
       billTop: r([...document.querySelectorAll('h1,h2,h3')].find((e) => /^Your bill/.test(e.textContent.trim()))),
+      billCard: r(document.querySelector('[class*="_bill_card_"]')),
     };
   });
 }
