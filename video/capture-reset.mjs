@@ -18,7 +18,7 @@ const settle = async () => { await page.evaluate(async () => { await document.fo
 const G = { signedIn: false, screen: 'page', modal: 'signin', controlsHidden: true, mockOpen: false };
 const OTP = { ...G, signinMode: 'reset_otp', resetEmail: 'gavin@example.com' };
 const states = {
-  signin:     { ...G, signinMode: 'signin', loginValue: 'gavin@example.com', resendIn: 0 },
+  signin:     { ...G, signinMode: 'signin', loginValue: 'gavin@example.com', passwordValue: 'Hillcrest9', resendIn: 0 },
   forgot:     { ...G, signinMode: 'forgot', resetEmail: 'gavin@example.com' },
   otp:        { ...OTP, resendIn: 57 },
   typing:     { ...OTP, resendIn: 50, otp: '800368', newPassword: 'hill 94', newPasswordFocused: true, validated: true },
@@ -40,6 +40,7 @@ for (const [name, st] of Object.entries(states)) {
     return {
       forgot: R(byText('a,button,span', /^Forgot Password\?$/)),
       send: R(byText('button', /SEND CODE/i)),
+      signin: R(byText('button', /^SIGN IN$/i)),
       reset: R(byText('button', /RESET PASSWORD|Submitting/i)),
       resend: R(byText('a,button,span', /^Resend code/)),
       boxes: boxes.map(R),
