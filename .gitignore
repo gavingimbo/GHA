@@ -5,3 +5,5 @@ video/soundtrack.wav
 video/silent.mp4
 video/still-*.png
 video/soundtrack-password.wav
+video/preview-*.mp4
+video/__pycache__/

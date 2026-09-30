@@ -1,0 +1,22 @@
+/* The films' type: Proxima Nova.
+
+   Proxima Nova is licensed, so it is not committed here. Put the licensed files
+   in this folder under these names and every film picks them up on the next
+   render; nothing else changes:
+
+     proxima-nova-400.woff2   Regular
+     proxima-nova-600.woff2   Semibold
+     proxima-nova-700.woff2   Bold
+
+   (.otf works too: rename the extension below.) A machine with Proxima Nova
+   installed is found through local() first.
+
+   Until then the films fall back to Figtree (SIL OFL, standin/), the closest
+   open-licence match in proportion and colour, so the layout is already set
+   for Proxima Nova. record.mjs prints which face each render used. */
+@font-face{font-family:Brand;font-weight:400;font-display:block;
+  src:local('Proxima Nova Regular'),local('ProximaNova-Regular'),url(proxima-nova-400.woff2) format('woff2'),url(standin/figtree-400.woff2) format('woff2')}
+@font-face{font-family:Brand;font-weight:600;font-display:block;
+  src:local('Proxima Nova Semibold'),local('ProximaNova-Semibold'),url(proxima-nova-600.woff2) format('woff2'),url(standin/figtree-600.woff2) format('woff2')}
+@font-face{font-family:Brand;font-weight:700;font-display:block;
+  src:local('Proxima Nova Bold'),local('ProximaNova-Bold'),url(proxima-nova-700.woff2) format('woff2'),url(standin/figtree-700.woff2) format('woff2')}

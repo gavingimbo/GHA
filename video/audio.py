@@ -144,6 +144,12 @@ def tap():
     return .5 * np.sin(2 * np.pi * 2300 * t) * np.exp(-t * 200) + np.sin(2 * np.pi * (170 + 260 * np.exp(-t * 60)) * t) * np.exp(-t * 48)
 
 
+def key():
+    """a phone keyboard's key: short, soft, a little woody"""
+    t = tt(.04)
+    return .6 * _hat[: len(t)] * np.exp(-t * 260) + .5 * np.sin(2 * np.pi * 900 * t) * np.exp(-t * 180)
+
+
 def click():
     t = tt(.05)
     return np.sin(2 * np.pi * 1600 * t) * np.exp(-t * 160) + .4 * _hat[: len(t)] * np.exp(-t * 200)
@@ -160,6 +166,17 @@ def thump():
 
 
 # ------------------------------------------------------------------ the scores
+def typing(start, n, base, spread, seed, pauses):
+    """The film's typing rhythm, key for key (the same seeded generator as password.html)."""
+    st = seed & 0xFFFFFFFF; at = []; t = start
+    for i in range(n):
+        at.append(t)
+        st = (st * 1664525 + 1013904223) & 0xFFFFFFFF
+        t += base + (st / 4294967296 - .5) * 2 * spread + pauses.get(i + 1, 0)
+    return at
+
+
+
 BPM = 96; BEAT = 60 / BPM; BAR = 4 * BEAT
 Dmaj9, D69 = ['F#3', 'A3', 'C#4', 'E4'], ['F#3', 'A3', 'B3', 'E4']
 Em9, A7s = ['D3', 'G3', 'B3', 'E4'], ['C#3', 'G3', 'B3', 'E4']
@@ -174,18 +191,23 @@ FILMS = {
                ('G1', Gmaj9, 'lift'), ('D2', Dmaj9, 'full'), ('G1', Gmaj9, 'full'), ('A1', A7s, 'open'),
                ('D2', Dmaj9, 'end'), ('D2', Dmaj9, 'tail')],
         answer=9 * BAR, mark=30.0,
-        fx=[(14.30, 'tap', .6, .15), (20.80, 'tap', .6, 0), (22.50, 'success', 1, 0)],
+        fx=[(13.45, 'tap', .6, .15), (20.80, 'tap', .6, 0), (22.50, 'success', 1, 0)],
     ),
-    # A guest has forgotten their password
+    # A guest has forgotten their password: four steps, then back at the table
     'password': dict(
-        dur=31.0, out='soundtrack-password.wav',
+        dur=50.8, out='soundtrack-password.wav',
         score=[('D2', Dmaj9, 'open'), ('D2', D69, 'groove'), ('B1', Bm9, 'groove'), ('G1', Gmaj9, 'groove'),
-               ('E2', Em9, 'build'), ('A1', A7s, 'build'), ('F#1', Fsm, 'build'), ('G1', Gmaj9, 'lift'),
-               ('D2', Dmaj9, 'full'), ('G1', Gmaj9, 'groove'), ('A1', A7s, 'open'), ('D2', Dmaj9, 'end'),
-               ('D2', Dmaj9, 'tail')],
-        answer=8 * BAR, mark=27.5,
-        fx=[(3.95, 'tap', .45, 0), (7.25, 'tap', .5, .1), (9.25, 'tap', .5, 0), (10.10, 'notify', 1, .2), (18.45, 'tap', .55, 0),
-            (20.00, 'success', 1, 0)],
+               ('E2', Em9, 'build'), ('A1', A7s, 'build'), ('D2', Dmaj9, 'groove'), ('B1', Bm9, 'build'),
+               ('G1', Gmaj9, 'build'), ('E2', Em9, 'build'), ('A1', A7s, 'build'), ('F#1', Fsm, 'lift'),
+               ('G1', Gmaj9, 'lift'), ('D2', Dmaj9, 'full'), ('G1', Gmaj9, 'full'), ('B1', Bm9, 'groove'),
+               ('E2', Em9, 'groove'), ('A1', A7s, 'open'), ('D2', Dmaj9, 'end'), ('D2', Dmaj9, 'tail')],
+        answer=13 * BAR, mark=47.9,
+        fx=[(3.75, 'tap', .45, 0), (4.55, 'nudge', 1, 0), (8.05, 'tap', .5, .1), (10.95, 'tap', .5, 0),
+            (13.05, 'notify', 1, .2), (14.10, 'tap', .4, .15), (19.15, 'tap', .4, -.1), (22.15, 'tap', .5, 0),
+            (24.35, 'tap', .4, 0), (29.45, 'tap', .55, 0), (30.40, 'success', 1, 0), (33.05, 'tap', .5, 0),
+            (41.15, 'tap', .45, -.1)]
+           + [(k, 'key', 1, -.05) for k in typing(19.55, 6, .19, .05, 3, {3: .38})]
+           + [(k, 'key', 1, .05) for k in typing(24.8, 11, .15, .06, 11, {6: .34, 10: .3})],
     ),
 }
 STABS = [(0, 1.6, 1.0), (1.5, .5, .7), (2.5, .9, .8), (3.5, .45, .6)]   # beat, length, velocity
@@ -246,6 +268,10 @@ def play_fx(fx):
             add(tap(), t, g, p, .1, fx=True)
         elif kind == 'notify':            # an email arrives: two soft notes, as a phone would
             add(bell(hz('B5'), 1.2), t, .17 * g, p, .5, fx=True); add(bell(hz('E6'), 1.4), t + .13, .15 * g, p, .5, fx=True)
+        elif kind == 'key':               # typing, under everything
+            add(key(), t, .1 * g, p, 0, fx=True)
+        elif kind == 'nudge':             # the app says no: one low, soft note
+            add(ep(hz('D3'), .9, .5), t, .09, 0, .3, fx=True)
         elif kind == 'success':           # it worked
             add(bell(hz('D6')), t, .14 * g, -.15, .7, fx=True); add(bell(hz('F#6')), t + .12, .11 * g, .15, .7, fx=True)
 
@@ -272,6 +298,7 @@ def make(name):
     ta = np.arange(N) / SR
     duck = np.ones(N)
     for t, kind, g, p in film['fx']:
+        if kind == 'key': continue       # typing does not duck the music
         depth = .65 if kind == 'success' else .5 if g >= .5 else .75
         d = np.where(ta < t, np.exp(-np.maximum(t - ta, 0) / .03), np.exp(-(ta - t) / .4))
         duck *= 1 - (1 - depth) * d

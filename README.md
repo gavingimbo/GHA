@@ -32,6 +32,9 @@ drawer covering every state. See `dev/README.md`.
 PNGs for slides, the icon set as SVG, and an Adobe swatch file. Browse
 `design/components.html`; see `design/README.md`.
 
+`video/` holds two short team films for the floor, made from this mockup: when the
+check is open on the POS, and when a guest forgets their password. See `video/README.md`.
+
 `reference/` is a capture of this production flow for making mockups and a
 guide: 63 states rendered to `reference/shots/`, a browsable gallery at
 `reference/index.html`, a machine-readable catalogue in `reference/states.json`,

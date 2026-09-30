@@ -1,38 +1,47 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><title>Dine with DISCOVERY Dollars</title>
+<link rel="stylesheet" href="assets/fonts/brand.css">
 <style>
 /* ---------------------------------------------------------------- the rules
    Colour: three, and only three, of our own. Purple for brand moments, ink for
    type, paper behind the product. Everything else on screen is the product's own.
-   Type: the product's faces. IvyMode states, Jost supports. Two sizes.
-   Ground: flat. No gradients, no blur, nothing fades.
-   Frame: one shot, one idea. The object sits in the centre; the words sit above. */
-@font-face{font-family:Ivy;src:url(../assets/fonts/ivymode-gha-semibold.woff2) format('woff2')}
-@font-face{font-family:Jost;src:url(../assets/fonts/jost-regular.woff) format('woff')}
+   Type: Proxima Nova, three weights: bold states, regular supports, semibold
+   numbers the step. Ground: flat. No gradients, no blur.
+   Frame: one shot, one idea. The words sit above; the object sits below, large
+   enough to read. */
 @font-face{font-family:PosSans;font-weight:400;src:url(assets/fonts/open-sans-400.woff2) format('woff2')}
 @font-face{font-family:PosSans;font-weight:600;src:url(assets/fonts/open-sans-600.woff2) format('woff2')}
 :root{--purple:#592A87;--ink:#14102E;--paper:#FAFAFA;--W:1080px;--H:1440px}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)}
-#stage{position:relative;width:var(--W);height:var(--H);overflow:hidden;background:var(--paper);color:var(--ink);font-family:Jost,sans-serif;
+#stage{position:relative;width:var(--W);height:var(--H);overflow:hidden;background:var(--paper);color:var(--ink);font-family:Brand,sans-serif;
   font-kerning:normal;font-feature-settings:"kern" 1,"liga" 1;text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased}
 .abs{position:absolute}
 /* type */
-.title{position:absolute;left:0;right:0;top:132px;text-align:center}
-.ln{display:block;overflow:hidden;padding:26px 0 30px;margin:-24px 0 -28px;line-height:1.08}
+.title{position:absolute;left:0;right:0;top:112px;text-align:center}
+.ln{display:block;overflow:hidden;padding:18px 0 22px;margin:-16px 0 -20px;line-height:1.1}
 .ln > *{display:inline-block;will-change:transform}
-.say{font-family:Ivy,serif;font-size:66px;letter-spacing:0}
-.sup{font-family:Jost,sans-serif;font-size:30px;color:rgba(20,16,46,.62);line-height:1.3}
+.step{font-weight:600;font-size:28px;letter-spacing:.15em;text-transform:uppercase;color:var(--purple)}
+.say{font-weight:700;font-size:62px;letter-spacing:-.012em}
+.sup{font-weight:400;font-size:31px;color:rgba(20,16,46,.66);line-height:1.3}
+.gapS{margin-top:6px}
+.gap{margin-top:12px}
 .onPurple .say{color:#fff}
 .onPurple .sup{color:rgba(255,255,255,.72)}
 /* phone */
-#phone{left:0;top:0;width:417px;height:876px;border-radius:66px;background:#1d1d1f;padding:12px;box-shadow:0 44px 90px rgba(20,16,46,.16),0 0 0 2px #3a3a3c inset}
+#phone{left:0;top:0;width:417px;height:876px;border-radius:66px;background:#1d1d1f;padding:12px;transform-origin:0 0;box-shadow:0 44px 90px rgba(20,16,46,.16),0 0 0 2px #3a3a3c inset}
 #screen{position:relative;width:393px;height:852px;border-radius:54px;overflow:hidden;background:#fafafa}
+#page{position:absolute;left:0;top:54px;width:393px;height:852px}
+.status{position:absolute;left:0;top:0;width:393px;height:54px;background:#fff;z-index:4}
+.status .time{position:absolute;left:0;width:130px;top:16px;text-align:center;font-weight:600;font-size:17px;letter-spacing:-.01em;color:#000}
+.status svg{position:absolute;top:21px}
 .view{position:absolute;left:0;top:0;width:393px;height:852px;overflow:hidden}
 .lay{position:absolute;left:0;top:0;width:393px;height:852px;background-size:393px 852px}
-#island{position:absolute;left:50%;top:22px;width:118px;height:34px;margin-left:-59px;background:#000;border-radius:20px;z-index:5}
+#island{position:absolute;left:50%;top:11px;width:124px;height:36px;margin-left:-62px;background:#000;border-radius:20px;z-index:5}
 #retryPress{position:absolute;left:37px;top:588.86px;width:319px;height:41px;border-radius:21px;background:#000;opacity:.2;display:none}
-.dot{position:absolute;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(20,16,46,.16),0 8px 18px rgba(20,16,46,.28);transform:scale(0);z-index:6}
+.dot{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(255,255,255,.92);
+  box-shadow:0 0 0 2.5px rgba(20,16,46,.18),0 8px 20px rgba(20,16,46,.26);z-index:6;display:none}
+.ripple{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid rgba(89,42,135,.55);z-index:6;display:none}
 .mark{position:absolute;border-radius:8px;background:#e3f3e9;mix-blend-mode:multiply;transform-origin:0 50%;transform:scaleX(0)}
 /* components lifted out of the phone */
 .lift{left:0;top:0;width:712px;border-radius:32px;overflow:hidden;transform-origin:0 0;display:none}
@@ -69,7 +78,7 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
 
   <!-- the product -->
   <div id="phone" class="abs"><div id="screen">
-    <div id="vBill" class="view">
+    <div id="page"><div id="vBill" class="view">
       <div class="lay" style="background-image:url(assets/screen-failed.png);clip-path:inset(0 0 380px 0)"></div>
       <div id="cardF" class="lay" style="background-image:url(assets/screen-failed.png)"></div>
       <div id="cardC" class="lay" style="background-image:url(assets/screen-checking.png)"></div>
@@ -78,8 +87,13 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
         <div id="markDisc" class="mark" style="left:29px;top:545px;width:335px;height:29px"></div></div>
       <div id="retryPress"></div>
     </div>
+    <div id="dotR" class="dot"></div><div id="ripR" class="ripple"></div></div>
+    <div class="status"><div class="time">12:07</div>
+      <svg style="left:281px" width="19" height="12" viewBox="0 0 19 12"><rect x="0" y="8" width="3.2" height="4" rx=".8"/><rect x="5" y="5.5" width="3.2" height="6.5" rx=".8"/><rect x="10" y="3" width="3.2" height="9" rx=".8"/><rect x="15" y="0" width="3.2" height="12" rx=".8"/></svg>
+      <svg style="left:305px" width="17" height="12" viewBox="0 0 17 12"><path d="M8.5 2.3c2.4 0 4.6.9 6.2 2.5l1.2-1.2A10.4 10.4 0 0 0 8.5.6 10.4 10.4 0 0 0 1.1 3.6l1.2 1.2a8.7 8.7 0 0 1 6.2-2.5Zm0 3.5c1.4 0 2.8.6 3.8 1.5l1.2-1.2a7 7 0 0 0-10 0l1.2 1.2c1-.9 2.4-1.5 3.8-1.5Zm0 3.4c.5 0 1 .2 1.4.6L8.5 11.2 7.1 9.8c.4-.4.9-.6 1.4-.6Z"/></svg>
+      <svg style="left:327px" width="28" height="13" viewBox="0 0 28 13"><rect x=".5" y=".5" width="24" height="12" rx="3.8" fill="none" stroke="#000" stroke-opacity=".35"/><rect x="2" y="2" width="15" height="9" rx="2.4"/><path d="M26 4.5v4a2.2 2.2 0 0 0 0-4Z" fill-opacity=".4"/></svg>
+    </div>
     <div id="island"></div>
-    <div id="dotR" class="dot" style="left:196.5px;top:609.4px"></div>
   </div></div>
 
   <div id="pos" class="abs"><div id="posScr"><div id="ui">
@@ -89,7 +103,7 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
       <rect id="ringExit" pathLength="100" x="1290" y="886" width="243" height="106" rx="22" stroke="#592A87" stroke-width="9"/>
       <rect id="ringTile" pathLength="100" x="307" y="312" width="328" height="218" rx="24" stroke="#1c8c4e" stroke-width="9"/>
     </svg>
-    <div id="dotPos" class="dot" style="width:84px;height:84px;margin:-42px 0 0 -42px;left:1411px;top:939px"></div>
+    <div id="dotPos" class="dot" style="width:84px;height:84px;margin:-42px 0 0 -42px"></div><div id="ripPos" class="ripple" style="width:84px;height:84px;margin:-42px 0 0 -42px;border-width:5px"></div>
   </div></div>
     <div style="position:absolute;left:0;right:0;top:872px;text-align:center;font-size:21px;color:rgba(20,16,46,.4)">Illustration of our POS. Sample check.</div>
   </div>
@@ -99,29 +113,35 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
   <div id="liftBill" class="abs lift"><img src="../design/png/bill-card.png"><div class="mark" style="left:30px;top:84px;width:652px;height:50px"></div></div>
 
   <!-- words: one statement per shot, told from the team member's side -->
-  <div id="w1" class="title"><span class="ln"><span class="say">A guest shows you this.</span></span></div>
+  <div id="w1" class="title"><span class="ln"><span class="say">A guest shows you this.</span></span>
+    <span class="ln gap"><span class="sup">Their member discount didn’t go through.</span></span></div>
   <div id="w2" class="title"><span class="ln"><span class="say">It means the check is open</span></span><span class="ln"><span class="say">on a POS terminal.</span></span></div>
-  <div id="w2s" class="title" style="top:1110px"><span class="ln"><span class="sup">While a terminal holds the check,</span></span><span class="ln"><span class="sup">the app can’t add the discount.</span></span></div>
-  <div id="w3" class="title"><span class="ln"><span class="say">Find the check on the POS.</span></span></div>
-  <div id="w3s" class="title" style="top:232px"><span class="ln"><span class="sup">Here it is open on this terminal: Table B12/1.</span></span></div>
-  <div id="w4" class="title"><span class="ln"><span class="say">Tap Cancel/Exit.</span></span></div>
-  <div id="w4s" class="title" style="top:232px"><span class="ln"><span class="sup">Not Void. Not Make Payment.</span></span></div>
-  <div id="w5" class="title"><span class="ln"><span class="say">The check is minimised.</span></span></div>
-  <div id="w5s" class="title" style="top:232px"><span class="ln"><span class="sup">It stays open on Home, and the app can reach it.</span></span></div>
-  <div id="w6" class="title"><span class="ln"><span class="say">Ask the guest to tap Retry.</span></span></div>
-  <div id="w7" class="title"><span class="ln"><span class="say">The discount is on the bill.</span></span></div>
-  <div id="w8" class="title"><span class="ln"><span class="say">The same fix works for</span></span><span class="ln"><span class="say">DISCOVERY Dollars.</span></span></div>
+  <div id="w2s" class="title" style="top:1110px"><span class="ln"><span class="sup">While a terminal has the check open,</span></span><span class="ln"><span class="sup">the app can’t add the discount.</span></span></div>
+  <div id="w3" class="title"><span class="ln"><span class="step">Step 1 of 3</span></span>
+    <span class="ln gapS"><span class="say">Find the check on the POS.</span></span>
+    <span class="ln gap"><span class="sup">Here it’s open on this terminal: Table B12/1.</span></span></div>
+  <div id="w4" class="title"><span class="ln"><span class="step">Step 2 of 3</span></span>
+    <span class="ln gapS"><span class="say">Tap Cancel/Exit.</span></span>
+    <span class="ln gap"><span class="sup">Not Void. Not Make Payment.</span></span></div>
+  <div id="w5" class="title"><span class="ln"><span class="step">Step 2 of 3</span></span>
+    <span class="ln gapS"><span class="say">The check is minimised.</span></span>
+    <span class="ln gap"><span class="sup">It stays open on Home, so the app can reach it.</span></span></div>
+  <div id="w6" class="title"><span class="ln"><span class="step">Step 3 of 3</span></span>
+    <span class="ln gapS"><span class="say">Ask the guest to tap Retry.</span></span></div>
+  <div id="w7" class="title"><span class="ln"><span class="say">The discount is on the bill.</span></span>
+    <span class="ln gap"><span class="sup">Nothing else to do.</span></span></div>
+  <div id="w8" class="title"><span class="ln"><span class="say">Same fix for</span></span><span class="ln"><span class="say">DISCOVERY Dollars.</span></span></div>
   <div id="w8s" class="title" style="top:1110px"><span class="ln"><span class="sup">Minimise the check, then the guest taps Retry.</span></span></div>
 
   <!-- brand: opening and close, the same purple -->
   <div id="cover" class="abs panel onPurple"><div id="coverIn" class="abs" style="left:0;top:0;width:var(--W);height:var(--H)">
-    <img class="abs" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="left:330px;top:470px;width:420px">
-    <div class="title" style="top:612px"><span class="ln"><span class="say">When the check is open</span></span><span class="ln"><span class="say">on the POS.</span></span></div>
-    <div class="title" style="top:822px"><span class="ln"><span class="sup">Dine with DISCOVERY Dollars · A team guide</span></span></div>
+    <img class="abs" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="left:330px;top:452px;width:420px">
+    <div class="title" style="top:600px"><span class="ln"><span class="say">When the check is open</span></span><span class="ln"><span class="say">on the POS.</span></span></div>
+    <div class="title" style="top:812px"><span class="ln"><span class="sup">Dine with DISCOVERY Dollars · A team guide</span></span></div>
   </div></div>
   <div id="endPanel" class="abs panel onPurple">
-    <div id="e1" class="title" style="top:520px"><span class="ln"><span class="say" style="font-size:84px">Minimise the check.</span></span><span class="ln"><span class="say" style="font-size:84px">Tap Retry.</span></span></div>
-    <div id="e2" class="title" style="top:760px"><span class="ln"><span class="sup">Still showing? Let your supervisor know.</span></span></div>
+    <div id="e1" class="title" style="top:500px"><span class="ln"><span class="say" style="font-size:80px">Minimise the check.</span></span><span class="ln"><span class="say" style="font-size:80px">Tap Retry.</span></span></div>
+    <div id="e2" class="title" style="top:738px"><span class="ln"><span class="sup">Still seeing it? Let your supervisor know.</span></span></div>
     <div id="endLogo" class="abs" style="left:330px;top:1180px;width:420px;height:66px;overflow:hidden"><img id="endLogoImg" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="width:420px;display:block;will-change:transform"></div>
   </div>
 </div>
@@ -156,9 +176,7 @@ const TXT = (x, y, text, css = '') => `<div class="t" style="left:${x}px;top:${y
 
 function buildPick() {
   let h = '';
-  h += BOX(0, 0, 1802, 8, '#dcae66', '', 'border-radius:0');
-  h += BOX(0, 8, 1802, 64, '#f6f4ef', '<span style="color:#1d1d1f;font-size:30px">Pick Up Check 22114026</span>', 'border-radius:0');
-  h += BOX(871, 8, 60, 10, '#ef8a2a', '', 'border-radius:0 0 6px 6px');
+  h += BOX(0, 0, 1802, 72, '#f6f4ef', '<span style="color:#1d1d1f;font-size:30px">Pick Up Check 22114026</span>', 'border-radius:0');
   // category row, then the function row: colour carries them, not words
   for (let i = 0; i < 9; i++) h += BOX(16 + i * 198, 86, 186, 72, i ? '#3a3f43' : '#737554', i ? BAR(64) : '<span style="font-size:23px">Dreams &amp; Beats</span>');
   ['#76a2a0', '#76a2a0', '#76a2a0', '#50565a', '#5e7c4e', '#36667c', '#36667c', '#e08212', '#e08212', '#427355', '#8a4a2a', '#a3281c']
@@ -190,7 +208,6 @@ function buildPick() {
   h += BOX(1058, 896, 230, 86, '#d63a24', svg('void', 30) + '<span>Void</span>');
   h += BOX(1300, 896, 223, 86, '#6fa47e', svg('exit', 30) + '<span>Cancel/Exit</span>', '', 'exitKey');
   h += BOX(1535, 896, 251, 86, '#4f8a22', svg('pay', 30) + '<span>Make Payment</span>');
-  h += BOX(0, 1006, 1802, 8, '#dcae66', '', 'border-radius:0');
   return h;
 }
 
@@ -214,7 +231,6 @@ function buildHome() {
    [1253, 828, 201, 112, '#d63a24', 'out', 'Sign out'], [1464, 828, 201, 112, '#d63a24', 'out', 'Cancel']]
     .forEach(([x, y, w, hh, c, ic, l]) => h += BOX(x, y, w, hh, c, (ic ? svg(ic, 32) : '') + `<span style="font-size:21px;${ic ? '' : 'letter-spacing:.3em'}">${l}</span>`, 'flex-direction:column;gap:8px'));
   h += BOX(1681, 96, 105, 60, '#747654', '<span style="font-size:17px">All</span>') + BOX(1681, 166, 105, 60, '#3a3f43', '<span style="font-size:17px">Mine</span>');
-  h += BOX(0, 1006, 1802, 8, '#dcae66', '', 'border-radius:0');
   return h;
 }
 document.getElementById('pick').innerHTML = buildPick();
@@ -244,18 +260,26 @@ const W = 1080, H = 1440;
 
 function lines(id, t, a, o, st = .08) {
   $(id).querySelectorAll('.ln > *').forEach((el, i) => {
-    const off = el.offsetHeight + 64;
-    const p = spring(t, a + i * st, .7, .96, 9), x = eIn(seg(t, o + i * .04, o + i * .04 + .32));
+    const off = el.offsetHeight + 48;
+    const p = spring(t, a + i * st, .7, .96, 9), x = eIn(seg(t, o + i * .035, o + i * .035 + .3));
     el.style.transform = `translate3d(0,${((1 - p) * off - x * off).toFixed(2)}px,0)`;
   });
 }
 function draw(el, k) { el.style.strokeDasharray = 100; el.style.strokeDashoffset = (100 * (1 - clamp(k))).toFixed(2); el.style.display = k > 0 ? 'block' : 'none'; }
-function touch(el, t, a, press, release) {
-  let s = 0;
-  if (t >= a) s = spring(t, a, .45, .62, 10);
-  if (t >= press) s = lerp(1, .8, clamp((t - press) / .08));
-  if (t >= release) s = .8 * (1 - eIn(seg(t, release, release + .12)));
-  el.style.transform = `scale(${Math.max(0, s).toFixed(4)})`;
+/* a fingertip comes in from below and to the right, as a thumb does, settles on
+   the target, presses (a ripple answers), and lifts away */
+function fingertip(dot, rip, t, at, x, y, reach = 1) {
+  dot.style.display = rip.style.display = 'none';
+  if (t < at - .6 || t > at + .62) return;
+  const inK = glide(t, at - .6, .5), outK = t > at + .14 ? glide(t, at + .14, .45) : 0;
+  const dx = reach * (58 * (1 - inK) + 46 * outK), dy = reach * (92 * (1 - inK) + 70 * outK);
+  let sc = lerp(.8, 1, inK); if (t >= at && t < at + .14) sc = .84; if (outK) sc = lerp(1, .9, outK);
+  const vis = clamp(seg(t, at - .6, at - .38)) * (1 - clamp(seg(t, at + .3, at + .58)));
+  Object.assign(dot.style, { display: 'block', left: (x + dx) + 'px', top: (y + dy) + 'px', transform: `scale(${sc.toFixed(3)})`, opacity: vis.toFixed(3) });
+  if (t >= at && t < at + .5) {
+    const r = seg(t, at, at + .5);
+    Object.assign(rip.style, { display: 'block', left: x + 'px', top: y + 'px', transform: `scale(${(1 + 1.5 * (1 - (1 - r) ** 3)).toFixed(3)})`, opacity: (1 - r).toFixed(3) });
+  }
 }
 function lift(id, t, up, from, toW, toCY, hgt, dx = 0) {
   const el = $(id), k = spring(t, up, 1.05, .86);
@@ -270,7 +294,7 @@ function lift(id, t, up, from, toW, toCY, hgt, dx = 0) {
    height D (captured layouts: checking 65.55, error 202.8, none 0) */
 const DF = 202.8, DC = 65.55;
 function bill(t) {
-  let D = 0, card = '', low = 'Ok';
+  let D = 0, card = '', low = 'F';                  // no discount on the bill until the retry lands
   if (t >= 3.9) { D = lerp(0, DF, spring(t, 3.9, .9, .88)); card = 'F'; low = 'F'; }
   if (t >= 20.95) { D = lerp(DF, DC, spring(t, 20.95, .75, .88)); card = 'C'; }
   if (t >= 22.5) { D = lerp(DC, 0, spring(t, 22.5, .85, .88)); low = 'Ok'; }
@@ -290,8 +314,11 @@ function bill(t) {
 const SW = 988, SHT = 556, BASE = SW / 1802;
 function posCam(fx, fy, z) { const s = BASE * z; return { s, tx: Math.min(0, Math.max(SW - s * 1802, SW / 2 - s * fx)), ty: Math.min(0, Math.max(SHT - s * 1014, SHT / 2 - s * fy)) }; }
 const pmix = (A, B, k) => ({ s: Math.exp(lerp(Math.log(A.s), Math.log(B.s), k)), tx: lerp(A.tx, B.tx, k), ty: lerp(A.ty, B.ty, k) });
-const PC_FULL = posCam(901, 507, 1), PC_EXIT = posCam(1411, 905, 2.4), PC_TILE = posCam(560, 430, 1.75);
-const REST = { x: 540 - 208.5, y: 440 };
+const PC_FULL = posCam(901, 507, 1), PC_EXIT = posCam(1290, 880, 1.9), PC_TILE = posCam(560, 430, 1.75);
+// the phone sits large under the words, cropped by the frame; the guest has scrolled the bill to the card
+const S = 1.45, SCROLL = 214;
+const REST = { x: 540 - 417 * S / 2, y: 400 };
+const onScreen = (x, pageY) => ({ x: REST.x + (12 + x) * S, y: REST.y + (12 + 54 - SCROLL + pageY) * S });
 
 /* ---------------------------------------------------------------- the film
    Told from the team member's side: what you see, what it means, what you do.
@@ -299,7 +326,7 @@ const REST = { x: 540 - 208.5, y: 440 };
    2.5   A guest shows you this: the discount error opens on their phone           steady
    5.6   What it means: the error stands alone, its reason marked                 held
    9.5   Find the check on the POS                                                steady
-   11.7  Tap Cancel/Exit (in, ring, out, tap); the POS repaints to Home           precise
+   11.7  Tap Cancel/Exit (in, ring, tap, out); the POS repaints to Home           precise
    14.8  The check is minimised: in to the table on Home                         settle
    18.5  Ask the guest to tap Retry; checking; the discount lands (22.5)          lift
    23.0  The discount is on the bill                                              held
@@ -313,19 +340,20 @@ function render(t) {
 
   // the phone: rises; steps down so the error can stand alone; returns from the right; steps down again
   let px = 0, py = (1 - spring(t, 2.55, 1.35, .86)) * 1150;
-  if (t >= 5.75) py = 1300 * glide(t, 5.75, 1.1);
+  if (t >= 5.75) py = 1450 * glide(t, 5.75, 1.1);
   if (t >= 17.5) { py = 0; px = 1300 * (1 - glide(t, 18.5, 1.0)); }
-  if (t >= 23.15) py = 1300 * glide(t, 23.15, 1.1);
-  $('phone').style.transform = `translate3d(${(REST.x + px).toFixed(2)}px,${(REST.y + py).toFixed(2)}px,0)`;
-  $('phone').style.display = Math.abs(px) > 1250 || py > 1150 ? 'none' : 'block';
-  touch($('dotR'), t, 20.45, 20.8, 20.95);
+  if (t >= 23.15) py = 1450 * glide(t, 23.15, 1.1);
+  $('phone').style.transform = `translate3d(${(REST.x + px).toFixed(2)}px,${(REST.y + py).toFixed(2)}px,0) scale(${S})`;
+  $('phone').style.display = Math.abs(px) > 1250 || py > 1300 ? 'none' : 'block';
+  $('page').style.transform = `translateY(${-SCROLL}px)`;
+  fingertip($('dotR'), $('ripR'), t, 20.8, 196.5 + 95, 609.4 + 4);    // beside the label, so Retry stays readable
   bill(t);
 
   const errDx = t >= 9.5 ? -1300 * glide(t, 9.5, 1.0) : 0;
-  lift('liftErr', t, 5.6, { x: REST.x + 32, y: REST.y + 12 + 472, w: 353 }, 900, 760, 351, errDx);
+  lift('liftErr', t, 5.6, { ...onScreen(20, 472), w: 353 * S }, 900, 760, 351, errDx);
   $('liftErr').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 6.6, .8)).toFixed(4)})`;
   const billDx = t >= 25.5 ? -1300 * glide(t, 25.5, 1.0) : 0;
-  lift('liftBill', t, 23.0, { x: REST.x + 32, y: REST.y + 12 + 506, w: 353 }, 900, 760, 347, billDx);
+  lift('liftBill', t, 23.0, { ...onScreen(20, 506), w: 353 * S }, 900, 760, 347, billDx);
   $('liftBill').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 23.8, .8)).toFixed(4)})`;
 
   let qx = t < 9.5 ? 1300 : 1300 * (1 - glide(t, 9.5, 1.0));
@@ -334,15 +362,15 @@ function render(t) {
   $('pos').style.display = Math.abs(qx) > 1250 ? 'none' : 'block';
   let pc = PC_FULL;
   if (t >= 11.7) pc = pmix(PC_FULL, PC_EXIT, glide(t, 11.7, 1.1));
-  if (t >= 13.2) pc = pmix(PC_EXIT, PC_FULL, glide(t, 13.2, 1.0));
+  if (t >= 13.8) pc = pmix(PC_EXIT, PC_FULL, glide(t, 13.8, 1.0));
   if (t >= 15.0) pc = pmix(PC_FULL, PC_TILE, glide(t, 15.0, 1.2));
   $('ui').style.transform = `translate(${pc.tx.toFixed(2)}px,${pc.ty.toFixed(2)}px) scale(${pc.s.toFixed(5)})`;
-  const onHome = t >= 14.6;                          // the terminal repaints a beat after the release
+  const onHome = t >= 14.2;                          // the terminal repaints a beat after the release, as the camera pulls back
   $('pick').style.display = onHome ? 'none' : 'block';
-  $('exitKey').classList.toggle('down', t >= 14.3 && t < 14.47);
-  draw($('ringExit'), onHome ? 0 : glide(t, 12.5, .6));
+  $('exitKey').classList.toggle('down', t >= 13.45 && t < 13.62);
+  draw($('ringExit'), onHome ? 0 : glide(t, 12.3, .6));
   draw($('ringTile'), glide(t, 15.9, .65));
-  touch($('dotPos'), t, 13.95, 14.3, 14.47);
+  fingertip($('dotPos'), $('ripPos'), t, 13.45, 1411 + 62, 939 + 6, 1.9);   // pressed while the shot is close
 
   let gx = t < 25.5 ? 1300 : 1300 * (1 - glide(t, 25.5, 1.0));
   $('dlg').style.transform = `translate3d(${(223 + gx).toFixed(2)}px,520px,0)`;
@@ -351,15 +379,12 @@ function render(t) {
   lines('w1', t, 2.85, 5.5);
   lines('w2', t, 5.85, 9.35);
   lines('w2s', t, 7.0, 9.35);
-  lines('w3', t, 9.7, 11.55);
-  lines('w3s', t, 9.95, 11.55);
+  lines('w3', t, 9.6, 11.55);
   lines('w4', t, 11.75, 14.6);
-  lines('w4s', t, 11.95, 14.6);
   lines('w5', t, 14.8, 18.35);
-  lines('w5s', t, 15.0, 18.35);
-  lines('w6', t, 18.7, 22.6);
+  lines('w6', t, 18.6, 22.6);
   lines('w7', t, 22.8, 25.35);
-  lines('w8', t, 25.7, 28.35);
+  lines('w8', t, 25.6, 28.35);
   lines('w8s', t, 26.3, 28.35);
 
   const en = glide(t, 28.5, 1.0);
