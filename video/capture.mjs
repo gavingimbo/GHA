@@ -29,11 +29,6 @@ for (const [name, ds] of [['failed','failed'],['checking','checking'],['ok','ok'
   await page.evaluate(() => window.scrollTo(0, 0));
   await settle();
   // Before the retry succeeds the POS has not taken the discount, so its bill row is not shown.
-  // The error (and the checking state that follows it) shows first on the guest's screen, above the bill.
-  await page.evaluate(() => {
-    const c = document.querySelector('[class*="_discount_error_card_"], [class*="_discount_checking_card_"]');
-    if (c) c.parentElement.insertBefore(c, c.parentElement.firstElementChild);
-  });
   if (ds !== 'ok') await page.evaluate(() => [...document.querySelectorAll('[class*="_bill_row_"]')].filter(x => /Discount/.test(x.textContent)).forEach(x => x.remove()));
   await page.screenshot({ path: path.join(OUT, `screen-${name}.png`) });
   rects[name] = await page.evaluate(() => {
@@ -45,7 +40,7 @@ for (const [name, ds] of [['failed','failed'],['checking','checking'],['ok','ok'
       retry: r(document.querySelector('[data-act="retry-discount"]')),
       checking: r(document.querySelector('[class*="_discount_checking_card_"]')),
       discountRow: r(rows.find(x => /Discount/.test(x.textContent))),
-      itemsTop: r([...document.querySelectorAll('h1,h2,h3')].find((e) => /^Items/.test(e.textContent.trim()))),
+      billTop: r([...document.querySelectorAll('h1,h2,h3')].find((e) => /^Your bill/.test(e.textContent.trim()))),
     };
   });
 }

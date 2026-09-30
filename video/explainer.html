@@ -42,19 +42,16 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
 #posScr{position:relative;width:988px;height:556px;border-radius:14px;overflow:hidden;background:#76787a}
 #ui{position:absolute;left:0;top:0;width:1802px;height:1014px;transform-origin:0 0;will-change:auto}
 .pv{position:absolute;left:0;top:0;width:1802px;height:1014px;overflow:hidden;font-family:PosSans,sans-serif;color:#fff;transform-origin:0 0}
-.pv .b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;line-height:1.18;font-size:19px;border-radius:7px;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 1px 2px rgba(0,0,0,.25);transform-origin:50% 50%}
-.pv .b svg{flex:none}
+.pv .k{position:absolute;display:flex;align-items:center;justify-content:center;gap:12px;border-radius:14px;font-size:24px;transform-origin:50% 50%}
 .pv .t{position:absolute;white-space:nowrap}
-.stat{position:absolute;display:flex;left:0;right:0;height:28px;bottom:0;gap:10px;background:#76787a}
-.stat span{flex:1;background:#dcb676;color:#3b3223;font-size:18px;display:flex;align-items:center;justify-content:center}
-.otab{position:absolute;left:868px;top:0;width:68px;height:32px;z-index:2;background:#ef8a2a;border-radius:0 0 4px 4px;display:flex;align-items:center;justify-content:space-around;color:#fff;font-size:15px}
-#pick{background:#2c3033}
-#home{background:#76787a}
-.tile{position:absolute;width:308px;height:198px;background:#fff;color:#111;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.18);transform-origin:50% 50%}
-.tile .lab{position:absolute;left:0;top:-28px;height:28px;padding:0 12px 0 8px;background:#111;color:#fff;font-size:19px;font-weight:600;display:flex;align-items:center;gap:6px;border-radius:3px 3px 0 0}
-.tile .lab i{width:10px;height:10px;border-radius:50%;background:#1fbf3a;display:block}
-.tile .l{position:absolute;left:12px;font-size:22px}
-.tile .r{position:absolute;right:12px;font-size:22px;font-weight:600}
+.pv .bar{display:block;height:8px;border-radius:4px;background:#fff}
+#pick{background:#2b2f32}
+#home{background:#6d7073}
+.tile{position:absolute;width:308px;height:198px;background:#fff;color:#1d1d1f;border-radius:16px;transform-origin:50% 50%;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.tile .chip{position:absolute;left:18px;top:18px;height:34px;padding:0 14px 0 10px;background:#1f2224;color:#fff;font-size:20px;font-weight:600;display:flex;align-items:center;gap:8px;border-radius:17px}
+.tile .chip i{width:10px;height:10px;border-radius:50%;background:#34c759;display:block}
+.tile .tn{position:absolute;left:20px;top:86px;font-size:26px;font-weight:600}
+.tile .ta{position:absolute;left:20px;top:138px;font-size:22px;color:#6b6f73}
 .ring{position:absolute;border-radius:10px;pointer-events:none}
 #posTap{position:absolute;border-radius:50%;background:rgba(255,255,255,.65);pointer-events:none}
 #stepCall{left:0;right:0;top:1090px;text-align:center}
@@ -80,10 +77,10 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
   <div id="phone" class="abs"><div id="screen">
     <img id="imFailed" src="assets/screen-failed.png">
     <!-- after Retry: the screen is rebuilt in layers so the card collapses and the page flows up -->
-    <div id="cardF" class="lay" style="background-image:url(assets/screen-failed.png);clip-path:inset(222px 0 454px 0)"></div>
-    <div id="cardC" class="lay" style="background-image:url(assets/screen-checking.png);clip-path:inset(222px 0 592px 0)"></div>
-    <div id="lowF" class="lay" style="background-image:url(assets/screen-failed.png);clip-path:inset(410px 0 0 0)"></div>
-    <div id="lowOk" class="lay" style="background-image:url(assets/screen-ok.png);clip-path:inset(207px 0 0 0)"></div>
+    <div id="cardF" class="lay" style="background-image:url(assets/screen-failed.png);clip-path:inset(472px 0 205px 0)"></div>
+    <div id="cardC" class="lay" style="background-image:url(assets/screen-checking.png);clip-path:inset(472px 0 342px 0)"></div>
+    <div id="lowF" class="lay" style="background-image:url(assets/screen-failed.png);clip-path:inset(660px 0 0 0)"></div>
+    <div id="lowOk" class="lay" style="background-image:url(assets/screen-ok.png);clip-path:inset(457px 0 0 0)"></div>
     <div id="island"></div>
     <div id="hlReason" class="hl" style="background:rgba(88,44,131,.16);box-shadow:0 0 0 1.5px rgba(88,44,131,.55)"></div>
     <div id="hlDisc" class="hl" style="background:rgba(28,140,78,.13);box-shadow:0 0 0 1.5px rgba(28,140,78,.7)"></div>
@@ -102,13 +99,13 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
   <div id="pos" class="abs"><div id="posScr"><div id="ui">
     <div id="home" class="pv"></div>
     <div id="pick" class="pv"></div>
-    <div id="exitRing" class="ring" style="left:1294px;top:890px;width:235px;height:98px;box-shadow:0 0 0 7px rgba(88,44,131,.95),0 0 40px 10px rgba(88,44,131,.35)"></div>
-    <div id="tileRing" class="ring" style="left:309px;top:286px;width:324px;height:242px;box-shadow:0 0 0 7px rgba(28,140,78,.95),0 0 40px 10px rgba(28,140,78,.30)"></div>
+    <div id="exitRing" class="ring" style="left:1294px;top:890px;width:235px;height:98px;border-radius:18px;box-shadow:0 0 0 7px rgba(88,44,131,.95),0 0 40px 10px rgba(88,44,131,.35)"></div>
+    <div id="tileRing" class="ring" style="left:311px;top:316px;width:320px;height:210px;border-radius:20px;box-shadow:0 0 0 7px rgba(28,140,78,.95),0 0 40px 10px rgba(28,140,78,.30)"></div>
     <div id="posTap"></div>
   </div></div></div>
   <div id="stepCall" class="abs"><div class="call p">Tap Cancel/Exit.</div><div class="callSub">It leaves the check without changing it.</div></div>
   <div id="stepCall2" class="abs"><div class="call" style="color:var(--ok)">The check is minimised.</div><div class="callSub">It stays open on Home, and the app can reach it.</div></div>
-  <div id="posNote" class="abs">Sample check for illustration.</div>
+  <div id="posNote" class="abs">Illustration of our POS. Sample check.</div>
 
   <!-- step 2 -->
   <div id="st2" class="abs center" style="top:140px">
@@ -131,123 +128,94 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
 </div>
 <script>
 /* ------------------------------------------------------------------ POS screens
-   A visualiser of our POS's Pick Up Check and Home screens, drawn from the
-   reference screenshots at the terminal's own 1802 x 1014 layout: same regions,
-   colours and buttons, with type set larger so it reads in the video. The check is
-   the guest's check from the app (Table B12); names are placeholders. */
+   An illustration of our POS, drawn from the reference screenshots rather than
+   copied: the same regions, order and colours (title, category and function rows,
+   the check, numpad, menu, bottom actions; and Home with its open checks), but
+   flat, rounded and quiet, with words only where the story needs them. Drawn on
+   the terminal's own 1802 x 1014 grid; the check is the guest's (Table B12). */
 const ICON = {
   send: '<path d="M21 3 3 10.5l7 2.5 2.5 7L21 3Z"/><path d="m10 13 4-4"/>',
-  stay: '<rect x="3" y="7" width="15" height="13" rx="2"/><path d="m3 9 7.5 5L18 9"/><rect x="14" y="3" width="7" height="6" rx="1"/>',
   print: '<path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/>',
-  printStay: '<path d="M4 8h16v5H4z"/><path d="M6 13v6h12v-6"/><path d="M7 4h10"/>',
   void: '<path d="M8 5h12v14H8l-5-7 5-7Z"/><path d="m11 9 6 6m0-6-6 6"/>',
   exit: '<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6m0-6-6 6"/>',
   pay: '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/>',
-  sliders: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
-  docq: '<path d="M6 3h9l4 4v14H6z"/><circle cx="12" cy="14" r="3"/><path d="m14.5 16.5 2.5 2.5"/>',
   docplus: '<path d="M6 3h9l4 4v14H6z"/><path d="M12 10v6M9 13h6"/>',
-  clock: '<circle cx="13" cy="12" r="8"/><path d="M13 8v4l3 2M3 12h2"/>',
-  grid: '<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="4" rx="1"/><rect x="13" y="10" width="7" height="10" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/>',
+  docq: '<path d="M6 3h9l4 4v14H6z"/><circle cx="12" cy="14" r="3"/><path d="m14.5 16.5 2.5 2.5"/>',
+  clock: '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
+  grid: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
   copy: '<rect x="8" y="3" width="12" height="15" rx="2"/><path d="M5 7v12a2 2 0 0 0 2 2h9"/>',
   fn: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 16V9h3M8 12h2.5M13 16v-5l3 5v-5"/>',
-  chart: '<rect x="3" y="4" width="18" height="12" rx="1"/><path d="M7 13v-3M11 13V8M15 13v-4M8 20l4-4 4 4"/>',
+  chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
   out: '<path d="M10 4H5v16h5"/><path d="M14 8l4 4-4 4M18 12H9"/>',
   home: '<path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/>',
 };
-const svg = (k, size = 34) => `<svg viewBox="0 0 24 24" style="width:${size}px;height:${size}px" fill="none" stroke="#fff" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">${ICON[k]}</svg>`;
-const B = (x, y, w, h, bg, label, extra = '', id = '') => `<div class="b" ${id ? `id="${id}"` : ''} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;background:${bg};${extra}">${label}</div>`;
-const T = (x, y, text, css = '') => `<div class="t" style="left:${x}px;top:${y}px;${css}">${text}</div>`;
-const RECT = (x, y, w, h, bg, css = '') => `<div style="position:absolute;left:${x}px;top:${y}px;width:${w}px;height:${h}px;background:${bg};${css}"></div>`;
-const NUWA = (big = 26, small = 17) => `<span style="letter-spacing:.32em;font-size:${big}px;margin-left:.32em">NUWA</span><span style="font-size:${small}px">Room Inquire</span>`;
+const svg = (k, size = 34, c = '#fff') => `<svg viewBox="0 0 24 24" style="width:${size}px;height:${size}px;flex:none" fill="none" stroke="${c}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round">${ICON[k]}</svg>`;
+const BOX = (x, y, w, h, bg, inner = '', css = '', id = '') =>
+  `<div class="k" ${id ? `id="${id}"` : ''} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;background:${bg};${css}">${inner}</div>`;
+const BAR = (w, o = .35) => `<i class="bar" style="width:${w}px;opacity:${o}"></i>`;
+const TXT = (x, y, text, css = '') => `<div class="t" style="left:${x}px;top:${y}px;${css}">${text}</div>`;
 
 function buildPick() {
   let h = '';
-  h += RECT(0, 0, 1802, 34, 'linear-gradient(#f39436 0 4px,#dcae66 4px)');
-  h += `<div class="otab">⠿ ⊠</div>`;
-  h += RECT(0, 34, 1802, 42, '#fff', 'border-bottom:2px solid #c4c4c4');
-  h += T(0, 36, 'Pick Up Check 22114026', 'width:1802px;text-align:center;color:#111;font-size:30px');
-  h += RECT(0, 78, 1802, 122, '#3a3e41');
-  ['DREAMS &amp; BEATS', 'Liquor', 'Beer', 'Wine', 'Cocktails', 'N/A Bev.', 'Amenities', 'Life Member', 'Tobacco', 'Condiment/<br>Modif.', 'Misc.']
-    .forEach((c, i) => h += B(5 + i * 164.4, 87, 154, 103, i ? '#2c3134' : '#737554', c, 'font-size:22px'));
-  h += RECT(0, 200, 1802, 82, '#2c3033');
-  [[0, 86, '#76a2a0', 'Guest<br>#'], [90, 105, '#76a2a0', 'Table<br>Number'], [198, 106, '#76a2a0', 'Guest<br>Check ID'],
-   [307, 105, '#8f9091', '<span style="opacity:.55">Qty<br>Correction</span>'], [416, 176, '#5e7c4e', svg('sliders', 28) + 'Change Order Type'],
-   [596, 87, '#36667c', 'Next<br>Seat'], [686, 87, '#36667c', 'Edit<br>Seat'], [777, 87, '#e08212', 'Kitchen<br>Msg'],
-   [867, 87, '#e08212', 'Bar<br>Msg'], [957, 87, '#e08212', 'Courses<br>Away'], [1047, 105, '#427355', '<b style="font-weight:600">Touch<br>Reorder</b>'],
-   [1193, 121, '#8a4a2a', 'Course<br>Line'], [1318, 106, '#8c4e2e', 'Do Not<br>Make'], [1427, 105, '#a3281c', 'Fire<br>Now'],
-   [1536, 122, '#4f8a22', svg('docq', 26) + '<span style="font-size:16px">Life Room</span>'], [1662, 140, '#8e2618', NUWA(22, 15)]]
-    .forEach(([x, w, bg, l]) => h += B(x, 206, w, 72, bg, l, 'font-size:19px'));
-  // check detail
-  h += RECT(0, 284, 323, 38, '#3c4042');
-  h += T(8, 287, 'TBL B12/1', 'font-size:24px;font-weight:600') + T(186, 290, 'CHK 22114026', 'font-size:15px;opacity:.8');
-  h += RECT(0, 322, 323, 34, '#272c2e');
-  h += T(8, 324, 'Server A', 'font-size:22px') + T(232, 327, 'GST 4 · 7:55 PM', 'font-size:14px;opacity:.75');
-  h += RECT(0, 356, 283, 414, '#fff');
-  [[1, 'SAPPHIRE PLATTER', '12,800.00'], [2, 'LAMB CHOPS', '15,600.00'], [1, 'TRUFFLE RISOTTO', '6,400.00'], [1, 'YOROKO SASHIMI', '9,200.00'],
-   [3, 'OLD FASHIONED', '8,400.00'], [2, 'SPARKLING WATER', '1,800.00'], [2, 'CHOC FONDANT', '4,200.00']]
-    .forEach(([q, n, pr], i) => {
-      const y = 366 + i * 56;
-      h += T(8, y, q, 'color:#111;font-size:20px;font-weight:600') + T(30, y, n, 'color:#111;font-size:18px;width:160px;overflow:hidden;text-overflow:clip')
-         + T(8, y + 24, '', '') + T(186, y + 24, pr, 'color:#444;font-size:16px;width:90px;text-align:right');
-      h += RECT(8, y + 50, 267, 1, '#ececec');
-    });
-  h += RECT(283, 356, 40, 414, '#e4c188');
-  ['▲', '▴', '▾', '▼'].forEach((a, i) => h += T(283, 390 + i * 96, a, 'width:40px;text-align:center;color:#fff;font-size:24px'));
-  h += RECT(0, 770, 323, 94, '#fff', 'border-top:2px solid #e2e2e2');
-  [['Subtotal', '58,400.00'], ['Taxes', '11,563.20'], ['Service Charge', '5,840.00']].forEach(([k, v], i) =>
-    h += T(8, 776 + i * 28, k, 'color:#333;font-size:19px') + T(160, 776 + i * 28, v, 'color:#333;font-size:19px;width:155px;text-align:right'));
-  h += RECT(0, 864, 323, 30, '#4a4d50');
-  h += T(8, 862, 'Total Due', 'font-size:22px') + T(150, 860, '75,803.20', 'font-size:25px;font-weight:600;width:165px;text-align:right');
+  h += BOX(0, 0, 1802, 8, '#dcae66', '', 'border-radius:0');
+  h += BOX(0, 8, 1802, 64, '#f6f4ef', '<span style="color:#1d1d1f;font-size:30px">Pick Up Check 22114026</span>', 'border-radius:0');
+  h += BOX(871, 8, 60, 10, '#ef8a2a', '', 'border-radius:0 0 6px 6px');
+  // category row, then the function row: colour carries them, not words
+  for (let i = 0; i < 9; i++) h += BOX(16 + i * 198, 86, 186, 72, i ? '#3a3f43' : '#737554', i ? BAR(64) : '<span style="font-size:23px">Dreams &amp; Beats</span>');
+  ['#76a2a0', '#76a2a0', '#76a2a0', '#50565a', '#5e7c4e', '#36667c', '#36667c', '#e08212', '#e08212', '#427355', '#8a4a2a', '#a3281c']
+    .forEach((c, i) => h += BOX(16 + i * 148.3, 170, 138, 52, c, BAR(46, .45)));
+  // the check
+  h += BOX(16, 236, 404, 644, '#ffffff', '', 'display:block');
+  h += TXT(40, 256, 'Table B12/1', 'color:#1d1d1f;font-size:28px;font-weight:600') + TXT(40, 296, 'Check 22114026 · 4 guests', 'color:#8a8d91;font-size:18px');
+  [[1, 'Sapphire Platter', '12,800'], [2, 'Lamb Chops', '15,600'], [1, 'Truffle Risotto', '6,400'], [1, 'Yoroko Sashimi', '9,200'],
+   [3, 'Old Fashioned', '8,400'], [2, 'Sparkling Water', '1,800'], [2, 'Choc Fondant', '4,200']].forEach(([q, n, pr], i) => {
+    const y = 344 + i * 48;
+    h += TXT(40, y, q, 'color:#9a9da1;font-size:21px') + TXT(72, y, n, 'color:#1d1d1f;font-size:21px') + TXT(290, y, pr, 'color:#1d1d1f;font-size:21px;width:106px;text-align:right');
+  });
+  h += BOX(40, 692, 356, 2, '#ececee', '', 'border-radius:1px');
+  h += TXT(40, 708, 'Subtotal', 'color:#8a8d91;font-size:19px') + TXT(250, 708, '58,400.00', 'color:#8a8d91;font-size:19px;width:146px;text-align:right');
+  h += TXT(40, 738, 'Service & taxes', 'color:#8a8d91;font-size:19px') + TXT(250, 738, '17,403.20', 'color:#8a8d91;font-size:19px;width:146px;text-align:right');
+  h += TXT(40, 800, 'Total Due', 'color:#1d1d1f;font-size:24px;font-weight:600') + TXT(200, 796, 'LKR 75,803.20', 'color:#1d1d1f;font-size:28px;font-weight:600;width:196px;text-align:right');
   // numpad
-  h += RECT(328, 284, 90, 46, '#fff', 'border:2px solid #444;border-radius:4px');
-  ['9', '8', '7', '6', '5', '4', '3', '2', '1', '0'].forEach((n, i) => h += B(329, 334 + i * 51, 88, 47, '#23272a', n, 'font-size:30px;font-weight:600'));
-  h += B(329, 844, 88, 48, '#fff', '<span style="color:#111;font-weight:600;font-size:22px">@/For</span>');
+  for (let i = 0; i < 10; i++) h += BOX(436, 236 + i * 64.8, 110, 56, '#3a3f43', `<span style="color:#c9cdd0;font-size:24px">${(9 - i + 10) % 10}</span>`);
   // menu
-  h += RECT(424, 284, 1266, 610, '#76787a');
-  h += B(428, 288, 1258, 48, '#78726e', 'A La Carte', 'font-size:23px');
-  [['Mains', '#72b08c'], ['Promotions', '#e38a1f'], ['Melco', '#3d6e84'], ['MICE', '#ee8f94'], ['WEEK-END', '#577646'], ['', '#a09884']]
-    .forEach(([l, c], i) => h += B(430 + i * 210, 340, 206, 46, c, l, 'font-size:19px'));
-  ['SAPPHIRE DRAGON<br>PLATTER', 'CHARCOAL<br>LAMB CHOPS', 'TRUFFLE<br>RISOTTO', 'YOROKO<br>SASHIMI', 'CHOCOLATE<br>FONDANT', 'SEAFOOD<br>LAKSA']
-    .forEach((l, i) => h += B(429 + (i % 4) * 315, 390 + Math.floor(i / 4) * 86, 311, 82, '#141414', l, 'font-size:21px;line-height:1.15'));
-  h += RECT(1690, 284, 112, 610, '#2c3033');
-  ['A LA<br>CARTE', 'BUFFET', 'COMP<br>Cakes', 'BEV<br>Promos', 'OPEN<br>ITEMS', 'PACK-<br>AGES'].forEach((l, i) =>
-    h += B(1695, 286 + i * 70, 105, 66, i ? '#3a3f42' : '#737554', l, 'font-size:17px;line-height:1.15'));
-  // bottom actions
-  h += RECT(0, 894, 1802, 92, '#5f6264');
-  [[0, 240, '#484c52', svg('send') + 'Send Order'], [244, 230, '#484c52', svg('stay') + 'Send and Stay'], [478, 87, '#1d1d1d', 'Clear<br>No'],
-   [569, 248, '#78726e', svg('print') + 'Print Check'], [821, 249, '#78726e', svg('printStay') + 'Print and Stay'], [1074, 223, '#d63a24', svg('void') + 'Void'],
-   [1300, 223, '#74a682', svg('exit') + 'Cancel/Exit', '', 'exitKey'], [1526, 276, '#508222', svg('pay') + 'Make Payment']]
-    .forEach(([x, w, bg, l, css, id]) => h += B(x, 897, w, 86, bg, l, 'font-size:24px;' + (css || ''), id));
-  h += `<div class="stat"><span>Server A</span><span>8:14 PM</span><span>Dreams &amp; Beats</span><span>Dinner</span><span>Workstation 2</span><span>Normal</span></div>`;
+  h += BOX(562, 236, 1224, 644, '#3a3f43', '', 'display:block');
+  h += TXT(590, 256, 'A La Carte', 'color:#e6e8ea;font-size:24px');
+  ['#72b08c', '#e38a1f', '#3d6e84', '#ee8f94', '#577646'].forEach((c, i) => h += BOX(590 + i * 196, 304, 184, 40, c, '', 'border-radius:20px'));
+  ['Sapphire Platter', 'Lamb Chops', 'Truffle Risotto', 'Yoroko Sashimi', 'Choc Fondant', 'Seafood Laksa'].forEach((n, i) =>
+    h += BOX(590 + (i % 4) * 296, 368 + Math.floor(i / 4) * 122, 284, 110, '#23272a', `<span style="color:#e6e8ea;font-size:22px">${n}</span>`));
+  // bottom actions: the two that matter to this guide are labelled plainly
+  h += BOX(16, 896, 300, 86, '#474d52', svg('send', 30) + '<span>Send Order</span>');
+  h += BOX(328, 896, 300, 86, '#6b6f73', svg('print', 30) + '<span>Print Check</span>');
+  h += BOX(640, 896, 406, 86, '#3a3f43', BAR(90, .3));
+  h += BOX(1058, 896, 230, 86, '#d63a24', svg('void', 30) + '<span>Void</span>');
+  h += BOX(1300, 896, 223, 86, '#6fa47e', svg('exit', 30) + '<span>Cancel/Exit</span>', '', 'exitKey');
+  h += BOX(1535, 896, 251, 86, '#4f8a22', svg('pay', 30) + '<span>Make Payment</span>');
+  h += BOX(0, 1006, 1802, 8, '#dcae66', '', 'border-radius:0');
   return h;
 }
 
-// Home: the table the check minimises into (native coordinates, for the animation)
+// Home: the open checks, with B12/1 where the check lands (native coordinates)
 const TILE_B12 = { x: 317, y: 322, w: 308, h: 198 };
 function buildHome() {
   let h = '';
-  h += RECT(0, 0, 1802, 64, '#2c3033');
-  h += B(4, 5, 892, 54, '#747654', `<span style="display:flex;align-items:center;gap:12px">${svg('home', 30).replace('style="', 'style="margin:0;')}Home</span>`, 'font-size:24px');
-  h += B(906, 5, 892, 54, '#2f3438', 'Layout', 'font-size:24px');
-  h += `<div class="otab" style="height:28px">⠿ ⊠</div>`;
-  [['53/1', '22114030', 'Server B', '8:07 PM', '24,000.01'], ['81/1', '22114028', 'Server A', '8:06 PM', '26,750.95'],
-   ['83/1', '22114027', 'Server A', '7:57 PM', '24,000.01'], ['94/1', '22114023', 'Server A', '7:54 PM', '8,000.01'],
-   ['95/1', '22114024', 'Server B', '7:55 PM', '8,671.94'], ['B12/1', '22114026', 'Server A', '7:55 PM', '75,803.20']]
-    .forEach(([lab, chk, who, tm, amt], i) => {
-      const x = 5 + (i % 4) * 312, y = 98 + Math.floor(i / 4) * 226;
-      h += `<div class="tile" ${lab === 'B12/1' ? 'id="tileB12"' : ''} style="left:${x}px;top:${y}px"><div class="lab"><i></i>${lab}</div>
-        <div class="l" style="top:62px;font-weight:600">${chk}</div><div class="l" style="top:94px">${who}</div>
-        <div class="l" style="top:140px">${tm}</div><div class="r" style="top:140px">LKR ${amt}</div></div>`;
-    });
-  [[1253, 72, 412, 125, '#4e7d1f', svg('docplus', 40) + 'Begin Check by Table'], [1253, 202, 233, 125, '#508222', svg('docq', 38) + 'Room Inquire'],
-   [1490, 202, 175, 125, '#7a5b85', svg('clock', 38) + 'Begin Fast<br>Transaction'], [1253, 331, 412, 125, '#74a682', svg('grid', 40) + 'Pickup Check by Table'],
-   [1253, 460, 412, 125, '#32637a', svg('copy', 38) + 'Reprint Closed Check'], [1253, 589, 233, 125, '#78726e', svg('fn', 38) + 'Functions'],
-   [1490, 589, 175, 125, '#7ba7a6', svg('chart', 38) + 'Reports'], [1253, 718, 233, 125, '#508222', svg('docq', 34) + '<span style="font-size:20px">Life Room Inquire</span>'],
-   [1490, 718, 175, 125, '#8e2618', NUWA()], [1253, 847, 233, 125, '#d63a24', svg('out', 38) + 'Sign out'], [1490, 847, 175, 125, '#d63a24', svg('out', 38) + 'Transaction<br>Cancel']]
-    .forEach(([x, y, w, hh, bg, l]) => h += B(x, y, w, hh, bg, l, 'font-size:23px'));
-  h += RECT(1672, 64, 4, 921, '#5c5f61');
-  h += B(1678, 72, 124, 66, '#747654', 'All<br>Checks', 'font-size:18px') + B(1678, 140, 124, 66, '#32383c', 'My<br>Check', 'font-size:18px');
-  h += `<div class="stat"><span>Server A</span><span>8:14 PM</span><span>Dreams &amp; Beats</span><span>Dinner</span></div>`;
+  h += BOX(16, 12, 866, 60, '#747654', svg('home', 28) + '<span>Home</span>');
+  h += BOX(894, 12, 892 - 16, 60, '#3a3f43', '<span style="opacity:.8">Layout</span>');
+  [['53/1', '22114030', '24,000.01'], ['81/1', '22114028', '26,750.95'], ['83/1', '22114027', '24,000.01'], ['94/1', '22114023', '8,000.01'],
+   ['95/1', '22114024', '8,671.94'], ['B12/1', '22114026', '75,803.20']].forEach(([lab, chk, amt], i) => {
+    const x = 5 + (i % 4) * 312, y = 96 + Math.floor(i / 4) * 226;
+    h += `<div class="tile" ${lab === 'B12/1' ? 'id="tileB12"' : ''} style="left:${x}px;top:${y}px">
+      <div class="chip"><i></i>${lab}</div>
+      <div class="tn">${chk}</div><div class="ta">LKR ${amt}</div></div>`;
+  });
+  [[1253, 96, 412, 112, '#4e7d1f', 'docplus', 'Begin Check'], [1253, 218, 201, 112, '#508222', 'docq', 'Room Inquire'], [1464, 218, 201, 112, '#7a5b85', 'clock', 'Fast Transaction'],
+   [1253, 340, 412, 112, '#74a682', 'grid', 'Pickup Check'], [1253, 462, 412, 112, '#32637a', 'copy', 'Reprint Check'],
+   [1253, 584, 201, 112, '#78726e', 'fn', 'Functions'], [1464, 584, 201, 112, '#7ba7a6', 'chart', 'Reports'],
+   [1253, 706, 201, 112, '#508222', 'docq', 'Life Room'], [1464, 706, 201, 112, '#8e2618', null, 'NUWA'],
+   [1253, 828, 201, 112, '#d63a24', 'out', 'Sign out'], [1464, 828, 201, 112, '#d63a24', 'out', 'Cancel']]
+    .forEach(([x, y, w, hh, c, ic, l]) => h += BOX(x, y, w, hh, c, (ic ? svg(ic, 32) : '') + `<span style="font-size:21px;${ic ? '' : 'letter-spacing:.3em'}">${l}</span>`, 'flex-direction:column;gap:8px'));
+  h += BOX(1681, 96, 105, 60, '#747654', '<span style="font-size:17px">All</span>') + BOX(1681, 166, 105, 60, '#3a3f43', '<span style="font-size:17px">Mine</span>');
+  h += BOX(0, 1006, 1802, 8, '#dcae66', '', 'border-radius:0');
   return h;
 }
 document.getElementById('pick').innerHTML = buildPick();
@@ -258,7 +226,7 @@ document.getElementById('home').innerHTML = buildHome();
    carry momentum and settle, some with a touch of overshoot), exits accelerate
    away, camera moves are critically damped, and scene changes overlap so there
    is never an empty frame between them. */
-const R = {"failed":{"card":{"x":20,"y":222.31,"w":353,"h":174.8},"reason":{"x":37,"y":267.31,"w":319,"h":16.8},"retry":{"x":37,"y":339.11,"w":319,"h":41}},"ok":{"discountRow":{"x":35,"y":550.06,"w":323,"h":19}}};
+const R = {"failed":{"card":{"x":20,"y":472.06,"w":353,"h":174.8},"reason":{"x":37,"y":517.06,"w":319,"h":16.8},"retry":{"x":37,"y":588.86,"w":319,"h":41}},"ok":{"discountRow":{"x":35,"y":550.06,"w":323,"h":19}}};
 const $ = (id) => document.getElementById(id);
 const clamp = (x) => Math.max(0, Math.min(1, x));
 const seg = (t, a, b) => clamp((t - a) / (b - a));
@@ -345,7 +313,7 @@ function render(tr) {
   if (t >= 17.45) D = lerp(DF, DC, spring(t, 17.45, .75, .86));
   if (t >= 18.3) D = lerp(DC, 0, spring(t, 18.3, .85, .86));
   const okIn = eIO(seg(t, 18.35, 18.7));
-  $('imFailed').style.clipPath = layered ? 'inset(0 0 630px 0)' : 'none';
+  $('imFailed').style.clipPath = layered ? 'inset(0 0 380px 0)' : 'none';
   for (const id of ['cardF', 'cardC', 'lowF', 'lowOk']) $(id).style.display = layered ? 'block' : 'none';
   $('cardF').style.opacity = (1 - eIO(seg(t, 17.45, 17.62))).toFixed(4);
   $('cardC').style.opacity = (eOut(seg(t, 17.55, 17.8)) * (1 - eIO(seg(t, 18.22, 18.42)))).toFixed(4);
