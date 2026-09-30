@@ -34,6 +34,8 @@ Built from MyMenu's in-sheet reset of 30 Sep 2026 (branch `claude/nice-euler-fza
 - `explainer.html`, `password.html` — the films; every frame is `render(t)`. `?t=12` holds a frame.
   The POS is an illustration based on our POS's Pick Up Check and Home screens.
 - `capture.mjs` — captures the check-open app states at 3× from `../index.html`.
+- `capture-email.mjs <app root>` — renders the real reset-code email
+  (`reference/email/password-reset-code.html`) at 640 px, 3×, into `assets/reset/email.png`.
 - `capture-reset.mjs <app root>` — captures the password-recovery states at 3× into
   `assets/reset/`, from a checkout that has the in-sheet reset.
 - `audio.py check|password` — one engine, a score per film, and the few effects;
