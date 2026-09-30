@@ -7,7 +7,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const FFMPEG = '/usr/local/lib/python3.11/dist-packages/imageio_ffmpeg/binaries/ffmpeg-linux-x86_64-v7.0.2';
 const FPS = 60, SS = 2, only = process.argv[2];
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--allow-file-access-from-files'] });
-const page = await browser.newPage({ viewport: { width: 1080, height: 1080 }, deviceScaleFactor: SS });
+const page = await browser.newPage({ viewport: { width: 1080, height: 1440 }, deviceScaleFactor: SS });
 await page.goto('file://' + path.join(HERE, 'explainer.html') + '?record=1');
 await page.evaluate(async () => { await document.fonts.ready; await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => i.onload = r))); });
 if (only) { // stills for review: node record.mjs 1,5,8
@@ -15,7 +15,7 @@ if (only) { // stills for review: node record.mjs 1,5,8
   await browser.close(); process.exit(0);
 }
 const dur = await page.evaluate(() => window.DURATION);
-const ff = spawn(FFMPEG, ['-y', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-vf', 'scale=1080:1080:flags=lanczos', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '14', '-preset', 'slow', '-movflags', '+faststart', path.join(HERE, 'silent.mp4')], { stdio: ['pipe', 'inherit', 'inherit'] });
+const ff = spawn(FFMPEG, ['-y', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-vf', 'scale=1080:1440:flags=lanczos', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '14', '-preset', 'slow', '-movflags', '+faststart', path.join(HERE, 'silent.mp4')], { stdio: ['pipe', 'inherit', 'inherit'] });
 const N = Math.round(dur * FPS);
 for (let i = 0; i < N; i++) {
   await page.evaluate((t) => render(t), i / FPS);

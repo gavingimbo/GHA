@@ -13,7 +13,7 @@ import wave
 import numpy as np
 
 SR = 48000
-DUR = 34.0
+DUR = 36.5
 N = int(SR * DUR)
 HERE = os.path.dirname(os.path.abspath(__file__))
 rng = np.random.default_rng(7)
@@ -123,20 +123,21 @@ def bell(f, dur=2.4):
 # --------------------------------------------------------------------- music
 BPM = 96; BEAT = 60 / BPM; BAR = 4 * BEAT            # 2.5 s bars
 CH = [  # (bass, pad voicing, arpeggio notes) per bar
-    ('D2', ['D3', 'A3', 'C#4', 'E4'], ['D4', 'A4', 'E5', 'F#5']),   # 0 intro
-    ('D2', ['D3', 'A3', 'C#4', 'E4'], ['D4', 'A4', 'E5', 'F#5']),   # 1 phone
-    ('B1', ['B2', 'F#3', 'A3', 'D4'], ['B3', 'F#4', 'D5', 'A4']),   # 2 zoom to error
-    ('G1', ['G2', 'D3', 'F#3', 'B3'], ['G3', 'D4', 'B4', 'F#5']),   # 3 reason
-    ('E2', ['E3', 'B3', 'D4', 'G4'], ['E4', 'B4', 'G4', 'D5']),     # 4 step 1
-    ('C2', ['C3', 'G3', 'B3', 'E4'], ['C4', 'G4', 'E5', 'B4']),     # 5 POS: tap Minimise check
-    ('A1', ['A2', 'E3', 'G3', 'C#4'], ['A3', 'E4', 'C#5', 'E5']),   # 6 check released
-    ('B1', ['B2', 'F#3', 'A3', 'D4'], ['B3', 'F#4', 'D5', 'A4']),   # 7 step 2
-    ('G1', ['G2', 'D3', 'F#3', 'B3'], ['G3', 'D4', 'B4', 'A4']),    # 8 tap, checking
-    ('D2', ['D3', 'A3', 'C#4', 'F#4'], ['D4', 'A4', 'F#5', 'E5']),  # 9 applied
-    ('G1', ['G2', 'D3', 'F#3', 'B3'], ['G3', 'D4', 'B4', 'F#5']),   # 10 D$ dialog
-    ('A1', ['A2', 'E3', 'G3', 'C#4'], ['A3', 'E4', 'C#5', 'E5']),   # 11
-    ('D2', ['D3', 'A3', 'C#4', 'F#4'], ['D4', 'A4', 'F#5', 'A5']),  # 12 recap
-    ('D2', ['D3', 'A3', 'C#4', 'F#4'], []),                          # 13 ring out
+    ('D2', ['D3', 'A3', 'C#4', 'E4'], ['D4', 'A4', 'E5', 'F#5']),    # 0 intro
+    ('D2', ['D3', 'A3', 'C#4', 'E4'], ['D4', 'A4', 'E5', 'F#5']),    # 1 phone
+    ('B1', ['B2', 'F#3', 'A3', 'D4'], ['B3', 'F#4', 'D5', 'A4']),    # 2 zoom to error
+    ('G1', ['G2', 'D3', 'F#3', 'B3'], ['G3', 'D4', 'B4', 'F#5']),    # 3 reason
+    ('E2', ['E3', 'B3', 'D4', 'G4'], ['E4', 'B4', 'G4', 'D5']),      # 4 step 1
+    ('C2', ['C3', 'G3', 'B3', 'E4'], ['C4', 'G4', 'E5', 'B4']),      # 5 POS: zoom in, tap Cancel/Exit
+    ('A1', ['A2', 'E3', 'G3', 'C#4'], ['A3', 'E4', 'C#5', 'E5']),    # 6 check minimised to Home
+    ('F#1', ['F#2', 'C#3', 'E3', 'A3'], ['F#3', 'C#4', 'A4', 'E5']), # 7 hold on Home, lead into step 2
+    ('B1', ['B2', 'F#3', 'A3', 'D4'], ['B3', 'F#4', 'D5', 'A4']),    # 8 step 2
+    ('G1', ['G2', 'D3', 'F#3', 'B3'], ['G3', 'D4', 'B4', 'A4']),     # 9 tap Retry, checking
+    ('D2', ['D3', 'A3', 'C#4', 'F#4'], ['D4', 'A4', 'F#5', 'E5']),   # 10 applied
+    ('G1', ['G2', 'D3', 'F#3', 'B3'], ['G3', 'D4', 'B4', 'F#5']),    # 11 D$ dialog
+    ('A1', ['A2', 'E3', 'G3', 'C#4'], ['A3', 'E4', 'C#5', 'E5']),    # 12
+    ('D2', ['D3', 'A3', 'C#4', 'F#4'], ['D4', 'A4', 'F#5', 'A5']),   # 13 recap
+    ('D2', ['D3', 'A3', 'C#4', 'F#4'], []),                           # 14 ring out
 ]
 ARP = [0, 1, 2, 3, 2, 1, 3, 1]                       # eighth-note pattern index into the bar's notes
 
@@ -148,21 +149,21 @@ for b, (bn, voicing, notes) in enumerate(CH):
     add(pad(fr, d, -.0015), t0, .075, -.35, .5); add(pad(fr, d, .0015), t0, .075, .35, .5)
     if b >= 1:
         add(bass(hz(bn), BAR * .5 - .02), t0, .09); add(bass(hz(bn), BAR * .5 - .02), t0 + BAR / 2, .07)
-    if b >= 1 and notes and b < 13:
+    if b >= 1 and notes and b < 14:
         dens = 8 if b >= 2 else 4                     # sparser in the first phone bar
         for k in range(8):
             if dens == 4 and k % 2: continue
             f = hz(notes[ARP[k]])
             add(pluck(f), t0 + k * BEAT / 2, .085 if k % 2 == 0 else .06, (-.3, .3)[k % 2], .45)
-    if 1 <= b <= 11 and b not in (4, 5, 6):          # step 1 breathes: no pulse
+    if 1 <= b <= 12 and b not in (4, 5, 6, 7):       # step 1 breathes: no pulse
         for q in range(4):
             if q % 2 == 0: add(kick(), t0 + q * BEAT, .10)
             add(shaker(), t0 + q * BEAT + BEAT / 2, .06, .4)
 # intro sparkle and the final chord's top note
 for i, n_ in enumerate(['A4', 'D5', 'F#5']):
     add(pluck(hz(n_), 2.2), .25 + i * .32, .07, (-.4, 0, .4)[i], .7)
-add(bell(hz('D6'), 3.2), 30.05, .05, 0, .8)
-add(bell(hz('A5'), 3.2), 30.45, .04, .2, .8)
+add(bell(hz('D6'), 3.2), 32.55, .05, 0, .8)
+add(bell(hz('A5'), 3.2), 32.95, .04, .2, .8)
 
 # ------------------------------------------------------------------- effects
 FX = [  # time, sound, gain, pan, reverb
@@ -172,18 +173,21 @@ FX = [  # time, sound, gain, pan, reverb
     (10.75, whoosh(.9, False), .20, 0, .3),       # phone leaves
     (11.45, whoosh(.8, True), .10, 0, .3),        # step 1 heading
     (11.85, whoosh(.9, True), .16, .2, .3),       # terminal card in
-    (13.55, tap(), .45, .15, .15),                # tap Minimise check
-    (13.85, whoosh(.9, False), .16, .1, .3),      # check minimises into its table
-    (14.85, tick(), .20, .1, .4),                 # B12 released
-    (14.90, bell(hz('A5'), 1.6), .10, .1, .6),
-    (17.75, whoosh(1.1, True), .20, 0, .3),       # phone returns
-    (19.50, tap(), .55, 0, .15),                  # tap Retry
-    (21.05, whoosh(1.3, False), .14, 0, .3),      # zoom out to the bill
-    (22.30, bell(hz('D6')), .17, -.15, .7),       # discount applied
-    (22.45, bell(hz('F#6')), .14, .15, .7),
-    (24.80, whoosh(.9, False), .18, 0, .3),       # phone leaves
-    (25.95, whoosh(1.0, True), .18, 0, .3),       # D$ dialog in
-    (29.70, whoosh(.9, True), .10, 0, .3),        # recap
+    (13.15, whoosh(1.1, True), .12, .2, .3),      # zoom in to Cancel/Exit
+    (14.10, tick(), .16, .2, .4),                 # Cancel/Exit highlighted
+    (14.60, tap(), .45, .2, .15),                 # tap Cancel/Exit
+    (14.90, whoosh(.9, False), .12, 0, .3),       # pull back to the whole screen
+    (15.80, whoosh(.9, False), .16, -.1, .3),     # check minimises into its table on Home
+    (16.80, tick(), .20, -.1, .4),                # B12/1 highlighted on Home
+    (16.85, bell(hz('A5'), 1.6), .10, -.1, .6),
+    (20.25, whoosh(1.1, True), .20, 0, .3),       # phone returns
+    (22.00, tap(), .55, 0, .15),                  # tap Retry
+    (23.55, whoosh(1.3, False), .14, 0, .3),      # zoom out to the bill
+    (24.80, bell(hz('D6')), .17, -.15, .7),       # discount applied
+    (24.95, bell(hz('F#6')), .14, .15, .7),
+    (27.30, whoosh(.9, False), .18, 0, .3),       # phone leaves
+    (28.45, whoosh(1.0, True), .18, 0, .3),       # D$ dialog in
+    (32.20, whoosh(.9, True), .10, 0, .3),        # recap
 ]
 for t, s, g, p, v in FX:
     add(s, t, g, p, v, fx=True)
@@ -201,7 +205,7 @@ L += reverb(VL) * .55; R += reverb(VR) * .55
 
 # duck the music a few dB under the tap and the chime so they read clearly
 duck = np.ones(N); tt = np.arange(N) / SR
-for c, depth in ((19.5, .55), (22.3, .6), (13.55, .7), (14.85, .8)):
+for c, depth in ((22.0, .55), (24.8, .6), (14.6, .7), (16.8, .8)):
     d = np.where(tt < c, np.exp(-np.maximum(c - tt, 0) / .04), np.exp(-(tt - c) / .45))
     duck *= 1 - (1 - depth) * d
 L = L * duck + FL; R = R * duck + FR

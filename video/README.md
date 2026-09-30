@@ -1,6 +1,6 @@
 # Explainer video — "Check is open on POS"
 
-`check-open-on-pos.mp4` — 1080 × 1080, 60 fps (rendered at 2× and downscaled), 34 s, stereo AAC at −14 LUFS. A team-facing
+`check-open-on-pos.mp4` — 1080 × 1440 (3:4), 60 fps (rendered at 2× and downscaled), 36.5 s, stereo AAC at −14 LUFS. A team-facing
 guide to the "Failed to apply discount on POS / Check is open on another
 terminal" error: minimise the check on the POS, then the guest taps Retry.
 
@@ -8,7 +8,9 @@ terminal" error: minimise the check on the POS, then the guest taps Retry.
   from `../index.html` into `assets/`, with element rects in `assets/rects.json`.
   The discount bill row is removed from the pre-retry captures, since the POS has
   not taken the discount yet.
-- `explainer.html` — the motion piece; every frame is `render(t)`. Open it in a
+- `explainer.html` — the motion piece. Step one rebuilds our POS's Pick Up Check
+  and Home screens in HTML at the terminal's native 1802 × 1014 (team member names
+  and the workstation address replaced with placeholders); every frame is `render(t)`. Open it in a
   browser to preview, or `?t=8.5` to hold a frame.
 - `audio.py` — the soundtrack and sound effects, synthesised (no licensed music):
   a 96 bpm D major bed that turns to B minor while the error is on screen and

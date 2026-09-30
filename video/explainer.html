@@ -3,19 +3,26 @@
 <style>
 @font-face{font-family:Ivy;src:url(../assets/fonts/ivymode-gha-semibold.woff2) format('woff2')}
 @font-face{font-family:Jost;src:url(../assets/fonts/jost-regular.woff) format('woff')}
-:root{--ink:#14102e;--purple:#582c83;--muted:#6e6a7c;--bg:#fafafa;--err:#b00020;--ok:#1c8c4e}
+@font-face{font-family:PosSans;font-weight:400;src:url(assets/fonts/open-sans-400.woff2) format('woff2')}
+@font-face{font-family:PosSans;font-weight:600;src:url(assets/fonts/open-sans-600.woff2) format('woff2')}
+:root{--ink:#14102e;--purple:#582c83;--muted:#6e6a7c;--bg:#fafafa;--err:#b00020;--ok:#1c8c4e;--W:1080px;--H:1440px}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:1080px;height:1080px;overflow:hidden;background:var(--bg)}
-#stage{position:relative;width:1080px;height:1080px;overflow:hidden;background:var(--bg);font-family:Jost,sans-serif;color:var(--ink)}
+html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
+#stage{position:relative;width:var(--W);height:var(--H);overflow:hidden;background:var(--bg);font-family:Jost,sans-serif;color:var(--ink);
+  font-kerning:normal;font-feature-settings:"kern" 1,"liga" 1;text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased}
 .abs{position:absolute;will-change:transform,opacity}
 .h{font-family:Ivy,serif;letter-spacing:0;line-height:1.14;padding:0 40px}
-#stage{font-kerning:normal;font-feature-settings:"kern" 1,"liga" 1;text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased}
 .center{left:0;right:0;text-align:center}
 .eyebrow{font-size:26px;letter-spacing:.14em;text-transform:uppercase;color:var(--purple)}
 .big{font-size:100px}
 .mid{font-size:62px}
-.sub{font-size:34px;color:var(--muted);line-height:1.35}
+.sub{font-size:34px;color:var(--muted);line-height:1.35;padding:0 60px}
 .p{color:var(--purple)}
+.num{display:inline-flex;flex:none;width:92px;height:92px;border-radius:50%;background:var(--purple);color:#fff;align-items:center;justify-content:center;font-family:Ivy,serif;font-size:56px}
+.stepHead{display:flex;align-items:center;justify-content:center;gap:26px}
+/* cover */
+#cvCard{left:184px;top:484px;width:712px;height:351px;border-radius:32px;overflow:hidden;box-shadow:0 30px 60px rgba(176,0,32,.10),0 2px 8px rgba(20,16,46,.05)}
+#cvCard img{position:absolute;left:-24px;top:-24px;width:760px}
 /* phone */
 #phone{will-change:auto;left:0;top:0;transform-origin:0 0;width:417px;height:876px;border-radius:66px;background:#1d1d1f;padding:12px;
   box-shadow:0 40px 80px rgba(20,16,46,.18),0 0 0 2px #3a3a3c inset}
@@ -24,49 +31,45 @@ html,body{width:1080px;height:1080px;overflow:hidden;background:var(--bg)}
 #island{position:absolute;left:50%;top:22px;width:118px;height:34px;margin-left:-59px;background:#000;border-radius:20px;z-index:5}
 .hl{position:absolute;border-radius:6px;z-index:4}
 #ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);z-index:6;width:10px;height:10px}
-#band{left:0;top:0;width:1080px;height:400px;background:linear-gradient(var(--bg) 78%,rgba(250,250,250,0))}
-/* step badge */
-.num{display:inline-flex;width:92px;height:92px;border-radius:50%;background:var(--purple);color:#fff;align-items:center;justify-content:center;font-family:Ivy,serif;font-size:56px}
-#dlg{left:223px;top:408px;width:634px;height:508px;border-radius:28px;overflow:hidden;background:#fff;box-shadow:0 30px 60px rgba(20,16,46,.10),0 2px 6px rgba(20,16,46,.04)}
+#band{left:0;top:0;width:var(--W);height:480px;background:linear-gradient(var(--bg) 80%,rgba(250,250,250,0))}
+#dlg{left:223px;top:560px;width:634px;height:508px;border-radius:28px;overflow:hidden;background:#fff;box-shadow:0 30px 60px rgba(20,16,46,.10),0 2px 6px rgba(20,16,46,.04)}
 #dlg img{position:absolute;left:-28px;top:-28px;width:690px}
-.rule{height:2px;background:rgba(20,16,46,.08)}
-/* cover */
-#cvCard{left:184px;top:334px;width:712px;height:351px;border-radius:32px;overflow:hidden;box-shadow:0 30px 60px rgba(176,0,32,.10),0 2px 8px rgba(20,16,46,.05)}
-#cvCard img{position:absolute;left:-24px;top:-24px;width:760px}
-/* POS mockup — a generic illustration, not any vendor's screen */
-#pos{left:75px;top:300px;width:930px;height:590px;border-radius:34px;background:#1d1d1f;padding:14px;box-shadow:0 40px 80px rgba(20,16,46,.18),0 0 0 2px #3a3a3c inset}
-#posScr{position:relative;width:902px;height:562px;border-radius:20px;overflow:hidden;background:#eceef3;font-family:Jost,sans-serif}
-.pbar{height:56px;background:#23263a;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:21px}
-.pbar b{font-weight:normal;opacity:.6;margin-left:14px}
-.ppill{display:flex;align-items:center;gap:9px;height:34px;padding:0 16px;border-radius:17px;font-size:18px}
-.ppill i{width:10px;height:10px;border-radius:50%;display:block}
-#floor .grid{position:absolute;left:24px;top:80px;display:grid;grid-template-columns:repeat(4,196px);gap:20px}
-.tile{height:200px;border-radius:16px;background:#fff;box-shadow:0 1px 3px rgba(20,16,46,.08);padding:20px 22px;position:relative}
-.tile .n{font-family:Ivy,serif;font-size:46px;line-height:1}
-.tile .st{position:absolute;left:22px;bottom:20px;display:flex;align-items:center;gap:8px;font-size:18px;color:var(--muted)}
-.tile .st i{width:10px;height:10px;border-radius:50%;display:block;background:#b9b6c3}
-#tB12{box-shadow:0 0 0 3px transparent}
-#chk{position:absolute;left:0;top:0;width:902px;height:562px;background:#fff;transform-origin:0 0;border-radius:0;overflow:hidden}
-#chk .list{position:absolute;left:0;top:56px;width:560px;bottom:0;padding:14px 26px;border-right:2px solid #eceef3}
-.row{display:flex;align-items:center;height:47px;font-size:20px;border-bottom:1px solid #f0f0f4}
-.row .q{width:44px;color:var(--muted)} .row .nm{flex:1} .row .pr{font-variant-numeric:tabular-nums}
-.row.tot{border:0;font-size:22px;margin-top:6px} .row.tot .nm{font-family:Ivy,serif;font-size:26px}
-#chk .keys{position:absolute;right:0;top:56px;width:342px;bottom:0;padding:22px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:98px;gap:14px}
-.key{border-radius:14px;background:#f1f0f5;display:flex;align-items:center;justify-content:center;text-align:center;font-size:20px;color:#3a3650;line-height:1.2}
-.key.min{grid-column:span 2;background:var(--purple);color:#fff;font-size:24px;gap:12px}
-.key.min svg{width:26px;height:26px}
-#posTap{position:absolute;border-radius:50%;background:rgba(255,255,255,.6);pointer-events:none;z-index:9}
-#posNote{left:0;right:0;top:902px;text-align:center;font-size:21px;color:#9a97a6}
 
+/* ---------------- POS terminal: our POS screens, rebuilt at their native 1802 x 1014 */
+#pos{left:32px;top:440px;width:1016px;height:584px;border-radius:30px;background:#1d1d1f;padding:14px;box-shadow:0 40px 80px rgba(20,16,46,.20),0 0 0 2px #3a3a3c inset}
+#posScr{position:relative;width:988px;height:556px;border-radius:14px;overflow:hidden;background:#76787a}
+#ui{position:absolute;left:0;top:0;width:1802px;height:1014px;transform-origin:0 0;will-change:auto}
+.pv{position:absolute;left:0;top:0;width:1802px;height:1014px;overflow:hidden;font-family:PosSans,sans-serif;color:#fff;transform-origin:0 0}
+.pv .b{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.22;font-size:19px}
+.pv .b svg{width:30px;height:30px;margin-bottom:6px}
+.pv .t{position:absolute;white-space:nowrap}
+.stat{position:absolute;display:flex;left:0;right:0;height:28px;bottom:0;gap:10px;background:#76787a}
+.stat span{flex:1;background:#dcb676;color:#3b3223;font-size:15px;display:flex;align-items:center;justify-content:center}
+.otab{position:absolute;left:868px;top:0;width:68px;height:32px;background:#ef8a2a;border-radius:0 0 4px 4px;display:flex;align-items:center;justify-content:space-around;color:#fff;font-size:15px}
+#pick{background:#2c3033}
+#home{background:#76787a}
+.tile{position:absolute;width:308px;height:198px;background:#fff;color:#111;border:1px solid #d9d9d9}
+.tile .lab{position:absolute;left:-1px;top:-24px;height:24px;padding:0 10px 0 6px;background:#111;color:#fff;font-size:14px;display:flex;align-items:center;gap:6px;border-radius:3px 3px 0 0}
+.tile .lab i{width:10px;height:10px;border-radius:50%;background:#1fbf3a;display:block}
+.tile .l{position:absolute;left:5px;font-size:14px}
+.tile .r{position:absolute;right:4px;font-size:14px}
+.ring{position:absolute;border-radius:10px;pointer-events:none}
+#posTap{position:absolute;border-radius:50%;background:rgba(255,255,255,.65);pointer-events:none}
+#stepCall{left:0;right:0;top:1076px;text-align:center}
+#stepCall2{left:0;right:0;top:1076px;text-align:center}
+.call{font-family:Ivy,serif;font-size:50px;line-height:1.14}
+.callSub{font-size:30px;color:var(--muted);margin-top:12px}
+#posNote{left:0;right:0;top:1352px;text-align:center;font-size:21px;color:#9a97a6}
 </style></head>
 <body><div id="stage">
 
-  <!-- S1 intro -->
-  <div id="s1eb" class="abs center eyebrow" style="top:150px">Team guide · Dine with D$</div>
-  <div id="s1a" class="abs center h" style="top:198px;font-size:66px">Seeing this on a guest’s phone?</div>
+  <!-- cover: fully composed on the first frame -->
+  <div id="s1eb" class="abs center eyebrow" style="top:300px">Team guide · Dine with D$</div>
+  <div id="s1a" class="abs center h" style="top:348px;font-size:66px">Seeing this on a guest’s phone?</div>
   <div id="cvCard" class="abs"><img src="../design/png/discount-error.png"></div>
-  <div id="s1b" class="abs center h p" style="top:742px;font-size:66px">Here’s the two-step fix.</div>
-  <div id="s1c" class="abs center sub" style="top:842px">Minimise the check on the POS, then the guest taps Retry.</div>
+  <div id="s1b" class="abs center h p" style="top:892px;font-size:66px">Here’s the two-step fix.</div>
+  <div id="s1c" class="abs center sub" style="top:992px">Minimise the check on the POS,<br>then the guest taps Retry.</div>
+  <div id="s1d" class="abs center" style="top:1330px;font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Cinnamon DISCOVERY</div>
 
   <!-- phone -->
   <div id="phone" class="abs"><div id="screen">
@@ -80,70 +83,169 @@ html,body{width:1080px;height:1080px;overflow:hidden;background:var(--bg)}
   </div></div>
   <div id="band" class="abs"></div>
 
-  <!-- S2 / S3 captions -->
-  <div id="c1" class="abs center" style="top:96px"><div class="h mid">Where the guest sees it.</div><div class="sub" style="margin-top:18px">On their phone, just under the bill items.</div></div>
-  <div id="c2" class="abs center" style="top:84px"><div class="h mid">The bill is still open<br>on a POS terminal.</div><div class="sub" style="margin-top:18px">While it is open, the discount can’t be added.</div></div>
+  <div id="c1" class="abs center" style="top:150px"><div class="h mid">Where the guest sees it.</div><div class="sub" style="margin-top:18px">On their phone, just under the bill items.</div></div>
+  <div id="c2" class="abs center" style="top:130px"><div class="h mid">The bill is still open<br>on a POS terminal.</div><div class="sub" style="margin-top:18px">While it is open, the discount can’t be added.</div></div>
 
-  <!-- step 1 -->
-  <div id="st1" class="abs center" style="top:78px">
-    <div style="display:flex;align-items:center;justify-content:center;gap:28px"><div class="num">1</div><div class="h" style="padding:0;font-size:54px">Minimise the check on the POS.</div></div>
-    <div class="sub" style="margin-top:22px">This releases it from the terminal.<br>Don’t settle or void the bill.</div>
+  <!-- step 1: the POS -->
+  <div id="st1" class="abs center" style="top:120px">
+    <div class="stepHead"><div class="num">1</div><div class="h" style="padding:0;font-size:54px">Minimise the check on the POS.</div></div>
+    <div class="sub" style="margin-top:24px">Tap Cancel/Exit on the open check.<br>Don’t tap Void or Make Payment.</div>
   </div>
-  <div id="pos" class="abs"><div id="posScr">
-    <div id="floor">
-      <div class="pbar"><span>Floor plan<b>Main dining</b></span><span>8:42 PM</span></div>
-      <div class="grid">
-          <div class="tile" id="tB10"><div class="n">B10</div><div class="st"><i style="background:#b9b6c3"></i><span>Free</span></div></div>
-          <div class="tile" id="tB11"><div class="n">B11</div><div class="st"><i style="background:#6e6a7c"></i><span>Seated · 2</span></div></div>
-          <div class="tile" id="tB12"><div class="n">B12</div><div class="st" id="b12a"><i style="background:#b00020"></i><span>In use · Terminal 2</span></div><div class="st" id="b12b" style="opacity:0;color:#1c8c4e"><i style="background:#1c8c4e"></i><span>Released</span></div></div>
-          <div class="tile" id="tB14"><div class="n">B14</div><div class="st"><i style="background:#6e6a7c"></i><span>Seated · 6</span></div></div>
-          <div class="tile" id="tC1"><div class="n">C1</div><div class="st"><i style="background:#b9b6c3"></i><span>Free</span></div></div>
-          <div class="tile" id="tC2"><div class="n">C2</div><div class="st"><i style="background:#6e6a7c"></i><span>Bill printed</span></div></div>
-          <div class="tile" id="tC3"><div class="n">C3</div><div class="st"><i style="background:#6e6a7c"></i><span>Seated · 3</span></div></div>
-          <div class="tile" id="tC4"><div class="n">C4</div><div class="st"><i style="background:#b9b6c3"></i><span>Free</span></div></div>
-      </div>
-    </div>
-    <div id="chk">
-      <div class="pbar"><span>Table B12<b>Check 1042 · 4 guests</b></span>
-        <span class="ppill" style="background:rgba(255,120,120,.16);color:#ffb3b8"><i style="background:#ff6b77"></i>Open on this terminal</span></div>
-      <div class="list">
-          <div class="row"><span class="q">1×</span><span class="nm">Sapphire Dragon Signature Platter</span><span class="pr">12,800.00</span></div>
-          <div class="row"><span class="q">2×</span><span class="nm">Charcoal Grilled Lamb Chops</span><span class="pr">15,600.00</span></div>
-          <div class="row"><span class="q">1×</span><span class="nm">Truffle Wild Mushroom Risotto</span><span class="pr">6,400.00</span></div>
-          <div class="row"><span class="q">1×</span><span class="nm">Yoroko Sashimi Selection</span><span class="pr">9,200.00</span></div>
-          <div class="row"><span class="q">3×</span><span class="nm">Old Fashioned</span><span class="pr">8,400.00</span></div>
-          <div class="row"><span class="q">2×</span><span class="nm">Sparkling Water 750ml</span><span class="pr">1,800.00</span></div>
-          <div class="row"><span class="q">2×</span><span class="nm">Dark Chocolate Fondant</span><span class="pr">4,200.00</span></div>
-        <div class="row tot"><span class="q"></span><span class="nm">Subtotal</span><span class="pr">LKR 58,400.00</span></div>
-      </div>
-      <div class="keys">
-        <div class="key">Send order</div><div class="key">Print bill</div>
-        <div class="key">Discount</div><div class="key">Split</div>
-        <div class="key min" id="minKey"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M5 19h14"/><path d="M12 5v9m-4-4 4 4 4-4"/></svg>Minimise check</div>
-      </div>
-    </div>
+  <div id="pos" class="abs"><div id="posScr"><div id="ui">
+    <div id="home" class="pv"></div>
+    <div id="pick" class="pv"></div>
+    <div id="exitRing" class="ring" style="left:1294px;top:890px;width:235px;height:98px;box-shadow:0 0 0 7px rgba(88,44,131,.95),0 0 40px 10px rgba(88,44,131,.35)"></div>
+    <div id="tileRing" class="ring" style="left:311px;top:292px;width:320px;height:234px;box-shadow:0 0 0 7px rgba(28,140,78,.95),0 0 40px 10px rgba(28,140,78,.30)"></div>
     <div id="posTap"></div>
-  </div></div>
-  <div id="posNote" class="abs">Illustration. Your POS screen may look different.</div>
+  </div></div></div>
+  <div id="stepCall" class="abs"><div class="call p">Tap Cancel/Exit.</div><div class="callSub">It leaves the check without changing it.</div></div>
+  <div id="stepCall2" class="abs"><div class="call" style="color:var(--ok)">The check is minimised.</div><div class="callSub">It stays open on Home, and the app can reach it.</div></div>
+  <div id="posNote" class="abs">Sample check for illustration.</div>
 
   <!-- step 2 -->
-  <div id="st2" class="abs center" style="top:78px">
-    <div style="display:flex;align-items:center;justify-content:center;gap:28px"><div class="num">2</div><div class="h mid" style="padding:0">Ask the guest to tap Retry.</div></div>
+  <div id="st2" class="abs center" style="top:120px">
+    <div class="stepHead"><div class="num">2</div><div class="h mid" style="padding:0">Ask the guest to tap Retry.</div></div>
   </div>
-  <div id="st2b" class="abs center" style="top:210px"><div class="sub">The discount is applied to the bill.</div></div>
+  <div id="st2b" class="abs center" style="top:262px"><div class="sub">The discount is applied to the bill.</div></div>
 
   <!-- D$ variant -->
-  <div id="s5" class="abs center" style="top:110px"><div class="h" style="font-size:56px">The same fix works<br>when redeeming DISCOVERY Dollars.</div><div class="sub" style="margin-top:18px">Minimise the check, then the guest taps Retry.</div></div>
+  <div id="s5" class="abs center" style="top:250px"><div class="h" style="font-size:56px">The same fix works<br>when redeeming DISCOVERY Dollars.</div><div class="sub" style="margin-top:18px">Minimise the check, then the guest taps Retry.</div></div>
   <div id="dlg" class="abs"><img src="assets/dialog-error.png"></div>
 
   <!-- recap -->
-  <div id="r0" class="abs center eyebrow" style="top:300px">Remember</div>
-  <div id="r1" class="abs center h big" style="top:370px">Minimise the check.</div>
-  <div id="r2" class="abs center h big p" style="top:486px">Tap Retry.</div>
-  <div id="r3" class="abs center sub" style="top:650px">Still showing the error? Let your supervisor know.</div>
-  <div id="r4" class="abs center" style="top:960px;font-size:24px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Cinnamon DISCOVERY</div>
+  <div id="r0" class="abs center eyebrow" style="top:520px">Remember</div>
+  <div id="r1" class="abs center h big" style="top:590px">Minimise the check.</div>
+  <div id="r2" class="abs center h big p" style="top:706px">Tap Retry.</div>
+  <div id="r3" class="abs center sub" style="top:880px">Still showing the error?<br>Let your supervisor know.</div>
+  <div id="r4" class="abs center" style="top:1330px;font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Cinnamon DISCOVERY</div>
 </div>
 <script>
+/* ------------------------------------------------------------------ POS screens
+   Rebuilt from our POS's Pick Up Check and Home screens, at the terminal's own
+   1802 x 1014 pixels. The check is the guest's check from the app (Table B12);
+   team member names and the workstation address are replaced with placeholders. */
+const ICON = {
+  send: '<path d="M21 3 3 10.5l7 2.5 2.5 7L21 3Z"/><path d="m10 13 4-4"/>',
+  stay: '<rect x="3" y="7" width="15" height="13" rx="2"/><path d="m3 9 7.5 5L18 9"/><rect x="14" y="3" width="7" height="6" rx="1"/>',
+  print: '<path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/>',
+  printStay: '<path d="M4 8h16v5H4z"/><path d="M6 13v6h12v-6"/><path d="M7 4h10"/>',
+  void: '<path d="M8 5h12v14H8l-5-7 5-7Z"/><path d="m11 9 6 6m0-6-6 6"/>',
+  exit: '<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6m0-6-6 6"/>',
+  pay: '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/>',
+  sliders: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+  docq: '<path d="M6 3h9l4 4v14H6z"/><circle cx="12" cy="14" r="3"/><path d="m14.5 16.5 2.5 2.5"/>',
+  docplus: '<path d="M6 3h9l4 4v14H6z"/><path d="M12 10v6M9 13h6"/>',
+  clock: '<circle cx="13" cy="12" r="8"/><path d="M13 8v4l3 2M3 12h2"/>',
+  grid: '<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="4" rx="1"/><rect x="13" y="10" width="7" height="10" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/>',
+  copy: '<rect x="8" y="3" width="12" height="15" rx="2"/><path d="M5 7v12a2 2 0 0 0 2 2h9"/>',
+  fn: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 16V9h3M8 12h2.5M13 16v-5l3 5v-5"/>',
+  chart: '<rect x="3" y="4" width="18" height="12" rx="1"/><path d="M7 13v-3M11 13V8M15 13v-4M8 20l4-4 4 4"/>',
+  out: '<path d="M10 4H5v16h5"/><path d="M14 8l4 4-4 4M18 12H9"/>',
+  home: '<path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/>',
+};
+const svg = (k, c = '#fff') => `<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">${ICON[k]}</svg>`;
+const B = (x, y, w, h, bg, label, extra = '') => `<div class="b" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;background:${bg};${extra}">${label}</div>`;
+const T = (x, y, text, css = '') => `<div class="t" style="left:${x}px;top:${y}px;${css}">${text}</div>`;
+
+function buildPick() {
+  let h = '';
+  h += `<div style="position:absolute;left:0;top:0;width:1802px;height:34px;background:linear-gradient(#f39436 0 4px,#dcae66 4px)"></div>`;
+  h += T(820, 6, 'Price Level: Normal', 'color:#fff;font-size:15px');
+  h += `<div class="otab" style="top:0">⠿ ⊠</div>`;
+  h += `<div style="position:absolute;left:0;top:34px;width:1802px;height:40px;background:#fff;border-bottom:2px solid #b8b8b8"></div>`;
+  h += T(0, 38, 'Pick Up Check 22114026', 'width:1802px;text-align:center;color:#111;font-size:28px');
+  h += `<div style="position:absolute;left:0;top:76px;width:1802px;height:124px;background:#3a3e41"></div>`;
+  const cats = ['DREAMS &amp; BEATS', 'Liquor', 'Beer', 'Wine', 'Cocktails', 'N/A Bev.', 'Amenities', 'Life Member', 'Tobacco', 'Condiment/Modif.', 'Misc.'];
+  cats.forEach((c, i) => h += B(4 + i * 164.4, 87, 153, 103, i ? '#2c3134' : '#737554', c, 'font-size:18px'));
+  h += `<div style="position:absolute;left:0;top:200px;width:1802px;height:80px;background:#2c3033"></div>`;
+  const fr = [[0, 86, '#76a2a0', 'Guest<br>#'], [90, 105, '#76a2a0', 'Table<br>Number'], [198, 106, '#76a2a0', 'Guest Check<br>ID'],
+    [307, 105, '#8f9091', '<span style="opacity:.55">Qty<br>Correction</span>'], [416, 176, '#5e7c4e', svg('sliders') + 'Change Order Type'],
+    [596, 87, '#36667c', 'Seat #/Next<br>Seat', 'font-size:16px'], [686, 87, '#36667c', 'Edit Seat', 'font-size:16px'], [777, 87, '#e08212', 'Kitchen<br>Message'],
+    [867, 87, '#e08212', 'Bar<br>Message'], [957, 87, '#e08212', 'Courses<br>Away'], [1047, 105, '#427355', '<b style="font-weight:600;font-size:16px">Touch Reorder</b>'],
+    [1193, 121, '#8a4a2a', 'Course Line'], [1318, 106, '#8c4e2e', 'Do Not<br>Make'], [1427, 105, '#a3281c', 'Fire Now'],
+    [1536, 122, '#4f8a22', svg('docq') + '<span style="font-size:15px">Life Room Inquire</span>'], [1662, 140, '#8e2618', '<span style="letter-spacing:.3em;font-size:22px">NUWA</span><span style="font-size:15px">Room Inquire</span>']];
+  fr.forEach(([x, w, bg, l, css]) => h += B(x, 206, w, 72, bg, l, css || ''));
+  // check detail
+  h += `<div style="position:absolute;left:0;top:282px;width:323px;height:36px;background:#3c4042"></div>`;
+  h += T(4, 286, 'TBL B12/1', 'font-size:21px') + T(126, 286, 'Walk-In', 'font-size:21px') + T(236, 284, 'CHK 22114026', 'font-size:13px');
+  h += `<div style="position:absolute;left:0;top:319px;width:323px;height:33px;background:#272c2e"></div>`;
+  h += T(4, 322, 'Server A', 'font-size:20px') + T(286, 319, 'GST 4', 'font-size:12px') + T(229, 334, '9/30/2026 7:55 PM', 'font-size:11px');
+  h += `<div style="position:absolute;left:0;top:352px;width:283px;height:418px;background:#fff"></div>`;
+  const items = [[1, 'SAPPHIRE DRAGON SIGNATURE PLATTER', '12800.00'], [2, 'CHARCOAL GRILLED LAMB CHOPS', '15600.00'], [1, 'TRUFFLE WILD MUSHROOM RISOTTO', '6400.00'],
+    [1, 'YOROKO SASHIMI SELECTION', '9200.00'], [3, 'OLD FASHIONED', '8400.00'], [2, 'SPARKLING WATER 750ML', '1800.00'], [2, 'DARK CHOCOLATE FONDANT', '4200.00']];
+  items.forEach(([q, n, p], i) => {
+    const y = 358 + i * 52;
+    h += T(2, y, q, 'color:#111;font-size:16px') + `<div class="t" style="left:22px;top:${y}px;width:170px;white-space:normal;color:#111;font-size:15px;line-height:1.3">${n}</div>` + T(200, y, p, 'color:#111;font-size:15px;width:78px;text-align:right');
+  });
+  h += `<div style="position:absolute;left:283px;top:352px;width:40px;height:418px;background:#e4c188"></div>`;
+  ['▲▲', '▲', '˄', '˅', '▼', '▼▼'].forEach((a, i) => h += T(288, 372 + i * 68, a, 'width:30px;text-align:center;color:#fff;font-size:18px;line-height:.8'));
+  h += `<div style="position:absolute;left:0;top:772px;width:323px;height:120px;background:#fff"></div>`;
+  [['Subtotal', '58,400.00'], ['Taxes', '11,563.20'], ['Service Charge', '5,840.00'], ['Inclusive Tax Exempt', '0.00']].forEach(([k, v], i) => {
+    h += T(3, 774 + i * 22.5, k, 'color:#222;font-size:16px') + T(160, 774 + i * 22.5, v, 'color:#222;font-size:16px;width:158px;text-align:right');
+  });
+  h += `<div style="position:absolute;left:0;top:864px;width:323px;height:28px;background:#4a4d50"></div>`;
+  h += T(106, 862, 'Total Due :&nbsp; 75,803.20', 'font-size:22px');
+  // numpad
+  h += `<div style="position:absolute;left:327px;top:282px;width:92px;height:48px;background:#fff;border:2px solid #444"></div>`;
+  ['9', '8', '7', '6', '5', '4', '3', '2', '1', '0'].forEach((n, i) => h += B(329, 334 + i * 51, 88, 47, '#23272a', n, 'border-radius:6px;font-size:28px;font-weight:600'));
+  h += B(329, 844, 88, 47, '#fff', '<span style="color:#111;font-weight:600;font-size:20px">@/For</span>', 'border-radius:6px');
+  // menu area
+  h += `<div style="position:absolute;left:424px;top:282px;width:1266px;height:610px;background:#76787a"></div>`;
+  h += `<div style="position:absolute;left:428px;top:287px;width:1258px;height:48px;background:#78726e;display:flex;align-items:center;justify-content:center;font-size:19px">A La Carte</div>`;
+  [['Mains', '#72b08c'], ['Promotions', '#e38a1f'], ['Melco', '#3d6e84'], ['MICE', '#ee8f94'], ['WEEK-END', '#577646'], ['', '#a09884']]
+    .forEach(([l, c], i) => h += B(430 + i * 210, 338, 206, 46, c, l, 'font-size:15px'));
+  ['SAPPHIRE DRAGON PLATTER', 'CHARCOAL LAMB CHOPS', 'TRUFFLE RISOTTO', 'YOROKO SASHIMI', 'CHOCOLATE FONDANT', 'SEAFOOD LAKSA']
+    .forEach((l, i) => h += B(429 + (i % 4) * 315, 388 + Math.floor(i / 4) * 84, 311, 80, '#141414', l, 'font-size:18px'));
+  // right tabs
+  h += `<div style="position:absolute;left:1690px;top:282px;width:112px;height:410px;background:#2c3033"></div>`;
+  ['A LA CARTE', 'BUFFET', 'COMP Cakes', 'BEV<br>Promotions', 'OPEN ITEMS', 'PACKAGES'].forEach((l, i) =>
+    h += B(1695, 284 + i * 68, 107, 64, i ? '#33383b' : '#737554', l, 'font-size:15px'));
+  // bottom actions
+  h += `<div style="position:absolute;left:0;top:894px;width:1802px;height:92px;background:#76787a"></div>`;
+  const bot = [[0, 240, '#484c52', svg('send') + 'Send Order[SAVE]'], [244, 230, '#484c52', svg('stay') + 'Send and Stay'], [478, 87, '#1d1d1d', 'Clear<br>No'],
+    [569, 248, '#78726e', svg('print') + 'Print Check'], [821, 249, '#78726e', svg('printStay') + 'Print Check and Stay'], [1074, 223, '#d63a24', svg('void') + 'Void'],
+    [1300, 223, '#74a682', svg('exit') + 'Cancel/Exit', 'id="exitKey"'], [1526, 276, '#508222', svg('pay') + 'Make Payment']];
+  bot.forEach(([x, w, bg, l, id]) => {
+    const b = B(x, 896, w, 86, bg, l, 'font-size:20px');
+    h += id ? b.replace('<div class="b"', `<div class="b" ${id}`) : b;
+  });
+  h += `<div class="stat"><span>Server A</span><span>9/30/2026 8:14:31 PM</span><span>Dreams &amp; Beats</span><span>Dinner</span><span>Workstation 2</span><span>Normal</span></div>`;
+  return h;
+}
+
+// Home: the table that the check minimises into, and its position (for the animation)
+const TILE_B12 = { x: 317, y: 322, w: 308, h: 198 };
+function buildHome() {
+  let h = '';
+  h += `<div style="position:absolute;left:0;top:0;width:1802px;height:62px;background:#2c3033"></div>`;
+  h += B(4, 4, 892, 54, '#747654', `<span style="display:flex;align-items:center;gap:10px">${svg('home').replace('<svg', '<svg style="margin:0;width:28px;height:28px"')}Home</span>`, 'font-size:20px');
+  h += B(906, 4, 892, 54, '#2f3438', 'Layout', 'font-size:20px');
+  h += `<div class="otab" style="height:28px">⠿ ⊠</div>`;
+  const tiles = [['53/1', '22114030', 'Server B', '8:07 PM', '24,000.01'], ['81/1', '22114028', 'Server A', '8:06 PM', '26,750.95'],
+    ['83/1', '22114027', 'Server A', '7:57 PM', '24,000.01'], ['94/1', '22114023', 'Server A', '7:54 PM', '8,000.01'],
+    ['95/1', '22114024', 'Server B', '7:55 PM', '8,671.94'], ['B12/1', '22114026', 'Server A', '7:55 PM', '75,803.20']];
+  tiles.forEach(([lab, chk, who, tm, amt], i) => {
+    const x = 5 + (i % 4) * 312, y = 96 + Math.floor(i / 4) * 226;
+    h += `<div class="tile" ${lab === 'B12/1' ? 'id="tileB12"' : ''} style="left:${x}px;top:${y}px"><div class="lab"><i></i>${lab}</div>
+      <div class="l" style="top:72px">${chk}</div><div class="l" style="top:94px">${who}</div><div class="l" style="top:114px">${tm}</div>
+      <div class="r" style="top:114px">LKR&nbsp;&nbsp; ${amt}</div></div>`;
+  });
+  const rb = [[1253, 72, 412, 125, '#4e7d1f', svg('docplus') + 'Begin Check by Table'], [1253, 202, 233, 125, '#508222', svg('docq') + 'Room Inquire'],
+    [1490, 202, 175, 125, '#7a5b85', svg('clock') + 'Begin Fast<br>Transaction'], [1253, 331, 412, 125, '#74a682', svg('grid') + 'Pickup Check by Table'],
+    [1253, 460, 412, 125, '#32637a', svg('copy') + 'Reprint Previous Closed Check'], [1253, 589, 233, 125, '#78726e', svg('fn') + 'Functions'],
+    [1490, 589, 175, 125, '#7ba7a6', svg('chart') + 'Reports'], [1253, 718, 233, 125, '#508222', svg('docq') + '<span style="font-size:16px">Life Room Inquire</span>'],
+    [1490, 718, 175, 125, '#8e2618', '<span style="letter-spacing:.3em;font-size:22px">NUWA</span><span style="font-size:15px">Room Inquire</span>'],
+    [1253, 847, 233, 125, '#d63a24', svg('out') + 'Sign out'], [1490, 847, 175, 125, '#d63a24', svg('out') + 'Transaction Cancel']];
+  rb.forEach(([x, y, w, hh, bg, l]) => h += B(x, y, w, hh, bg, l, 'font-size:20px'));
+  h += `<div style="position:absolute;left:1672px;top:62px;width:4px;height:923px;background:#5c5f61"></div>`;
+  h += B(1678, 70, 124, 66, '#747654', 'All Checks', 'font-size:15px') + B(1678, 138, 124, 66, '#32383c', 'My Check', 'font-size:15px');
+  h += `<div class="stat" style="height:26px"><span>Server A</span><span>9/30/2026 8:14:38 PM</span><span>Dreams &amp; Beats</span><span>Dinner</span></div>`;
+  return h;
+}
+document.getElementById('pick').innerHTML = buildPick();
+document.getElementById('home').innerHTML = buildHome();
+
+/* ------------------------------------------------------------------ timeline */
 const R = {"failed":{"card":{"x":20,"y":472.06,"w":353,"h":174.8},"reason":{"x":37,"y":517.06,"w":319,"h":16.8},"retry":{"x":37,"y":588.86,"w":319,"h":41}},"ok":{"discountRow":{"x":35,"y":550.06,"w":323,"h":19}}};
 const $ = (id) => document.getElementById(id);
 const clamp = (x) => Math.max(0, Math.min(1, x));
@@ -154,35 +256,43 @@ const lerp = (a, b, k) => a + (b - a) * k;
 // fade+rise in over [a,a+d], fade+lift out over [o,o+d2]
 function show(el, t, a, o, dy = 40, d = .8, d2 = .5) {
   const i = eOut(seg(t, a, a + d)), x = eIO(seg(t, o, o + d2));
-  const op = i * (1 - x);
-  el.style.opacity = op;
+  el.style.opacity = i * (1 - x);
   el.style.transform = `translate3d(0,${((1 - i) * dy - x * dy * .5).toFixed(3)}px,0) scale(${(1 - (1 - i) * .02 - x * .01).toFixed(5)})`;
 }
-const P = 12; // bezel
+const P = 12; // phone bezel
 // phone camera: point (px,py) in screen coords placed at (cx,cy) with scale s
 const cam = (px, py, cx, cy, s) => ({ px, py, cx, cy, s });
 const mix = (A, B, k) => ({ px: lerp(A.px, B.px, k), py: lerp(A.py, B.py, k), cx: lerp(A.cx, B.cx, k), cy: lerp(A.cy, B.cy, k), s: Math.exp(lerp(Math.log(A.s), Math.log(B.s), k)) });
 const place = (C) => ({ s: C.s, tx: C.cx - C.s * (P + C.px), ty: C.cy - C.s * (P + C.py) });
 const card = R.failed.card, ccx = card.x + card.w / 2, ccy = card.y + card.h / 2;
-const FULL = cam(196.5, 426, 540, 680, .82);
-const LOW = cam(196.5, 426, 540, 680 + 900, .82);
-const ZOOM = cam(ccx, ccy, 540, 700, 2.35);
-const ZOOM2 = cam(ccx, ccy, 540, 620, 2.2);
-// same framing, pushed down until the phone's top edge sits just below the frame
-const below = (C) => ({ ...C, cy: 1080 + 40 + C.s * (P + C.py) });
+const FULL = cam(196.5, 426, 540, 836, 1.0);
+const LOW = cam(196.5, 426, 540, 836 + 1300, 1.0);
+const ZOOM = cam(ccx, ccy, 540, 880, 2.35);
+const ZOOM2 = cam(ccx, ccy, 540, 820, 2.3);
 // short drift + slight pull-back, paired with a fade, for exits and entrances
 const drift = (C, dy = 220, k = .9) => ({ ...C, cy: C.cy + dy, s: C.s * k });
 const ZOOM2_LOW = drift(ZOOM2, 240, .92);
 const dr = R.ok.discountRow;
-const BILL = cam(196.5, dr.y + 10, 540, 640, 1.9);
+const BILL = cam(196.5, dr.y + 10, 540, 860, 2.0);
 
-// Step 1 got longer: everything after G runs SH seconds later. Scenes after step 1
-// keep their original timings on the shifted clock t; step 1 runs on real time tr.
-const G = 14.6, SH = 2.5;
+// POS camera, inside the terminal screen: native point (fx,fy) at the screen centre, zoom z
+const SW = 988, SHT = 556, BASE = SW / 1802;
+function posCam(fx, fy, z) {
+  const s = BASE * z;
+  const tx = Math.min(0, Math.max(SW - s * 1802, SW / 2 - s * fx));
+  const ty = Math.min(0, Math.max(SHT - s * 1014, SHT / 2 - s * fy));
+  return { s, tx, ty };
+}
+const PC_FULL = posCam(901, 507, 1), PC_EXIT = posCam(1411, 910, 2.5);
+
+// Step 1 runs longer than the original cut: everything after G happens SH seconds later.
+// Scenes after step 1 keep their timings on the shifted clock t; step 1 runs on real time tr.
+const G = 14.6, SH = 5.0;
 function render(tr) {
   const t = tr < G ? tr : Math.max(G, tr - SH);
-  // S1 cover: fully composed on the first frame so it reads at a glance, then clears
-  for (const [id, k] of [['s1eb', 0], ['s1a', .02], ['cvCard', .04], ['s1b', .06], ['s1c', .08]]) {
+
+  // cover
+  for (const [id, k] of [['s1eb', 0], ['s1a', .02], ['cvCard', .04], ['s1b', .06], ['s1c', .08], ['s1d', .1]]) {
     const o = eIO(seg(t, 2.9 + k, 3.4 + k));
     $(id).style.opacity = (1 - o).toFixed(4);
     const float = id === 'cvCard' ? ` scale(${(1 + .025 * eOut(seg(t, 0, 3))).toFixed(5)})` : '';
@@ -198,65 +308,63 @@ function render(tr) {
   else if (t < 18.6) C = mix(ZOOM2_LOW, ZOOM2, eOut(seg(t, 15.3, 16.7)));
   else if (t < 22.4) C = mix(ZOOM2, BILL, eIO(seg(t, 18.6, 20.0)));
   else C = mix(BILL, drift(BILL), eIO(seg(t, 22.3, 23.2)));
-  const T = place(C);
-  $('phone').style.transform = `translate3d(${T.tx.toFixed(3)}px,${T.ty.toFixed(3)}px,0) scale(${T.s.toFixed(5)})`;
-  // fade on exit and on the step-2 entrance; the first entrance slides up from below the frame
+  const Tp = place(C);
+  $('phone').style.transform = `translate3d(${Tp.tx.toFixed(3)}px,${Tp.ty.toFixed(3)}px,0) scale(${Tp.s.toFixed(5)})`;
   const po = t < 15 ? 1 - eIO(seg(t, 10.8, 11.6)) : t < 22 ? eOut(seg(t, 15.3, 16.1)) : 1 - eIO(seg(t, 22.3, 23.1));
   $('phone').style.opacity = po.toFixed(4);
-  $('phone').style.display = po <= 0 || T.ty > 1080 ? 'none' : 'block';
+  $('phone').style.display = po <= 0 || Tp.ty > 1440 ? 'none' : 'block';
 
-  // screens
   const toChecking = eIO(seg(t, 17.45, 17.85)), toOk = eIO(seg(t, 18.35, 18.85));
   $('imChecking').style.opacity = t < 15 ? 0 : toChecking * (1 - toOk);
   $('imOk').style.opacity = t < 15 ? 0 : toOk;
   $('imFailed').style.opacity = t < 15 ? 1 : 1 - toChecking;
 
-  // reason highlight (S3)
-  const r = R.failed.reason, hk = eIO(seg(t, 7.3, 8.0)) * (1 - seg(t, 10.2, 10.5));
+  const r = R.failed.reason, hk = eIO(seg(t, 7.3, 8.0));
   Object.assign($('hlReason').style, { left: (r.x - 5) + 'px', top: (r.y - 3) + 'px', height: (r.h + 6) + 'px',
-    width: ((r.w + 10) * eIO(seg(t, 7.3, 8.0))) + 'px', opacity: hk ? 1 - seg(t, 10.2, 10.5) : 0 });
-  // tap ripple on Retry
-  const b = R.failed.retry, rk = seg(t, 17.0, 17.6);
-  const rs = 10 + eOut(rk) * 170;
+    width: ((r.w + 10) * hk) + 'px', opacity: hk ? 1 - seg(t, 10.2, 10.5) : 0 });
+  const b = R.failed.retry, rk = seg(t, 17.0, 17.6), rs = 10 + eOut(rk) * 170;
   Object.assign($('ripple').style, { left: (b.x + b.w / 2 - rs / 2) + 'px', top: (b.y + b.h / 2 - rs / 2) + 'px',
     width: rs + 'px', height: rs + 'px', opacity: t > 15 && rk > 0 && rk < 1 ? .9 * (1 - rk) : 0 });
-  // discount row highlight
   const dk = eIO(seg(t, 19.8, 20.4));
   Object.assign($('hlDisc').style, { left: (dr.x - 7) + 'px', top: (dr.y - 5) + 'px', height: (dr.h + 10) + 'px',
     width: ((dr.w + 14) * dk) + 'px', opacity: t > 19 ? 1 : 0 });
 
-  // top band behind captions when phone is zoomed
-  // the band leaves with the phone, never before it, so captions never sit on bare screen content
+  // the caption band leaves with the phone, never before it
   $('band').style.opacity = ((t < 15 ? eIO(seg(t, 5.6, 6.6)) : eOut(seg(t, 15.4, 16))) * po).toFixed(4);
-
   show($('c1'), t, 4.0, 5.2);
   show($('c2'), t, 7.0, 10.3);
 
-  // step 1
-  show($('st1'), tr, 11.55, 17.0, 50);
-  show($('pos'), tr, 11.9, 17.05, 90, 1.1);
-  show($('posNote'), tr, 12.3, 17.0, 20);
-  // tap on Minimise check
-  const kr = { x: 560 + 22, y: 56 + 22 + 2 * (98 + 14), w: 342 - 44, h: 98 };
-  const tk = seg(tr, 13.55, 14.15), ts = 20 + eOut(tk) * 260;
-  Object.assign($('posTap').style, { left: (kr.x + kr.w / 2 - ts / 2) + 'px', top: (kr.y + kr.h / 2 - ts / 2) + 'px',
-    width: ts + 'px', height: ts + 'px', opacity: tk > 0 && tk < 1 ? (.85 * (1 - tk)).toFixed(3) : 0 });
-  const press = Math.sin(Math.PI * seg(tr, 13.55, 13.8));
-  $('minKey').style.transform = `scale(${(1 - .05 * press).toFixed(4)})`;
-  $('minKey').style.filter = `brightness(${(1 - .18 * press).toFixed(3)})`;
-  // the check window minimises into its table on the floor plan
-  const tile = { x: 24 + 2 * (196 + 20), y: 80, w: 196, h: 200 };
-  const mk = eIO(seg(tr, 13.9, 14.75));
-  Object.assign($('chk').style, {
-    transform: `translate(${(tile.x * mk).toFixed(2)}px,${(tile.y * mk).toFixed(2)}px) scale(${lerp(1, tile.w / 902, mk).toFixed(5)},${lerp(1, tile.h / 562, mk).toFixed(5)})`,
-    opacity: (1 - eIO(seg(tr, 14.35, 14.75))).toFixed(4), borderRadius: (mk * 60) + 'px' });
-  // B12 lands, pulses, and is released
-  const land = Math.sin(Math.PI * seg(tr, 14.6, 15.2));
-  $('tB12').style.boxShadow = `0 0 0 ${(3 + land * 4).toFixed(2)}px rgba(28,140,78,${(eIO(seg(tr, 14.8, 15.1)) * .55).toFixed(3)}), 0 1px 3px rgba(20,16,46,.08)`;
-  $('tB12').style.transform = `scale(${(1 + .04 * land).toFixed(4)})`;
-  const rel = eIO(seg(tr, 14.85, 15.25));
-  $('b12a').style.opacity = 1 - rel; $('b12a').style.transform = `translateY(${-rel * 14}px)`;
-  $('b12b').style.opacity = rel; $('b12b').style.transform = `translateY(${(1 - rel) * 14}px)`;
+  // ---------------- step 1 on the POS (real time)
+  show($('st1'), tr, 11.55, 19.4, 50);
+  show($('pos'), tr, 11.9, 19.45, 90, 1.1);
+  show($('posNote'), tr, 12.4, 19.4, 20);
+  // camera: full screen, in to Cancel/Exit, back out to Home
+  const zin = eIO(seg(tr, 13.2, 14.25)), zout = eIO(seg(tr, 14.95, 15.8));
+  const pc = zout > 0 ? { s: lerp(PC_EXIT.s, PC_FULL.s, zout), tx: lerp(PC_EXIT.tx, PC_FULL.tx, zout), ty: lerp(PC_EXIT.ty, PC_FULL.ty, zout) }
+                      : { s: lerp(PC_FULL.s, PC_EXIT.s, zin), tx: lerp(PC_FULL.tx, PC_EXIT.tx, zin), ty: lerp(PC_FULL.ty, PC_EXIT.ty, zin) };
+  $('ui').style.transform = `translate(${pc.tx.toFixed(2)}px,${pc.ty.toFixed(2)}px) scale(${pc.s.toFixed(5)})`;
+  // Cancel/Exit: ring, press, ripple
+  const ring = eOut(seg(tr, 14.1, 14.45)) * (1 - eIO(seg(tr, 14.95, 15.2)));
+  $('exitRing').style.opacity = ring.toFixed(3);
+  $('exitRing').style.transform = `scale(${(1.06 - .06 * ring).toFixed(4)})`;
+  const press = Math.sin(Math.PI * seg(tr, 14.6, 14.85));
+  $('exitKey').style.transform = `scale(${(1 - .05 * press).toFixed(4)})`;
+  $('exitKey').style.filter = `brightness(${(1 - .2 * press).toFixed(3)})`;
+  const tk = seg(tr, 14.6, 15.2), ts = 30 + eOut(tk) * 300;
+  Object.assign($('posTap').style, { left: (1411 - ts / 2) + 'px', top: (939 - ts / 2) + 'px', width: ts + 'px', height: ts + 'px',
+    opacity: tk > 0 && tk < 1 ? (.85 * (1 - tk)).toFixed(3) : 0 });
+  // the check window minimises into its table on Home
+  const mk = eIO(seg(tr, 15.85, 16.7)), tl = TILE_B12;
+  Object.assign($('pick').style, {
+    transform: `translate(${(tl.x * mk).toFixed(2)}px,${(tl.y * mk).toFixed(2)}px) scale(${lerp(1, tl.w / 1802, mk).toFixed(5)},${lerp(1, tl.h / 1014, mk).toFixed(5)})`,
+    opacity: (1 - eIO(seg(tr, 16.35, 16.72))).toFixed(4) });
+  $('pick').style.display = mk >= 1 ? 'none' : 'block';
+  const tr2 = eOut(seg(tr, 16.8, 17.2)), pulse = Math.sin(Math.PI * seg(tr, 16.8, 17.4));
+  $('tileRing').style.opacity = tr2.toFixed(3);
+  $('tileRing').style.transform = `scale(${(1 + .03 * pulse).toFixed(4)})`;
+  // captions under the terminal
+  show($('stepCall'), tr, 13.3, 15.1, 24);
+  show($('stepCall2'), tr, 16.85, 19.35, 24);
 
   // step 2
   show($('st2'), t, 15.5, 21.8, 40);
@@ -265,8 +373,7 @@ function render(tr) {
   // D$ variant
   show($('s5'), t, 23.1, 27.0, 40);
   show($('dlg'), t, 23.5, 27.05, 90, 1);
-  const dz = 1 + (1 - eOut(seg(t, 23.5, 24.6))) * .06;
-  $('dlg').style.transform += ` scale(${dz})`;
+  $('dlg').style.transform += ` scale(${1 + (1 - eOut(seg(t, 23.5, 24.6))) * .06})`;
 
   // recap
   show($('r0'), t, 27.3, 99, 20);
@@ -276,8 +383,9 @@ function render(tr) {
   show($('r4'), t, 29.2, 99, 10);
 }
 window.render = render;
+window.DURATION = 36.5;
+window.SIZE = { w: 1080, h: 1440 };
 const q = new URLSearchParams(location.search);
 if (q.has('t')) render(+q.get('t'));
-else if (!q.has('record')) { const s = performance.now(); (function f(){ render(((performance.now()-s)/1000)%34.5); requestAnimationFrame(f); })(); }
-window.DURATION = 34;
+else if (!q.has('record')) { const s = performance.now(); (function f(){ render(((performance.now()-s)/1000)%37); requestAnimationFrame(f); })(); }
 </script></body></html>
