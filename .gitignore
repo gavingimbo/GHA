@@ -2,3 +2,4 @@ node_modules/
 package-lock.json
 design/pdf/screens/
 video/soundtrack.wav
+video/silent.mp4

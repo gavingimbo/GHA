@@ -168,9 +168,9 @@ FX = [  # time, sound, gain, pan, reverb
     (3.30, whoosh(1.2, True), .22, 0, .3),        # phone rises
     (5.45, whoosh(1.5, True), .20, 0, .3),        # zoom into the error card
     (7.30, tick(), .22, -.1, .4),                 # reason highlighted
-    (10.35, whoosh(.9, False), .20, 0, .3),       # phone leaves
-    (11.15, whoosh(.8, True), .10, 0, .3),        # step 1 heading
-    (11.65, whoosh(.9, True), .16, .2, .3),       # terminal card in
+    (10.75, whoosh(.9, False), .20, 0, .3),       # phone leaves
+    (11.45, whoosh(.8, True), .10, 0, .3),        # step 1 heading
+    (11.85, whoosh(.9, True), .16, .2, .3),       # terminal card in
     (13.30, tick(), .20, .1, .4),                 # check closed
     (13.36, bell(hz('A5'), 1.6), .09, .1, .6),
     (15.25, whoosh(1.1, True), .20, 0, .3),       # phone returns
@@ -178,7 +178,7 @@ FX = [  # time, sound, gain, pan, reverb
     (18.55, whoosh(1.3, False), .14, 0, .3),      # zoom out to the bill
     (19.80, bell(hz('D6')), .17, -.15, .7),       # discount applied
     (19.95, bell(hz('F#6')), .14, .15, .7),
-    (22.25, whoosh(.9, False), .18, 0, .3),       # phone leaves
+    (22.3, whoosh(.9, False), .18, 0, .3),       # phone leaves
     (23.45, whoosh(1.0, True), .18, 0, .3),       # D$ dialog in
     (27.20, whoosh(.9, True), .10, 0, .3),        # recap
 ]

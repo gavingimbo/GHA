@@ -14,6 +14,8 @@ terminal" error: close the check on the POS, then the guest taps Retry.
   a 96 bpm D major bed that turns to B minor while the error is on screen and
   resolves when the discount lands, plus whooshes on camera moves, a tap on Retry,
   ticks on highlights and a chime on success. Writes `soundtrack.wav` (not committed).
+- `audit.mjs` — renders the timeline small and flags frames that jump; run it after
+  changing timings, then diff the frames (see the commit that added it).
 - `record.mjs` — renders each frame through Chromium, encodes H.264 with ffmpeg,
   then lays `soundtrack.wav` underneath. Run `python3 video/audio.py` first.
   `node video/record.mjs 4,12` writes review stills instead.
