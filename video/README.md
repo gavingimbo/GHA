@@ -1,6 +1,6 @@
 # Explainer video — "Check is open on POS"
 
-`check-open-on-pos.mp4` — 1080 × 1080, 60 fps (rendered at 2× and downscaled), 31.5 s, silent. A team-facing
+`check-open-on-pos.mp4` — 1080 × 1080, 60 fps (rendered at 2× and downscaled), 31.5 s, stereo AAC at −14 LUFS. A team-facing
 guide to the "Failed to apply discount on POS / Check is open on another
 terminal" error: close the check on the POS, then the guest taps Retry.
 
@@ -10,7 +10,12 @@ terminal" error: close the check on the POS, then the guest taps Retry.
   not taken the discount yet.
 - `explainer.html` — the motion piece; every frame is `render(t)`. Open it in a
   browser to preview, or `?t=8.5` to hold a frame.
-- `record.mjs` — renders each frame through Chromium and encodes H.264 with ffmpeg.
+- `audio.py` — the soundtrack and sound effects, synthesised (no licensed music):
+  a 96 bpm D major bed that turns to B minor while the error is on screen and
+  resolves when the discount lands, plus whooshes on camera moves, a tap on Retry,
+  ticks on highlights and a chime on success. Writes `soundtrack.wav` (not committed).
+- `record.mjs` — renders each frame through Chromium, encodes H.264 with ffmpeg,
+  then lays `soundtrack.wav` underneath. Run `python3 video/audio.py` first.
   `node video/record.mjs 4,12` writes review stills instead.
 
 Paths to Playwright, Chromium and ffmpeg are set for the cloud container; adjust
