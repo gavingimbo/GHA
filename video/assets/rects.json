@@ -1,0 +1,48 @@
+{
+  "failed": {
+    "card": {
+      "x": 20,
+      "y": 472.0625,
+      "w": 353,
+      "h": 174.796875
+    },
+    "reason": {
+      "x": 37,
+      "y": 517.0625,
+      "w": 319,
+      "h": 16.796875
+    },
+    "retry": {
+      "x": 37,
+      "y": 588.859375,
+      "w": 319,
+      "h": 41
+    },
+    "checking": null,
+    "discountRow": null
+  },
+  "checking": {
+    "card": null,
+    "reason": null,
+    "retry": null,
+    "checking": {
+      "x": 20,
+      "y": 472.0625,
+      "w": 353,
+      "h": 37.546875
+    },
+    "discountRow": null
+  },
+  "ok": {
+    "card": null,
+    "reason": null,
+    "retry": null,
+    "checking": null,
+    "discountRow": {
+      "x": 35,
+      "y": 550.0625,
+      "w": 323,
+      "h": 19
+    }
+  }
+}
