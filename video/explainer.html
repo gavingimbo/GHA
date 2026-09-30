@@ -21,7 +21,8 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
 .num{display:inline-flex;flex:none;width:92px;height:92px;border-radius:50%;background:var(--purple);color:#fff;align-items:center;justify-content:center;font-family:Ivy,serif;font-size:56px}
 .stepHead{display:flex;align-items:center;justify-content:center;gap:26px}
 /* cover */
-#cvCard{left:184px;top:470px;width:712px;height:351px;border-radius:32px;overflow:hidden;box-shadow:0 30px 60px rgba(176,0,32,.10),0 2px 8px rgba(20,16,46,.05)}
+#cvBg{left:0;top:0;width:var(--W);height:var(--H);background:#592A87}
+#cvCard{left:184px;top:470px;width:712px;height:351px;border-radius:32px;overflow:hidden;box-shadow:0 36px 70px rgba(12,2,34,.38),0 2px 8px rgba(12,2,34,.18)}
 #cvCard img{position:absolute;left:-24px;top:-24px;width:760px}
 /* phone */
 #phone{will-change:auto;left:0;top:0;transform-origin:0 0;width:417px;height:876px;border-radius:66px;background:#1d1d1f;padding:12px;
@@ -66,12 +67,13 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
 <body><div id="stage">
 
   <!-- cover: fully composed on the first frame -->
-  <img id="logoCover" class="abs" src="assets/logo-purple.svg" alt="Cinnamon DISCOVERY">
-  <div id="s1a" class="abs center h" style="top:320px;font-size:64px">Seeing this on a guest’s phone?</div>
+  <div id="cvBg" class="abs"></div>
+  <img id="logoCover" class="abs" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY">
+  <div id="s1a" class="abs center h" style="top:320px;font-size:64px;color:#fff">Seeing this on a guest’s phone?</div>
   <div id="cvCard" class="abs"><img src="../design/png/discount-error.png"></div>
-  <div id="s1b" class="abs center h p" style="top:900px;font-size:64px">Here’s the two-step fix.</div>
-  <div id="s1c" class="abs center sub" style="top:998px">Minimise the check on the POS,<br>then the guest taps Retry.</div>
-  <div id="s1eb" class="abs center eyebrow" style="top:1318px;font-size:22px;color:var(--muted)">Team guide · Dine with D$</div>
+  <div id="s1b" class="abs center h" style="top:900px;font-size:64px;color:#dcc8f2">Here’s the two-step fix.</div>
+  <div id="s1c" class="abs center sub" style="top:998px;color:rgba(255,255,255,.8)">Minimise the check on the POS,<br>then the guest taps Retry.</div>
+  <div id="s1eb" class="abs center eyebrow" style="top:1318px;font-size:22px;color:rgba(255,255,255,.6)">Team guide · Dine with D$</div>
 
   <!-- phone -->
   <div id="phone" class="abs"><div id="screen">
@@ -301,6 +303,9 @@ function render(tr) {
     const float = id === 'cvCard' ? ` scale(${(1 + .025 * eOut(seg(t, 0, 3))).toFixed(5)})` : '';
     $(id).style.transform = `translate3d(0,${(-o * 30).toFixed(3)}px,0)${float}`;
   }
+
+  $('cvBg').style.opacity = (1 - eIO(seg(t, 3.0, 3.6))).toFixed(4);
+  $('cvBg').style.display = t > 3.6 ? 'none' : 'block';
 
   // phone camera
   let C;
