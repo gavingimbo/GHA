@@ -27,25 +27,46 @@ html,body{width:1080px;height:1080px;overflow:hidden;background:var(--bg)}
 #band{left:0;top:0;width:1080px;height:400px;background:linear-gradient(var(--bg) 78%,rgba(250,250,250,0))}
 /* step badge */
 .num{display:inline-flex;width:92px;height:92px;border-radius:50%;background:var(--purple);color:#fff;align-items:center;justify-content:center;font-family:Ivy,serif;font-size:56px}
-/* terminal illustration */
-#term{left:240px;top:600px;width:600px;height:300px;border-radius:36px;background:#fff;box-shadow:0 30px 60px rgba(20,16,46,.12);padding:40px 44px}
-#term .t1{font-size:26px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
-#term .t2{font-family:Ivy,serif;font-size:58px;margin-top:10px}
-.pill{position:absolute;left:44px;bottom:44px;height:64px;border-radius:32px;padding:0 30px;display:flex;align-items:center;gap:14px;font-size:28px;white-space:nowrap}
-.pill i{width:16px;height:16px;border-radius:50%;display:block}
-#pOpen{background:#fdecee;color:var(--err)} #pOpen i{background:var(--err)}
-#pClosed{background:#e7f5ec;color:var(--ok)} #pClosed i{background:var(--ok)}
 #dlg{left:223px;top:408px;width:634px;height:508px;border-radius:28px;overflow:hidden;background:#fff;box-shadow:0 30px 60px rgba(20,16,46,.10),0 2px 6px rgba(20,16,46,.04)}
 #dlg img{position:absolute;left:-28px;top:-28px;width:690px}
 .rule{height:2px;background:rgba(20,16,46,.08)}
+/* cover */
+#cvCard{left:184px;top:334px;width:712px;height:351px;border-radius:32px;overflow:hidden;box-shadow:0 30px 60px rgba(176,0,32,.10),0 2px 8px rgba(20,16,46,.05)}
+#cvCard img{position:absolute;left:-24px;top:-24px;width:760px}
+/* POS mockup — a generic illustration, not any vendor's screen */
+#pos{left:75px;top:300px;width:930px;height:590px;border-radius:34px;background:#1d1d1f;padding:14px;box-shadow:0 40px 80px rgba(20,16,46,.18),0 0 0 2px #3a3a3c inset}
+#posScr{position:relative;width:902px;height:562px;border-radius:20px;overflow:hidden;background:#eceef3;font-family:Jost,sans-serif}
+.pbar{height:56px;background:#23263a;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:21px}
+.pbar b{font-weight:normal;opacity:.6;margin-left:14px}
+.ppill{display:flex;align-items:center;gap:9px;height:34px;padding:0 16px;border-radius:17px;font-size:18px}
+.ppill i{width:10px;height:10px;border-radius:50%;display:block}
+#floor .grid{position:absolute;left:24px;top:80px;display:grid;grid-template-columns:repeat(4,196px);gap:20px}
+.tile{height:200px;border-radius:16px;background:#fff;box-shadow:0 1px 3px rgba(20,16,46,.08);padding:20px 22px;position:relative}
+.tile .n{font-family:Ivy,serif;font-size:46px;line-height:1}
+.tile .st{position:absolute;left:22px;bottom:20px;display:flex;align-items:center;gap:8px;font-size:18px;color:var(--muted)}
+.tile .st i{width:10px;height:10px;border-radius:50%;display:block;background:#b9b6c3}
+#tB12{box-shadow:0 0 0 3px transparent}
+#chk{position:absolute;left:0;top:0;width:902px;height:562px;background:#fff;transform-origin:0 0;border-radius:0;overflow:hidden}
+#chk .list{position:absolute;left:0;top:56px;width:560px;bottom:0;padding:14px 26px;border-right:2px solid #eceef3}
+.row{display:flex;align-items:center;height:47px;font-size:20px;border-bottom:1px solid #f0f0f4}
+.row .q{width:44px;color:var(--muted)} .row .nm{flex:1} .row .pr{font-variant-numeric:tabular-nums}
+.row.tot{border:0;font-size:22px;margin-top:6px} .row.tot .nm{font-family:Ivy,serif;font-size:26px}
+#chk .keys{position:absolute;right:0;top:56px;width:342px;bottom:0;padding:22px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:98px;gap:14px}
+.key{border-radius:14px;background:#f1f0f5;display:flex;align-items:center;justify-content:center;text-align:center;font-size:20px;color:#3a3650;line-height:1.2}
+.key.min{grid-column:span 2;background:var(--purple);color:#fff;font-size:24px;gap:12px}
+.key.min svg{width:26px;height:26px}
+#posTap{position:absolute;border-radius:50%;background:rgba(255,255,255,.6);pointer-events:none;z-index:9}
+#posNote{left:0;right:0;top:902px;text-align:center;font-size:21px;color:#9a97a6}
+
 </style></head>
 <body><div id="stage">
 
   <!-- S1 intro -->
-  <div id="s1eb" class="abs center eyebrow" style="top:330px">Cinnamon DISCOVERY · Dine with D$</div>
-  <div id="s1a" class="abs center h big" style="top:400px">The check is</div>
-  <div id="s1b" class="abs center h big p" style="top:510px">open on the POS.</div>
-  <div id="s1c" class="abs center sub" style="top:668px">What to do, in two steps.</div>
+  <div id="s1eb" class="abs center eyebrow" style="top:150px">Team guide · Dine with D$</div>
+  <div id="s1a" class="abs center h" style="top:198px;font-size:66px">Seeing this on a guest’s phone?</div>
+  <div id="cvCard" class="abs"><img src="../design/png/discount-error.png"></div>
+  <div id="s1b" class="abs center h p" style="top:742px;font-size:66px">Here’s the two-step fix.</div>
+  <div id="s1c" class="abs center sub" style="top:842px">Close the check on the POS, then the guest taps Retry.</div>
 
   <!-- phone -->
   <div id="phone" class="abs"><div id="screen">
@@ -60,21 +81,50 @@ html,body{width:1080px;height:1080px;overflow:hidden;background:var(--bg)}
   <div id="band" class="abs"></div>
 
   <!-- S2 / S3 captions -->
-  <div id="c1" class="abs center" style="top:96px"><div class="h mid">Your guest may see this.</div><div class="sub" style="margin-top:18px">It appears on their phone, under the bill items.</div></div>
+  <div id="c1" class="abs center" style="top:96px"><div class="h mid">Where the guest sees it.</div><div class="sub" style="margin-top:18px">On their phone, just under the bill items.</div></div>
   <div id="c2" class="abs center" style="top:84px"><div class="h mid">The bill is still open<br>on a POS terminal.</div><div class="sub" style="margin-top:18px">While it is open, the discount can’t be added.</div></div>
 
   <!-- step 1 -->
-  <div id="st1" class="abs center" style="top:190px">
-    <div class="num">1</div>
-    <div class="h mid" style="margin-top:34px">Close the check on the POS.</div>
-    <div class="sub" style="margin-top:18px">Exit the check on the terminal.<br>Don’t settle or void the bill.</div>
+  <div id="st1" class="abs center" style="top:78px">
+    <div style="display:flex;align-items:center;justify-content:center;gap:28px"><div class="num">1</div><div class="h mid" style="padding:0">Close the check on the POS.</div></div>
+    <div class="sub" style="margin-top:22px">Minimise the check so the terminal lets it go.<br>Don’t settle or void the bill.</div>
   </div>
-  <div id="term" class="abs">
-    <div class="t1">POS terminal</div>
-    <div class="t2">Check · Table B12</div>
-    <div id="pOpen" class="pill"><i></i>Open on terminal</div>
-    <div id="pClosed" class="pill"><i></i>Check closed</div>
-  </div>
+  <div id="pos" class="abs"><div id="posScr">
+    <div id="floor">
+      <div class="pbar"><span>Floor plan<b>Main dining</b></span><span>8:42 PM</span></div>
+      <div class="grid">
+          <div class="tile" id="tB10"><div class="n">B10</div><div class="st"><i style="background:#b9b6c3"></i><span>Free</span></div></div>
+          <div class="tile" id="tB11"><div class="n">B11</div><div class="st"><i style="background:#6e6a7c"></i><span>Seated · 2</span></div></div>
+          <div class="tile" id="tB12"><div class="n">B12</div><div class="st" id="b12a"><i style="background:#b00020"></i><span>In use · Terminal 2</span></div><div class="st" id="b12b" style="opacity:0;color:#1c8c4e"><i style="background:#1c8c4e"></i><span>Released</span></div></div>
+          <div class="tile" id="tB14"><div class="n">B14</div><div class="st"><i style="background:#6e6a7c"></i><span>Seated · 6</span></div></div>
+          <div class="tile" id="tC1"><div class="n">C1</div><div class="st"><i style="background:#b9b6c3"></i><span>Free</span></div></div>
+          <div class="tile" id="tC2"><div class="n">C2</div><div class="st"><i style="background:#6e6a7c"></i><span>Bill printed</span></div></div>
+          <div class="tile" id="tC3"><div class="n">C3</div><div class="st"><i style="background:#6e6a7c"></i><span>Seated · 3</span></div></div>
+          <div class="tile" id="tC4"><div class="n">C4</div><div class="st"><i style="background:#b9b6c3"></i><span>Free</span></div></div>
+      </div>
+    </div>
+    <div id="chk">
+      <div class="pbar"><span>Table B12<b>Check 1042 · 4 guests</b></span>
+        <span class="ppill" style="background:rgba(255,120,120,.16);color:#ffb3b8"><i style="background:#ff6b77"></i>Open on this terminal</span></div>
+      <div class="list">
+          <div class="row"><span class="q">1×</span><span class="nm">Sapphire Dragon Signature Platter</span><span class="pr">12,800.00</span></div>
+          <div class="row"><span class="q">2×</span><span class="nm">Charcoal Grilled Lamb Chops</span><span class="pr">15,600.00</span></div>
+          <div class="row"><span class="q">1×</span><span class="nm">Truffle Wild Mushroom Risotto</span><span class="pr">6,400.00</span></div>
+          <div class="row"><span class="q">1×</span><span class="nm">Yoroko Sashimi Selection</span><span class="pr">9,200.00</span></div>
+          <div class="row"><span class="q">3×</span><span class="nm">Old Fashioned</span><span class="pr">8,400.00</span></div>
+          <div class="row"><span class="q">2×</span><span class="nm">Sparkling Water 750ml</span><span class="pr">1,800.00</span></div>
+          <div class="row"><span class="q">2×</span><span class="nm">Dark Chocolate Fondant</span><span class="pr">4,200.00</span></div>
+        <div class="row tot"><span class="q"></span><span class="nm">Subtotal</span><span class="pr">LKR 58,400.00</span></div>
+      </div>
+      <div class="keys">
+        <div class="key">Send order</div><div class="key">Print bill</div>
+        <div class="key">Discount</div><div class="key">Split</div>
+        <div class="key min" id="minKey"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M5 19h14"/><path d="M12 5v9m-4-4 4 4 4-4"/></svg>Minimise check</div>
+      </div>
+    </div>
+    <div id="posTap"></div>
+  </div></div>
+  <div id="posNote" class="abs">Illustration. Your POS screen may look different.</div>
 
   <!-- step 2 -->
   <div id="st2" class="abs center" style="top:78px">
@@ -126,12 +176,18 @@ const ZOOM2_LOW = drift(ZOOM2, 240, .92);
 const dr = R.ok.discountRow;
 const BILL = cam(196.5, dr.y + 10, 540, 640, 1.9);
 
-function render(t) {
-  // S1
-  show($('s1eb'), t, .2, 3.1, 20);
-  show($('s1a'), t, .45, 3.15, 60, 1);
-  show($('s1b'), t, .7, 3.2, 60, 1);
-  show($('s1c'), t, 1.4, 3.25, 30);
+// Step 1 got longer: everything after G runs SH seconds later. Scenes after step 1
+// keep their original timings on the shifted clock t; step 1 runs on real time tr.
+const G = 14.6, SH = 2.5;
+function render(tr) {
+  const t = tr < G ? tr : Math.max(G, tr - SH);
+  // S1 cover: fully composed on the first frame so it reads at a glance, then clears
+  for (const [id, k] of [['s1eb', 0], ['s1a', .02], ['cvCard', .04], ['s1b', .06], ['s1c', .08]]) {
+    const o = eIO(seg(t, 2.9 + k, 3.4 + k));
+    $(id).style.opacity = (1 - o).toFixed(4);
+    const float = id === 'cvCard' ? ` scale(${(1 + .025 * eOut(seg(t, 0, 3))).toFixed(5)})` : '';
+    $(id).style.transform = `translate3d(0,${(-o * 30).toFixed(3)}px,0)${float}`;
+  }
 
   // phone camera
   let C;
@@ -177,11 +233,30 @@ function render(t) {
   show($('c2'), t, 7.0, 10.3);
 
   // step 1
-  show($('st1'), t, 11.55, 15.0, 50);
-  show($('term'), t, 11.95, 15.05, 80, 1);
-  const sw = eIO(seg(t, 13.3, 13.8));
-  $('pOpen').style.opacity = 1 - sw; $('pOpen').style.transform = `translateY(${-sw * 20}px)`;
-  $('pClosed').style.opacity = sw; $('pClosed').style.transform = `translateY(${(1 - sw) * 20}px)`;
+  show($('st1'), tr, 11.55, 17.0, 50);
+  show($('pos'), tr, 11.9, 17.05, 90, 1.1);
+  show($('posNote'), tr, 12.3, 17.0, 20);
+  // tap on Minimise check
+  const kr = { x: 560 + 22, y: 56 + 22 + 2 * (98 + 14), w: 342 - 44, h: 98 };
+  const tk = seg(tr, 13.55, 14.15), ts = 20 + eOut(tk) * 260;
+  Object.assign($('posTap').style, { left: (kr.x + kr.w / 2 - ts / 2) + 'px', top: (kr.y + kr.h / 2 - ts / 2) + 'px',
+    width: ts + 'px', height: ts + 'px', opacity: tk > 0 && tk < 1 ? (.85 * (1 - tk)).toFixed(3) : 0 });
+  const press = Math.sin(Math.PI * seg(tr, 13.55, 13.8));
+  $('minKey').style.transform = `scale(${(1 - .05 * press).toFixed(4)})`;
+  $('minKey').style.filter = `brightness(${(1 - .18 * press).toFixed(3)})`;
+  // the check window minimises into its table on the floor plan
+  const tile = { x: 24 + 2 * (196 + 20), y: 80, w: 196, h: 200 };
+  const mk = eIO(seg(tr, 13.9, 14.75));
+  Object.assign($('chk').style, {
+    transform: `translate(${(tile.x * mk).toFixed(2)}px,${(tile.y * mk).toFixed(2)}px) scale(${lerp(1, tile.w / 902, mk).toFixed(5)},${lerp(1, tile.h / 562, mk).toFixed(5)})`,
+    opacity: (1 - eIO(seg(tr, 14.35, 14.75))).toFixed(4), borderRadius: (mk * 60) + 'px' });
+  // B12 lands, pulses, and is released
+  const land = Math.sin(Math.PI * seg(tr, 14.6, 15.2));
+  $('tB12').style.boxShadow = `0 0 0 ${(3 + land * 4).toFixed(2)}px rgba(28,140,78,${(eIO(seg(tr, 14.8, 15.1)) * .55).toFixed(3)}), 0 1px 3px rgba(20,16,46,.08)`;
+  $('tB12').style.transform = `scale(${(1 + .04 * land).toFixed(4)})`;
+  const rel = eIO(seg(tr, 14.85, 15.25));
+  $('b12a').style.opacity = 1 - rel; $('b12a').style.transform = `translateY(${-rel * 14}px)`;
+  $('b12b').style.opacity = rel; $('b12b').style.transform = `translateY(${(1 - rel) * 14}px)`;
 
   // step 2
   show($('st2'), t, 15.5, 21.8, 40);
@@ -203,6 +278,6 @@ function render(t) {
 window.render = render;
 const q = new URLSearchParams(location.search);
 if (q.has('t')) render(+q.get('t'));
-else if (!q.has('record')) { const s = performance.now(); (function f(){ render(((performance.now()-s)/1000)%32); requestAnimationFrame(f); })(); }
-window.DURATION = 31.5;
+else if (!q.has('record')) { const s = performance.now(); (function f(){ render(((performance.now()-s)/1000)%34.5); requestAnimationFrame(f); })(); }
+window.DURATION = 34;
 </script></body></html>
