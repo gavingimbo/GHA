@@ -86,7 +86,10 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
       <rect id="ringTile" pathLength="100" x="307" y="312" width="328" height="218" rx="24" stroke="#1c8c4e" stroke-width="9"/>
     </svg>
     <div id="dotPos" class="dot" style="width:84px;height:84px;margin:-42px 0 0 -42px"></div>
-  </div></div></div>
+  </div></div>
+    <!-- the note belongs to the terminal and travels with it -->
+    <div style="position:absolute;left:0;right:0;top:870px;text-align:center;font-size:21px;color:#9a97a6">Illustration of our POS. Sample check.</div>
+  </div>
 
   <div id="dlg" class="abs"><img src="assets/dialog-error.png"></div>
 
@@ -114,7 +117,6 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
     <span class="ln" style="margin-top:6px"><span class="sub" style="font-size:28px">Not Void, and not Make Payment.</span></span></div>
   <div id="cap2" class="cap" style="top:1086px"><span class="ln"><span class="h" style="color:var(--ok)">The check is minimised.</span></span>
     <span class="ln" style="margin-top:6px"><span class="sub" style="font-size:28px">It stays open on Home, and the app can reach it.</span></span></div>
-  <div id="capNote" class="cap" style="top:1352px"><span class="ln"><span style="font-size:21px;color:#9a97a6">Illustration of our POS. Sample check.</span></span></div>
 
   <!-- ============================ cover (first frame) and end card: the same purple panel -->
   <div id="cover" class="abs panel onPurple"><div id="coverIn" class="abs" style="left:0;top:0;width:var(--W);height:var(--H)">
@@ -255,7 +257,8 @@ const W = 1080, H = 1440;
 function lines(id, t, a, o, st = .07) {
   $(id).querySelectorAll('.ln > *').forEach((el, i) => {
     const p = spring(t, a + i * st, .62, .96, 9), x = eIn(seg(t, o + i * .035, o + i * .035 + .3));
-    el.style.transform = `translate3d(0,${((1 - p) * 175 - x * 175).toFixed(2)}%,0)`;
+    const off = el.offsetHeight + 64;          // fully below (or above) the mask, whatever the size
+    el.style.transform = `translate3d(0,${((1 - p) * off - x * off).toFixed(2)}px,0)`;
   });
 }
 // draw an SVG rect's stroke on, 0..1
@@ -391,11 +394,10 @@ function render(t) {
   lines('tD', t, 10.85, 18.65);
   lines('cap1', t, 12.5, 15.35);
   lines('cap2', t, 16.95, 18.65);
-  lines('capNote', t, 11.4, 18.65);
   lines('tE', t, 19.05, 25.25);
   lines('tE2', t, 22.45, 25.25);
   lines('tF', t, 25.65, 29.45);
-  lines('tR', t, 29.55, 99, .09);
+  lines('tR', t, 29.8, 99, .09);   // after the dialog has cleared
 
   // end: the purple panel rises over the recap, then the logo rises out of its mask
   const en = glide(t, 34.4, 1.0);
