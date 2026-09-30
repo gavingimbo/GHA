@@ -1,9 +1,17 @@
-# Dine with DISCOVERY Dollars — team film
+# Dine with DISCOVERY Dollars — team films
 
-`check-open-on-pos.mp4` — 1080 × 1440 (3:4), 60 fps (rendered at 2× and downscaled), 34 s,
+Two playbooks, one set of rules, told from the team member's side.
+
+**`check-open-on-pos.mp4`** — 1080 × 1440 (3:4), 60 fps (rendered at 2× and downscaled), 34 s,
 stereo AAC at −14 LUFS. A team film for one moment in Dine with D$: a guest shows you
 "Failed to apply discount on POS". What you see, what it means, what you do on the POS,
 and what the guest does next.
+
+**`forgotten-password.mp4`** — 1080 × 1440, 60 fps, 31 s. A guest can't sign in: point them to
+Forgot Password?, they get a 6-digit code by email (from MyMenu, under the restaurant's
+name, valid 15 minutes), enter it with a new password (the rules checklist turns green),
+and are signed straight back in at the same table. If the code has expired, Resend code.
+Built from MyMenu's in-sheet reset of 30 Sep 2026 (branch `claude/nice-euler-fzaqim`).
 
 ## The rules this film is made to
 
@@ -23,12 +31,15 @@ and what the guest does next.
 
 ## Files
 
-- `explainer.html` — the film; every frame is `render(t)`. `?t=12` holds a frame.
+- `explainer.html`, `password.html` — the films; every frame is `render(t)`. `?t=12` holds a frame.
   The POS is an illustration based on our POS's Pick Up Check and Home screens.
-- `capture.mjs` — captures the app states at 3× from `../index.html`.
-- `audio.py` — the score and the few effects, synthesised. Writes `soundtrack.wav`.
+- `capture.mjs` — captures the check-open app states at 3× from `../index.html`.
+- `capture-reset.mjs <app root>` — captures the password-recovery states at 3× into
+  `assets/reset/`, from a checkout that has the in-sheet reset.
+- `audio.py check|password` — one engine, a score per film, and the few effects;
+  writes `soundtrack.wav` or `soundtrack-password.wav`.
 - `record.mjs` — renders through Chromium, encodes H.264, lays the soundtrack under it.
-  Run `python3 video/audio.py` first. `node video/record.mjs 4,12` writes stills.
+  `--film=password` for the second film. Run `audio.py` first. `node video/record.mjs 4,12` writes stills.
 - `audit.mjs` — renders the timeline small, to check for jumps and empty frames.
 
 Paths to Playwright, Chromium and ffmpeg are set for the cloud container.
