@@ -13,7 +13,7 @@ import wave
 import numpy as np
 
 SR = 48000
-DUR = 36.5
+DUR = 38.5
 N = int(SR * DUR)
 HERE = os.path.dirname(os.path.abspath(__file__))
 rng = np.random.default_rng(7)
@@ -188,6 +188,8 @@ FX = [  # time, sound, gain, pan, reverb
     (27.30, whoosh(.9, False), .18, 0, .3),       # phone leaves
     (28.45, whoosh(1.0, True), .18, 0, .3),       # D$ dialog in
     (32.20, whoosh(.9, True), .10, 0, .3),        # recap
+    (35.85, whoosh(1.2, True), .07, 0, .5),       # end card
+    (35.95, bell(hz('D6'), 2.6), .07, 0, .8),     # logo
 ]
 for t, s, g, p, v in FX:
     add(s, t, g, p, v, fx=True)

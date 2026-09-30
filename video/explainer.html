@@ -15,13 +15,13 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
 .center{left:0;right:0;text-align:center}
 .eyebrow{font-size:26px;letter-spacing:.14em;text-transform:uppercase;color:var(--purple)}
 .big{font-size:100px}
-.mid{font-size:62px}
-.sub{font-size:34px;color:var(--muted);line-height:1.35;padding:0 60px}
+.mid{font-size:54px}
+.sub{font-size:32px;color:var(--muted);line-height:1.38;padding:0 64px}
 .p{color:var(--purple)}
 .num{display:inline-flex;flex:none;width:92px;height:92px;border-radius:50%;background:var(--purple);color:#fff;align-items:center;justify-content:center;font-family:Ivy,serif;font-size:56px}
 .stepHead{display:flex;align-items:center;justify-content:center;gap:26px}
 /* cover */
-#cvCard{left:184px;top:484px;width:712px;height:351px;border-radius:32px;overflow:hidden;box-shadow:0 30px 60px rgba(176,0,32,.10),0 2px 8px rgba(20,16,46,.05)}
+#cvCard{left:184px;top:470px;width:712px;height:351px;border-radius:32px;overflow:hidden;box-shadow:0 30px 60px rgba(176,0,32,.10),0 2px 8px rgba(20,16,46,.05)}
 #cvCard img{position:absolute;left:-24px;top:-24px;width:760px}
 /* phone */
 #phone{will-change:auto;left:0;top:0;transform-origin:0 0;width:417px;height:876px;border-radius:66px;background:#1d1d1f;padding:12px;
@@ -32,11 +32,11 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
 .hl{position:absolute;border-radius:6px;z-index:4}
 #ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);z-index:6;width:10px;height:10px}
 #band{left:0;top:0;width:var(--W);height:480px;background:linear-gradient(var(--bg) 80%,rgba(250,250,250,0))}
-#dlg{left:223px;top:560px;width:634px;height:508px;border-radius:28px;overflow:hidden;background:#fff;box-shadow:0 30px 60px rgba(20,16,46,.10),0 2px 6px rgba(20,16,46,.04)}
+#dlg{left:223px;top:520px;width:634px;height:508px;border-radius:28px;overflow:hidden;background:#fff;box-shadow:0 30px 60px rgba(20,16,46,.10),0 2px 6px rgba(20,16,46,.04)}
 #dlg img{position:absolute;left:-28px;top:-28px;width:690px}
 
 /* ---------------- POS terminal: our POS screens, rebuilt at their native 1802 x 1014 */
-#pos{left:32px;top:440px;width:1016px;height:584px;border-radius:30px;background:#1d1d1f;padding:14px;box-shadow:0 40px 80px rgba(20,16,46,.20),0 0 0 2px #3a3a3c inset}
+#pos{left:32px;top:450px;width:1016px;height:584px;border-radius:30px;background:#1d1d1f;padding:14px;box-shadow:0 40px 80px rgba(20,16,46,.20),0 0 0 2px #3a3a3c inset}
 #posScr{position:relative;width:988px;height:556px;border-radius:14px;overflow:hidden;background:#76787a}
 #ui{position:absolute;left:0;top:0;width:1802px;height:1014px;transform-origin:0 0;will-change:auto}
 .pv{position:absolute;left:0;top:0;width:1802px;height:1014px;overflow:hidden;font-family:PosSans,sans-serif;color:#fff;transform-origin:0 0}
@@ -55,21 +55,23 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
 .tile .r{position:absolute;right:4px;font-size:14px}
 .ring{position:absolute;border-radius:10px;pointer-events:none}
 #posTap{position:absolute;border-radius:50%;background:rgba(255,255,255,.65);pointer-events:none}
-#stepCall{left:0;right:0;top:1076px;text-align:center}
-#stepCall2{left:0;right:0;top:1076px;text-align:center}
+#stepCall{left:0;right:0;top:1090px;text-align:center}
+#stepCall2{left:0;right:0;top:1090px;text-align:center}
 .call{font-family:Ivy,serif;font-size:50px;line-height:1.14}
 .callSub{font-size:30px;color:var(--muted);margin-top:12px}
+#logoEnd{left:270px;top:652px;width:540px}
+#logoCover{left:390px;top:150px;width:300px}
 #posNote{left:0;right:0;top:1352px;text-align:center;font-size:21px;color:#9a97a6}
 </style></head>
 <body><div id="stage">
 
   <!-- cover: fully composed on the first frame -->
-  <div id="s1eb" class="abs center eyebrow" style="top:300px">Team guide · Dine with D$</div>
-  <div id="s1a" class="abs center h" style="top:348px;font-size:66px">Seeing this on a guest’s phone?</div>
+  <img id="logoCover" class="abs" src="assets/logo-purple.svg" alt="Cinnamon DISCOVERY">
+  <div id="s1a" class="abs center h" style="top:320px;font-size:64px">Seeing this on a guest’s phone?</div>
   <div id="cvCard" class="abs"><img src="../design/png/discount-error.png"></div>
-  <div id="s1b" class="abs center h p" style="top:892px;font-size:66px">Here’s the two-step fix.</div>
-  <div id="s1c" class="abs center sub" style="top:992px">Minimise the check on the POS,<br>then the guest taps Retry.</div>
-  <div id="s1d" class="abs center" style="top:1330px;font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Cinnamon DISCOVERY</div>
+  <div id="s1b" class="abs center h p" style="top:900px;font-size:64px">Here’s the two-step fix.</div>
+  <div id="s1c" class="abs center sub" style="top:998px">Minimise the check on the POS,<br>then the guest taps Retry.</div>
+  <div id="s1eb" class="abs center eyebrow" style="top:1318px;font-size:22px;color:var(--muted)">Team guide · Dine with D$</div>
 
   <!-- phone -->
   <div id="phone" class="abs"><div id="screen">
@@ -84,10 +86,10 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
   <div id="band" class="abs"></div>
 
   <div id="c1" class="abs center" style="top:150px"><div class="h mid">Where the guest sees it.</div><div class="sub" style="margin-top:18px">On their phone, just under the bill items.</div></div>
-  <div id="c2" class="abs center" style="top:130px"><div class="h mid">The bill is still open<br>on a POS terminal.</div><div class="sub" style="margin-top:18px">While it is open, the discount can’t be added.</div></div>
+  <div id="c2" class="abs center" style="top:150px"><div class="h mid">The bill is still open<br>on a POS terminal.</div><div class="sub" style="margin-top:18px">While it is open, the discount can’t be added.</div></div>
 
   <!-- step 1: the POS -->
-  <div id="st1" class="abs center" style="top:120px">
+  <div id="st1" class="abs center" style="top:140px">
     <div class="stepHead"><div class="num">1</div><div class="h" style="padding:0;font-size:54px">Minimise the check on the POS.</div></div>
     <div class="sub" style="margin-top:24px">Tap Cancel/Exit on the open check.<br>Don’t tap Void or Make Payment.</div>
   </div>
@@ -103,13 +105,13 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
   <div id="posNote" class="abs">Sample check for illustration.</div>
 
   <!-- step 2 -->
-  <div id="st2" class="abs center" style="top:120px">
+  <div id="st2" class="abs center" style="top:140px">
     <div class="stepHead"><div class="num">2</div><div class="h mid" style="padding:0">Ask the guest to tap Retry.</div></div>
   </div>
-  <div id="st2b" class="abs center" style="top:262px"><div class="sub">The discount is applied to the bill.</div></div>
+  <div id="st2b" class="abs center" style="top:258px"><div class="sub">The discount is applied to the bill.</div></div>
 
   <!-- D$ variant -->
-  <div id="s5" class="abs center" style="top:250px"><div class="h" style="font-size:56px">The same fix works<br>when redeeming DISCOVERY Dollars.</div><div class="sub" style="margin-top:18px">Minimise the check, then the guest taps Retry.</div></div>
+  <div id="s5" class="abs center" style="top:150px"><div class="h mid">The same fix works<br>when redeeming DISCOVERY Dollars.</div><div class="sub" style="margin-top:18px">Minimise the check, then the guest taps Retry.</div></div>
   <div id="dlg" class="abs"><img src="assets/dialog-error.png"></div>
 
   <!-- recap -->
@@ -117,7 +119,8 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
   <div id="r1" class="abs center h big" style="top:590px">Minimise the check.</div>
   <div id="r2" class="abs center h big p" style="top:706px">Tap Retry.</div>
   <div id="r3" class="abs center sub" style="top:880px">Still showing the error?<br>Let your supervisor know.</div>
-  <div id="r4" class="abs center" style="top:1330px;font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)">Cinnamon DISCOVERY</div>
+  <img id="logoEnd" class="abs" src="assets/logo-purple.svg" alt="Cinnamon DISCOVERY">
+  <div id="r4" class="abs center eyebrow" style="top:760px;font-size:22px;color:var(--muted)">Dine with D$</div>
 </div>
 <script>
 /* ------------------------------------------------------------------ POS screens
@@ -265,8 +268,8 @@ const cam = (px, py, cx, cy, s) => ({ px, py, cx, cy, s });
 const mix = (A, B, k) => ({ px: lerp(A.px, B.px, k), py: lerp(A.py, B.py, k), cx: lerp(A.cx, B.cx, k), cy: lerp(A.cy, B.cy, k), s: Math.exp(lerp(Math.log(A.s), Math.log(B.s), k)) });
 const place = (C) => ({ s: C.s, tx: C.cx - C.s * (P + C.px), ty: C.cy - C.s * (P + C.py) });
 const card = R.failed.card, ccx = card.x + card.w / 2, ccy = card.y + card.h / 2;
-const FULL = cam(196.5, 426, 540, 836, 1.0);
-const LOW = cam(196.5, 426, 540, 836 + 1300, 1.0);
+const FULL = cam(196.5, 426, 540, 860, 1.0);
+const LOW = cam(196.5, 426, 540, 860 + 1300, 1.0);
 const ZOOM = cam(ccx, ccy, 540, 880, 2.35);
 const ZOOM2 = cam(ccx, ccy, 540, 820, 2.3);
 // short drift + slight pull-back, paired with a fade, for exits and entrances
@@ -292,7 +295,7 @@ function render(tr) {
   const t = tr < G ? tr : Math.max(G, tr - SH);
 
   // cover
-  for (const [id, k] of [['s1eb', 0], ['s1a', .02], ['cvCard', .04], ['s1b', .06], ['s1c', .08], ['s1d', .1]]) {
+  for (const [id, k] of [['logoCover', 0], ['s1a', .02], ['cvCard', .04], ['s1b', .06], ['s1c', .08], ['s1eb', .1]]) {
     const o = eIO(seg(t, 2.9 + k, 3.4 + k));
     $(id).style.opacity = (1 - o).toFixed(4);
     const float = id === 'cvCard' ? ` scale(${(1 + .025 * eOut(seg(t, 0, 3))).toFixed(5)})` : '';
@@ -376,16 +379,20 @@ function render(tr) {
   $('dlg').style.transform += ` scale(${1 + (1 - eOut(seg(t, 23.5, 24.6))) * .06})`;
 
   // recap
-  show($('r0'), t, 27.3, 99, 20);
-  show($('r1'), t, 27.5, 99, 60, 1);
-  show($('r2'), t, 27.9, 99, 60, 1);
-  show($('r3'), t, 28.7, 99, 30);
-  show($('r4'), t, 29.2, 99, 10);
+  show($('r0'), t, 27.3, 30.4, 20);
+  show($('r1'), t, 27.5, 30.45, 60, 1);
+  show($('r2'), t, 27.9, 30.5, 60, 1);
+  show($('r3'), t, 28.7, 30.55, 30);
+  // end card: the logo, settling in
+  const le = eOut(seg(t, 30.9, 32.1));
+  $('logoEnd').style.opacity = le.toFixed(4);
+  $('logoEnd').style.transform = `scale(${(.94 + .06 * le).toFixed(5)})`;
+  show($('r4'), t, 31.4, 99, 14);
 }
 window.render = render;
-window.DURATION = 36.5;
+window.DURATION = 38.5;
 window.SIZE = { w: 1080, h: 1440 };
 const q = new URLSearchParams(location.search);
 if (q.has('t')) render(+q.get('t'));
-else if (!q.has('record')) { const s = performance.now(); (function f(){ render(((performance.now()-s)/1000)%37); requestAnimationFrame(f); })(); }
+else if (!q.has('record')) { const s = performance.now(); (function f(){ render(((performance.now()-s)/1000)%39); requestAnimationFrame(f); })(); }
 </script></body></html>

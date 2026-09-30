@@ -1,6 +1,6 @@
 # Explainer video — "Check is open on POS"
 
-`check-open-on-pos.mp4` — 1080 × 1440 (3:4), 60 fps (rendered at 2× and downscaled), 36.5 s, stereo AAC at −14 LUFS. A team-facing
+`check-open-on-pos.mp4` — 1080 × 1440 (3:4), 60 fps (rendered at 2× and downscaled), 38.5 s, stereo AAC at −14 LUFS. A team-facing
 guide to the "Failed to apply discount on POS / Check is open on another
 terminal" error: minimise the check on the POS, then the guest taps Retry.
 
