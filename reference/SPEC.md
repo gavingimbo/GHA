@@ -12,13 +12,13 @@ as still needing capture rather than inventing them.
 
 | | |
 | --- | --- |
-| Captured states | 50, as 65 images in `shots/` |
+| Captured states | 63, as 81 images in `shots/` |
 | Browse them | open `reference/index.html` from a static server |
 | Machine-readable | `reference/states.json` |
 | Regenerate images | `node reference/capture.mjs` (`--scale=2` for retina) |
-| Copy deck | 140 keys in `/js/data.js`; 121 rendered, 19 not (section 10) |
-| Live deck | 730 keys recovered from the public bundle — `reference/live-copy-deck.json` |
-| Copy fidelity | all 139 keys shared with the live deck match **exactly** |
+| Copy deck | 181 keys in `/js/data.js`; the ones not rendered are in section 10 |
+| Live deck | 747 keys recovered from the public bundle (30 Sep 2026, 13:08 GMT build) — `reference/live-copy-deck.json` |
+| Copy fidelity | all 180 keys shared with the live deck match **exactly** |
 
 ---
 
@@ -81,6 +81,7 @@ QR scan
   └─ page (guest)                    §1 in the gallery
        ├─ Terms & Conditions sheet
        ├─ Sign in sheet ──────────┐
+       │    └─ Forgot → code → new password → done ─┤   §1b: Yes, sign me in returns to the table
        └─ Join sheet ─────────────┤
             └─ success drawer ────┤
                                   ▼
@@ -92,7 +93,8 @@ QR scan
 ```
 
 Three screens (`state.screen`: `page`, `burn`, `earn`), three full-screen sheets
-(`state.modal`: `signin`, `signup`, `terms`), and one centred dialog shared by
+(`state.modal`: `signin`, `signup`, `terms`; the sign-in sheet has five modes in
+`state.signinMode`: `signin`, `forgot`, `reset_otp`, `reset_password`, `reset_done`), and one centred dialog shared by
 the redemption and earn paths (`state.confirm`). The member landing has two
 variants: two action cards by default, or a single **View Bill** card when the
 entry carries `?redirect=gha_discovery`.
@@ -351,12 +353,16 @@ reversed from the phone; and the first member to scan locks the check.
 
 ## 8. Error and state catalogue
 
-The 14 error states, with what triggers each and who can resolve it. Full copy,
-triggers and captures for all 49 states are in `states.json` and the gallery.
+The error states, with what triggers each and who can resolve it. Full copy,
+triggers and captures for all 63 states are in `states.json` and the gallery.
 
 | State | Message | Retry offered | Resolved by |
 | --- | --- | --- | --- |
 | `guest-signin-error` | "Username or email is required" | n/a, inline | Guest |
+| `reset-forgot-error` | "Enter a valid email address" | n/a, inline | Guest |
+| `reset-otp-mismatch` | "That code isn't right. 2 attempts left." | **yes** | Guest re-enters the code |
+| `reset-otp-expired` | "That code has expired. Tap Send code to get a new one." (back on step 1) | **yes**, send again | Guest taps Send code |
+| `reset-password-policy` | "Your new password still needs: At least one symbol" | **yes** | Guest |
 | `member-bill-empty` | "No active bill on B12 yet" | no | Colleague rings items in; the poll picks it up |
 | `member-hint-expired` | "Your session has expired. Please ask staff for a new QR." | no | Colleague issues a fresh QR |
 | `member-hint-check-changed` | "The bill has changed. Please ask staff for a new QR." | no | Colleague issues a fresh QR |
@@ -398,69 +404,109 @@ their CSS shipped in the current build, byte-identical to what this repository
 carries. But shipped CSS is not the same as a reachable state, and the audit
 splits them into two very different groups.
 
-### 9.1 Live, reachable, and not captured — the password flow
+### 9.1 Password recovery — changed live, now reproduced
 
-**This is the one to capture next.** The current `GhaDiscoverySigninModal` has
-three modes — `signin`, `forgot` and `update` — and it references all of their
-copy. So an in-app forgot-password flow and an in-app change-password screen
-exist in production today. The mockup reproduces only the `signin` mode, and
-`HANDOFF.md`'s statement that Forgot Password has no in-app flow is out of date.
+**Re-audited on 30 September 2026. The flow described here in the 16 September
+audit no longer exists.** That build emailed a reset *link* ("SEND RESET LINK")
+that opened a separate `GhaDiscoveryResetPasswordPage` route, which carried no
+session and ended at "You can now close this tab". MyMenu has since replaced it,
+and the old route, its copy keys and the external
+`ghadiscovery.com/member/settings/password` link are all gone from the bundle.
 
-Recovered copy, verbatim:
+**Re-audited again on 30 September 2026 against the 13:08 GMT build**, after
+MyMenu split the one-screen reset into steps. (A CDN edge can still serve the
+earlier build for a few days: fetch the shell with `Cache-Control: no-cache` and
+a cache-busting query when verifying.)
 
-| Key | Value |
+What ships now, and what the mockup reproduces (catalogue group **1b —
+Password recovery**, 13 states). Four steps inside the sign-in sheet:
+
+1. **Forgot Password** (`forgot`). *"Enter your email or username and we'll send
+   a 6-digit code to the email address on your account."* One field, **Email or
+   Username**, seeded with whatever was typed on sign-in. A back arrow at the left
+   of the header returns to sign in. **SEND CODE** posts
+   `/api/gha/forgot-password/` with `{ login }` and a Cloudflare Turnstile token
+   (minted in the background on entering the step; the slot stays empty unless
+   Cloudflare wants an interactive challenge).
+2. **Reset Password: the code** (`reset_otp`). *"If an account matches, we've
+   sent a 6-digit code to the email address on that account."* (the address is
+   no longer echoed back). Six 52 px code boxes (`autocomplete=one-time-code`,
+   numeric, paste fills all six), then *"Didn't get the code? Resend in 0:59"*,
+   counting down in m:ss from the API's `resend_after` (60 s by default) until it
+   becomes a **Resend code** link. **VERIFY CODE** posts
+   `/api/gha/forgot-password/verify-code/` with `{ login, otp }` and receives a
+   `reset_grant`. **Use a different email or username** returns to step 1.
+3. **Reset Password: the new password** (`reset_password`). *"Code verified.
+   Choose a new password."* One **New Password** field with the live rules
+   checklist; there is no confirm field. **RESET PASSWORD** posts
+   `/api/gha/forgot-password/set-password/` with `{ reset_grant, password }`.
+4. **Password updated** (`reset_done`). A check in a 64 px ring (the venue's
+   button colour), *"Your password has been reset. Would you like to sign in
+   now?"*, **YES, SIGN ME IN** and **Not now**; no back arrow. If set-password
+   returned a login payload, Yes **signs the member straight into the same table
+   session** — no fresh QR, no lost bill. Otherwise it opens sign-in with the
+   email or username prefilled and *"Password updated. Sign in now."* **Not now**
+   closes the sheet.
+
+The focused field and the focused code box take the venue's
+`top_buttons_background_color` (black on the captured venue), not the purple.
+
+This closes the context gap the earlier audit called out: recovery no longer
+leaves the table session.
+
+**Error bodies** from the three endpoints, mapped to copy by `error`:
+
+| `error` | Copy | Also |
+| --- | --- | --- |
+| `otp_mismatch` | That code isn't right. {{attempts}} attempts left. | from `attempts_left`; code boxes go red until edited |
+| `otp_mismatch` (no count) | That code isn't right. Please check it and try again. | boxes red |
+| `otp_expired` | That code has expired. Tap Send code to get a new one. | **back to step 1**, login kept |
+| `otp_locked` | Too many incorrect attempts. Tap Send code to get a new one. | back to step 1 |
+| `reset_expired` | Your reset session has expired. Tap Send code to get a new code. | set-password; back to step 1 |
+| `otp_cooldown` | Please wait a moment before asking for another code. | restarts the countdown from `retry_after` |
+| `turnstile_failed` | We couldn't verify this request. If you're using a VPN, turn it off and try again. | |
+| `password_policy` | Your new password still needs: {{rules}} | `failed_rules`, joined with commas |
+| anything else | the server message, or Something went wrong. Please try again. | |
+
+**The password rules**, enforced client-side (yup) and re-checked by the server.
+The checklist appears when New Password first takes focus; unmet rules show as
+grey open circles until the field is blurred or the form submitted, then turn
+red. Met rules are `#1f7a4d`, unmet `#b00020`, 12 px text:
+
+| Key | Rule |
 | --- | --- |
-| `gha_forgot_title` | Forgot Password |
-| `gha_forgot_description` | Enter your email and we'll send you a link to reset your password. |
-| `gha_forgot_cta` | SEND RESET LINK |
-| `gha_forgot_password_sent` | If an account exists for that email, we've sent a reset link. |
-| `gha_update_title` | Change Password |
-| `gha_update_cta` | UPDATE PASSWORD |
-| `gha_update_password_success` | Password updated successfully. |
-| `gha_field_current_password` | Current Password |
-| `gha_field_new_password` | New Password |
-| `gha_field_confirm_password` | Confirm Password |
-
-The change-password screen carries a live rules checklist, and its CSS
-(`root`, `title`, `list`, `item`, `icon`, `met`, `unmet`, `pending`, `srOnly`
-in the modal stylesheet) was **added after this repository's 5 September
-capture** — so this flow is being actively built right now:
-
-| Key | Value |
-| --- | --- |
-| `gha_password_requirements_title` | Your password must have: |
 | `gha_password_rule_length` | Between 8 and 50 characters |
-| `gha_password_rule_english` | English letters, numbers and symbols only |
+| `gha_password_rule_english` | English letters, numbers and symbols only (printable ASCII) |
 | `gha_password_rule_letter` | At least one letter |
 | `gha_password_rule_number` | At least one number |
 | `gha_password_rule_symbol` | At least one symbol |
 | `gha_password_rule_trimmed` | No space at the start or the end |
-| `gha_password_rule_met` / `_not_met` | met / not met yet |
 
-A separate route, `GhaDiscoveryResetPasswordPage`, completes the loop from the
-emailed link:
+The client-side messages are literals in the bundle, not keys: *Email or
+username is required*, *Enter a valid email address*, *Usernames can't contain
+spaces*, *Must be at most 254 characters*, *Verification code is required*,
+*Enter the 6-digit code from your email*.
 
-| Key | Value |
-| --- | --- |
-| `gha_reset_title` | Reset Password |
-| `gha_reset_password_page_description` | Choose a new password for your account. |
-| `gha_reset_description` | Enter the token sent to your email and choose a new password. |
-| `gha_field_token_placeholder` | Paste the token from your email |
-| `gha_reset_cta` | RESET PASSWORD |
-| `gha_reset_password_success` | Password reset successfully. Redirecting to sign in... |
-| `gha_reset_password_success_close` | Password reset successfully. You can now close this tab. |
-| `gha_reset_token_missing` | This reset link is invalid or has expired. Please request a new one. |
+**The email** is in `reference/email/` — the message as received on 30 Sep 2026
+(`password-reset-code.eml`) and its HTML body on its own
+(`password-reset-code.html`), with the recipient redacted and the SES open-
+tracking pixel removed. Points worth knowing for a guide:
 
-**And this is the finding that matters most.** That page's code handles a
-`token` and nothing else — no session, no return path, no redirect target. It
-succeeds into "Redirecting to sign in..." or "You can now close this tab", and
-the external `ghadiscovery.com/member/settings/password` link is still in the
-same chunk. So GHA has closed the *capability* gap — a member can now reset a
-password without leaving the app — while the *context* gap is untouched: the
-settlement session is not carried through recovery, and the guest still lands
-back at a sign-in screen rather than at their bill. That is precisely what the
-`/dev/` concept in this repository is built to fix, and it can now be argued
-from the shipped code rather than from design opinion.
+- Subject: **`{code} - Your GHA password reset code`** — the code leads the
+  subject, so it shows in the notification preview.
+- Sent **from MyMenu** (`GHA Verification via My Menu <otp-noreply@mydigimenu.com>`,
+  via Amazon SES), and **deliberately not GHA-branded**: the header is the
+  venue's name (the captured one came from *Gatz*), and GHA DISCOVERY is named
+  in the body text only. The template's own comment says so.
+- The code sits alone on its own line (34 px monospace, 10 px tracking) because
+  iOS Mail only offers the one-time-code autofill when it finds a bare numeric
+  code.
+- **Codes expire in 15 minutes and work once.**
+
+**Still not reproduced: Change Password.** The modal also has an `update` mode —
+current password, new password with the same checklist, confirm, **UPDATE
+PASSWORD** posting `/api/gha/update-password/` — but no shipped component opens
+the modal in that mode. It is built but unreachable, so it belongs with 9.2.
 
 ### 9.2 Shipped CSS with no shipped code path
 
@@ -541,8 +587,8 @@ Powered by; and `gha_burn_bill_remaining` "Remaining to pay".
 
 ### 9.3 What to do with this in a guide
 
-- **Document 9.1 as production.** It is reachable today. Capture it from a live
-  session and add it to the catalogue; it is the largest hole in this reference.
+- **9.1 is production and is now in the catalogue** (group 1b). The one
+  loose end is Change Password, which is built but has no entry point.
 - **Do not document 9.2 as guest states.** Present them, if at all, as evidence
   of intent: a self-service recovery path that was designed, styled, written and
   then left unwired. That is a finding worth putting in front of the programme
@@ -612,6 +658,12 @@ mockup matches these closely.
 
 **Verified against the live bundle** on 16 September 2026 (section 13): all copy,
 and the presence and byte-identity of every CSS module. Copy fidelity is exact.
+Re-checked on 30 September 2026 for the password-recovery change: `css/page.css`
+and `css/modal.css` were re-synced from that build (new hashes, the rules
+checklist and OTP-row styles, a guest-only bottom padding and a `min-height:
+100dvh` page root); `hero`, `burn` and `titanium` were byte-identical. The
+recovery screens are reconstructed from `GhaDiscoverySigninModal`, and the
+email is the real one.
 
 **Confirmed by the product owner:** Cinnamon's outlets run the single **View
 Bill on {table}** card, not the two-card layout, and table labels take the form
@@ -665,7 +717,7 @@ intended answer to two members on one bill.
 ## 12. Regenerating
 
 ```bash
-node reference/capture.mjs                 # all 49 states, 1×
+node reference/capture.mjs                 # all 63 states, 1×
 node reference/capture.mjs --scale=2       # retina
 node reference/capture.mjs --only=burn-discount-failed,earn-confirm-success
 ```
@@ -725,11 +777,19 @@ Two traps worth knowing:
   (for example `` t(`gha_session_${kind}_title`) ``). Section 9.2 exists because
   a great deal of copy is in the deck with nothing shipped that renders it.
 
-As captured on 16 September 2026: 8 GHA JavaScript chunks
+As captured on 30 September 2026: 7 GHA JavaScript chunks
 (`GhaDiscoveryPage`, `GhaDiscoveryBurnPage`, `GhaDiscoveryEarnPage`,
-`GhaDiscoverySigninModal`, `GhaDiscoveryResetPasswordPage`, `GhaHeroCover`,
-`ghaDiscoveryHelpers`, `useGhaDiscovery`) and 5 CSS modules
+`GhaDiscoverySigninModal`, `GhaHeroCover`, `ghaDiscoveryHelpers`,
+`useGhaDiscovery` — `GhaDiscoveryResetPasswordPage` is gone), plus a shared
+`turnstile` chunk the sign-in modal imports, and 5 CSS modules
 (`GhaDiscoveryPage`, `GhaDiscoverySigninModal`, `GhaHeroCover`, `burnStyles`,
 `titanium`) — the same five this repository mirrors as
-`css/{page,modal,hero,burn,titanium}.css`. Since 5 September the only CSS change
-is 9 classes added to the modal module for the password-rules checklist.
+`css/{page,modal,hero,burn,titanium}.css`. The page and modal modules were
+rehashed in that deploy (`kqptn` → `11cwm`, `l72lm` → `19phd`), so
+`js/css-maps.js` was regenerated with them. The 13:08 GMT build of the same day
+rehashed the modal again (`19phd` → `1bs73`, adding the resend line, the quiet
+buttons and the done step), and `css/modal.css` and its map were re-synced from
+it; that build also changed `page` and `burn` (a QR scanner sheet and a session
+error card, outside this flow), which are not re-synced here; the password-rules checklist is its
+own module (`w5xn3`) concatenated into the modal stylesheet, mapped as
+`GHA_CSS.pwr`.

@@ -107,6 +107,7 @@ button { font-family: inherit; }
 .modal_backdrop.is_centered { padding: 16px; }
 
 @keyframes modal_fade { from { opacity: 0; } to { opacity: 1; } }
+.modal_backdrop.is_settled { animation: none; opacity: 1; }
 
 .modal_sheet {
   background: #fff;
@@ -166,7 +167,7 @@ button { font-family: inherit; }
   pointer-events: none;
 }
 .mui_input_root:hover .mui_notch { border-color: rgba(0, 0, 0, 0.87); }
-.mui_input_root.is_focused .mui_notch { border: 2px solid var(--gha-purple); }
+.mui_input_root.is_focused .mui_notch { border: 2px solid #000; }
 .mui_input_root.is_error .mui_notch { border-color: #d32f2f; }
 
 .mui_adornment {
@@ -370,3 +371,28 @@ button { font-family: inherit; }
   transition: opacity 0.4s ease;
 }
 .mock_hint.is_out { opacity: 0; }
+
+/* ---- Verification-code boxes -------------------------------------------
+   react-otp-input, with the inline styles the live sign-in modal passes it:
+   six square boxes up to 52px, 8px apart, accent border on focus. */
+.gha_otp_box {
+  width: 100%;
+  min-width: 0;
+  max-width: 52px;
+  height: 52px;
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Jost, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  color: #1a1a1a;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background-color: transparent;
+  outline: none;
+}
+.gha_otp_box:focus { border: 2px solid var(--otp-accent, #582c83); }
+.gha_otp_box.is_error { border: 1px solid #b00020; }

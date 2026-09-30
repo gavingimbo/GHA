@@ -128,6 +128,150 @@
     },
 
     {
+      "id": "recovery",
+      "title": "1b — Password recovery",
+      "intro": "The in-modal reset as deployed on 30 Sep 2026 (13:08 GMT build), in four steps: send a 6-digit code to the email on the account, verify it, choose a new password against six live rules, then Password updated. When set-password returns a login, YES, SIGN ME IN signs the member straight back into the table session. The email is kept in reference/email/.",
+      "states": [
+        {
+          "id": "reset-forgot",
+          "title": "Forgot password — email or username",
+          "category": "screen",
+          "trigger": "Tap Forgot Password? on the sign-in sheet. The field is seeded with whatever was typed as username/email.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "forgot", "resetLogin": "gavin@example.com" },
+          "copyKeys": ["gha_forgot_title", "gha_forgot_description", "gha_field_email_or_username", "gha_field_email_or_username_placeholder", "gha_forgot_cta"],
+          "ctas": ["gha_forgot_cta"],
+          "assets": [],
+          "notes": "Step 1 of 4. A back arrow at the left of the header returns to sign in. SEND CODE posts /api/gha/forgot-password/ with { login } and a Cloudflare Turnstile token."
+        },
+        {
+          "id": "reset-forgot-error",
+          "title": "Forgot password — validation",
+          "category": "error",
+          "trigger": "Blur or submit with an invalid email, or a username with a space. Client-side.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "forgot", "resetLogin": "gavin@", "touched": {"login": true}, "validated": true },
+          "copyKeys": ["gha_forgot_title", "gha_field_email_or_username", "gha_forgot_cta"],
+          "literalCopy": ["Email or username is required", "Enter a valid email address", "Usernames can't contain spaces", "Must be at most 254 characters"],
+          "assets": [],
+          "notes": "Formik validates on change and on blur; the error shows once the field is touched and SEND CODE disables until the form is valid."
+        },
+        {
+          "id": "reset-otp",
+          "title": "Reset password — enter the code",
+          "category": "screen",
+          "trigger": "SEND CODE succeeded. The API's resend_after (60 s by default) starts the countdown.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "reset_otp", "resetLogin": "gavin@example.com", "resendIn": 59 },
+          "copyKeys": ["gha_reset_title", "gha_reset_otp_sent", "gha_field_otp", "gha_reset_otp_resend_prompt", "gha_reset_otp_resend_in", "gha_reset_verify_cta", "gha_reset_otp_change_login"],
+          "ctas": ["gha_reset_verify_cta"],
+          "assets": [],
+          "notes": "Step 2 of 4. The copy no longer names the address: 'If an account matches…'. Six 52 px boxes (react-otp-input, numeric, paste or iOS Mail autofill fills all six); the focused box takes the venue's top-button colour (black here). 'Didn't get the code? Resend in 0:59' counts down in m:ss, then becomes a Resend code link."
+        },
+        {
+          "id": "reset-otp-filled",
+          "title": "Reset password — code entered",
+          "category": "variant",
+          "trigger": "All six digits typed or pasted.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "reset_otp", "resetLogin": "gavin@example.com", "resendIn": 41, "otp": "800368", "validated": true },
+          "copyKeys": ["gha_reset_verify_cta"],
+          "assets": [],
+          "notes": "VERIFY CODE posts /api/gha/forgot-password/verify-code/ with { login, otp } and receives a reset_grant for the next step."
+        },
+        {
+          "id": "reset-otp-mismatch",
+          "title": "Reset password — wrong code",
+          "category": "error",
+          "trigger": "verify-code answers error otp_mismatch with attempts_left.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "reset_otp", "resetLogin": "gavin@example.com", "resendIn": 21, "otp": "800386", "validated": true, "otpErrored": true, "submitError": "That code isn't right. 2 attempts left." },
+          "copyKeys": ["gha_reset_otp_mismatch", "gha_reset_otp_mismatch_generic"],
+          "recovery": "Guest re-enters the code, or resends.",
+          "assets": [],
+          "notes": "The boxes go red until the code is edited."
+        },
+        {
+          "id": "reset-otp-resent",
+          "title": "Reset password — code resent",
+          "category": "variant",
+          "trigger": "Tap Resend code after the countdown.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "reset_otp", "resetLogin": "gavin@example.com", "resendIn": 59, "submitSuccess": "If an account matches, we've sent a new code to the email address on that account." },
+          "copyKeys": ["gha_reset_otp_resent", "gha_reset_otp_resend_in"],
+          "assets": [],
+          "notes": "Resend clears the boxes and restarts the countdown. Asking too soon returns otp_cooldown with retry_after: 'Please wait a moment before asking for another code.'"
+        },
+        {
+          "id": "reset-otp-expired",
+          "title": "Code expired — back to step 1",
+          "category": "error",
+          "trigger": "verify-code answers otp_expired (codes last 15 minutes, per the email) or otp_locked; set-password answers reset_expired.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "forgot", "resetLogin": "gavin@example.com", "submitError": "That code has expired. Tap Send code to get a new one." },
+          "copyKeys": ["gha_reset_otp_expired", "gha_reset_otp_locked", "gha_reset_expired"],
+          "recovery": "Guest taps Send code again.",
+          "assets": [],
+          "notes": "All three return the sheet to Forgot Password with the email or username kept, and the message shown there."
+        },
+        {
+          "id": "reset-password",
+          "title": "Reset password — choose a new password",
+          "category": "screen",
+          "trigger": "verify-code succeeded.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "reset_password", "resetLogin": "gavin@example.com", "newPasswordFocused": true },
+          "copyKeys": ["gha_reset_title", "gha_reset_password_description", "gha_field_new_password", "gha_password_requirements_title", "gha_reset_cta"],
+          "ctas": ["gha_reset_cta"],
+          "assets": [],
+          "notes": "Step 3 of 4. One field, no confirm. The rules checklist appears when the field first takes focus; rules not yet met are grey open circles."
+        },
+        {
+          "id": "reset-password-typing",
+          "title": "Reset password — rules turning green",
+          "category": "variant",
+          "trigger": "New Password partly typed.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "reset_password", "resetLogin": "gavin@example.com", "newPassword": "Sunset20", "newPasswordFocused": true, "validated": true },
+          "copyKeys": ["gha_password_rule_length", "gha_password_rule_english", "gha_password_rule_letter", "gha_password_rule_number", "gha_password_rule_symbol", "gha_password_rule_trimmed"],
+          "assets": [],
+          "notes": "Each rule turns green (#1f7a4d) as it is met; unmet rules turn red once the field is blurred or the form submitted."
+        },
+        {
+          "id": "reset-password-policy",
+          "title": "Reset password — server rejects password",
+          "category": "error",
+          "trigger": "set-password answers password_policy with failed_rules.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "reset_password", "resetLogin": "gavin@example.com", "newPassword": "Sunset2026!", "newPasswordFocused": true, "validated": true, "submitError": "Your new password still needs: At least one symbol" },
+          "copyKeys": ["gha_reset_otp_password_policy"],
+          "assets": [],
+          "notes": "The server re-checks the same six rules and names the ones still failing, joined with commas."
+        },
+        {
+          "id": "reset-password-submitting",
+          "title": "Reset password — submitting",
+          "category": "transient",
+          "trigger": "set-password request in flight.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "reset_password", "resetLogin": "gavin@example.com", "newPassword": "Sunset2026!", "newPasswordFocused": true, "validated": true, "submitting": true },
+          "copyKeys": ["gha_submitting"],
+          "assets": [],
+          "notes": "Same spinner button as sign-in. RESET PASSWORD posts /api/gha/forgot-password/set-password/ with { reset_grant, password }."
+        },
+        {
+          "id": "reset-done",
+          "title": "Password updated",
+          "category": "screen",
+          "trigger": "set-password succeeded.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "reset_done", "resetLogin": "gavin@example.com", "resetSession": "session" },
+          "copyKeys": ["gha_reset_done_title", "gha_reset_done_description", "gha_reset_done_cta", "gha_reset_done_not_now"],
+          "ctas": ["gha_reset_done_cta", "gha_reset_done_not_now"],
+          "assets": [],
+          "notes": "Step 4 of 4. No back arrow. When set-password returned a login payload, YES, SIGN ME IN signs the member straight into this table's session (member-loading, then member-landing); Not now closes the sheet."
+        },
+        {
+          "id": "reset-success-signin",
+          "title": "Password updated — sign in",
+          "category": "variant",
+          "trigger": "YES, SIGN ME IN when set-password returned no login payload.",
+          "patch": { "signedIn": false, "screen": "page", "modal": "signin", "signinMode": "signin", "loginValue": "gavin@example.com", "submitSuccess": "Password updated. Sign in now." },
+          "copyKeys": ["gha_reset_otp_success_signin", "gha_signin_title", "gha_signin_cta"],
+          "assets": [],
+          "notes": "The fallback: back on the sign-in sheet with the email or username prefilled."
+        }
+      ]
+    },
+    {
       "id": "member",
       "title": "2 — Member landing",
       "intro": "The same page after sign-in. Hero gains the member overlay; the body swaps to the member view. The page polls the POS every 7 seconds while a member is signed in against a valid table.",

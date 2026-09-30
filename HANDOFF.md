@@ -105,6 +105,15 @@ tab when this was captured on 5 Sep 2026.
 > present in the same chunk. The reset page carries no session and no return
 > path, so recovery still ends at sign-in rather than back at the bill.
 
+> **Superseded again, 30 Sep 2026.** MyMenu replaced the reset link with an
+> emailed **6-digit code entered inside the sign-in sheet**: email → SEND CODE →
+> code + new password (live rules checklist, 60 s resend cooldown) → RESET
+> PASSWORD. When verify returns a login, the member is signed straight back into
+> the same table session. The separate reset page and the ghadiscovery.com link
+> are gone. The email itself is sent by MyMenu, venue-branded, and the code
+> expires in 15 minutes — a copy is in `reference/email/`. Reproduced in the
+> mockup; details in `reference/SPEC.md` section 9.1.
+
 ### 3.3 Join — observed
 
 Language, first name, last name, email, phone (dial-code picker, defaulted to
