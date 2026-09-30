@@ -2,7 +2,7 @@
 
 `check-open-on-pos.mp4` — 1080 × 1080, 60 fps (rendered at 2× and downscaled), 34 s, stereo AAC at −14 LUFS. A team-facing
 guide to the "Failed to apply discount on POS / Check is open on another
-terminal" error: close the check on the POS, then the guest taps Retry.
+terminal" error: minimise the check on the POS, then the guest taps Retry.
 
 - `capture.mjs` — captures the real app states (failed, checking, applied) at 3×
   from `../index.html` into `assets/`, with element rects in `assets/rects.json`.
