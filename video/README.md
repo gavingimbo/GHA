@@ -1,30 +1,33 @@
-# Explainer video — "Check is open on POS"
+# Dine with DISCOVERY Dollars — team film
 
-`check-open-on-pos.mp4` — 1080 × 1440 (3:4), 60 fps (rendered at 2× and downscaled), 38.5 s, stereo AAC at −14 LUFS. A team-facing
-guide to the "Failed to apply discount on POS / Check is open on another
-terminal" error: minimise the check on the POS, then the guest taps Retry.
+`check-open-on-pos.mp4` — 1080 × 1440 (3:4), 60 fps (rendered at 2× and downscaled), 40 s,
+stereo AAC at −14 LUFS. A product film for the team: what Dine with D$ does, the one
+moment it needs a colleague (the check is open on a POS terminal), and the fix.
 
-- `capture.mjs` — captures the real app states (failed, checking, applied) at 3×
-  from `../index.html` into `assets/`, with element rects in `assets/rects.json`.
-  The discount bill row is removed from the pre-retry captures, since the POS has
-  not taken the discount yet.
-- `explainer.html` — the motion piece. Step one draws a clean, minimal illustration
-  of our POS's Pick Up Check and Home screens, based on the reference screenshots:
-  same regions, order and colours on the terminal's 1802 × 1014 grid, with words
-  only where the story needs them. Nothing fades: words rise out of masks, scenes change by
-  a push, components lift out of the phone enlarged, rings draw on, and the POS
-  changes screens on release like the real terminal; every frame is `render(t)`. Open it in a
-  browser to preview, or `?t=8.5` to hold a frame.
-- `audio.py` — the score and sound effects, synthesised (no licensed music): a
-  96 bpm D major piece on electric piano, bass and a light groove that follows the
-  story (a warm open, a drop at the error, a build on the POS, a lift into the fix,
-  a resolved end with a logo sting), plus a sound for every on-screen action.
-  Writes `soundtrack.wav` (not committed).
-- `audit.mjs` — renders the timeline small and flags frames that jump; run it after
-  changing timings, then diff the frames (see the commit that added it).
-- `record.mjs` — renders each frame through Chromium, encodes H.264 with ffmpeg,
-  then lays `soundtrack.wav` underneath. Run `python3 video/audio.py` first.
-  `node video/record.mjs 4,12` writes review stills instead.
+## The rules this film is made to
 
-Paths to Playwright, Chromium and ffmpeg are set for the cloud container; adjust
-them at the top of each script to run elsewhere.
+- **Colour: three.** Purple `#592A87` for brand moments (open and close), ink `#14102E`
+  for type, paper `#FAFAFA` behind the product. Everything else is the product's own UI.
+- **Type: the product's faces.** IvyMode states, Jost supports. Two sizes.
+- **Ground: flat.** No gradients, no blur, nothing fades.
+- **Frame: one shot, one idea.** The object in the centre, one statement above, room to breathe.
+- **Motion: one family.** Moves glide (critically damped), arrivals settle on a soft spring,
+  neighbours overlap. Scenes are joined by a lift, a push or a wipe, never cut; the only hard
+  change is the POS repainting its screen, because that is what a POS does.
+- **Rhythm: adaptive.** Quick through the product (~1.7 s a beat), held on the exception,
+  steady through the fix, calm at the close.
+- **Music: 96 bpm**, smooth and effortless: electric piano, round bass, a brushed groove.
+- **Sound: only what matters.** The taps you see (the two that matter, louder) and one chime
+  when the discount lands. Nothing else.
+
+## Files
+
+- `explainer.html` — the film; every frame is `render(t)`. `?t=12` holds a frame.
+  The POS is an illustration based on our POS's Pick Up Check and Home screens.
+- `capture.mjs`, `capture-journey.mjs` — capture the app states at 3× from `../index.html`.
+- `audio.py` — the score and the few effects, synthesised. Writes `soundtrack.wav`.
+- `record.mjs` — renders through Chromium, encodes H.264, lays the soundtrack under it.
+  Run `python3 video/audio.py` first. `node video/record.mjs 4,12` writes stills.
+- `audit.mjs` — renders the timeline small, to check for jumps and empty frames.
+
+Paths to Playwright, Chromium and ffmpeg are set for the cloud container.

@@ -1,41 +1,46 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>Check open on POS</title>
+<html><head><meta charset="utf-8"><title>Dine with DISCOVERY Dollars</title>
 <style>
+/* ---------------------------------------------------------------- the rules
+   Colour: three, and only three, of our own. Purple for brand moments, ink for
+   type, paper behind the product. Everything else on screen is the product's own.
+   Type: the product's faces. IvyMode states, Jost supports. Two sizes.
+   Ground: flat. No gradients, no blur, nothing fades.
+   Frame: one shot, one idea. The object sits in the centre; the words sit above. */
 @font-face{font-family:Ivy;src:url(../assets/fonts/ivymode-gha-semibold.woff2) format('woff2')}
 @font-face{font-family:Jost;src:url(../assets/fonts/jost-regular.woff) format('woff')}
 @font-face{font-family:PosSans;font-weight:400;src:url(assets/fonts/open-sans-400.woff2) format('woff2')}
 @font-face{font-family:PosSans;font-weight:600;src:url(assets/fonts/open-sans-600.woff2) format('woff2')}
-:root{--ink:#14102e;--purple:#582c83;--brand:#592A87;--muted:#6e6a7c;--bg:#fafafa;--ok:#1c8c4e;--W:1080px;--H:1440px}
+:root{--purple:#592A87;--ink:#14102E;--paper:#FAFAFA;--W:1080px;--H:1440px}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
-#stage{position:relative;width:var(--W);height:var(--H);overflow:hidden;background:var(--bg);font-family:Jost,sans-serif;color:var(--ink);
+html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)}
+#stage{position:relative;width:var(--W);height:var(--H);overflow:hidden;background:var(--paper);color:var(--ink);font-family:Jost,sans-serif;
   font-kerning:normal;font-feature-settings:"kern" 1,"liga" 1;text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased}
 .abs{position:absolute}
-/* type: every title shares one top line and size; lines rise out of a mask, never fade */
-.title{position:absolute;left:0;right:0;top:140px;text-align:center}
+/* type */
+.title{position:absolute;left:0;right:0;top:132px;text-align:center}
 .ln{display:block;overflow:hidden;padding:26px 0 30px;margin:-24px 0 -28px;line-height:1.08}
 .ln > *{display:inline-block;will-change:transform}
-.h{font-family:Ivy,serif;font-size:54px;letter-spacing:0}
-.sub{font-family:Jost,sans-serif;font-size:31px;color:var(--muted);line-height:1.25}
-.num{display:inline-flex;vertical-align:middle;width:76px;height:76px;margin:-8px 22px 0 0;border-radius:50%;background:var(--purple);color:#fff;align-items:center;justify-content:center;font-family:Ivy,serif;font-size:50px}
-.cap{position:absolute;left:0;right:0;text-align:center}
-.cap .h{font-size:46px}
+.say{font-family:Ivy,serif;font-size:66px;letter-spacing:0}
+.sup{font-family:Jost,sans-serif;font-size:30px;color:rgba(20,16,46,.62);line-height:1.3}
+.onPurple .say{color:#fff}
+.onPurple .sup{color:rgba(255,255,255,.72)}
 /* phone */
-#phone{left:0;top:0;transform-origin:0 0;width:417px;height:876px;border-radius:66px;background:#1d1d1f;padding:12px;box-shadow:0 40px 80px rgba(20,16,46,.16),0 0 0 2px #3a3a3c inset}
+#phone{left:0;top:0;width:417px;height:876px;border-radius:66px;background:#1d1d1f;padding:12px;box-shadow:0 44px 90px rgba(20,16,46,.16),0 0 0 2px #3a3a3c inset}
 #screen{position:relative;width:393px;height:852px;border-radius:54px;overflow:hidden;background:#fafafa}
-#screen .lay{position:absolute;left:0;top:0;width:393px;height:852px;background-size:393px 852px}
+.view{position:absolute;left:0;top:0;width:393px;height:852px;overflow:hidden}
+.lay{position:absolute;left:0;top:0;width:393px;height:852px;background-size:393px 852px}
 #island{position:absolute;left:50%;top:22px;width:118px;height:34px;margin-left:-59px;background:#000;border-radius:20px;z-index:5}
 #retryPress{position:absolute;left:37px;top:588.86px;width:319px;height:41px;border-radius:21px;background:#000;opacity:.2;display:none}
-.dot{position:absolute;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(20,16,46,.16),0 8px 18px rgba(20,16,46,.28);transform:scale(0)}
-/* lifted cards: a component rises out of the phone, enlarged */
+.dot{position:absolute;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(20,16,46,.16),0 8px 18px rgba(20,16,46,.28);transform:scale(0);z-index:6}
+.mark{position:absolute;border-radius:8px;background:#e3f3e9;mix-blend-mode:multiply;transform-origin:0 50%;transform:scaleX(0)}
+/* components lifted out of the phone */
 .lift{left:0;top:0;width:712px;border-radius:32px;overflow:hidden;transform-origin:0 0;display:none}
 .lift img{position:absolute;left:-24.2px;top:-24.2px;width:760.4px}
-.mark{position:absolute;border-radius:10px;background:#efe6f7;transform-origin:0 50%;transform:scaleX(0)}
-.mark.ok{background:#e3f3e9}
 #liftErr{height:351px}
 #liftBill{height:347px;background:#fff}
-/* POS terminal */
-#pos{left:0;top:0;width:1016px;height:584px;border-radius:30px;background:#1d1d1f;padding:14px;box-shadow:0 40px 80px rgba(20,16,46,.18),0 0 0 2px #3a3a3c inset}
+/* POS */
+#pos{left:0;top:0;width:1016px;height:584px;border-radius:30px;background:#1d1d1f;padding:14px;box-shadow:0 44px 90px rgba(20,16,46,.16),0 0 0 2px #3a3a3c inset}
 #posScr{position:relative;width:988px;height:556px;border-radius:14px;overflow:hidden;background:#2b2f32}
 #ui{position:absolute;left:0;top:0;width:1802px;height:1014px;transform-origin:0 0}
 .pv{position:absolute;left:0;top:0;width:1802px;height:1014px;overflow:hidden;font-family:PosSans,sans-serif;color:#fff;transform-origin:0 0}
@@ -50,89 +55,76 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
 .tile .tn{position:absolute;left:20px;top:86px;font-size:26px;font-weight:600}
 .tile .ta{position:absolute;left:20px;top:138px;font-size:22px;color:#6b6f73}
 
+
 #pick .k#exitKey.down{background:#5b8c69 !important;transform:scale(.97)}
 #rings{position:absolute;left:0;top:0;width:1802px;height:1014px;overflow:visible}
 #rings rect{fill:none;stroke-linecap:round}
 /* D$ dialog */
-#dlg{left:0;top:0;width:634px;height:508px;border-radius:28px;overflow:hidden;background:#fff;box-shadow:0 30px 60px rgba(20,16,46,.10),0 2px 6px rgba(20,16,46,.04)}
+#dlg{left:0;top:0;width:634px;height:508px;border-radius:28px;overflow:hidden;background:#fff;box-shadow:0 44px 90px rgba(20,16,46,.12)}
 #dlg img{position:absolute;left:-28px;top:-28px;width:690px}
-/* cover and end panels */
-.panel{left:0;top:0;width:var(--W);height:var(--H);background:var(--brand);overflow:hidden}
-#cvCard{position:absolute;left:184px;top:470px;width:712px;height:351px;border-radius:32px;overflow:hidden;box-shadow:0 36px 70px rgba(12,2,34,.38),0 2px 8px rgba(12,2,34,.18)}
-#cvCard img{position:absolute;left:-24px;top:-24px;width:760px}
-.onPurple .h{color:#fff}
-.chip{display:inline-flex;align-items:center;gap:16px;height:64px;padding:0 30px 0 12px;border-radius:32px;background:#6e40a0;color:#fff;font-size:29px}
-.chip b{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:#fff;color:#592A87;font-family:Ivy,serif;font-weight:normal;font-size:26px}
+/* brand panels */
+.panel{left:0;top:0;width:var(--W);height:var(--H);background:var(--purple);overflow:hidden}
 </style></head>
 <body><div id="stage">
 
-  <!-- ============================ world: devices and lifted cards -->
+  <!-- the product -->
   <div id="phone" class="abs"><div id="screen">
-    <div id="base" class="lay" style="background-image:url(assets/screen-failed.png);clip-path:inset(0 0 380px 0)"></div>
-    <div id="cardF" class="lay" style="background-image:url(assets/screen-failed.png)"></div>
-    <div id="cardC" class="lay" style="background-image:url(assets/screen-checking.png)"></div>
-    <div id="lowF" class="lay" style="background-image:url(assets/screen-failed.png);clip-path:inset(660px 0 0 0)"></div>
-    <div id="lowOk" class="lay" style="background-image:url(assets/screen-ok.png);clip-path:inset(457px 0 0 0)"></div>
-    <div id="retryPress"></div>
+    <div id="vGuest" class="view"><div class="lay" style="background-image:url(assets/screen-guest.png)"></div></div>
+    <div id="vMember" class="view"><div class="lay" style="background-image:url(assets/screen-member.png)"></div></div>
+    <div id="vBill" class="view">
+      <div class="lay" style="background-image:url(assets/screen-failed.png);clip-path:inset(0 0 380px 0)"></div>
+      <div id="cardF" class="lay" style="background-image:url(assets/screen-failed.png)"></div>
+      <div id="cardC" class="lay" style="background-image:url(assets/screen-checking.png)"></div>
+      <div id="lowF" class="lay" style="background-image:url(assets/screen-failed.png);clip-path:inset(660px 0 0 0)"></div>
+      <div id="lowOk" class="lay" style="background-image:url(assets/screen-ok.png);clip-path:inset(457px 0 0 0)">
+        <div id="markDisc" class="mark" style="left:29px;top:545px;width:335px;height:29px"></div></div>
+      <div id="retryPress"></div>
+    </div>
     <div id="island"></div>
-    <div id="dotPhone" class="dot"></div>
+    <div id="dotA" class="dot" style="left:196.5px;top:360px"></div>
+    <div id="dotB" class="dot" style="left:196.5px;top:801px"></div>
+    <div id="dotR" class="dot" style="left:196.5px;top:609.4px"></div>
   </div></div>
 
   <div id="pos" class="abs"><div id="posScr"><div id="ui">
     <div id="home" class="pv"></div>
     <div id="pick" class="pv"></div>
     <svg id="rings" viewBox="0 0 1802 1014">
-      <rect id="ringExit" pathLength="100" x="1290" y="886" width="243" height="106" rx="22" stroke="#582c83" stroke-width="9"/>
+      <rect id="ringExit" pathLength="100" x="1290" y="886" width="243" height="106" rx="22" stroke="#592A87" stroke-width="9"/>
       <rect id="ringTile" pathLength="100" x="307" y="312" width="328" height="218" rx="24" stroke="#1c8c4e" stroke-width="9"/>
     </svg>
-    <div id="dotPos" class="dot" style="width:84px;height:84px;margin:-42px 0 0 -42px"></div>
+    <div id="dotPos" class="dot" style="width:84px;height:84px;margin:-42px 0 0 -42px;left:1411px;top:939px"></div>
   </div></div>
-    <!-- the note belongs to the terminal and travels with it -->
-    <div style="position:absolute;left:0;right:0;top:870px;text-align:center;font-size:21px;color:#9a97a6">Illustration of our POS. Sample check.</div>
+    <div style="position:absolute;left:0;right:0;top:872px;text-align:center;font-size:21px;color:rgba(20,16,46,.4)">Illustration of our POS. Sample check.</div>
   </div>
 
   <div id="dlg" class="abs"><img src="assets/dialog-error.png"></div>
+  <div id="liftErr" class="abs lift"><img src="../design/png/discount-error.png"><div class="mark" style="left:30px;top:86px;width:462px;height:44px;background:#f3d9df"></div></div>
+  <div id="liftBill" class="abs lift"><img src="../design/png/bill-card.png"><div class="mark" style="left:30px;top:84px;width:652px;height:50px"></div></div>
 
-  <div id="liftErr" class="abs lift"><img src="../design/png/discount-error.png"><div class="mark" style="left:30px;top:86px;width:462px;height:44px;mix-blend-mode:multiply"></div></div>
-  <div id="liftBill" class="abs lift"><img src="../design/png/bill-card.png"><div class="mark ok" style="left:30px;top:84px;width:652px;height:50px;mix-blend-mode:multiply"></div></div>
+  <!-- words: one statement per shot -->
+  <div id="w1" class="title"><span class="ln"><span class="say">Guests scan the table QR.</span></span></div>
+  <div id="w2" class="title"><span class="ln"><span class="say">They sign in as members.</span></span></div>
+  <div id="w3" class="title"><span class="ln"><span class="say">Their bill comes</span></span><span class="ln"><span class="say">straight from the POS.</span></span></div>
+  <div id="w4" class="title"><span class="ln"><span class="say">The member discount</span></span><span class="ln"><span class="say">applies itself.</span></span></div>
+  <div id="w5" class="title"><span class="ln"><span class="say">Unless the check is open</span></span><span class="ln"><span class="say">on a POS terminal.</span></span></div>
+  <div id="w5s" class="title" style="top:1110px"><span class="ln"><span class="sup">While a terminal holds the check,</span></span><span class="ln"><span class="sup">the app can’t add the discount.</span></span></div>
+  <div id="w6" class="title"><span class="ln"><span class="say">Minimise the check.</span></span></div>
+  <div id="w6a" class="title" style="top:232px"><span class="ln"><span class="sup">Tap Cancel/Exit. Not Void, not Make Payment.</span></span></div>
+  <div id="w6b" class="title" style="top:232px"><span class="ln"><span class="sup">It stays open on Home, free for the app.</span></span></div>
+  <div id="w7" class="title"><span class="ln"><span class="say">Then the guest taps Retry.</span></span></div>
+  <div id="w7s" class="title" style="top:1110px"><span class="ln"><span class="sup">The discount is on the bill.</span></span></div>
+  <div id="w8" class="title"><span class="ln"><span class="say">The same fix works for</span></span><span class="ln"><span class="say">DISCOVERY Dollars.</span></span></div>
 
-  <!-- ============================ titles -->
-  <div id="tA" class="title"><span class="ln"><span class="h">A guest applies their</span></span><span class="ln"><span class="h">member discount.</span></span></div>
-  <div id="tB" class="title"><span class="ln"><span class="h">But the discount fails.</span></span></div>
-  <div id="tC" class="title"><span class="ln"><span class="h">The check is still open</span></span><span class="ln"><span class="h">on a POS terminal.</span></span>
-    <span class="ln" style="margin-top:14px"><span class="sub">Until it is released, the app can’t add the discount.</span></span></div>
-  <div id="tD" class="title"><span class="ln"><span class="h"><span class="num">1</span>Minimise the check on the POS.</span></span>
-    <span class="ln" style="margin-top:10px"><span class="sub">Open checks lock to the terminal using them.</span></span></div>
-  <div id="tE" class="title"><span class="ln"><span class="h"><span class="num">2</span>Ask the guest to tap Retry.</span></span></div>
-  <div id="tE2" class="title" style="top:258px"><span class="ln"><span class="sub">The discount is applied.</span></span></div>
-  <div id="tF" class="title"><span class="ln"><span class="h">The same fix works for</span></span><span class="ln"><span class="h">DISCOVERY Dollars.</span></span>
-    <span class="ln" style="margin-top:14px"><span class="sub">Minimise the check, then the guest taps Retry.</span></span></div>
-  <div id="tR" class="title" style="top:520px">
-    <span class="ln"><span style="font-size:26px;letter-spacing:.14em;text-transform:uppercase;color:var(--purple)">Remember</span></span>
-    <span class="ln" style="margin-top:18px"><span class="h" style="font-size:96px">Minimise the check.</span></span>
-    <span class="ln"><span class="h" style="font-size:96px;color:var(--purple)">Tap Retry.</span></span>
-    <span class="ln" style="margin-top:30px"><span class="sub">Still showing? Let your supervisor know.</span></span></div>
-
-  <div id="cap1" class="cap" style="top:1086px"><span class="ln"><span class="h" style="color:var(--purple)">Tap Cancel/Exit.</span></span>
-    <span class="ln" style="margin-top:6px"><span class="sub" style="font-size:28px">Not Void, and not Make Payment.</span></span></div>
-  <div id="cap2" class="cap" style="top:1086px"><span class="ln"><span class="h" style="color:var(--ok)">The check is minimised.</span></span>
-    <span class="ln" style="margin-top:6px"><span class="sub" style="font-size:28px">It stays open on Home, and the app can reach it.</span></span></div>
-
-  <!-- ============================ cover (first frame) and end card: the same purple panel -->
+  <!-- brand: opening and close, the same purple -->
   <div id="cover" class="abs panel onPurple"><div id="coverIn" class="abs" style="left:0;top:0;width:var(--W);height:var(--H)">
-    <img class="abs" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="left:390px;top:150px;width:300px">
-    <div class="title" style="top:320px"><span class="ln"><span class="h" style="font-size:64px">Seeing this on a guest’s phone?</span></span></div>
-    <div id="cvCard"><img src="../design/png/discount-error.png"><div id="cvMark" class="mark" style="left:30px;top:86px;width:462px;height:44px;mix-blend-mode:multiply;background:#f3d9df"></div></div>
-    <div id="cvFix" class="title" style="top:890px"><span class="ln"><span class="h" style="font-size:64px;color:#dcc8f2">Here’s the two-step fix.</span></span></div>
-    <div id="cvSteps" class="title" style="top:1010px">
-      <span class="ln"><span class="chip"><b>1</b>Minimise the check on the POS</span></span>
-      <span class="ln" style="margin-top:18px"><span class="chip"><b>2</b>The guest taps Retry</span></span></div>
-    <div class="title" style="top:1318px"><span class="ln"><span style="font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.62)">Team guide · Dine with D$</span></span></div>
+    <img class="abs" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="left:330px;top:470px;width:420px">
+    <div class="title" style="top:612px"><span class="ln"><span class="say">Dine with</span></span><span class="ln"><span class="say">DISCOVERY Dollars.</span></span></div>
+    <div class="title" style="top:822px"><span class="ln"><span class="sup">When the check is open on the POS.</span></span><span class="ln"><span class="sup">A team guide.</span></span></div>
   </div></div>
-
-  <div id="endPanel" class="abs panel">
-    <div id="endLogo" class="abs" style="left:270px;top:640px;width:540px;height:82px;overflow:hidden"><img id="endLogoImg" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="width:540px;display:block;will-change:transform"></div>
-    <div id="endTag" class="title" style="top:752px"><span class="ln"><span style="font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.62)">Dine with D$</span></span></div>
+  <div id="endPanel" class="abs panel onPurple">
+    <div id="e1" class="title" style="top:520px"><span class="ln"><span class="say" style="font-size:84px">Minimise the check.</span></span><span class="ln"><span class="say" style="font-size:84px">Tap Retry.</span></span></div>
+    <div id="endLogo" class="abs" style="left:330px;top:820px;width:420px;height:66px;overflow:hidden"><img id="endLogoImg" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="width:420px;display:block;will-change:transform"></div>
   </div>
 </div>
 <script>
@@ -231,62 +223,60 @@ document.getElementById('pick').innerHTML = buildPick();
 document.getElementById('home').innerHTML = buildHome();
 
 
-/* ------------------------------------------------------------------ motion
-   One clock, one vocabulary. Words rise out of a mask. Scenes change by a push:
-   the next device slides in as the last one slides out, on the same spring, like a
-   camera pan. Details lift out of the screen as enlarged components and settle
-   back. The POS behaves like a POS: a press darkens the key, and on release the
-   screen simply changes; only the camera moves. Nothing fades. */
+
+/* ---------------------------------------------------------------- motion
+   One family. Moves glide (critically damped); arrivals settle on a soft spring;
+   neighbours overlap by a beat. Scenes are joined, never cut: a lift, a push,
+   a wipe. The one hard change is the POS repainting its screen, because that is
+   what a POS does and it is the point of the shot. */
 const $ = (id) => document.getElementById(id);
 const clamp = (x) => Math.max(0, Math.min(1, x));
 const seg = (t, a, b) => clamp((t - a) / (b - a));
 const lerp = (a, b, k) => a + (b - a) * k;
 const eIn = (x) => x * x * x;
-function spring(t, a, d, zeta = .8, w = 9) {                 // damped spring 0 -> 1 over ~d seconds
-  const x = Math.max(0, t - a) / d;
-  if (x <= 0) return 0;
+function spring(t, a, d, zeta = .85, w = 9) {
+  const x = Math.max(0, t - a) / d; if (x <= 0) return 0;
   const wx = w * x;
   if (zeta >= 1) return 1 - Math.exp(-wx) * (1 + wx);
   const r = Math.sqrt(1 - zeta * zeta);
   return 1 - Math.exp(-zeta * wx) * (Math.cos(r * wx) + zeta / r * Math.sin(r * wx));
 }
-const glide = (t, a, d) => spring(t, a, d, 1, 7.5);          // camera and pushes: critically damped
+const glide = (t, a, d) => spring(t, a, d, 1, 7.5);
 const W = 1080, H = 1440;
 
-// masked lines: each rises in on a spring, and leaves upward, picking up speed
-function lines(id, t, a, o, st = .07) {
+function lines(id, t, a, o, st = .08) {
   $(id).querySelectorAll('.ln > *').forEach((el, i) => {
-    const p = spring(t, a + i * st, .62, .96, 9), x = eIn(seg(t, o + i * .035, o + i * .035 + .3));
-    const off = el.offsetHeight + 64;          // fully below (or above) the mask, whatever the size
+    const off = el.offsetHeight + 64;
+    const p = spring(t, a + i * st, .7, .96, 9), x = eIn(seg(t, o + i * .04, o + i * .04 + .32));
     el.style.transform = `translate3d(0,${((1 - p) * off - x * off).toFixed(2)}px,0)`;
   });
 }
-// draw an SVG rect's stroke on, 0..1
-function draw(el, k) {
-  el.style.strokeDasharray = 100; el.style.strokeDashoffset = (100 * (1 - clamp(k))).toFixed(2);
-  el.style.display = k > 0 ? 'block' : 'none';
-}
-// a white touch dot: arrives, presses, releases, leaves
-function touch(el, t, a, press, release, leave) {
+function draw(el, k) { el.style.strokeDasharray = 100; el.style.strokeDashoffset = (100 * (1 - clamp(k))).toFixed(2); el.style.display = k > 0 ? 'block' : 'none'; }
+function touch(el, t, a, press, release) {
   let s = 0;
-  if (t >= a) s = spring(t, a, .45, .6, 10);
+  if (t >= a) s = spring(t, a, .45, .62, 10);
   if (t >= press) s = lerp(1, .8, clamp((t - press) / .08));
-  if (t >= release) s = .8 + .2 * spring(t, release, .35, .5, 10);
-  if (t >= leave) s = .8 * (1 - eIn(seg(t, leave, leave + .12)));   // the finger lifts
+  if (t >= release) s = .8 * (1 - eIn(seg(t, release, release + .12)));
   el.style.transform = `scale(${Math.max(0, s).toFixed(4)})`;
 }
+function lift(id, t, up, from, toW, toCY, hgt, dx = 0) {
+  const el = $(id), k = spring(t, up, 1.05, .86);
+  el.style.display = t >= up && dx > -1250 ? 'block' : 'none';
+  const s = Math.exp(lerp(Math.log(from.w / 712), Math.log(toW / 712), k));
+  const x = lerp(from.x, W / 2 - toW / 2, k) + dx, y = lerp(from.y, toCY - hgt * (toW / 712) / 2, k);
+  el.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0) scale(${s.toFixed(5)})`;
+  el.style.boxShadow = `0 ${(44 * k).toFixed(1)}px ${(90 * k).toFixed(1)}px rgba(20,16,46,${(.18 * clamp(k)).toFixed(3)})`;
+}
 
-/* ---------------- the phone's screen, as layers: the bill below the discount card
-   flows with the card's height. D is the card's height plus its gap (from the
-   captured layouts): checking 65.55, error 202.8, gone 0. */
+/* the bill, as layers: the page below the discount card flows with the card's
+   height D (captured layouts: checking 65.55, error 202.8, none 0) */
 const DF = 202.8, DC = 65.55;
-const PH = { x: 540 - 208.5, y: 470 };                       // phone at rest
-function phoneScreen(t) {
-  let D = DC, card = 'C', low = 'F';
-  if (t >= 5.0) { D = lerp(DC, DF, spring(t, 5.0, .85, .86)); card = 'F'; }
-  if (t >= 20.52) { D = lerp(DF, DC, spring(t, 20.52, .75, .86)); card = 'C'; }
-  if (t >= 21.5) { D = lerp(DC, 0, spring(t, 21.5, .85, .86)); low = 'Ok'; }
-  const h = Math.max(0, D - 28);                            // visible card height
+function bill(t) {
+  let D = 0, card = '', low = 'Ok';
+  if (t >= 10.2) { D = lerp(0, DF, spring(t, 10.2, .9, .88)); card = 'F'; low = 'F'; }
+  if (t >= 26.55) { D = lerp(DF, DC, spring(t, 26.55, .75, .88)); card = 'C'; }
+  if (t >= 27.5) { D = lerp(DC, 0, spring(t, 27.5, .85, .88)); low = 'Ok'; }
+  const h = Math.max(0, D - 28);
   $('cardF').style.display = card === 'F' ? 'block' : 'none';
   $('cardC').style.display = card === 'C' ? 'block' : 'none';
   $('cardF').style.clipPath = `inset(472px 0 ${(852 - 472 - Math.min(h, 174.8)).toFixed(2)}px 0)`;
@@ -295,123 +285,104 @@ function phoneScreen(t) {
   $('lowOk').style.display = low === 'Ok' ? 'block' : 'none';
   $('lowF').style.transform = `translateY(${(D - DF).toFixed(2)}px)`;
   $('lowOk').style.transform = `translateY(${D.toFixed(2)}px)`;
-  $('retryPress').style.display = t >= 20.35 && t < 20.52 ? 'block' : 'none';
-  touch($('dotPhone'), t, 20.05, 20.35, 20.52, 20.52);
-  $('dotPhone').style.left = '196.5px'; $('dotPhone').style.top = '609.4px';
+  $('markDisc').style.transform = `scaleX(${(t < 10.2 ? clamp(glide(t, 8.25, .8)) : 0).toFixed(4)})`;
+  $('retryPress').style.display = t >= 26.4 && t < 26.55 ? 'block' : 'none';
 }
 
-// lift a component out of the phone: from its rect in the phone to a large centred card
-function lift(id, t, up, down, from, toW, toCY, hgt) {
-  const el = $(id);
-  const k = t < down ? spring(t, up, 1.0, .8) : 1 - spring(t, down, .8, .95);
-  el.style.display = t >= up && (t < down || k > .002) ? 'block' : 'none';
-  const s0 = from.w / 712, s1 = toW / 712, s = Math.exp(lerp(Math.log(s0), Math.log(s1), k));
-  const x = lerp(from.x, W / 2 - toW / 2, k), y = lerp(from.y, toCY - hgt * s1 / 2, k);
-  el.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0) scale(${s.toFixed(5)})`;
-  el.style.boxShadow = `0 ${(40 * k).toFixed(1)}px ${(80 * k).toFixed(1)}px rgba(20,16,46,${(.22 * clamp(k)).toFixed(3)}), 0 0 0 1px rgba(20,16,46,.04)`;
-  return k;
-}
-
-// POS camera inside the terminal screen
 const SW = 988, SHT = 556, BASE = SW / 1802;
 function posCam(fx, fy, z) { const s = BASE * z; return { s, tx: Math.min(0, Math.max(SW - s * 1802, SW / 2 - s * fx)), ty: Math.min(0, Math.max(SHT - s * 1014, SHT / 2 - s * fy)) }; }
 const pmix = (A, B, k) => ({ s: Math.exp(lerp(Math.log(A.s), Math.log(B.s), k)), tx: lerp(A.tx, B.tx, k), ty: lerp(A.ty, B.ty, k) });
 const PC_FULL = posCam(901, 507, 1), PC_EXIT = posCam(1411, 905, 2.4), PC_TILE = posCam(560, 430, 1.75);
+const REST = { x: 540 - 208.5, y: 440 };
 
-/* ---------------- the film (seconds)
-   0     cover: the card shakes, its reason is marked, the fix and its two steps arrive
-   3.05  cover lifts away; the guest's phone rises     "A guest applies their member discount."
-   5.0   the discount card opens as an error           "But the discount fails."
-   6.3   the error lifts out; its reason is marked     "The check is still open on a POS terminal."
-   10.6  push to the POS                               "1  Minimise the check on the POS."
-   12.2  in to Cancel/Exit and ring it; back out; tap; the screen changes to Home; in to B12/1
-   18.8  push to the phone                             "2  Ask the guest to tap Retry."
-   20.35 Retry; checking; the discount lands; the bill lifts out
-   25.4  push to the DISCOVERY Dollars dialog
-   29.6  push away to the recap
-   34.4  the purple end card rises; the logo          */
+/* ---------------------------------------------------------------- the film
+   0     Brand. Dine with DISCOVERY Dollars.                         calm
+   2.5   The product, quickly: scan, sign in, the bill, the discount  quick, 1.7 s a beat
+   10.2  The exception: the check is open on a POS terminal           slow, held
+   15.0  The fix on the POS: minimise the check                       steady
+   25.0  The guest taps Retry; the discount lands                     lift
+   30.0  The same for DISCOVERY Dollars                               brief
+   32.7  Brand. Minimise the check. Tap Retry.                        calm            */
 function render(t) {
-  // cover: a panel that lifts away, its content a little faster than the ground
-  // the intro plays as its own short scene: composed on frame one, the card is refused
-  // with a shake, its reason is marked, then the fix and its two steps arrive
-  const cv = glide(t, 3.05, 1.0);
+  // brand open: the purple ground lifts away and the product rises into its place
+  const cv = glide(t, 2.45, 1.0);
   $('cover').style.transform = `translate3d(0,${(-H * cv).toFixed(2)}px,0)`;
-  $('coverIn').style.transform = `translate3d(0,${(-160 * cv).toFixed(2)}px,0)`;
-  const sx = t > .35 && t < 1.0 ? 16 * Math.exp(-6 * (t - .35)) * Math.sin(2 * Math.PI * 5.5 * (t - .35)) : 0;
-  $('cvCard').style.transform = `translate3d(${sx.toFixed(2)}px,0,0) scale(${(1 + .015 * clamp(t / 3)).toFixed(5)})`;
-  $('cvMark').style.transform = `scaleX(${clamp(glide(t, .95, .7)).toFixed(4)})`;
-  lines('cvFix', t, 1.25, 99);
-  lines('cvSteps', t, 1.6, 99, .16);
+  $('coverIn').style.transform = `translate3d(0,${(-150 * cv).toFixed(2)}px,0)`;
   $('cover').style.display = cv > .999 ? 'none' : 'block';
 
-  // phone: rises, pushes left, returns from the right, pushes left again
-  let px = 0, py = 0;
-  py = (1 - spring(t, 3.0, 1.35, .8)) * 1150;
-  if (t >= 10.6) px = -1300 * glide(t, 10.6, .95);
-  if (t >= 18.8) px = 1300 * (1 - glide(t, 18.8, .95));
-  if (t >= 25.4) px = -1300 * glide(t, 25.4, .95);
-  $('phone').style.transform = `translate3d(${(PH.x + px).toFixed(2)}px,${(PH.y + py).toFixed(2)}px,0)`;
-  $('phone').style.display = Math.abs(px) > 1250 || py > 1100 ? 'none' : 'block';
-  phoneScreen(t);
+  // phone: rises; steps down out of frame so the error can stand alone; returns from the right; steps down again
+  let px = 0, py = (1 - spring(t, 2.55, 1.35, .86)) * 1150;
+  if (t >= 11.5) py = 1300 * glide(t, 11.5, 1.1);
+  if (t >= 24) { py = 0; px = 1300 * (1 - glide(t, 25.0, 1.0)); }
+  if (t >= 28.2) py = 1300 * glide(t, 28.2, 1.1);
+  $('phone').style.transform = `translate3d(${(REST.x + px).toFixed(2)}px,${(REST.y + py).toFixed(2)}px,0)`;
+  $('phone').style.display = Math.abs(px) > 1250 || py > 1150 ? 'none' : 'block';
+  // inside the phone: the app's own navigation, a push from the right
+  const n1 = glide(t, 4.62, .7), n2 = glide(t, 6.32, .7);
+  $('vGuest').style.transform = `translateX(${(-393 * n1).toFixed(2)}px)`;
+  $('vMember').style.transform = `translateX(${(393 * (1 - n1) - 393 * n2).toFixed(2)}px)`;
+  $('vBill').style.transform = `translateX(${(393 * (1 - n2)).toFixed(2)}px)`;
+  touch($('dotA'), t, 4.2, 4.5, 4.62);
+  touch($('dotB'), t, 5.9, 6.2, 6.32);
+  touch($('dotR'), t, 26.1, 26.4, 26.55);
+  bill(t);
 
-  // lifted components
-  const ek = lift('liftErr', t, 6.3, 9.75, { x: PH.x + px + 12 + 20, y: PH.y + py + 12 + 472, w: 353 }, 900, 820, 351);
-  $('liftErr').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 7.25, .8)).toFixed(4)})`;
-  lift('liftBill', t, 22.3, 24.75, { x: PH.x + px + 12 + 20, y: PH.y + py + 12 + 506, w: 353 }, 900, 820, 347);
-  $('liftBill').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 23.0, .8)).toFixed(4)})`;
+  // the error, alone; then the bill, alone
+  const errDx = t >= 15.0 ? -1300 * glide(t, 15.0, 1.0) : 0;
+  lift('liftErr', t, 11.35, { x: REST.x + 32, y: REST.y + 12 + 472, w: 353 }, 900, 760, 351, errDx);
+  $('liftErr').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 12.35, .8)).toFixed(4)})`;
+  const billDx = t >= 30.0 ? -1300 * glide(t, 30.0, 1.0) : 0;
+  lift('liftBill', t, 28.05, { x: REST.x + 32, y: REST.y + 12 + 506, w: 353 }, 900, 760, 347, billDx);
+  $('liftBill').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 28.85, .8)).toFixed(4)})`;
 
-  // POS: pushes in from the right, pushes out to the left
-  let qx = 1300;
-  if (t >= 10.6) qx = 1300 * (1 - glide(t, 10.6, .95));
-  if (t >= 18.8) qx = -1300 * glide(t, 18.8, .95);
-  $('pos').style.transform = `translate3d(${(32 + qx).toFixed(2)}px,470px,0)`;
+  // POS: in from the right as the error leaves; out to the left as the phone returns
+  let qx = t < 15 ? 1300 : 1300 * (1 - glide(t, 15.0, 1.0));
+  if (t >= 25.0) qx = -1300 * glide(t, 25.0, 1.0);
+  $('pos').style.transform = `translate3d(${(32 + qx).toFixed(2)}px,478px,0)`;
   $('pos').style.display = Math.abs(qx) > 1250 ? 'none' : 'block';
   let pc = PC_FULL;
-  if (t >= 12.2) pc = pmix(PC_FULL, PC_EXIT, glide(t, 12.2, 1.1));
-  if (t >= 13.95) pc = pmix(PC_EXIT, PC_FULL, glide(t, 13.95, 1.0));
-  if (t >= 16.0) pc = pmix(PC_FULL, PC_TILE, glide(t, 16.0, 1.15));
+  if (t >= 16.1) pc = pmix(PC_FULL, PC_EXIT, glide(t, 16.1, 1.1));
+  if (t >= 17.7) pc = pmix(PC_EXIT, PC_FULL, glide(t, 17.7, 1.0));
+  if (t >= 19.6) pc = pmix(PC_FULL, PC_TILE, glide(t, 19.6, 1.2));
   $('ui').style.transform = `translate(${pc.tx.toFixed(2)}px,${pc.ty.toFixed(2)}px) scale(${pc.s.toFixed(5)})`;
-  // the press, and the screen change on release: as a POS does it
-  const onHome = t >= 15.4;              // a terminal repaints a beat after the release
+  const onHome = t >= 19.1;                          // the terminal repaints a beat after the release
   $('pick').style.display = onHome ? 'none' : 'block';
-  $('exitKey').classList.toggle('down', t >= 15.1 && t < 15.27);
-  draw($('ringExit'), onHome ? 0 : glide(t, 13.15, .6));
-  draw($('ringTile'), glide(t, 16.85, .65));
-  touch($('dotPos'), t, 14.8, 15.1, 15.27, 15.27);
-  $('dotPos').style.left = '1411px'; $('dotPos').style.top = '939px';
+  $('exitKey').classList.toggle('down', t >= 18.8 && t < 18.97);
+  draw($('ringExit'), onHome ? 0 : glide(t, 16.95, .6));
+  draw($('ringTile'), glide(t, 20.5, .65));
+  touch($('dotPos'), t, 18.45, 18.8, 18.97);
 
-  // the D$ dialog pushes in and away
-  let gx = 1300;
-  if (t >= 25.4) gx = 1300 * (1 - glide(t, 25.4, .95));
-  if (t >= 29.6) gx = -1300 * glide(t, 29.6, .95);
-  $('dlg').style.transform = `translate3d(${(223 + gx).toFixed(2)}px,540px,0)`;
+  // D$ dialog
+  let gx = t < 30 ? 1300 : 1300 * (1 - glide(t, 30.0, 1.0));
+  $('dlg').style.transform = `translate3d(${(223 + gx).toFixed(2)}px,520px,0)`;
   $('dlg').style.display = Math.abs(gx) > 1250 ? 'none' : 'block';
 
   // words
-  lines('tA', t, 3.35, 5.2);
-  lines('tB', t, 5.45, 7.35);
-  lines('tC', t, 7.55, 10.45);
-  lines('tD', t, 10.85, 18.65);
-  lines('cap1', t, 12.5, 15.35);
-  lines('cap2', t, 16.95, 18.65);
-  lines('tE', t, 19.05, 25.25);
-  lines('tE2', t, 22.45, 25.25);
-  lines('tF', t, 25.65, 29.45);
-  lines('tR', t, 29.8, 99, .09);   // after the dialog has cleared
+  lines('w1', t, 2.85, 4.55);
+  lines('w2', t, 4.75, 6.25);
+  lines('w3', t, 6.45, 7.95);
+  lines('w4', t, 8.1, 10.0);
+  lines('w5', t, 10.3, 14.85);
+  lines('w5s', t, 12.55, 14.85);
+  lines('w6', t, 15.2, 24.8);
+  lines('w6a', t, 15.45, 19.25);
+  lines('w6b', t, 19.55, 24.8);
+  lines('w7', t, 25.25, 29.8);
+  lines('w7s', t, 28.4, 29.8);
+  lines('w8', t, 30.2, 32.55);
 
-  // end: the purple panel rises over the recap, then the logo rises out of its mask
-  const en = glide(t, 34.4, 1.0);
+  // brand close: the purple rises; the two actions; the mark
+  const en = glide(t, 32.7, 1.0);
   $('endPanel').style.transform = `translate3d(0,${(H * (1 - en)).toFixed(2)}px,0)`;
   $('endPanel').style.display = en > 0 ? 'block' : 'none';
-  $('tR').style.marginTop = `${(-120 * en).toFixed(2)}px`;
-  $('endLogoImg').style.transform = `translate3d(0,${((1 - spring(t, 35.0, 1.0, .9, 8.5)) * 110).toFixed(2)}%,0)`;
-  lines('endTag', t, 35.35, 99);
+  lines('e1', t, 33.35, 99, .14);
+  $('endLogoImg').style.transform = `translate3d(0,${((1 - spring(t, 35.0, 1.0, .96, 9)) * 140).toFixed(2)}%,0)`;
 }
 window.render = render;
-window.DURATION = 38.5;
+window.DURATION = 40;
 window.SIZE = { w: W, h: H };
 const q = new URLSearchParams(location.search);
 if (q.has('t')) render(+q.get('t'));
-else if (!q.has('record')) { const s0 = performance.now(); (function f() { render(((performance.now() - s0) / 1000) % 39); requestAnimationFrame(f); })(); }
+else if (!q.has('record')) { const s0 = performance.now(); (function f() { render(((performance.now() - s0) / 1000) % 40.5); requestAnimationFrame(f); })(); }
 else render(0);
 </script></body></html>

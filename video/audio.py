@@ -16,7 +16,7 @@ import wave
 import numpy as np
 
 SR = 48000
-DUR = 38.5
+DUR = 40.0
 N = int(SR * DUR)
 HERE = os.path.dirname(os.path.abspath(__file__))
 rng = np.random.default_rng(11)
@@ -157,21 +157,21 @@ def thump():
 BPM = 96; BEAT = 60 / BPM; BAR = 4 * BEAT
 # (bass root, chord voicing, section): one line per 2.5 s bar
 SCORE = [
-    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'open'),      # 0  cover
-    ('D2', ['F#3', 'A3', 'B3', 'E4'], 'groove'),     # 1  the guest applies the discount
-    ('B1', ['D3', 'F#3', 'A3', 'C#4'], 'drop'),      # 2  the error opens
-    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'drop'),       # 3  why: the check is open
-    ('E2', ['D3', 'G3', 'B3', 'E4'], 'build'),       # 4  the POS
-    ('A1', ['D3', 'G3', 'B3', 'E4'], 'build'),       # 5  Cancel/Exit
-    ('F#1', ['D3', 'F#3', 'A3', 'E4'], 'build'),     # 6  minimised
-    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'build'),      # 7  back to the guest
-    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'lift'),       # 8  Retry
-    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'full'),      # 9  the discount lands
-    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'full'),       # 10 DISCOVERY Dollars
-    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'full'),       # 11
-    ('F#1', ['D3', 'F#3', 'A3', 'C#4'], 'full'),     # 12 recap
-    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'full'),       # 13
-    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'end'),       # 14 the logo
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'open'),      # 0  brand: Dine with DISCOVERY Dollars
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'groove'),    # 1  scan, sign in
+    ('B1', ['D3', 'F#3', 'A3', 'C#4'], 'groove'),    # 2  the bill
+    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'groove'),     # 3  the discount applies itself
+    ('E2', ['D3', 'G3', 'B3', 'E4'], 'drop'),        # 4  unless the check is open
+    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'drop'),       # 5  held
+    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'build'),      # 6  the POS
+    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'build'),      # 7  Cancel/Exit
+    ('F#1', ['D3', 'F#3', 'A3', 'E4'], 'build'),     # 8  on Home
+    ('B1', ['D3', 'F#3', 'A3', 'C#4'], 'build'),     # 9
+    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'lift'),       # 10 Retry
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'full'),      # 11 the discount lands
+    ('G1', ['D3', 'F#3', 'B3', 'E4'], 'full'),       # 12 DISCOVERY Dollars
+    ('A1', ['C#3', 'G3', 'B3', 'E4'], 'open'),       # 13 brand close
+    ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'end'),       # 14 the mark
     ('D2', ['F#3', 'A3', 'C#4', 'E4'], 'tail'),      # 15
 ]
 STABS = [(0, 1.6, 1.0), (1.5, .5, .7), (2.5, .9, .8), (3.5, .45, .6)]   # beat, length, velocity
@@ -204,54 +204,30 @@ for b, (root, voicing, sec) in enumerate(SCORE):
     if sec in ('groove', 'build', 'lift', 'full'):
         for q in range(4):
             tq = t0 + q * BEAT
-            if tq < 3.0: continue
+            if tq < 2.5: continue
             if q in (0, 2) or (sec == 'full' and q == 3 and b % 2): add(kick(), tq, .15)
-            if sec in ('build', 'lift', 'full') and q in (1, 3): add(snap(), tq, .09, .1, .25)
+            if sec in ('build', 'lift', 'full') and q in (1, 3): add(snap(), tq, .06, .1, .3)
             add(hat(), tq, .03, .35); add(hat(), tq + BEAT / 2, .05, .35)
         if sec == 'full':
             for s16 in range(16): add(hat(), t0 + s16 * BEAT / 4 + .01, .012, -.4)
     elif sec == 'drop':
         add(kick(), t0, .14)
 
-# motif: a question on the cover, the answer when the discount lands, and on the logo
+# motif: a question on the brand open, the answer when the discount lands, resolved on the mark
 for i, (n, beat) in enumerate([('F#5', 0), ('A5', .5), ('E5', 1.5), ('D5', 2.5)]):
-    add(marimba(hz(n), 1.6), .25 + beat * BEAT, .09, (-.2, .2, -.1, .1)[i], .6)
+    add(marimba(hz(n), 1.6), .3 + beat * BEAT, .08, (-.2, .2, -.1, .1)[i], .6)
 for i, (n, beat) in enumerate([('D5', 0), ('F#5', .5), ('A5', 1), ('D6', 1.5)]):
-    add(marimba(hz(n), 1.6), 9 * BAR + beat * BEAT, .08, (-.2, .2, -.1, .1)[i], .6)
+    add(marimba(hz(n), 1.6), 11 * BAR + beat * BEAT, .07, (-.2, .2, -.1, .1)[i], .6)
 for i, (n, d) in enumerate([('A5', 0), ('D6', .18), ('F#6', .36)]):
-    add(bell(hz(n), 3.0), 35.0 + d, .06, (-.2, 0, .2)[i], .8)
+    add(bell(hz(n), 3.0), 35.0 + d, .05, (-.2, 0, .2)[i], .8)
 
 # ------------------------------------------------------------------ effects, on the picture
 FX = [
-    (.35, tick(988), .13, 0, .3), (.47, tick(784), .12, 0, .3),     # the cover card is refused
-    (.95, sweep(.5, 1500, 6000), .06, .2, .2),            # its reason is marked
-    (1.60, tick(1175), .10, -.15, .4), (1.76, tick(1480), .10, .15, .4),   # the two steps land
-    (3.05, sweep(1.0, 300, 4200), .20, 0, .3),            # the cover lifts away
-    (3.55, thump(), .12, 0, .1),                           # the phone settles
-    (5.00, tick(988), .16, 0, .3), (5.12, tick(784), .14, 0, .3),   # the error opens: a small falling pair
-    (6.25, sweep(.8, 500, 3500), .12, 0, .3),             # the error lifts out
-    (7.25, sweep(.5, 1500, 6000), .07, .2, .2),           # its reason is marked
-    (9.70, sweep(.7, 3000, 400, False), .08, 0, .3),      # it settles back
-    (10.55, sweep(1.0, 400, 3000), .18, -.3, .3),         # push to the POS
-    (12.15, sweep(1.0, 600, 2500), .08, .2, .3),          # in to Cancel/Exit
-    (13.15, tick(1175), .14, .2, .4),                     # the ring draws
-    (13.90, sweep(.9, 2500, 500, False), .07, 0, .3),     # back out
-    (15.10, tap(), .75, .15, .1),                         # the tap
-    (15.40, click(), .30, .15, .15),                      # the screen changes to Home
-    (15.95, sweep(1.0, 600, 2500), .08, -.2, .3),         # in to the table
-    (16.85, tick(1320), .16, -.2, .4), (16.88, bell(hz('A5'), 1.6), .08, -.2, .6),   # B12/1 ringed
-    (18.75, sweep(1.0, 400, 3000), .18, .3, .3),          # push back to the guest
-    (19.95, sweep(1.5, 200, 5000), .06, 0, .4),           # a riser into the fix
-    (20.35, tap(), .7, 0, .1),                           # Retry
-    (20.52, sweep(.6, 2500, 600, False), .06, 0, .2),     # the card folds to checking
-    (21.50, bell(hz('D6')), .16, -.15, .7), (21.62, bell(hz('F#6')), .13, .15, .7),   # the discount lands
-    (22.25, sweep(.8, 500, 3500), .12, 0, .3),            # the bill lifts out
-    (23.00, sweep(.5, 1500, 6000), .07, .2, .2),          # the discount is marked
-    (24.70, sweep(.7, 3000, 400, False), .08, 0, .3),     # it settles back
-    (25.35, sweep(1.0, 400, 3000), .18, -.3, .3),         # push to the D$ dialog
-    (29.55, sweep(1.0, 400, 3000), .15, .3, .3),          # push to the recap
-    (34.35, sweep(1.1, 250, 4500), .16, 0, .4),           # the end card rises
-    (35.00, thump(), .10, 0, .3),
+    (4.50, tap(), .22, 0, .1),                            # guest taps Sign in (soft: context)
+    (6.20, tap(), .22, 0, .1),                            # guest taps View Bill (soft: context)
+    (18.80, tap(), .6, .15, .1),                          # Cancel/Exit: the action that matters
+    (26.40, tap(), .6, 0, .1),                            # Retry
+    (27.50, bell(hz('D6')), .14, -.15, .7), (27.62, bell(hz('F#6')), .11, .15, .7),   # the discount lands
 ]
 for t, sg, g, p, v in FX:
     add(sg, t, g, p, v, fx=True)
@@ -267,7 +243,7 @@ def reverb(x, secs=2.3):
 VLr, VRr = reverb(VL), reverb(VR)
 ta = np.arange(N) / SR
 duck = np.ones(N)
-for c, depth in ((15.1, .45), (15.4, .7), (20.35, .45), (21.5, .65), (16.85, .8), (5.0, .8)):
+for c, depth in ((18.8, .5), (26.4, .5), (27.5, .65)):
     d = np.where(ta < c, np.exp(-np.maximum(c - ta, 0) / .03), np.exp(-(ta - c) / .4))
     duck *= 1 - (1 - depth) * d
 L = (ML + VLr * .45) * duck + FL + VLr * .1
