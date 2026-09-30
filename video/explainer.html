@@ -13,11 +13,11 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
 .abs{position:absolute}
 /* type: every title shares one top line and size; lines rise out of a mask, never fade */
 .title{position:absolute;left:0;right:0;top:140px;text-align:center}
-.ln{display:block;overflow:hidden;padding:.04em 0 .14em;line-height:1.08}
+.ln{display:block;overflow:hidden;padding:26px 0 30px;margin:-24px 0 -28px;line-height:1.08}
 .ln > *{display:inline-block;will-change:transform}
 .h{font-family:Ivy,serif;font-size:54px;letter-spacing:0}
 .sub{font-family:Jost,sans-serif;font-size:31px;color:var(--muted);line-height:1.25}
-.num{display:inline-flex;vertical-align:middle;width:84px;height:84px;margin:-10px 22px 0 0;border-radius:50%;background:var(--purple);color:#fff;align-items:center;justify-content:center;font-family:Ivy,serif;font-size:50px}
+.num{display:inline-flex;vertical-align:middle;width:76px;height:76px;margin:-8px 22px 0 0;border-radius:50%;background:var(--purple);color:#fff;align-items:center;justify-content:center;font-family:Ivy,serif;font-size:50px}
 .cap{position:absolute;left:0;right:0;text-align:center}
 .cap .h{font-size:46px}
 /* phone */
@@ -61,6 +61,8 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
 #cvCard{position:absolute;left:184px;top:470px;width:712px;height:351px;border-radius:32px;overflow:hidden;box-shadow:0 36px 70px rgba(12,2,34,.38),0 2px 8px rgba(12,2,34,.18)}
 #cvCard img{position:absolute;left:-24px;top:-24px;width:760px}
 .onPurple .h{color:#fff}
+.chip{display:inline-flex;align-items:center;gap:16px;height:64px;padding:0 30px 0 12px;border-radius:32px;background:#6e40a0;color:#fff;font-size:29px}
+.chip b{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:#fff;color:#592A87;font-family:Ivy,serif;font-weight:normal;font-size:26px}
 </style></head>
 <body><div id="stage">
 
@@ -118,10 +120,11 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
   <div id="cover" class="abs panel onPurple"><div id="coverIn" class="abs" style="left:0;top:0;width:var(--W);height:var(--H)">
     <img class="abs" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="left:390px;top:150px;width:300px">
     <div class="title" style="top:320px"><span class="ln"><span class="h" style="font-size:64px">Seeing this on a guest’s phone?</span></span></div>
-    <div id="cvCard"><img src="../design/png/discount-error.png"></div>
-    <div class="title" style="top:900px"><span class="ln"><span class="h" style="font-size:64px;color:#dcc8f2">Here’s the two-step fix.</span></span>
-      <span class="ln" style="margin-top:10px"><span class="sub" style="color:rgba(255,255,255,.82)">Minimise the check on the POS,</span></span>
-      <span class="ln"><span class="sub" style="color:rgba(255,255,255,.82)">then the guest taps Retry.</span></span></div>
+    <div id="cvCard"><img src="../design/png/discount-error.png"><div id="cvMark" class="mark" style="left:30px;top:86px;width:462px;height:44px;mix-blend-mode:multiply;background:#f3d9df"></div></div>
+    <div id="cvFix" class="title" style="top:890px"><span class="ln"><span class="h" style="font-size:64px;color:#dcc8f2">Here’s the two-step fix.</span></span></div>
+    <div id="cvSteps" class="title" style="top:1010px">
+      <span class="ln"><span class="chip"><b>1</b>Minimise the check on the POS</span></span>
+      <span class="ln" style="margin-top:18px"><span class="chip"><b>2</b>The guest taps Retry</span></span></div>
     <div class="title" style="top:1318px"><span class="ln"><span style="font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.62)">Team guide · Dine with D$</span></span></div>
   </div></div>
 
@@ -251,8 +254,8 @@ const W = 1080, H = 1440;
 // masked lines: each rises in on a spring, and leaves upward, picking up speed
 function lines(id, t, a, o, st = .07) {
   $(id).querySelectorAll('.ln > *').forEach((el, i) => {
-    const p = spring(t, a + i * st, .9, .92, 8.5), x = eIn(seg(t, o + i * .035, o + i * .035 + .36));
-    el.style.transform = `translate3d(0,${((1 - p) * 118 - x * 118).toFixed(2)}%,0)`;
+    const p = spring(t, a + i * st, .62, .96, 9), x = eIn(seg(t, o + i * .035, o + i * .035 + .3));
+    el.style.transform = `translate3d(0,${((1 - p) * 175 - x * 175).toFixed(2)}%,0)`;
   });
 }
 // draw an SVG rect's stroke on, 0..1
@@ -313,8 +316,8 @@ const pmix = (A, B, k) => ({ s: Math.exp(lerp(Math.log(A.s), Math.log(B.s), k)),
 const PC_FULL = posCam(901, 507, 1), PC_EXIT = posCam(1411, 905, 2.4), PC_TILE = posCam(560, 430, 1.75);
 
 /* ---------------- the film (seconds)
-   0     cover
-   2.9   cover lifts away; the guest's phone rises     "A guest applies their member discount."
+   0     cover: the card shakes, its reason is marked, the fix and its two steps arrive
+   3.05  cover lifts away; the guest's phone rises     "A guest applies their member discount."
    5.0   the discount card opens as an error           "But the discount fails."
    6.3   the error lifts out; its reason is marked     "The check is still open on a POS terminal."
    10.6  push to the POS                               "1  Minimise the check on the POS."
@@ -326,10 +329,16 @@ const PC_FULL = posCam(901, 507, 1), PC_EXIT = posCam(1411, 905, 2.4), PC_TILE =
    34.4  the purple end card rises; the logo          */
 function render(t) {
   // cover: a panel that lifts away, its content a little faster than the ground
-  const cv = glide(t, 2.9, 1.0);
+  // the intro plays as its own short scene: composed on frame one, the card is refused
+  // with a shake, its reason is marked, then the fix and its two steps arrive
+  const cv = glide(t, 3.05, 1.0);
   $('cover').style.transform = `translate3d(0,${(-H * cv).toFixed(2)}px,0)`;
   $('coverIn').style.transform = `translate3d(0,${(-160 * cv).toFixed(2)}px,0)`;
-  $('cvCard').style.transform = `scale(${(1 + .02 * clamp(t / 2.9)).toFixed(5)})`;
+  const sx = t > .35 && t < 1.0 ? 16 * Math.exp(-6 * (t - .35)) * Math.sin(2 * Math.PI * 5.5 * (t - .35)) : 0;
+  $('cvCard').style.transform = `translate3d(${sx.toFixed(2)}px,0,0) scale(${(1 + .015 * clamp(t / 3)).toFixed(5)})`;
+  $('cvMark').style.transform = `scaleX(${clamp(glide(t, .95, .7)).toFixed(4)})`;
+  lines('cvFix', t, 1.25, 99);
+  lines('cvSteps', t, 1.6, 99, .16);
   $('cover').style.display = cv > .999 ? 'none' : 'block';
 
   // phone: rises, pushes left, returns from the right, pushes left again

@@ -223,7 +223,10 @@ for i, (n, d) in enumerate([('A5', 0), ('D6', .18), ('F#6', .36)]):
 
 # ------------------------------------------------------------------ effects, on the picture
 FX = [
-    (2.90, sweep(1.0, 300, 4200), .20, 0, .3),            # the cover lifts away
+    (.35, tick(988), .13, 0, .3), (.47, tick(784), .12, 0, .3),     # the cover card is refused
+    (.95, sweep(.5, 1500, 6000), .06, .2, .2),            # its reason is marked
+    (1.60, tick(1175), .10, -.15, .4), (1.76, tick(1480), .10, .15, .4),   # the two steps land
+    (3.05, sweep(1.0, 300, 4200), .20, 0, .3),            # the cover lifts away
     (3.55, thump(), .12, 0, .1),                           # the phone settles
     (5.00, tick(988), .16, 0, .3), (5.12, tick(784), .14, 0, .3),   # the error opens: a small falling pair
     (6.25, sweep(.8, 500, 3500), .12, 0, .3),             # the error lifts out
