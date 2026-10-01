@@ -60,7 +60,9 @@ const ff = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-fram
 const N = Math.round(dur * FPS);
 for (let i = 0; i < N; i++) {
   await page.evaluate((t) => render(t), i / FPS);
-  const buf = await page.screenshot(PREVIEW ? { type: 'jpeg', quality: 88 } : { type: 'png' });
+  // frames as high-quality JPEG: a 2x PNG per frame is several times slower, and after the 2x
+  // downscale and H.264 the difference does not show
+  const buf = await page.screenshot({ type: 'jpeg', quality: PREVIEW ? 88 : 96 });
   if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
   if (i % 300 === 0) console.log(`  ${(i / FPS).toFixed(0)} s / ${dur} s`);
 }

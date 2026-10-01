@@ -41,6 +41,10 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
 .top .say{font-size:76px}
 .top .sup{font-size:34px}
 .logo img{display:inline-block;width:330px;height:auto;vertical-align:top}
+/* the cover and the close: purple, white type, the white logo */
+.panel{position:absolute;left:0;top:0;width:var(--W);height:var(--H);background:var(--purple);overflow:hidden}
+.onPurple .say{color:#fff}
+.onPurple .sup{color:rgba(255,255,255,.82)}
 .gapL{margin-top:-6px}
 .gapS{margin-top:-26px}
 .gap{margin-top:-12px}
@@ -89,6 +93,14 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
 #dlg img{position:absolute;left:-28px;top:-28px;width:690px}
 </style></head>
 <body><div id="stage">
+  <!-- the cover: the opening frame, and the thumbnail. Purple, behind the phone, so it can
+       slide away as the film begins while the phone stays where it is -->
+  <div id="cover" class="panel onPurple"><div id="coverIn" class="panel" style="background:none">
+    <div id="c1" class="title cover"><span class="ln logo"><img src="assets/logo-white.svg" alt="Cinnamon DISCOVERY"></span>
+      <span class="ln gapL"><span class="say">When the</span></span><span class="ln"><span class="say">check is open</span></span><span class="ln"><span class="say">on the POS.</span></span>
+      <span class="ln gap"><span class="sup">Dine with DISCOVERY Dollars</span></span></div>
+  </div></div>
+
 
   <!-- the product -->
   <div id="phone" class="abs"><div id="screen">
@@ -143,18 +155,17 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
   <div id="w6" class="title"><span class="ln"><span class="step">Step 3 of 3</span></span>
     <span class="ln gapS"><span class="say">Ask the guest</span></span><span class="ln"><span class="say">to tap Retry.</span></span></div>
   <div id="w7" class="title"><span class="ln"><span class="say">The discount</span></span><span class="ln"><span class="say">is on the bill.</span></span>
-    <span class="ln gap"><span class="sup">Nothing else to do.</span></span></div>
+    <span class="ln gap"><span class="sup">The guest sees it on their phone</span></span><span class="ln"><span class="sup">straight away.</span></span></div>
   <div id="w8" class="title"><span class="ln"><span class="say">Same fix for</span></span><span class="ln"><span class="say">DISCOVERY</span></span><span class="ln"><span class="say">Dollars.</span></span>
     <span class="ln gap"><span class="sup">Minimise the check,</span></span><span class="ln"><span class="sup">then the guest taps Retry.</span></span></div>
 
-  <!-- the cover: the opening frame, and the thumbnail. The brand, the situation, the phone -->
-  <div id="c1" class="title cover"><span class="ln logo"><img src="assets/logo-purple.svg" alt="Cinnamon DISCOVERY"></span>
-    <span class="ln gapL"><span class="say">When the</span></span><span class="ln"><span class="say">check is open</span></span><span class="ln"><span class="say">on the POS.</span></span>
-    <span class="ln gap"><span class="sup">Dine with DISCOVERY Dollars · A team guide</span></span></div>
-  <!-- the close: centred, the rule, the brand -->
-  <div id="e1" class="title mid"><span class="ln"><span class="say">Minimise the check.</span></span><span class="ln"><span class="say">Tap Retry.</span></span>
+
+  <!-- the close: purple, rising over everything; the rule, centred, and the white logo -->
+  <div id="endPanel" class="panel onPurple">
+    <div id="e1" class="title mid"><span class="ln"><span class="say">Minimise the check.</span></span><span class="ln"><span class="say">Tap Retry.</span></span>
     <span class="ln gap"><span class="sup">Still seeing it? Let your supervisor know.</span></span>
-    <span class="ln logo" style="margin-top:28px"><img src="assets/logo-purple.svg" alt="Cinnamon DISCOVERY"></span></div>
+    <span class="ln logo" style="margin-top:28px"><img src="assets/logo-white.svg" alt="Cinnamon DISCOVERY"></span></div>
+  </div>
 </div>
 <script>
 /* ------------------------------------------------------------------ POS screens
@@ -384,11 +395,15 @@ function render(t) {
 
   // the DISCOVERY Dollars dialog: in from the right, out to the right for the close
   let gx = t < 25.5 ? 900 : 900 * (1 - glide(t, 25.5, 1.0));
-  if (t >= 28.4) gx = 900 * glide(t, 28.4, .8);
   $('dlg').style.transform = `translate3d(${(COL - 317 * 1.18 + gx).toFixed(2)}px,${(540 - 254 * 1.18).toFixed(2)}px,0) scale(1.18)`;
   $('dlg').style.display = gx > 880 ? 'none' : 'block';
 
-  lines('c1', t, -9, 2.4, .06);              // the cover is at rest on the first frame
+  // the cover slides up and away, taking its words with it; the phone stays
+  const cv = glide(t, 2.45, 1.0);
+  $('cover').style.transform = `translate3d(0,${(-H * cv).toFixed(2)}px,0)`;
+  $('coverIn').style.transform = `translate3d(0,${(-140 * cv).toFixed(2)}px,0)`;
+  $('cover').style.display = cv > .999 ? 'none' : 'block';
+  lines('c1', t, -9, 99);                    // at rest on the first frame (the thumbnail)
   lines('w1', t, 2.75, 5.5);
   lines('w2', t, 5.85, 9.35);
   lines('w3', t, 9.6, 11.55);
@@ -397,15 +412,18 @@ function render(t) {
   lines('w6', t, 18.6, 22.6);
   lines('w7', t, 22.8, 25.35);
   lines('w8', t, 25.6, 28.35);
-  lines('e1', t, 28.9, 99, .1);
+  const en = glide(t, 28.5, 1.0);              // the close rises over everything
+  $('endPanel').style.transform = `translate3d(0,${(H * (1 - en)).toFixed(2)}px,0)`;
+  $('endPanel').style.display = en > 0 ? 'block' : 'none';
+  lines('e1', t, 29.1, 99, .1);
 }
 window.render = render;
 window.DURATION = 34;
 window.SIZE = { w: W, h: H };
 /* the storyboard: one entry per shot (storyboard.mjs renders each at t) */
 window.SHOTS = [
-  { t: 0, from: 0, to: 2.4, id: 'c1', kind: 'Cover · thumbnail', action: 'The opening frame is the thumbnail. Brand, the situation, and the guest’s phone showing “Failed to apply discount on POS”.', sound: 'Music opens on a question (marimba).' },
-  { t: 4.2, from: 2.75, to: 5.5, id: 'w1', action: 'The cover words go; the phone stays, scrolled to the error.', sound: 'Groove settles in.' },
+  { t: 0, from: 0, to: 2.4, id: 'c1', kind: 'Cover · thumbnail', action: 'The opening frame is the thumbnail. Purple, the white logo and the situation, beside the guest’s phone showing “Failed to apply discount on POS”.', sound: 'Music opens on a question (marimba).' },
+  { t: 4.2, from: 2.75, to: 5.5, id: 'w1', action: 'The purple cover slides away with its words; the phone stays, scrolled to the error.', sound: 'Groove settles in.' },
   { t: 7.6, from: 5.85, to: 9.35, id: 'w2', action: 'The error card lifts out of the phone, the reason marked: Check is open on another terminal.', sound: '' },
   { t: 10.8, from: 9.6, to: 11.55, id: 'w3', action: 'The POS slides in under a centred statement: Pick Up Check, Table B12/1.', sound: '' },
   { t: 13.5, from: 11.75, to: 14.6, id: 'w4', action: 'Close in on the bottom row. Cancel/Exit ringed and pressed, between Void and Make Payment.', sound: 'Tap.' },
@@ -413,7 +431,7 @@ window.SHOTS = [
   { t: 20.9, from: 18.6, to: 22.6, id: 'w6', action: 'The phone returns. The guest taps Retry; the app checks for the discount.', sound: 'Tap.' },
   { t: 24.4, from: 22.8, to: 25.35, id: 'w7', action: 'The bill lifts out with the discount row marked.', sound: 'Success chime; the music answers its opening question.' },
   { t: 27.2, from: 25.6, to: 28.35, id: 'w8', action: 'The DISCOVERY Dollars version of the same error; same fix.', sound: '' },
-  { t: 31.5, from: 28.9, to: 34, id: 'e1', kind: 'Close', action: 'The rule, centred, and the Cinnamon DISCOVERY logo.', sound: 'Bells resolve on the logo.' },
+  { t: 31.5, from: 28.9, to: 34, id: 'e1', kind: 'Close', action: 'Purple rises over everything: the rule, centred, and the white Cinnamon DISCOVERY logo.', sound: 'Bells resolve on the logo.' },
 ];
 const q = new URLSearchParams(location.search);
 if (q.has('t')) render(+q.get('t'));

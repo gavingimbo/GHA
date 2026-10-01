@@ -10,7 +10,7 @@ Make Payment), ask the guest to tap Retry. The same fix works for DISCOVERY Doll
 
 **`forgotten-password.mp4`** — 1920 × 1080, 60 fps, 51 s. A guest can't sign in: show them
 Forgot Password?, then the four steps exactly as MyMenu ships them (build of 30 Sep 2026,
-13:08 GMT): **1** check the email or username and tap Send code, **2** enter the 6-digit
+13:08 GMT): **1** check the email and tap Send code, **2** enter the 6-digit
 code from the email and tap Verify code, **3** choose a new password until every rule is
 green and tap Reset password, **4** tap Yes, sign me in. They are back at the same table,
 same bill, no new QR. Then the two things that go wrong: no code (check junk, then Resend
@@ -24,15 +24,18 @@ with the words on screen, what happens and what you hear. Open `storyboard/index
 
 ## The rules these films are made to
 
-- **Colour: three.** Ink `#14102E` for type, paper `#FAFAFA` behind the product, purple for
-  the brand: the Cinnamon DISCOVERY logo (Cinnamon Purple `#612D87`), the step label and the
-  rings (`#592A87`). Everything else is the product's own UI.
+- **Colour: three.** Purple `#592A87` for the brand moments (the cover and the close, with
+  white type and the white Cinnamon DISCOVERY logo, and the step label and rings in between),
+  ink `#14102E` for type, paper `#FAFAFA` behind the product. Everything else is the
+  product's own UI.
 - **Alignment (16:9).** One statement, set left in its own column (900 px from x 126),
   vertically centred, with the product beside it in the right-hand column (centred on
   x 1470) and cropped by the frame. The POS is wide, so it sits centred under a centred
-  statement. The close is centred: the rule, then the logo.
-- **The cover is the thumbnail.** The first frame: the logo, the situation in large type
-  set left, and the guest's phone showing the problem. It stays in place as the film starts.
+  statement. The close is a purple panel rising over everything: the rule, centred, then
+  the white logo.
+- **The cover is the thumbnail.** The first frame, on purple: the white logo, the situation
+  in large white type set left, and the guest's phone showing the problem. The purple slides
+  away with its words as the film starts; the phone stays where it is.
 - **Type: the product's faces.** IvyMode states, Jost supports and numbers the step
   ("Step 2 of 4"). IvyMode is a high-contrast display cut: at video size its hairlines
   (the arm of a k, the thin stroke of an x) fall under a pixel and vanish, and some pairs

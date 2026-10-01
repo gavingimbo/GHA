@@ -36,8 +36,8 @@ for (const film of (process.argv[2] ? [process.argv[2]] : ['password.html', 'exp
   for (const id of ids) {
     const info = await page.evaluate((id) => {
       document.querySelectorAll('.title').forEach((t) => { t.style.visibility = t.id === id ? 'visible' : 'hidden'; });
-      const panel = document.getElementById(id).closest('.panel');
-      document.querySelectorAll('.panel').forEach((p) => { p.style.display = p === panel ? 'block' : 'none'; });
+      const el = document.getElementById(id);
+      document.querySelectorAll('.panel').forEach((p) => { p.style.display = p.contains(el) ? 'block' : 'none'; });
       return [...document.getElementById(id).querySelectorAll('.ln > *')].map((el) => {
         const lh = parseFloat(getComputedStyle(el).lineHeight) || parseFloat(getComputedStyle(el).fontSize) * 1.2;
         const r = el.getBoundingClientRect();
