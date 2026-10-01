@@ -1,12 +1,17 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><title>Dine with DISCOVERY Dollars</title>
-<link rel="stylesheet" href="assets/fonts/brand.css">
 <style>
+/* Type: the product's faces. IvyMode states, Jost supports and numbers the step.
+   IvyMode is a high-contrast display cut: at video size its hairlines (the arm of a
+   k, the thin stroke of an x) fall under a pixel and vanish, and its tight pairs
+   touch. So every statement is tracked open a little and carries a hairline stroke
+   in its own colour, sized in em so the larger end titles scale with it. */
+@font-face{font-family:Ivy;src:url(../assets/fonts/ivymode-gha-semibold.woff2) format('woff2')}
+@font-face{font-family:Jost;src:url(../assets/fonts/jost-regular.woff) format('woff')}
 /* ---------------------------------------------------------------- the rules
    Colour: three, and only three, of our own. Purple for brand moments, ink for
    type, paper behind the product. Everything else on screen is the product's own.
-   Type: Proxima Nova, three weights: bold states, regular supports, semibold
-   numbers the step. Ground: flat. No gradients, no blur.
+   Ground: flat. No gradients, no blur.
    Frame: one shot, one idea. The words sit above; the object sits below, large
    enough to read. */
 @font-face{font-family:PosSans;font-weight:400;src:url(assets/fonts/open-sans-400.woff2) format('woff2')}
@@ -14,18 +19,21 @@
 :root{--purple:#592A87;--ink:#14102E;--paper:#FAFAFA;--W:1080px;--H:1440px}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)}
-#stage{position:relative;width:var(--W);height:var(--H);overflow:hidden;background:var(--paper);color:var(--ink);font-family:Brand,sans-serif;
+#stage{position:relative;width:var(--W);height:var(--H);overflow:hidden;background:var(--paper);color:var(--ink);font-family:Jost,sans-serif;
   font-kerning:normal;font-feature-settings:"kern" 1,"liga" 1;text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased}
 .abs{position:absolute}
 /* type */
-.title{position:absolute;left:0;right:0;top:112px;text-align:center}
-.ln{display:block;overflow:hidden;padding:18px 0 22px;margin:-16px 0 -20px;line-height:1.1}
+/* each line is its own mask, generous above and below so no ascender, accent or
+   descender is ever clipped; the lines stack in a column so those margins cancel
+   instead of collapsing, and the pitch is the line height */
+.title{position:absolute;left:0;right:0;top:112px;text-align:center;display:flex;flex-direction:column}
+.ln{display:block;overflow:hidden;padding:36px 24px;margin:-36px 0;line-height:1.18}
 .ln > *{display:inline-block;will-change:transform}
-.step{font-weight:600;font-size:28px;letter-spacing:.15em;text-transform:uppercase;color:var(--purple)}
-.say{font-weight:700;font-size:62px;letter-spacing:-.012em}
-.sup{font-weight:400;font-size:31px;color:rgba(20,16,46,.66);line-height:1.3}
-.gapS{margin-top:6px}
-.gap{margin-top:12px}
+.step{font-family:Jost,sans-serif;font-size:27px;letter-spacing:.2em;padding-left:.2em;text-transform:uppercase;color:var(--purple)}
+.say{font-family:Ivy,serif;font-size:66px;letter-spacing:.035em;-webkit-text-stroke:.013em currentColor;font-kerning:normal}
+.sup{font-family:Jost,sans-serif;font-size:30px;color:rgba(20,16,46,.66);line-height:1.3;letter-spacing:.01em}
+.gapS{margin-top:-26px}
+.gap{margin-top:-12px}
 .onPurple .say{color:#fff}
 .onPurple .sup{color:rgba(255,255,255,.72)}
 /* phone */
@@ -33,7 +41,7 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
 #screen{position:relative;width:393px;height:852px;border-radius:54px;overflow:hidden;background:#fafafa}
 #page{position:absolute;left:0;top:54px;width:393px;height:852px}
 .status{position:absolute;left:0;top:0;width:393px;height:54px;background:#fff;z-index:4}
-.status .time{position:absolute;left:0;width:130px;top:16px;text-align:center;font-weight:600;font-size:17px;letter-spacing:-.01em;color:#000}
+.status .time{position:absolute;left:0;width:130px;top:16px;text-align:center;font-family:PosSans,sans-serif;font-weight:600;font-size:17px;letter-spacing:-.01em;color:#000}
 .status svg{position:absolute;top:21px}
 .view{position:absolute;left:0;top:0;width:393px;height:852px;overflow:hidden}
 .lay{position:absolute;left:0;top:0;width:393px;height:852px;background-size:393px 852px}
@@ -140,7 +148,7 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
     <div class="title" style="top:812px"><span class="ln"><span class="sup">Dine with DISCOVERY Dollars · A team guide</span></span></div>
   </div></div>
   <div id="endPanel" class="abs panel onPurple">
-    <div id="e1" class="title" style="top:500px"><span class="ln"><span class="say" style="font-size:80px">Minimise the check.</span></span><span class="ln"><span class="say" style="font-size:80px">Tap Retry.</span></span></div>
+    <div id="e1" class="title" style="top:500px"><span class="ln"><span class="say" style="font-size:84px">Minimise the check.</span></span><span class="ln"><span class="say" style="font-size:84px">Tap Retry.</span></span></div>
     <div id="e2" class="title" style="top:738px"><span class="ln"><span class="sup">Still seeing it? Let your supervisor know.</span></span></div>
     <div id="endLogo" class="abs" style="left:330px;top:1180px;width:420px;height:66px;overflow:hidden"><img id="endLogoImg" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="width:420px;display:block;will-change:transform"></div>
   </div>

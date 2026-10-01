@@ -18,10 +18,6 @@ const rest = args.filter((a) => !a.startsWith('--'));
 const FFMPEG = process.env.FFMPEG || '/usr/local/lib/python3.11/dist-packages/imageio_ffmpeg/binaries/ffmpeg-linux-x86_64-v7.0.2';
 const FPS = PREVIEW ? 30 : 60, SS = PREVIEW ? 1 : 2, only = rest[0];
 
-// Proxima Nova, if the licensed files are in assets/fonts/; otherwise the stand-in
-const proxima = ['400', '600', '700'].every((w) => fs.existsSync(path.join(HERE, `assets/fonts/proxima-nova-${w}.woff2`)));
-console.log(`type: ${proxima ? 'Proxima Nova' : 'Figtree stand-in (add the licensed Proxima Nova files to video/assets/fonts/)'}`);
-
 // served over http so the films can drive the mockup inside their phones (same origin)
 const MIME = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.png': 'image/png',
   '.jpg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff': 'font/woff', '.woff2': 'font/woff2', '.otf': 'font/otf' };

@@ -30,6 +30,13 @@ for (const [name, ds] of [['failed','failed'],['checking','checking'],['ok','ok'
   await settle();
   // Before the retry succeeds the POS has not taken the discount, so its bill row is not shown.
   if (ds !== 'ok') await page.evaluate(() => [...document.querySelectorAll('[class*="_bill_row_"]')].filter(x => /Discount/.test(x.textContent)).forEach(x => x.remove()));
+  // The film shows the phone far smaller than a phone in the hand, so IvyMode's hairlines
+  // (headings, the error title, Retry) get a hairline stroke in their own colour, as the
+  // films' titles do; layout is untouched.
+  await page.evaluate(() => {
+    if (!document.getElementById('film-ivy')) document.head.insertAdjacentHTML('beforeend', '<style id="film-ivy">.film_ivy{-webkit-text-stroke:.018em currentColor}</style>');
+    document.querySelectorAll('#root *').forEach((el) => { if (/IvyMode/.test(getComputedStyle(el).fontFamily)) el.classList.add('film_ivy'); });
+  });
   await page.screenshot({ path: path.join(OUT, `screen-${name}.png`) });
   rects[name] = await page.evaluate(() => {
     const r = (el) => { if (!el) return null; const b = el.getBoundingClientRect(); return { x: b.x, y: b.y, w: b.width, h: b.height }; };

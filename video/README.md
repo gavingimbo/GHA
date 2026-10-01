@@ -21,8 +21,13 @@ Send code again).
 
 - **Colour: three.** Purple `#592A87` for brand moments (open and close), ink `#14102E`
   for type, paper `#FAFAFA` behind the product. Everything else is the product's own UI.
-- **Type: Proxima Nova.** Bold states, regular supports, semibold numbers the step
-  ("Step 2 of 4"). See *Proxima Nova* below.
+- **Type: the product's faces.** IvyMode states, Jost supports and numbers the step
+  ("Step 2 of 4"). IvyMode is a high-contrast display cut: at video size its hairlines
+  (the arm of a k, the thin stroke of an x) fall under a pixel and vanish, and some pairs
+  touch (OV, RY, ck). So statements are tracked open by .035em and carry a hairline
+  stroke in their own colour (.013em, so larger titles scale with it); the IvyMode text
+  inside the phones gets the same treatment. Each line is its own mask, 36 px clear
+  above and below, so no accent, ascender or descender is cut. `check-type.mjs` proves it.
 - **Ground: flat.** No gradients, no blur.
 - **Frame: one shot, one idea.** One statement above, the product below, large enough to
   read on a phone: the phone sits big and is cropped by the bottom of the frame; details
@@ -41,17 +46,6 @@ Send code again).
 - **Sound: only what matters.** The taps, soft key clicks under the typing, the email
   arriving, and one chime when it works.
 
-## Proxima Nova
-
-Proxima Nova is licensed, so it is not committed. To render with it, put the licensed web
-fonts in `assets/fonts/` as `proxima-nova-400.woff2`, `proxima-nova-600.woff2` and
-`proxima-nova-700.woff2` (Regular, Semibold, Bold) and re-render; nothing else changes. A
-machine with Proxima Nova installed is picked up through `local()` first. Until then the
-films use Figtree (SIL OFL, `assets/fonts/standin/`), the closest open-licence match, so
-the layout is already set for Proxima Nova. `record.mjs` prints which face it used.
-(Cinnamon's website serves Proxima Nova from an Adobe Fonts kit licensed to that site; it
-is not taken from there.)
-
 ## Files
 
 - `explainer.html`, `password.html` — the films; every frame is `render(t)`. `?t=12` holds a
@@ -59,8 +53,8 @@ is not taken from there.)
   (`npx http-server -p 8181 .`, then `/video/password.html`): the password film reaches into
   its phone's page, which needs the same origin. The POS is an illustration based on our
   POS's Pick Up Check and Home screens.
-- `assets/fonts/brand.css` — the films' type (Proxima Nova, with the stand-in).
-- `capture.mjs` — captures the check-open app states at 3× from `../index.html`.
+- `capture.mjs` — captures the check-open app states at 3× from `../index.html`, with
+  IvyMode's hairlines strengthened as above.
 - `capture-email.mjs [app root]` — renders the real reset-code email
   (`reference/email/password-reset-code.html`) at 640 px, 3×, into `assets/reset/email.png`,
   under the film's venue (Dreams & Beats).
@@ -70,6 +64,9 @@ is not taken from there.)
   soundtrack under it. `--film=password` for the second film. Run `audio.py` first.
   `node video/record.mjs --film=password 4,12` writes stills; `--preview` writes a quick
   1×, 30 fps, silent `preview-*.mp4` for checking motion.
+- `check-type.mjs` — checks every statement in both films at rest: no line wraps, every
+  line fits the frame, and nothing is clipped by its mask (each line is shot with its
+  mask on and off; any pixel that differs was being cut off).
 
 Paths to Playwright, Chromium and ffmpeg are set for the cloud container (`FFMPEG`
 overrides ffmpeg; `pip install imageio-ffmpeg numpy` provides it and the audio's numpy).
