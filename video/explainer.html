@@ -92,7 +92,7 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
 </style></head>
 <body><div id="stage">
   <!-- the cover: the opening frame, and the thumbnail. Purple, behind the phone, so it can
-       slide away as the film begins while the phone stays where it is -->
+       slide away as the film begins while the phone settles into place -->
   <div id="cover" class="panel onPurple"><div id="coverIn" class="panel" style="background:none">
     <div id="c1" class="title cover"><span class="ln logo"><img src="assets/logo-white.svg" alt="Cinnamon DISCOVERY"></span>
       <span class="ln gapL"><span class="say">When the check is open</span></span><span class="ln"><span class="say">on the POS.</span></span>
@@ -344,7 +344,7 @@ const onScreen = (x, pageY) => ({ x: REST.x + (12 + x) * S, y: REST.y + (12 + 54
 /* ---------------------------------------------------------------- the film
    Told from the team member's side: what you see, what it means, what you do.
    0     Cover (and thumbnail): the brand, the situation, the phone with the error  calm
-   2.5   A guest shows you this: the phone stays, the error on it                  steady
+   3.0   A guest shows you this: the phone settles, the error on it                steady
    5.6   What it means: the error stands alone, its reason marked                 held
    9.5   Find the check on the POS                                                steady
    11.7  Tap Cancel/Exit (in, ring, tap, out); the POS repaints to Home           precise
@@ -396,7 +396,7 @@ function render(t) {
   $('dlg').style.transform = `translate3d(${(CX - 317 * 1.3 + gx).toFixed(2)}px,${(820 - 254 * 1.3).toFixed(2)}px,0) scale(1.3)`;
   $('dlg').style.display = gx > 1080 ? 'none' : 'block';
 
-  // the cover slides up and away, taking its words with it; the phone stays
+  // the cover slides up and away, taking its words with it; the phone settles (above)
   const cv = glide(t, 2.45, 1.0);
   $('cover').style.transform = `translate3d(0,${(-H * cv).toFixed(2)}px,0)`;
   $('coverIn').style.transform = `translate3d(0,${(-140 * cv).toFixed(2)}px,0)`;
@@ -420,8 +420,8 @@ window.DURATION = 34;
 window.SIZE = { w: W, h: H };
 /* the storyboard: one entry per shot (storyboard.mjs renders each at t) */
 window.SHOTS = [
-  { t: 0, from: 0, to: 2.4, id: 'c1', kind: 'Cover · thumbnail', action: 'The opening frame is the thumbnail. Purple, the white logo and the situation, beside the guest’s phone showing “Failed to apply discount on POS”.', sound: 'Music opens on a question (marimba).' },
-  { t: 4.2, from: 3.0, to: 5.5, id: 'w1', action: 'The purple cover slides away with its words; the phone stays, scrolled to the error.', sound: 'Groove settles in.' },
+  { t: 0, from: 0, to: 2.4, id: 'c1', kind: 'Cover · thumbnail', action: 'The opening frame is the thumbnail. Purple: the white logo and the situation, over the guest’s phone showing “Failed to apply discount on POS”.', sound: 'Music opens on a question (marimba).' },
+  { t: 4.2, from: 3.0, to: 5.5, id: 'w1', action: 'The purple cover slides away with its words; the phone settles into place, scrolled to the error.', sound: 'Groove settles in.' },
   { t: 7.6, from: 5.85, to: 9.35, id: 'w2', action: 'The error card lifts out of the phone, the reason marked: Check is open on another terminal.', sound: '' },
   { t: 10.8, from: 9.6, to: 11.55, id: 'w3', action: 'The POS slides in under a centred statement: Pick Up Check, Table B12/1.', sound: '' },
   { t: 13.5, from: 11.75, to: 14.6, id: 'w4', action: 'Close in on the bottom row. Cancel/Exit ringed and pressed, between Void and Make Payment.', sound: 'Tap.' },

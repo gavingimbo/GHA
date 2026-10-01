@@ -48,8 +48,8 @@ for (const film of FILMS) {
     const words = await page.evaluate((id) => [...document.getElementById(id).querySelectorAll('.ln > *')]
       .map((el) => ({ cls: el.className || (el.tagName === 'IMG' ? 'logo' : ''), text: el.textContent.trim() })), shot.id);
     const name = `${film.key}-${String(i + 1).padStart(2, '0')}.jpg`;
-    await jpeg(await page.screenshot({ type: 'png' }), path.join(OUT, 'frames', name), 1280);
-    if (i === 0) await jpeg(await page.screenshot({ type: 'png' }), path.join(OUT, 'frames', `${film.key}-cover.jpg`), 1920);
+    await jpeg(await page.screenshot({ type: 'png' }), path.join(OUT, 'frames', name), 720);
+    if (i === 0) await jpeg(await page.screenshot({ type: 'png' }), path.join(OUT, 'frames', `${film.key}-cover.jpg`), 1080);
     out.push({ ...shot, n: i + 1, frame: `frames/${name}`, words });
     process.stdout.write(`  ${name}\n`);
   }
@@ -72,22 +72,24 @@ const wordsHtml = (words) => {
 };
 const shotHtml = (s) => `
       <li class="shot">
-        <figure><img src="${s.frame}" width="1280" height="720" loading="lazy" alt="Shot ${s.n}: ${esc(s.words.filter((w) => w.cls === 'say').map((w) => w.text).join(' '))}"></figure>
+        <figure><img src="${s.frame}" width="720" height="900" loading="lazy" alt="Shot ${s.n}: ${esc(s.words.filter((w) => w.cls === 'say').map((w) => w.text).join(' '))}"></figure>
         <div class="shot-meta"><span class="n">${String(s.n).padStart(2, '0')}</span><span class="tc">${tc(s.from)} – ${tc(s.to)}</span>${s.kind ? `<span class="kind">${esc(s.kind)}</span>` : ''}</div>
         <div class="words">${wordsHtml(s.words)}</div>
         <dl><dt>On screen</dt><dd>${esc(s.action)}</dd>${s.sound ? `<dt>Sound</dt><dd>${esc(s.sound)}</dd>` : ''}</dl>
       </li>`;
 const filmHtml = (b) => `
   <section class="film" id="${b.key}">
+    <div class="film-intro">
     <header class="film-head">
-      <p class="eyebrow">${b.key === 'password' ? 'Film 1' : 'Film 2'} · 16:9 · ${Math.round(b.dur)} s · ${b.shots.length} shots</p>
+      <p class="eyebrow">${b.key === 'password' ? 'Film 1' : 'Film 2'} · 4:5 · ${Math.round(b.dur)} s · ${b.shots.length} shots</p>
       <h2>${esc(b.name)}</h2>
       <p class="about">${esc(b.about)}</p>
     </header>
     <figure class="cover">
-      <img src="frames/${b.key}-cover.jpg" width="1920" height="1080" alt="Cover and thumbnail: ${esc(b.name)}">
+      <img src="frames/${b.key}-cover.jpg" width="1080" height="1350" alt="Cover and thumbnail: ${esc(b.name)}">
       <figcaption>Cover and thumbnail. The film opens on this frame, and it is the file’s cover art.</figcaption>
     </figure>
+    </div>
     <ol class="shots">${b.shots.map(shotHtml).join('')}
     </ol>
   </section>`;
@@ -119,13 +121,15 @@ nav a{color:var(--ink);text-decoration:none;border:1px solid var(--line);border-
 nav a:hover,nav a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
 .eyebrow{font:600 12px/1.4 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--dune);margin:0}
 .film{display:flex;flex-direction:column;gap:24px;padding-top:40px;border-top:1px solid var(--line);margin-top:40px}
-.film-head{display:flex;flex-direction:column;gap:8px;max-width:70ch}
+.film-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);gap:24px 40px;align-items:start}
+@media (max-width:760px){ .film-intro{grid-template-columns:1fr} .film-intro .cover{max-width:420px} }
+.film-head{display:flex;flex-direction:column;gap:8px;max-width:60ch}
 h2{font:600 clamp(26px,3.2vw,38px)/1.12 var(--display);margin:0;text-wrap:balance}
 .about{margin:0;color:var(--muted)}
 figure{margin:0}
 img{display:block;width:100%;height:auto;max-width:100%;border-radius:10px;background:#FAFAFA;box-shadow:0 0 0 1px var(--line)}
 .cover figcaption{margin-top:10px;color:var(--muted);font-size:14px}
-.shots{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:28px 24px}
+.shots{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:28px 24px}
 .shot{display:flex;flex-direction:column;gap:10px;min-width:0}
 .shot-meta{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
 .shot-meta .n{font:600 13px var(--body);color:var(--accent);letter-spacing:.06em}
@@ -146,7 +150,7 @@ dd{margin:0;min-width:0}
   <header class="top">
     <p class="eyebrow">Cinnamon DISCOVERY · Dine with DISCOVERY Dollars · Team guides</p>
     <h1>Two team films, shot by shot</h1>
-    <p>For F&amp;B team members on the floor. Each film is 16:9 and told from the team member’s side: one statement set left beside the product, or centred over the POS. Every frame below is rendered from the film itself.</p>
+    <p>For F&amp;B team members on the floor. Each film is 4:5 and told from the team member’s side: one statement centred at the top of the frame, the product below it, large and cropped by the frame. Every frame below is rendered from the film itself.</p>
   </header>
   <nav aria-label="Films">${boards.map((b) => `<a href="#${b.key}">${esc(b.name)}</a>`).join('')}</nav>
 ${boards.map(filmHtml).join('\n')}

@@ -27,13 +27,15 @@ nav a{color:var(--ink);text-decoration:none;border:1px solid var(--line);border-
 nav a:hover,nav a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
 .eyebrow{font:600 12px/1.4 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--dune);margin:0}
 .film{display:flex;flex-direction:column;gap:24px;padding-top:40px;border-top:1px solid var(--line);margin-top:40px}
-.film-head{display:flex;flex-direction:column;gap:8px;max-width:70ch}
+.film-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);gap:24px 40px;align-items:start}
+@media (max-width:760px){ .film-intro{grid-template-columns:1fr} .film-intro .cover{max-width:420px} }
+.film-head{display:flex;flex-direction:column;gap:8px;max-width:60ch}
 h2{font:600 clamp(26px,3.2vw,38px)/1.12 var(--display);margin:0;text-wrap:balance}
 .about{margin:0;color:var(--muted)}
 figure{margin:0}
 img{display:block;width:100%;height:auto;max-width:100%;border-radius:10px;background:#FAFAFA;box-shadow:0 0 0 1px var(--line)}
 .cover figcaption{margin-top:10px;color:var(--muted);font-size:14px}
-.shots{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:28px 24px}
+.shots{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:28px 24px}
 .shot{display:flex;flex-direction:column;gap:10px;min-width:0}
 .shot-meta{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
 .shot-meta .n{font:600 13px var(--body);color:var(--accent);letter-spacing:.06em}
@@ -54,95 +56,97 @@ dd{margin:0;min-width:0}
   <header class="top">
     <p class="eyebrow">Cinnamon DISCOVERY · Dine with DISCOVERY Dollars · Team guides</p>
     <h1>Two team films, shot by shot</h1>
-    <p>For F&amp;B team members on the floor. Each film is 16:9 and told from the team member’s side: one statement set left beside the product, or centred over the POS. Every frame below is rendered from the film itself.</p>
+    <p>For F&amp;B team members on the floor. Each film is 4:5 and told from the team member’s side: one statement centred at the top of the frame, the product below it, large and cropped by the frame. Every frame below is rendered from the film itself.</p>
   </header>
   <nav aria-label="Films"><a href="#password">When a guest forgets their password</a><a href="#check">When the check is open on the POS</a></nav>
 
   <section class="film" id="password">
+    <div class="film-intro">
     <header class="film-head">
-      <p class="eyebrow">Film 1 · 16:9 · 51 s · 13 shots</p>
+      <p class="eyebrow">Film 1 · 4:5 · 51 s · 13 shots</p>
       <h2>When a guest forgets their password</h2>
       <p class="about">A guest can’t sign in. Show them Forgot Password?, then the four steps exactly as MyMenu ships them: send the code, verify it, choose a new password, sign back in at the same table. Then the two things that go wrong.</p>
     </header>
     <figure class="cover">
-      <img src="frames/password-cover.jpg" width="1920" height="1080" alt="Cover and thumbnail: When a guest forgets their password">
+      <img src="frames/password-cover.jpg" width="1080" height="1350" alt="Cover and thumbnail: When a guest forgets their password">
       <figcaption>Cover and thumbnail. The film opens on this frame, and it is the file’s cover art.</figcaption>
     </figure>
+    </div>
     <ol class="shots">
       <li class="shot">
-        <figure><img src="frames/password-01.jpg" width="1280" height="720" loading="lazy" alt="Shot 1: When a guest forgets their password."></figure>
+        <figure><img src="frames/password-01.jpg" width="720" height="900" loading="lazy" alt="Shot 1: When a guest forgets their password."></figure>
         <div class="shot-meta"><span class="n">01</span><span class="tc">0:00.0 – 0:02.4</span><span class="kind">Cover · thumbnail</span></div>
         <div class="words"><p class="w-say">When a guest forgets their password.</p><p class="w-sup">Dine with DISCOVERY Dollars</p><p class="w-logo">Cinnamon DISCOVERY logo</p></div>
-        <dl><dt>On screen</dt><dd>The opening frame is the thumbnail. Purple, the white logo and the situation, beside the guest’s phone: sign-in has just failed with “Wrong Username or Password”.</dd><dt>Sound</dt><dd>Music opens on a question (marimba).</dd></dl>
+        <dl><dt>On screen</dt><dd>The opening frame is the thumbnail. Purple: the white logo and the situation, over the guest’s phone, where sign-in has just failed with “Wrong Username or Password”.</dd><dt>Sound</dt><dd>Music opens on a question (marimba).</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/password-02.jpg" width="1280" height="720" loading="lazy" alt="Shot 2: A guest can’t sign in."></figure>
-        <div class="shot-meta"><span class="n">02</span><span class="tc">0:02.8 – 0:05.8</span></div>
+        <figure><img src="frames/password-02.jpg" width="720" height="900" loading="lazy" alt="Shot 2: A guest can’t sign in."></figure>
+        <div class="shot-meta"><span class="n">02</span><span class="tc">0:03.0 – 0:05.8</span></div>
         <div class="words"><p class="w-say">A guest can’t sign in.</p><p class="w-sup">Usually, it’s a forgotten password.</p></div>
-        <dl><dt>On screen</dt><dd>The purple cover slides away with its words; the phone stays. The app’s failure toast runs down.</dd><dt>Sound</dt><dd>Groove settles in.</dd></dl>
+        <dl><dt>On screen</dt><dd>The purple cover slides away with its words; the phone settles into place. The app’s failure toast runs down.</dd><dt>Sound</dt><dd>Groove settles in.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/password-03.jpg" width="1280" height="720" loading="lazy" alt="Shot 3: Show them Forgot Password?"></figure>
+        <figure><img src="frames/password-03.jpg" width="720" height="900" loading="lazy" alt="Shot 3: Show them Forgot Password?"></figure>
         <div class="shot-meta"><span class="n">03</span><span class="tc">0:06.0 – 0:09.1</span></div>
         <div class="words"><p class="w-say">Show them Forgot Password?</p><p class="w-sup">Only the guest can reset it. We never see their password.</p></div>
         <dl><dt>On screen</dt><dd>A ring draws round Forgot Password?; a fingertip comes in from below right and taps it.</dd><dt>Sound</dt><dd>Tap.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/password-04.jpg" width="1280" height="720" loading="lazy" alt="Shot 4: Check the email, then tap Send code."></figure>
+        <figure><img src="frames/password-04.jpg" width="720" height="900" loading="lazy" alt="Shot 4: Check the email, then tap Send code."></figure>
         <div class="shot-meta"><span class="n">04</span><span class="tc">0:09.3 – 0:12.2</span></div>
         <div class="words"><p class="w-step">Step 1 of 4</p><p class="w-say">Check the email, then tap Send code.</p><p class="w-sup">It carries over from sign-in.</p></div>
         <dl><dt>On screen</dt><dd>Forgot Password, with the email already filled in from sign-in. Tap Send code; the button spins.</dd><dt>Sound</dt><dd>Tap.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/password-05.jpg" width="1280" height="720" loading="lazy" alt="Shot 5: A 6-digit code arrives by email."></figure>
+        <figure><img src="frames/password-05.jpg" width="720" height="900" loading="lazy" alt="Shot 5: A 6-digit code arrives by email."></figure>
         <div class="shot-meta"><span class="n">05</span><span class="tc">0:12.4 – 0:18.1</span></div>
         <div class="words"><p class="w-say">A 6-digit code arrives by email.</p><p class="w-sup">From My Menu, under the restaurant’s name.</p></div>
         <dl><dt>On screen</dt><dd>An email notification drops in under the island. The guest opens it: the real email lifts out, the code 800368 marked.</dd><dt>Sound</dt><dd>Notification, two soft notes.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/password-06.jpg" width="1280" height="720" loading="lazy" alt="Shot 6: Enter the code, then tap Verify code."></figure>
+        <figure><img src="frames/password-06.jpg" width="720" height="900" loading="lazy" alt="Shot 6: Enter the code, then tap Verify code."></figure>
         <div class="shot-meta"><span class="n">06</span><span class="tc">0:18.4 – 0:23.4</span></div>
         <div class="words"><p class="w-step">Step 2 of 4</p><p class="w-say">Enter the code, then tap Verify code.</p><p class="w-sup">A code works once, for 15 minutes.</p></div>
         <dl><dt>On screen</dt><dd>Reset Password: the code typed digit by digit, a breath after the third. Resend in 0:5x counts down. Tap Verify code.</dd><dt>Sound</dt><dd>Key clicks, tap.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/password-07.jpg" width="1280" height="720" loading="lazy" alt="Shot 7: Choose a new password."></figure>
+        <figure><img src="frames/password-07.jpg" width="720" height="900" loading="lazy" alt="Shot 7: Choose a new password."></figure>
         <div class="shot-meta"><span class="n">07</span><span class="tc">0:23.6 – 0:28.4</span></div>
         <div class="words"><p class="w-step">Step 3 of 4</p><p class="w-say">Choose a new password.</p><p class="w-sup">Each rule turns green once it’s met.</p></div>
         <dl><dt>On screen</dt><dd>Code verified. The new password goes in; the rules list lifts out and each rule ticks green as it is met.</dd><dt>Sound</dt><dd>Key clicks.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/password-08.jpg" width="1280" height="720" loading="lazy" alt="Shot 8: All green? Tap Reset password."></figure>
+        <figure><img src="frames/password-08.jpg" width="720" height="900" loading="lazy" alt="Shot 8: All green? Tap Reset password."></figure>
         <div class="shot-meta"><span class="n">08</span><span class="tc">0:28.6 – 0:31.0</span></div>
         <div class="words"><p class="w-step">Step 3 of 4</p><p class="w-say">All green? Tap Reset password.</p></div>
         <dl><dt>On screen</dt><dd>Every rule green. Tap Reset password; the button spins, and the password is updated.</dd><dt>Sound</dt><dd>Tap, then the success chime.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/password-09.jpg" width="1280" height="720" loading="lazy" alt="Shot 9: Tap Yes, sign me in."></figure>
+        <figure><img src="frames/password-09.jpg" width="720" height="900" loading="lazy" alt="Shot 9: Tap Yes, sign me in."></figure>
         <div class="shot-meta"><span class="n">09</span><span class="tc">0:31.1 – 0:34.0</span></div>
         <div class="words"><p class="w-step">Step 4 of 4</p><p class="w-say">Tap Yes, sign me in.</p><p class="w-sup">Their password is updated.</p></div>
         <dl><dt>On screen</dt><dd>Password updated. Tap Yes, sign me in.</dd><dt>Sound</dt><dd>Tap; the music answers its opening question.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/password-10.jpg" width="1280" height="720" loading="lazy" alt="Shot 10: They’re back at the table."></figure>
+        <figure><img src="frames/password-10.jpg" width="720" height="900" loading="lazy" alt="Shot 10: They’re back at the table."></figure>
         <div class="shot-meta"><span class="n">10</span><span class="tc">0:34.1 – 0:38.1</span></div>
         <div class="words"><p class="w-say">They’re back at the table.</p><p class="w-sup">Same table, same bill. No new QR needed.</p></div>
         <dl><dt>On screen</dt><dd>The sheet fades onto the member landing of the same table. View Bill on B12 ringed.</dd><dt>Sound</dt><dd>Full groove.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/password-11.jpg" width="1280" height="720" loading="lazy" alt="Shot 11: No code?"></figure>
+        <figure><img src="frames/password-11.jpg" width="720" height="900" loading="lazy" alt="Shot 11: No code?"></figure>
         <div class="shot-meta"><span class="n">11</span><span class="tc">0:38.6 – 0:41.6</span></div>
         <div class="words"><p class="w-say">No code?</p><p class="w-sup">Ask them to check junk mail. When the timer ends, they tap Resend code.</p></div>
         <dl><dt>On screen</dt><dd>Tip. The resend timer runs out; Resend code is ringed and tapped; a new code is on its way.</dd><dt>Sound</dt><dd>Tap.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/password-12.jpg" width="1280" height="720" loading="lazy" alt="Shot 12: Code expired?"></figure>
+        <figure><img src="frames/password-12.jpg" width="720" height="900" loading="lazy" alt="Shot 12: Code expired?"></figure>
         <div class="shot-meta"><span class="n">12</span><span class="tc">0:42.3 – 0:45.5</span></div>
         <div class="words"><p class="w-say">Code expired?</p><p class="w-sup">The app goes back a step. They tap Send code for a new one.</p></div>
         <dl><dt>On screen</dt><dd>Tip. An expired code sends the guest back to Forgot Password, with the message ringed.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/password-13.jpg" width="1280" height="720" loading="lazy" alt="Shot 13: Forgot Password? The guest resets it."></figure>
+        <figure><img src="frames/password-13.jpg" width="720" height="900" loading="lazy" alt="Shot 13: Forgot Password? The guest resets it."></figure>
         <div class="shot-meta"><span class="n">13</span><span class="tc">0:46.1 – 0:50.8</span><span class="kind">Close</span></div>
         <div class="words"><p class="w-say">Forgot Password? The guest resets it.</p><p class="w-sup">Four steps: send, verify, choose, sign in. We never ask for, or reset, a guest’s password.</p><p class="w-logo">Cinnamon DISCOVERY logo</p></div>
         <dl><dt>On screen</dt><dd>Purple rises over everything: the rule, centred, and the white Cinnamon DISCOVERY logo.</dd><dt>Sound</dt><dd>Bells resolve on the logo.</dd></dl>
@@ -151,72 +155,74 @@ dd{margin:0;min-width:0}
   </section>
 
   <section class="film" id="check">
+    <div class="film-intro">
     <header class="film-head">
-      <p class="eyebrow">Film 2 · 16:9 · 34 s · 10 shots</p>
+      <p class="eyebrow">Film 2 · 4:5 · 34 s · 10 shots</p>
       <h2>When the check is open on the POS</h2>
       <p class="about">A guest shows you “Failed to apply discount on POS”. What it means, then three steps: find the check on the POS, tap Cancel/Exit, ask the guest to tap Retry. The same fix works for DISCOVERY Dollars.</p>
     </header>
     <figure class="cover">
-      <img src="frames/check-cover.jpg" width="1920" height="1080" alt="Cover and thumbnail: When the check is open on the POS">
+      <img src="frames/check-cover.jpg" width="1080" height="1350" alt="Cover and thumbnail: When the check is open on the POS">
       <figcaption>Cover and thumbnail. The film opens on this frame, and it is the file’s cover art.</figcaption>
     </figure>
+    </div>
     <ol class="shots">
       <li class="shot">
-        <figure><img src="frames/check-01.jpg" width="1280" height="720" loading="lazy" alt="Shot 1: When the check is open on the POS."></figure>
+        <figure><img src="frames/check-01.jpg" width="720" height="900" loading="lazy" alt="Shot 1: When the check is open on the POS."></figure>
         <div class="shot-meta"><span class="n">01</span><span class="tc">0:00.0 – 0:02.4</span><span class="kind">Cover · thumbnail</span></div>
         <div class="words"><p class="w-say">When the check is open on the POS.</p><p class="w-sup">Dine with DISCOVERY Dollars</p><p class="w-logo">Cinnamon DISCOVERY logo</p></div>
-        <dl><dt>On screen</dt><dd>The opening frame is the thumbnail. Purple, the white logo and the situation, beside the guest’s phone showing “Failed to apply discount on POS”.</dd><dt>Sound</dt><dd>Music opens on a question (marimba).</dd></dl>
+        <dl><dt>On screen</dt><dd>The opening frame is the thumbnail. Purple: the white logo and the situation, over the guest’s phone showing “Failed to apply discount on POS”.</dd><dt>Sound</dt><dd>Music opens on a question (marimba).</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/check-02.jpg" width="1280" height="720" loading="lazy" alt="Shot 2: A guest shows you this."></figure>
-        <div class="shot-meta"><span class="n">02</span><span class="tc">0:02.8 – 0:05.5</span></div>
+        <figure><img src="frames/check-02.jpg" width="720" height="900" loading="lazy" alt="Shot 2: A guest shows you this."></figure>
+        <div class="shot-meta"><span class="n">02</span><span class="tc">0:03.0 – 0:05.5</span></div>
         <div class="words"><p class="w-say">A guest shows you this.</p><p class="w-sup">Their member discount didn’t go through.</p></div>
-        <dl><dt>On screen</dt><dd>The purple cover slides away with its words; the phone stays, scrolled to the error.</dd><dt>Sound</dt><dd>Groove settles in.</dd></dl>
+        <dl><dt>On screen</dt><dd>The purple cover slides away with its words; the phone settles into place, scrolled to the error.</dd><dt>Sound</dt><dd>Groove settles in.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/check-03.jpg" width="1280" height="720" loading="lazy" alt="Shot 3: The check is open on another terminal."></figure>
+        <figure><img src="frames/check-03.jpg" width="720" height="900" loading="lazy" alt="Shot 3: The check is open on another terminal."></figure>
         <div class="shot-meta"><span class="n">03</span><span class="tc">0:05.8 – 0:09.3</span></div>
         <div class="words"><p class="w-say">The check is open on another terminal.</p><p class="w-sup">While another terminal has it, the app can’t add the discount.</p></div>
         <dl><dt>On screen</dt><dd>The error card lifts out of the phone, the reason marked: Check is open on another terminal.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/check-04.jpg" width="1280" height="720" loading="lazy" alt="Shot 4: Find the check on the POS."></figure>
+        <figure><img src="frames/check-04.jpg" width="720" height="900" loading="lazy" alt="Shot 4: Find the check on the POS."></figure>
         <div class="shot-meta"><span class="n">04</span><span class="tc">0:09.6 – 0:11.6</span></div>
         <div class="words"><p class="w-step">Step 1 of 3</p><p class="w-say">Find the check on the POS.</p><p class="w-sup">Here it’s open on this terminal: Table B12/1.</p></div>
         <dl><dt>On screen</dt><dd>The POS slides in under a centred statement: Pick Up Check, Table B12/1.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/check-05.jpg" width="1280" height="720" loading="lazy" alt="Shot 5: Tap Cancel/Exit."></figure>
+        <figure><img src="frames/check-05.jpg" width="720" height="900" loading="lazy" alt="Shot 5: Tap Cancel/Exit."></figure>
         <div class="shot-meta"><span class="n">05</span><span class="tc">0:11.8 – 0:14.6</span></div>
         <div class="words"><p class="w-step">Step 2 of 3</p><p class="w-say">Tap Cancel/Exit.</p><p class="w-sup">Not Void. Not Make Payment.</p></div>
         <dl><dt>On screen</dt><dd>Close in on the bottom row. Cancel/Exit ringed and pressed, between Void and Make Payment.</dd><dt>Sound</dt><dd>Tap.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/check-06.jpg" width="1280" height="720" loading="lazy" alt="Shot 6: The check is minimised."></figure>
+        <figure><img src="frames/check-06.jpg" width="720" height="900" loading="lazy" alt="Shot 6: The check is minimised."></figure>
         <div class="shot-meta"><span class="n">06</span><span class="tc">0:14.8 – 0:18.4</span></div>
         <div class="words"><p class="w-step">Step 2 of 3</p><p class="w-say">The check is minimised.</p><p class="w-sup">It stays open on Home, so the app can reach it.</p></div>
         <dl><dt>On screen</dt><dd>The POS repaints to Home; the camera finds Table B12/1, still open, ringed.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/check-07.jpg" width="1280" height="720" loading="lazy" alt="Shot 7: Ask the guest to tap Retry."></figure>
+        <figure><img src="frames/check-07.jpg" width="720" height="900" loading="lazy" alt="Shot 7: Ask the guest to tap Retry."></figure>
         <div class="shot-meta"><span class="n">07</span><span class="tc">0:18.6 – 0:22.6</span></div>
         <div class="words"><p class="w-step">Step 3 of 3</p><p class="w-say">Ask the guest to tap Retry.</p></div>
         <dl><dt>On screen</dt><dd>The phone returns. The guest taps Retry; the app checks for the discount.</dd><dt>Sound</dt><dd>Tap.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/check-08.jpg" width="1280" height="720" loading="lazy" alt="Shot 8: The discount is on the bill."></figure>
+        <figure><img src="frames/check-08.jpg" width="720" height="900" loading="lazy" alt="Shot 8: The discount is on the bill."></figure>
         <div class="shot-meta"><span class="n">08</span><span class="tc">0:22.8 – 0:25.4</span></div>
         <div class="words"><p class="w-say">The discount is on the bill.</p><p class="w-sup">The guest sees it on their phone straight away.</p></div>
         <dl><dt>On screen</dt><dd>The bill lifts out with the discount row marked.</dd><dt>Sound</dt><dd>Success chime; the music answers its opening question.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/check-09.jpg" width="1280" height="720" loading="lazy" alt="Shot 9: Same fix for DISCOVERY Dollars."></figure>
+        <figure><img src="frames/check-09.jpg" width="720" height="900" loading="lazy" alt="Shot 9: Same fix for DISCOVERY Dollars."></figure>
         <div class="shot-meta"><span class="n">09</span><span class="tc">0:25.6 – 0:28.4</span></div>
         <div class="words"><p class="w-say">Same fix for DISCOVERY Dollars.</p><p class="w-sup">Minimise the check, then the guest taps Retry.</p></div>
         <dl><dt>On screen</dt><dd>The DISCOVERY Dollars version of the same error; same fix.</dd></dl>
       </li>
       <li class="shot">
-        <figure><img src="frames/check-10.jpg" width="1280" height="720" loading="lazy" alt="Shot 10: Minimise the check. Tap Retry."></figure>
+        <figure><img src="frames/check-10.jpg" width="720" height="900" loading="lazy" alt="Shot 10: Minimise the check. Tap Retry."></figure>
         <div class="shot-meta"><span class="n">10</span><span class="tc">0:28.9 – 0:34.0</span><span class="kind">Close</span></div>
         <div class="words"><p class="w-say">Minimise the check. Tap Retry.</p><p class="w-sup">Still seeing it? Let your supervisor know.</p><p class="w-logo">Cinnamon DISCOVERY logo</p></div>
         <dl><dt>On screen</dt><dd>Purple rises over everything: the rule, centred, and the white Cinnamon DISCOVERY logo.</dd><dt>Sound</dt><dd>Bells resolve on the logo.</dd></dl>

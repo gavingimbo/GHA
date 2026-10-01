@@ -1,14 +1,14 @@
 # Dine with DISCOVERY Dollars — team films
 
 Two playbooks for F&B team members on the floor, one set of rules, told from the
-team member's side: what you see, what it means, what you do. Both are 16:9.
+team member's side: what you see, what it means, what you do. Both are 4:5.
 
-**`check-open-on-pos.mp4`** — 1920 × 1080, 60 fps (rendered at 2× and downscaled), 34 s,
+**`check-open-on-pos.mp4`** — 1080 × 1350, 60 fps (rendered at 2× and downscaled), 34 s,
 stereo AAC at −14 LUFS. A guest shows you "Failed to apply discount on POS". What it
 means, then three steps: find the check on the POS, tap Cancel/Exit (not Void, not
 Make Payment), ask the guest to tap Retry. The same fix works for DISCOVERY Dollars.
 
-**`forgotten-password.mp4`** — 1920 × 1080, 60 fps, 51 s. A guest can't sign in: show them
+**`forgotten-password.mp4`** — 1080 × 1350, 60 fps, 51 s. A guest can't sign in: show them
 Forgot Password?, then the four steps exactly as MyMenu ships them (build of 30 Sep 2026,
 13:08 GMT): **1** check the email and tap Send code, **2** enter the 6-digit
 code from the email and tap Verify code, **3** choose a new password until every rule is
@@ -16,7 +16,7 @@ green and tap Reset password, **4** tap Yes, sign me in. They are back at the sa
 same bill, no new QR. Then the two things that go wrong: no code (check junk, then Resend
 code when the timer ends) and an expired code (the app goes back a step: Send code again).
 
-**`thumbnails/`** — each film's cover at 1920 × 1080. The cover is the film's first frame,
+**`thumbnails/`** — each film's cover at 1080 × 1350. The cover is the film's first frame,
 and it is embedded in each MP4 as its cover art.
 
 **`storyboard/`** — both films shot by shot: every frame rendered from the film itself,
@@ -28,14 +28,14 @@ with the words on screen, what happens and what you hear. Open `storyboard/index
   white type and the white Cinnamon DISCOVERY logo, and the step label and rings in between),
   ink `#14102E` for type, paper `#FAFAFA` behind the product. Everything else is the
   product's own UI.
-- **Alignment (16:9).** One statement, set left in its own column (900 px from x 126),
-  vertically centred, with the product beside it in the right-hand column (centred on
-  x 1470) and cropped by the frame. The POS is wide, so it sits centred under a centred
-  statement. The close is a purple panel rising over everything: the rule, centred, then
-  the white logo.
+- **Alignment (4:5).** One statement, centred at the top of the frame (from y 58), with
+  the product below it on the centre line, large and cropped by the bottom of the frame.
+  Details lifted out of the phone are centred under the statement too. The close is a
+  purple panel rising over everything: the rule, centred in the frame, then the white logo.
 - **The cover is the thumbnail.** The first frame, on purple: the white logo, the situation
-  in large white type set left, and the guest's phone showing the problem. The purple slides
-  away with its words as the film starts; the phone stays where it is.
+  in large white type centred above it, and the guest's phone showing the problem. The
+  purple slides away with its words as the film starts, the phone settles up into place,
+  and the first statement rises once the purple has cleared the top of the frame.
 - **Type: the product's faces.** IvyMode states, Jost supports and numbers the step
   ("Step 2 of 4"). IvyMode is a high-contrast display cut: at video size its hairlines
   (the arm of a k, the thin stroke of an x) fall under a pixel and vanish, and some pairs
@@ -44,10 +44,10 @@ with the words on screen, what happens and what you hear. Open `storyboard/index
   inside the phones gets the same treatment. Each line is its own mask, 36 px clear
   above and below, so no accent, ascender or descender is cut. `check-type.mjs` proves it.
 - **Ground: flat.** No gradients, no blur.
-- **Frame: one shot, one idea.** One statement, the product beside it, large enough to
+- **Frame: one shot, one idea.** One statement, the product below it, large enough to
   read on a phone: the phone sits big and is cropped by the bottom of the frame; details
   that matter (the email's code, the password rules, the error, the bill) are lifted out
-  and enlarged in the product's column.
+  and enlarged under the statement.
 - **The product is real.** The password film's phone runs the mockup's own sign-in sheet
   (`../index.html`), driven frame by frame: typing lands a character at a time with a
   person's rhythm, the resend timer counts down, the rules tick green as the password
