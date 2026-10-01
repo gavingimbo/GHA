@@ -28,14 +28,19 @@ with the words on screen, what happens and what you hear. Open `storyboard/index
   white type and the white Cinnamon DISCOVERY logo, and the step label and rings in between),
   ink `#14102E` for type, paper `#FAFAFA` behind the product. Everything else is the
   product's own UI.
-- **Alignment (4:5).** One statement, centred at the top of the frame (from y 58), with
-  the product below it on the centre line, large and cropped by the bottom of the frame.
-  Details lifted out of the phone are centred under the statement too. The close is a
-  purple panel rising over everything: the rule, centred in the frame, then the white logo.
-- **The cover is the thumbnail.** The first frame, on purple: the white logo, the situation
-  in large white type centred above it, and the guest's phone showing the problem. The
-  purple slides away with its words as the film starts, the phone settles up into place,
-  and the first statement rises once the purple has cleared the top of the frame.
+- **Alignment (4:5).** Everything on the centre line, and two rules for where things sit,
+  so every shot lines up the same way. Over the phone, which the frame crops, a statement
+  sits 56 px above it: the words always meet the phone on the same line (y 392), however
+  many lines they run to. With something shown whole (the error card, the POS, the bill,
+  the dialog, the phone back at the table), the statement and that thing are centred in
+  the frame together, 56 px apart. The films measure their own type to do this, so it
+  holds when the words change. IvyMode's tracking is balanced on both sides, so each line
+  is centred on its ink. The close is a purple panel rising over everything: the rule,
+  centred in the frame, then the white logo.
+- **The cover is the thumbnail.** The first frame: words alone on purple, centred, like the
+  close: the white logo, the situation in large white type, and the series. The purple
+  slides away with its words as the film starts, uncovering the guest's phone, and the
+  first statement rises once the purple has cleared the top of the frame.
 - **Type: the product's faces.** IvyMode states, Jost supports and numbers the step
   ("Step 2 of 4"). IvyMode is a high-contrast display cut: at video size its hairlines
   (the arm of a k, the thin stroke of an x) fall under a pixel and vanish, and some pairs

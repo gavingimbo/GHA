@@ -12,9 +12,10 @@
    4:5 (1080 x 1350). Colour: purple for the brand moments (the cover and the
    close, white type, the white logo), ink for type, paper behind the product.
    Everything else on screen is the product's own. Ground: flat. No gradients,
-   no blur. Alignment: one statement, centred at the top; the product below it,
-   large, cropped by the bottom of the frame. The opening frame is the cover,
-   and the thumbnail. */
+   no blur. Alignment: one statement, centred, over the product: GAP above the
+   phone, which the frame crops; or centred in the frame together with anything
+   shown whole (see the layout). The opening frame is the cover, and the
+   thumbnail: words alone on purple. */
 @font-face{font-family:PosSans;font-weight:400;src:url(assets/fonts/open-sans-400.woff2) format('woff2')}
 @font-face{font-family:PosSans;font-weight:600;src:url(assets/fonts/open-sans-600.woff2) format('woff2')}
 :root{--purple:#592A87;--ink:#14102E;--paper:#FAFAFA;--W:1080px;--H:1350px}
@@ -32,11 +33,12 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
 .ln{display:block;overflow:hidden;padding:36px 24px;margin:-36px 0;line-height:1.18}
 .ln > *{display:inline-block;will-change:transform}
 .step{font-family:Jost,sans-serif;font-size:27px;letter-spacing:.2em;padding-left:.2em;text-transform:uppercase;color:var(--purple)}
-.say{font-family:Ivy,serif;font-size:68px;letter-spacing:.035em;-webkit-text-stroke:.013em currentColor;font-kerning:normal}
+.say{font-family:Ivy,serif;font-size:68px;letter-spacing:.035em;padding-left:.035em;-webkit-text-stroke:.013em currentColor;font-kerning:normal}
 .sup{font-family:Jost,sans-serif;font-size:31px;color:rgba(20,16,46,.66);line-height:1.3;letter-spacing:.01em}
-.cover .say{font-size:74px}
-.cover{top:44px}
-.cover .gapL{margin-top:-18px}
+/* the cover is words alone, centred: the logo, the situation, the series */
+#cover{z-index:20}
+.cover .say{font-size:80px}
+.cover .gapL{margin-top:22px}
 .mid .say{font-size:80px}
 .logo img{display:inline-block;width:300px;height:auto;vertical-align:top}
 /* the cover and the close: purple, white type, the white logo */
@@ -91,10 +93,10 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
 #dlg img{position:absolute;left:-28px;top:-28px;width:690px}
 </style></head>
 <body><div id="stage">
-  <!-- the cover: the opening frame, and the thumbnail. Purple, behind the phone, so it can
-       slide away as the film begins while the phone settles into place -->
+  <!-- the cover: the opening frame, and the thumbnail. Purple, over everything, words alone;
+       it slides away as the film begins and leaves the phone in place -->
   <div id="cover" class="panel onPurple"><div id="coverIn" class="panel" style="background:none">
-    <div id="c1" class="title cover"><span class="ln logo"><img src="assets/logo-white.svg" alt="Cinnamon DISCOVERY"></span>
+    <div id="c1" class="title cover mid"><span class="ln logo"><img src="assets/logo-white.svg" alt="Cinnamon DISCOVERY"></span>
       <span class="ln gapL"><span class="say">When the check is open</span></span><span class="ln"><span class="say">on the POS.</span></span>
       <span class="ln gap"><span class="sup">Dine with DISCOVERY Dollars</span></span></div>
   </div></div>
@@ -337,14 +339,14 @@ const pmix = (A, B, k) => ({ s: Math.exp(lerp(Math.log(A.s), Math.log(B.s), k)),
 const PC_FULL = posCam(901, 507, 1), PC_EXIT = posCam(1290, 880, 1.9), PC_TILE = posCam(560, 430, 1.75);
 // the phone sits large under the words, cropped by the frame; the guest has scrolled the bill to the card
 const S = 1.45, SCROLL = 214;
-const REST = { x: CX - 417 * S / 2, y: 372 };
-const POSS = 1.0, POSX = (W - 1016 * POSS) / 2, POSY = 400;     // the POS, centred under its statement
+const REST = { x: CX - 417 * S / 2, y: 392 };
+const POSS = 1.0, POSX = (W - 1016 * POSS) / 2;     // the POS, centred under its statement (its top set by the layout)
 const onScreen = (x, pageY) => ({ x: REST.x + (12 + x) * S, y: REST.y + (12 + 54 - SCROLL + pageY) * S });
 
 /* ---------------------------------------------------------------- the film
    Told from the team member's side: what you see, what it means, what you do.
-   0     Cover (and thumbnail): the brand, the situation, the phone with the error  calm
-   3.0   A guest shows you this: the phone settles, the error on it                steady
+   0     Cover (and thumbnail): the brand, the situation, on purple                calm
+   3.0   A guest shows you this: the phone, the error on it                        steady
    5.6   What it means: the error stands alone, its reason marked                 held
    9.5   Find the check on the POS                                                steady
    11.7  Tap Cancel/Exit (in, ring, tap, out); the POS repaints to Home           precise
@@ -353,10 +355,36 @@ const onScreen = (x, pageY) => ({ x: REST.x + (12 + x) * S, y: REST.y + (12 + 54
    23.0  The discount is on the bill                                              held
    25.5  The same fix works for DISCOVERY Dollars                                 brief
    28.5  Close, centred: Minimise the check. Tap Retry. The logo.                 calm   */
+/* ------------------------------------------------------------ the layout
+   Two rules, so every shot lines up the same way. Over the phone, which the frame
+   crops, a statement sits GAP above it: the words always meet the phone on the same
+   line. With something shown whole, the statement and that thing are centred in the
+   frame together, GAP apart. Measured from the type itself, so it holds when the
+   words change. */
+const GAP = 56;
+let LAY = null;
+function place(ids) {
+  const hs = Object.fromEntries(ids.map((id) => [id, $(id).offsetHeight]));      // read everything, then write
+  return {
+    over: (id, y) => { $(id).style.top = `${y - GAP - hs[id]}px`; },
+    // returns the top of the thing shown with the statement
+    with: (id, h) => { const top = Math.round((H - hs[id] - GAP - h) / 2); $(id).style.top = `${top}px`; return top + hs[id] + GAP; },
+  };
+}
+const ERR_H = 351 * 900 / 712, BILL_H = 347 * 900 / 712, DLG_H = 508 * 1.3, POS_H = 584 + 26;   // the POS with its caption
+function layout() {
+  const L = place(['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8']);
+  L.over('w1', REST.y); L.over('w6', REST.y);
+  const pos = L.with('w3', POS_H); L.with('w4', POS_H); L.with('w5', POS_H);
+  return { err: L.with('w2', ERR_H) + ERR_H / 2, bill: L.with('w7', BILL_H) + BILL_H / 2, dlg: L.with('w8', DLG_H), pos,
+    ready: document.fonts.status === 'loaded' };
+}
+
 function render(t) {
+  if (!LAY || !LAY.ready) LAY = layout();
   // the phone: in place from the first frame; steps down so the error can stand alone;
   // returns from the right; steps down again
-  let px = 0, py = 44 * (1 - glide(t, 2.45, 1.0));   // on the cover it sits a little lower, under the words; it settles as they go
+  let px = 0, py = 0;
   if (t >= 5.75) py = 1100 * glide(t, 5.75, 1.1);
   if (t >= 17.5) { py = 0; px = 1100 * (1 - glide(t, 18.55, 1.0)); }
   if (t >= 23.15) py = 1100 * glide(t, 23.15, 1.1);
@@ -368,16 +396,16 @@ function render(t) {
 
   // details lifted out of the phone and enlarged; each steps down when its shot ends
   const errDy = t >= 9.35 ? 1100 * glide(t, 9.35, .9) : 0;
-  lift('liftErr', t, 5.6, { ...onScreen(20, 472), w: 353 * S }, 900, CX, 820, 351, errDy);
+  lift('liftErr', t, 5.6, { ...onScreen(20, 472), w: 353 * S }, 900, CX, LAY.err, 351, errDy);
   $('liftErr').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 6.6, .8)).toFixed(4)})`;
   const billDy = t >= 25.35 ? 1100 * glide(t, 25.35, .9) : 0;
-  lift('liftBill', t, 23.0, { ...onScreen(20, 506), w: 353 * S }, 900, CX, 820, 347, billDy);
+  lift('liftBill', t, 23.0, { ...onScreen(20, 506), w: 353 * S }, 900, CX, LAY.bill, 347, billDy);
   $('liftBill').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 23.8, .8)).toFixed(4)})`;
 
   // the POS: in from the right under its centred statement; steps down when the guest's turn comes
   let qx = t < 9.5 ? 1200 : 1200 * (1 - glide(t, 9.5, 1.0)), qy = 0;
   if (t >= 18.35) qy = 1100 * glide(t, 18.35, .9);
-  $('pos').style.transform = `translate3d(${(POSX + qx).toFixed(2)}px,${(POSY + qy).toFixed(2)}px,0) scale(${POSS})`;
+  $('pos').style.transform = `translate3d(${(POSX + qx).toFixed(2)}px,${(LAY.pos + qy).toFixed(2)}px,0) scale(${POSS})`;
   $('pos').style.display = qx > 1150 || qy > 1080 ? 'none' : 'block';
   let pc = PC_FULL;
   if (t >= 11.7) pc = pmix(PC_FULL, PC_EXIT, glide(t, 11.7, 1.1));
@@ -393,10 +421,10 @@ function render(t) {
 
   // the DISCOVERY Dollars dialog: in from the right, out to the right for the close
   let gx = t < 25.5 ? 1100 : 1100 * (1 - glide(t, 25.5, 1.0));
-  $('dlg').style.transform = `translate3d(${(CX - 317 * 1.3 + gx).toFixed(2)}px,${(820 - 254 * 1.3).toFixed(2)}px,0) scale(1.3)`;
+  $('dlg').style.transform = `translate3d(${(CX - 317 * 1.3 + gx).toFixed(2)}px,${LAY.dlg.toFixed(2)}px,0) scale(1.3)`;
   $('dlg').style.display = gx > 1080 ? 'none' : 'block';
 
-  // the cover slides up and away, taking its words with it; the phone settles (above)
+  // the cover slides up and away, taking its words with it, and leaves the phone in place
   const cv = glide(t, 2.45, 1.0);
   $('cover').style.transform = `translate3d(0,${(-H * cv).toFixed(2)}px,0)`;
   $('coverIn').style.transform = `translate3d(0,${(-140 * cv).toFixed(2)}px,0)`;
@@ -420,8 +448,8 @@ window.DURATION = 34;
 window.SIZE = { w: W, h: H };
 /* the storyboard: one entry per shot (storyboard.mjs renders each at t) */
 window.SHOTS = [
-  { t: 0, from: 0, to: 2.4, id: 'c1', kind: 'Cover · thumbnail', action: 'The opening frame is the thumbnail. Purple: the white logo and the situation, over the guest’s phone showing “Failed to apply discount on POS”.', sound: 'Music opens on a question (marimba).' },
-  { t: 4.2, from: 3.0, to: 5.5, id: 'w1', action: 'The purple cover slides away with its words; the phone settles into place, scrolled to the error.', sound: 'Groove settles in.' },
+  { t: 0, from: 0, to: 2.4, id: 'c1', kind: 'Cover · thumbnail', action: 'The opening frame is the thumbnail. Words alone on purple: the white logo, the situation, and the series.', sound: 'Music opens on a question (marimba).' },
+  { t: 4.2, from: 3.0, to: 5.5, id: 'w1', action: 'The purple cover slides away with its words, uncovering the guest’s phone, scrolled to “Failed to apply discount on POS”.', sound: 'Groove settles in.' },
   { t: 7.6, from: 5.85, to: 9.35, id: 'w2', action: 'The error card lifts out of the phone, the reason marked: Check is open on another terminal.', sound: '' },
   { t: 10.8, from: 9.6, to: 11.55, id: 'w3', action: 'The POS slides in under a centred statement: Pick Up Check, Table B12/1.', sound: '' },
   { t: 13.5, from: 11.75, to: 14.6, id: 'w4', action: 'Close in on the bottom row. Cancel/Exit ringed and pressed, between Void and Make Payment.', sound: 'Tap.' },
