@@ -9,14 +9,15 @@
 @font-face{font-family:Ivy;src:url(../assets/fonts/ivymode-gha-semibold.woff2) format('woff2')}
 @font-face{font-family:Jost;src:url(../assets/fonts/jost-regular.woff) format('woff')}
 /* ---------------------------------------------------------------- the rules
-   Colour: three, and only three, of our own. Purple for brand moments, ink for
-   type, paper behind the product. Everything else on screen is the product's own.
+   16:9. Colour: ink for type, paper behind the product, purple for the brand
+   (the logo, the step, a ring). Everything else on screen is the product's own.
    Ground: flat. No gradients, no blur.
-   Frame: one shot, one idea. The words sit above; the object sits below, large
-   enough to read. */
+   Alignment: one statement, set left in its own column, the product beside it
+   and cropped by the frame; the POS, which is wide, sits under a centred
+   statement. The opening frame is the cover, and the thumbnail. */
 @font-face{font-family:PosSans;font-weight:400;src:url(assets/fonts/open-sans-400.woff2) format('woff2')}
 @font-face{font-family:PosSans;font-weight:600;src:url(assets/fonts/open-sans-600.woff2) format('woff2')}
-:root{--purple:#592A87;--ink:#14102E;--paper:#FAFAFA;--W:1080px;--H:1440px}
+:root{--purple:#592A87;--ink:#14102E;--paper:#FAFAFA;--W:1920px;--H:1080px}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)}
 #stage{position:relative;width:var(--W);height:var(--H);overflow:hidden;background:var(--paper);color:var(--ink);font-family:Jost,sans-serif;
@@ -26,16 +27,23 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
 /* each line is its own mask, generous above and below so no ascender, accent or
    descender is ever clipped; the lines stack in a column so those margins cancel
    instead of collapsing, and the pitch is the line height */
-.title{position:absolute;left:0;right:0;top:112px;text-align:center;display:flex;flex-direction:column}
+.title{position:absolute;left:126px;width:900px;top:0;bottom:0;text-align:left;display:flex;flex-direction:column;justify-content:center}
+.title.mid{left:0;right:0;width:auto;text-align:center}
+.title.top{left:0;right:0;width:auto;bottom:auto;top:34px;text-align:center;justify-content:flex-start}
 .ln{display:block;overflow:hidden;padding:36px 24px;margin:-36px 0;line-height:1.18}
 .ln > *{display:inline-block;will-change:transform}
-.step{font-family:Jost,sans-serif;font-size:27px;letter-spacing:.2em;padding-left:.2em;text-transform:uppercase;color:var(--purple)}
-.say{font-family:Ivy,serif;font-size:66px;letter-spacing:.035em;-webkit-text-stroke:.013em currentColor;font-kerning:normal}
-.sup{font-family:Jost,sans-serif;font-size:30px;color:rgba(20,16,46,.66);line-height:1.3;letter-spacing:.01em}
+.step{font-family:Jost,sans-serif;font-size:31px;letter-spacing:.2em;text-transform:uppercase;color:var(--purple)}
+.top .step{padding-left:.2em}
+.say{font-family:Ivy,serif;font-size:100px;letter-spacing:.035em;-webkit-text-stroke:.013em currentColor;font-kerning:normal}
+.sup{font-family:Jost,sans-serif;font-size:38px;color:rgba(20,16,46,.66);line-height:1.3;letter-spacing:.01em}
+.cover .say{font-size:104px}
+.mid .say{font-size:96px}
+.top .say{font-size:76px}
+.top .sup{font-size:34px}
+.logo img{display:inline-block;width:330px;height:auto;vertical-align:top}
+.gapL{margin-top:-6px}
 .gapS{margin-top:-26px}
 .gap{margin-top:-12px}
-.onPurple .say{color:#fff}
-.onPurple .sup{color:rgba(255,255,255,.72)}
 /* phone */
 #phone{left:0;top:0;width:417px;height:876px;border-radius:66px;background:#1d1d1f;padding:12px;transform-origin:0 0;box-shadow:0 44px 90px rgba(20,16,46,.16),0 0 0 2px #3a3a3c inset}
 #screen{position:relative;width:393px;height:852px;border-radius:54px;overflow:hidden;background:#fafafa}
@@ -57,7 +65,7 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
 #liftErr{height:351px}
 #liftBill{height:347px;background:#fff}
 /* POS */
-#pos{left:0;top:0;width:1016px;height:584px;border-radius:30px;background:#1d1d1f;padding:14px;box-shadow:0 44px 90px rgba(20,16,46,.16),0 0 0 2px #3a3a3c inset}
+#pos{left:0;top:0;width:1016px;height:584px;border-radius:30px;transform-origin:0 0;background:#1d1d1f;padding:14px;box-shadow:0 44px 90px rgba(20,16,46,.16),0 0 0 2px #3a3a3c inset}
 #posScr{position:relative;width:988px;height:556px;border-radius:14px;overflow:hidden;background:#2b2f32}
 #ui{position:absolute;left:0;top:0;width:1802px;height:1014px;transform-origin:0 0}
 .pv{position:absolute;left:0;top:0;width:1802px;height:1014px;overflow:hidden;font-family:PosSans,sans-serif;color:#fff;transform-origin:0 0}
@@ -77,10 +85,8 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
 #rings{position:absolute;left:0;top:0;width:1802px;height:1014px;overflow:visible}
 #rings rect{fill:none;stroke-linecap:round}
 /* D$ dialog */
-#dlg{left:0;top:0;width:634px;height:508px;border-radius:28px;overflow:hidden;background:#fff;box-shadow:0 44px 90px rgba(20,16,46,.12)}
+#dlg{left:0;top:0;width:634px;height:508px;border-radius:28px;transform-origin:0 0;overflow:hidden;background:#fff;box-shadow:0 44px 90px rgba(20,16,46,.12)}
 #dlg img{position:absolute;left:-28px;top:-28px;width:690px}
-/* brand panels */
-.panel{left:0;top:0;width:var(--W);height:var(--H);background:var(--purple);overflow:hidden}
 </style></head>
 <body><div id="stage">
 
@@ -113,7 +119,7 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
     </svg>
     <div id="dotPos" class="dot" style="width:84px;height:84px;margin:-42px 0 0 -42px"></div><div id="ripPos" class="ripple" style="width:84px;height:84px;margin:-42px 0 0 -42px;border-width:5px"></div>
   </div></div>
-    <div style="position:absolute;left:0;right:0;top:872px;text-align:center;font-size:21px;color:rgba(20,16,46,.4)">Illustration of our POS. Sample check.</div>
+    <div style="position:absolute;left:0;right:0;top:596px;text-align:center;font-size:19px;color:rgba(20,16,46,.42)">Illustration of our POS. Sample check.</div>
   </div>
 
   <div id="dlg" class="abs"><img src="assets/dialog-error.png"></div>
@@ -121,37 +127,34 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
   <div id="liftBill" class="abs lift"><img src="../design/png/bill-card.png"><div class="mark" style="left:30px;top:84px;width:652px;height:50px"></div></div>
 
   <!-- words: one statement per shot, told from the team member's side -->
-  <div id="w1" class="title"><span class="ln"><span class="say">A guest shows you this.</span></span>
-    <span class="ln gap"><span class="sup">Their member discount didn’t go through.</span></span></div>
-  <div id="w2" class="title"><span class="ln"><span class="say">It means the check is open</span></span><span class="ln"><span class="say">on a POS terminal.</span></span></div>
-  <div id="w2s" class="title" style="top:1110px"><span class="ln"><span class="sup">While a terminal has the check open,</span></span><span class="ln"><span class="sup">the app can’t add the discount.</span></span></div>
-  <div id="w3" class="title"><span class="ln"><span class="step">Step 1 of 3</span></span>
+  <div id="w1" class="title"><span class="ln"><span class="say">A guest shows</span></span><span class="ln"><span class="say">you this.</span></span>
+    <span class="ln gap"><span class="sup">Their member discount</span></span><span class="ln"><span class="sup">didn’t go through.</span></span></div>
+  <div id="w2" class="title"><span class="ln"><span class="say">The check is</span></span><span class="ln"><span class="say">open on another</span></span><span class="ln"><span class="say">terminal.</span></span>
+    <span class="ln gap"><span class="sup">While another terminal has it,</span></span><span class="ln"><span class="sup">the app can’t add the discount.</span></span></div>
+  <div id="w3" class="title top"><span class="ln"><span class="step">Step 1 of 3</span></span>
     <span class="ln gapS"><span class="say">Find the check on the POS.</span></span>
     <span class="ln gap"><span class="sup">Here it’s open on this terminal: Table B12/1.</span></span></div>
-  <div id="w4" class="title"><span class="ln"><span class="step">Step 2 of 3</span></span>
+  <div id="w4" class="title top"><span class="ln"><span class="step">Step 2 of 3</span></span>
     <span class="ln gapS"><span class="say">Tap Cancel/Exit.</span></span>
     <span class="ln gap"><span class="sup">Not Void. Not Make Payment.</span></span></div>
-  <div id="w5" class="title"><span class="ln"><span class="step">Step 2 of 3</span></span>
+  <div id="w5" class="title top"><span class="ln"><span class="step">Step 2 of 3</span></span>
     <span class="ln gapS"><span class="say">The check is minimised.</span></span>
     <span class="ln gap"><span class="sup">It stays open on Home, so the app can reach it.</span></span></div>
   <div id="w6" class="title"><span class="ln"><span class="step">Step 3 of 3</span></span>
-    <span class="ln gapS"><span class="say">Ask the guest to tap Retry.</span></span></div>
-  <div id="w7" class="title"><span class="ln"><span class="say">The discount is on the bill.</span></span>
+    <span class="ln gapS"><span class="say">Ask the guest</span></span><span class="ln"><span class="say">to tap Retry.</span></span></div>
+  <div id="w7" class="title"><span class="ln"><span class="say">The discount</span></span><span class="ln"><span class="say">is on the bill.</span></span>
     <span class="ln gap"><span class="sup">Nothing else to do.</span></span></div>
-  <div id="w8" class="title"><span class="ln"><span class="say">Same fix for</span></span><span class="ln"><span class="say">DISCOVERY Dollars.</span></span></div>
-  <div id="w8s" class="title" style="top:1110px"><span class="ln"><span class="sup">Minimise the check, then the guest taps Retry.</span></span></div>
+  <div id="w8" class="title"><span class="ln"><span class="say">Same fix for</span></span><span class="ln"><span class="say">DISCOVERY</span></span><span class="ln"><span class="say">Dollars.</span></span>
+    <span class="ln gap"><span class="sup">Minimise the check,</span></span><span class="ln"><span class="sup">then the guest taps Retry.</span></span></div>
 
-  <!-- brand: opening and close, the same purple -->
-  <div id="cover" class="abs panel onPurple"><div id="coverIn" class="abs" style="left:0;top:0;width:var(--W);height:var(--H)">
-    <img class="abs" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="left:330px;top:452px;width:420px">
-    <div class="title" style="top:600px"><span class="ln"><span class="say">When the check is open</span></span><span class="ln"><span class="say">on the POS.</span></span></div>
-    <div class="title" style="top:812px"><span class="ln"><span class="sup">Dine with DISCOVERY Dollars · A team guide</span></span></div>
-  </div></div>
-  <div id="endPanel" class="abs panel onPurple">
-    <div id="e1" class="title" style="top:500px"><span class="ln"><span class="say" style="font-size:84px">Minimise the check.</span></span><span class="ln"><span class="say" style="font-size:84px">Tap Retry.</span></span></div>
-    <div id="e2" class="title" style="top:738px"><span class="ln"><span class="sup">Still seeing it? Let your supervisor know.</span></span></div>
-    <div id="endLogo" class="abs" style="left:330px;top:1180px;width:420px;height:66px;overflow:hidden"><img id="endLogoImg" src="assets/logo-white.svg" alt="Cinnamon DISCOVERY" style="width:420px;display:block;will-change:transform"></div>
-  </div>
+  <!-- the cover: the opening frame, and the thumbnail. The brand, the situation, the phone -->
+  <div id="c1" class="title cover"><span class="ln logo"><img src="assets/logo-purple.svg" alt="Cinnamon DISCOVERY"></span>
+    <span class="ln gapL"><span class="say">When the</span></span><span class="ln"><span class="say">check is open</span></span><span class="ln"><span class="say">on the POS.</span></span>
+    <span class="ln gap"><span class="sup">Dine with DISCOVERY Dollars · A team guide</span></span></div>
+  <!-- the close: centred, the rule, the brand -->
+  <div id="e1" class="title mid"><span class="ln"><span class="say">Minimise the check.</span></span><span class="ln"><span class="say">Tap Retry.</span></span>
+    <span class="ln gap"><span class="sup">Still seeing it? Let your supervisor know.</span></span>
+    <span class="ln logo" style="margin-top:28px"><img src="assets/logo-purple.svg" alt="Cinnamon DISCOVERY"></span></div>
 </div>
 <script>
 /* ------------------------------------------------------------------ POS screens
@@ -264,7 +267,8 @@ function spring(t, a, d, zeta = .85, w = 9) {
   return 1 - Math.exp(-zeta * wx) * (Math.cos(r * wx) + zeta / r * Math.sin(r * wx));
 }
 const glide = (t, a, d) => spring(t, a, d, 1, 7.5);
-const W = 1080, H = 1440;
+const W = 1920, H = 1080;
+const COL = 1470;          // the product column's centre
 
 function lines(id, t, a, o, st = .08) {
   $(id).querySelectorAll('.ln > *').forEach((el, i) => {
@@ -289,11 +293,11 @@ function fingertip(dot, rip, t, at, x, y, reach = 1) {
     Object.assign(rip.style, { display: 'block', left: x + 'px', top: y + 'px', transform: `scale(${(1 + 1.5 * (1 - (1 - r) ** 3)).toFixed(3)})`, opacity: (1 - r).toFixed(3) });
   }
 }
-function lift(id, t, up, from, toW, toCY, hgt, dx = 0) {
+function lift(id, t, up, from, toW, toCX, toCY, hgt, dy = 0) {
   const el = $(id), k = spring(t, up, 1.05, .86);
-  el.style.display = t >= up && dx > -1250 ? 'block' : 'none';
+  el.style.display = t >= up && dy < 1150 ? 'block' : 'none';
   const s = Math.exp(lerp(Math.log(from.w / 712), Math.log(toW / 712), k));
-  const x = lerp(from.x, W / 2 - toW / 2, k) + dx, y = lerp(from.y, toCY - hgt * (toW / 712) / 2, k);
+  const x = lerp(from.x, toCX - toW / 2, k), y = lerp(from.y, toCY - hgt * (toW / 712) / 2, k) + dy;
   el.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0) scale(${s.toFixed(5)})`;
   el.style.boxShadow = `0 ${(44 * k).toFixed(1)}px ${(90 * k).toFixed(1)}px rgba(20,16,46,${(.18 * clamp(k)).toFixed(3)})`;
 }
@@ -302,8 +306,7 @@ function lift(id, t, up, from, toW, toCY, hgt, dx = 0) {
    height D (captured layouts: checking 65.55, error 202.8, none 0) */
 const DF = 202.8, DC = 65.55;
 function bill(t) {
-  let D = 0, card = '', low = 'F';                  // no discount on the bill until the retry lands
-  if (t >= 3.9) { D = lerp(0, DF, spring(t, 3.9, .9, .88)); card = 'F'; low = 'F'; }
+  let D = DF, card = 'F', low = 'F';               // the error is up from the first frame (the cover)
   if (t >= 20.95) { D = lerp(DF, DC, spring(t, 20.95, .75, .88)); card = 'C'; }
   if (t >= 22.5) { D = lerp(DC, 0, spring(t, 22.5, .85, .88)); low = 'Ok'; }
   const h = Math.max(0, D - 28);
@@ -325,13 +328,14 @@ const pmix = (A, B, k) => ({ s: Math.exp(lerp(Math.log(A.s), Math.log(B.s), k)),
 const PC_FULL = posCam(901, 507, 1), PC_EXIT = posCam(1290, 880, 1.9), PC_TILE = posCam(560, 430, 1.75);
 // the phone sits large under the words, cropped by the frame; the guest has scrolled the bill to the card
 const S = 1.45, SCROLL = 214;
-const REST = { x: 540 - 417 * S / 2, y: 400 };
+const REST = { x: COL - 417 * S / 2, y: 96 };
+const POSS = 1.22, POSX = (W - 1016 * POSS) / 2, POSY = 292;     // the POS, centred under its statement
 const onScreen = (x, pageY) => ({ x: REST.x + (12 + x) * S, y: REST.y + (12 + 54 - SCROLL + pageY) * S });
 
 /* ---------------------------------------------------------------- the film
    Told from the team member's side: what you see, what it means, what you do.
-   0     Brand. Dine with DISCOVERY Dollars. When the check is open on the POS.   calm
-   2.5   A guest shows you this: the discount error opens on their phone           steady
+   0     Cover (and thumbnail): the brand, the situation, the phone with the error  calm
+   2.5   A guest shows you this: the phone stays, the error on it                  steady
    5.6   What it means: the error stands alone, its reason marked                 held
    9.5   Find the check on the POS                                                steady
    11.7  Tap Cancel/Exit (in, ring, tap, out); the POS repaints to Home           precise
@@ -339,35 +343,33 @@ const onScreen = (x, pageY) => ({ x: REST.x + (12 + x) * S, y: REST.y + (12 + 54
    18.5  Ask the guest to tap Retry; checking; the discount lands (22.5)          lift
    23.0  The discount is on the bill                                              held
    25.5  The same fix works for DISCOVERY Dollars                                 brief
-   28.5  Brand. Minimise the check. Tap Retry.                                    calm   */
+   28.5  Close, centred: Minimise the check. Tap Retry. The logo.                 calm   */
 function render(t) {
-  const cv = glide(t, 2.45, 1.0);
-  $('cover').style.transform = `translate3d(0,${(-H * cv).toFixed(2)}px,0)`;
-  $('coverIn').style.transform = `translate3d(0,${(-150 * cv).toFixed(2)}px,0)`;
-  $('cover').style.display = cv > .999 ? 'none' : 'block';
-
-  // the phone: rises; steps down so the error can stand alone; returns from the right; steps down again
-  let px = 0, py = (1 - spring(t, 2.55, 1.35, .86)) * 1150;
-  if (t >= 5.75) py = 1450 * glide(t, 5.75, 1.1);
-  if (t >= 17.5) { py = 0; px = 1300 * (1 - glide(t, 18.5, 1.0)); }
-  if (t >= 23.15) py = 1450 * glide(t, 23.15, 1.1);
+  // the phone: in place from the first frame; steps down so the error can stand alone;
+  // returns from the right; steps down again
+  let px = 0, py = 0;
+  if (t >= 5.75) py = 1100 * glide(t, 5.75, 1.1);
+  if (t >= 17.5) { py = 0; px = 900 * (1 - glide(t, 18.55, 1.0)); }
+  if (t >= 23.15) py = 1100 * glide(t, 23.15, 1.1);
   $('phone').style.transform = `translate3d(${(REST.x + px).toFixed(2)}px,${(REST.y + py).toFixed(2)}px,0) scale(${S})`;
-  $('phone').style.display = Math.abs(px) > 1250 || py > 1300 ? 'none' : 'block';
+  $('phone').style.display = px > 880 || py > 1080 ? 'none' : 'block';
   $('page').style.transform = `translateY(${-SCROLL}px)`;
   fingertip($('dotR'), $('ripR'), t, 20.8, 196.5 + 95, 609.4 + 4);    // beside the label, so Retry stays readable
   bill(t);
 
-  const errDx = t >= 9.5 ? -1300 * glide(t, 9.5, 1.0) : 0;
-  lift('liftErr', t, 5.6, { ...onScreen(20, 472), w: 353 * S }, 900, 760, 351, errDx);
+  // details lifted out of the phone into its column; each steps down when its shot ends
+  const errDy = t >= 9.35 ? 1100 * glide(t, 9.35, .9) : 0;
+  lift('liftErr', t, 5.6, { ...onScreen(20, 472), w: 353 * S }, 720, COL + 20, 540, 351, errDy);
   $('liftErr').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 6.6, .8)).toFixed(4)})`;
-  const billDx = t >= 25.5 ? -1300 * glide(t, 25.5, 1.0) : 0;
-  lift('liftBill', t, 23.0, { ...onScreen(20, 506), w: 353 * S }, 900, 760, 347, billDx);
+  const billDy = t >= 25.35 ? 1100 * glide(t, 25.35, .9) : 0;
+  lift('liftBill', t, 23.0, { ...onScreen(20, 506), w: 353 * S }, 720, COL + 20, 540, 347, billDy);
   $('liftBill').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 23.8, .8)).toFixed(4)})`;
 
-  let qx = t < 9.5 ? 1300 : 1300 * (1 - glide(t, 9.5, 1.0));
-  if (t >= 18.5) qx = -1300 * glide(t, 18.5, 1.0);
-  $('pos').style.transform = `translate3d(${(32 + qx).toFixed(2)}px,478px,0)`;
-  $('pos').style.display = Math.abs(qx) > 1250 ? 'none' : 'block';
+  // the POS: in from the right under its centred statement; steps down when the guest's turn comes
+  let qx = t < 9.5 ? 1800 : 1800 * (1 - glide(t, 9.5, 1.0)), qy = 0;
+  if (t >= 18.35) qy = 1100 * glide(t, 18.35, .9);
+  $('pos').style.transform = `translate3d(${(POSX + qx).toFixed(2)}px,${(POSY + qy).toFixed(2)}px,0) scale(${POSS})`;
+  $('pos').style.display = qx > 1750 || qy > 1080 ? 'none' : 'block';
   let pc = PC_FULL;
   if (t >= 11.7) pc = pmix(PC_FULL, PC_EXIT, glide(t, 11.7, 1.1));
   if (t >= 13.8) pc = pmix(PC_EXIT, PC_FULL, glide(t, 13.8, 1.0));
@@ -380,31 +382,39 @@ function render(t) {
   draw($('ringTile'), glide(t, 15.9, .65));
   fingertip($('dotPos'), $('ripPos'), t, 13.45, 1411 + 62, 939 + 6, 1.9);   // pressed while the shot is close
 
-  let gx = t < 25.5 ? 1300 : 1300 * (1 - glide(t, 25.5, 1.0));
-  $('dlg').style.transform = `translate3d(${(223 + gx).toFixed(2)}px,520px,0)`;
-  $('dlg').style.display = Math.abs(gx) > 1250 ? 'none' : 'block';
+  // the DISCOVERY Dollars dialog: in from the right, out to the right for the close
+  let gx = t < 25.5 ? 900 : 900 * (1 - glide(t, 25.5, 1.0));
+  if (t >= 28.4) gx = 900 * glide(t, 28.4, .8);
+  $('dlg').style.transform = `translate3d(${(COL - 317 * 1.18 + gx).toFixed(2)}px,${(540 - 254 * 1.18).toFixed(2)}px,0) scale(1.18)`;
+  $('dlg').style.display = gx > 880 ? 'none' : 'block';
 
-  lines('w1', t, 2.85, 5.5);
+  lines('c1', t, -9, 2.4, .06);              // the cover is at rest on the first frame
+  lines('w1', t, 2.75, 5.5);
   lines('w2', t, 5.85, 9.35);
-  lines('w2s', t, 7.0, 9.35);
   lines('w3', t, 9.6, 11.55);
   lines('w4', t, 11.75, 14.6);
   lines('w5', t, 14.8, 18.35);
   lines('w6', t, 18.6, 22.6);
   lines('w7', t, 22.8, 25.35);
   lines('w8', t, 25.6, 28.35);
-  lines('w8s', t, 26.3, 28.35);
-
-  const en = glide(t, 28.5, 1.0);
-  $('endPanel').style.transform = `translate3d(0,${(H * (1 - en)).toFixed(2)}px,0)`;
-  $('endPanel').style.display = en > 0 ? 'block' : 'none';
-  lines('e1', t, 29.1, 99, .14);
-  lines('e2', t, 29.6, 99);
-  $('endLogoImg').style.transform = `translate3d(0,${((1 - spring(t, 30.0, 1.0, .96, 9)) * 140).toFixed(2)}%,0)`;
+  lines('e1', t, 28.9, 99, .1);
 }
 window.render = render;
 window.DURATION = 34;
 window.SIZE = { w: W, h: H };
+/* the storyboard: one entry per shot (storyboard.mjs renders each at t) */
+window.SHOTS = [
+  { t: 0, from: 0, to: 2.4, id: 'c1', kind: 'Cover · thumbnail', action: 'The opening frame is the thumbnail. Brand, the situation, and the guest’s phone showing “Failed to apply discount on POS”.', sound: 'Music opens on a question (marimba).' },
+  { t: 4.2, from: 2.75, to: 5.5, id: 'w1', action: 'The cover words go; the phone stays, scrolled to the error.', sound: 'Groove settles in.' },
+  { t: 7.6, from: 5.85, to: 9.35, id: 'w2', action: 'The error card lifts out of the phone, the reason marked: Check is open on another terminal.', sound: '' },
+  { t: 10.8, from: 9.6, to: 11.55, id: 'w3', action: 'The POS slides in under a centred statement: Pick Up Check, Table B12/1.', sound: '' },
+  { t: 13.5, from: 11.75, to: 14.6, id: 'w4', action: 'Close in on the bottom row. Cancel/Exit ringed and pressed, between Void and Make Payment.', sound: 'Tap.' },
+  { t: 16.6, from: 14.8, to: 18.35, id: 'w5', action: 'The POS repaints to Home; the camera finds Table B12/1, still open, ringed.', sound: '' },
+  { t: 20.9, from: 18.6, to: 22.6, id: 'w6', action: 'The phone returns. The guest taps Retry; the app checks for the discount.', sound: 'Tap.' },
+  { t: 24.4, from: 22.8, to: 25.35, id: 'w7', action: 'The bill lifts out with the discount row marked.', sound: 'Success chime; the music answers its opening question.' },
+  { t: 27.2, from: 25.6, to: 28.35, id: 'w8', action: 'The DISCOVERY Dollars version of the same error; same fix.', sound: '' },
+  { t: 31.5, from: 28.9, to: 34, id: 'e1', kind: 'Close', action: 'The rule, centred, and the Cinnamon DISCOVERY logo.', sound: 'Bells resolve on the logo.' },
+];
 const q = new URLSearchParams(location.search);
 if (q.has('t')) render(+q.get('t'));
 else if (!q.has('record')) { const s0 = performance.now(); (function f() { render(((performance.now() - s0) / 1000) % 34.5); requestAnimationFrame(f); })(); }

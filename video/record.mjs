@@ -32,7 +32,7 @@ await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const BASE = `http://127.0.0.1:${server.address().port}/video/`;
 
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
-const page = await browser.newPage({ viewport: { width: 1080, height: 1440 }, deviceScaleFactor: SS });
+const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: SS });   // 16:9
 page.on('pageerror', (e) => console.error('pageerror:', e.message));
 await page.goto(BASE + FILM.page + '?record=1');
 await page.evaluate(async () => {
@@ -46,8 +46,17 @@ if (only) { // stills for review: node record.mjs [--film=…] 1,5,8
   await done(); process.exit(0);
 }
 const dur = await page.evaluate(() => window.DURATION);
+// the cover is the first frame, and the thumbnail: saved at 1920 x 1080 and set as the file's cover art
+const THUMB = path.join(HERE, 'thumbnails', path.basename(FILM.out, '.mp4') + '.png');
+if (!PREVIEW) {
+  fs.mkdirSync(path.dirname(THUMB), { recursive: true });
+  await page.evaluate(() => render(0));
+  const big = await page.screenshot({ type: 'png' });
+  const sh = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-i', '-', '-vf', 'scale=1920:1080:flags=lanczos', THUMB], { stdio: ['pipe', 'inherit', 'inherit'] });
+  sh.stdin.end(big); await new Promise(r => sh.on('close', r));
+}
 const SILENT = path.join(HERE, PREVIEW ? `preview-${path.basename(FILM.out)}` : 'silent.mp4');
-const ff = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-vf', 'scale=1080:1440:flags=lanczos', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', PREVIEW ? '24' : '14', '-preset', PREVIEW ? 'veryfast' : 'slow', '-movflags', '+faststart', SILENT], { stdio: ['pipe', 'inherit', 'inherit'] });
+const ff = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-vf', 'scale=1920:1080:flags=lanczos', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', PREVIEW ? '24' : '14', '-preset', PREVIEW ? 'veryfast' : 'slow', '-movflags', '+faststart', SILENT], { stdio: ['pipe', 'inherit', 'inherit'] });
 const N = Math.round(dur * FPS);
 for (let i = 0; i < N; i++) {
   await page.evaluate((t) => render(t), i / FPS);
@@ -58,8 +67,13 @@ for (let i = 0; i < N; i++) {
 ff.stdin.end(); await new Promise(r => ff.on('close', r)); await done();
 if (PREVIEW) process.exit(0);
 // lay the soundtrack (python3 video/audio.py) under the picture, normalised for phones and social
+const AV = path.join(HERE, 'av.mp4');
 const mux = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-i', SILENT, '-i', path.join(HERE, FILM.audio),
   '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11', '-ar', '48000',
-  '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', path.join(HERE, FILM.out)], { stdio: 'inherit' });
+  '-c:a', 'aac', '-b:a', '192k', '-shortest', AV], { stdio: 'inherit' });
 await new Promise(r => mux.on('close', r));
-fs.unlinkSync(SILENT);
+// then the cover art, in its own pass (-shortest would cut the film to the one-frame picture)
+const art = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-i', AV, '-i', THUMB, '-map', '0', '-map', '1', '-c', 'copy', '-c:v:1', 'png',
+  '-disposition:v:1', 'attached_pic', '-movflags', '+faststart', path.join(HERE, FILM.out)], { stdio: 'inherit' });
+await new Promise(r => art.on('close', r));
+fs.unlinkSync(SILENT); fs.unlinkSync(AV);
