@@ -55,7 +55,9 @@ if (!PREVIEW) {
   const sh = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-i', '-', '-vf', 'scale=1080:1350:flags=lanczos', THUMB], { stdio: ['pipe', 'inherit', 'inherit'] });
   sh.stdin.end(big); await new Promise(r => sh.on('close', r));
 }
-const SILENT = path.join(HERE, PREVIEW ? `preview-${path.basename(FILM.out)}` : 'silent.mp4');
+// working files are named for the film, so the two can render at once
+const STEM = path.basename(FILM.out, '.mp4');
+const SILENT = path.join(HERE, PREVIEW ? `preview-${path.basename(FILM.out)}` : `${STEM}.silent.mp4`);
 const ff = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-vf', 'scale=1080:1350:flags=lanczos', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', PREVIEW ? '24' : '14', '-preset', PREVIEW ? 'veryfast' : 'slow', '-movflags', '+faststart', SILENT], { stdio: ['pipe', 'inherit', 'inherit'] });
 const N = Math.round(dur * FPS);
 for (let i = 0; i < N; i++) {
@@ -69,7 +71,7 @@ for (let i = 0; i < N; i++) {
 ff.stdin.end(); await new Promise(r => ff.on('close', r)); await done();
 if (PREVIEW) process.exit(0);
 // lay the soundtrack (python3 video/audio.py) under the picture, normalised for phones and social
-const AV = path.join(HERE, 'av.mp4');
+const AV = path.join(HERE, `${STEM}.av.mp4`);
 const mux = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-i', SILENT, '-i', path.join(HERE, FILM.audio),
   '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11', '-ar', '48000',
   '-c:a', 'aac', '-b:a', '192k', '-shortest', AV], { stdio: 'inherit' });

@@ -8,3 +8,5 @@ video/soundtrack-password.wav
 video/preview-*.mp4
 video/__pycache__/
 video/av.mp4
+video/*.silent.mp4
+video/*.av.mp4
