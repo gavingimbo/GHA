@@ -28,7 +28,7 @@ const server = http.createServer((req, res) => {
 });
 await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
-const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
+const page = await browser.newPage({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 1 });
 fs.mkdirSync(path.join(OUT, 'frames'), { recursive: true });
 const jpeg = (png, file, w) => new Promise((r) => {
   const p = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-i', '-', '-vf', `scale=${w}:-2:flags=lanczos`, '-q:v', '3', file], { stdio: ['pipe', 'inherit', 'inherit'] });

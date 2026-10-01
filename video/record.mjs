@@ -32,7 +32,7 @@ await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const BASE = `http://127.0.0.1:${server.address().port}/video/`;
 
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
-const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: SS });   // 16:9
+const page = await browser.newPage({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: SS });   // 4:5
 page.on('pageerror', (e) => console.error('pageerror:', e.message));
 await page.goto(BASE + FILM.page + '?record=1');
 await page.evaluate(async () => {
@@ -46,17 +46,17 @@ if (only) { // stills for review: node record.mjs [--film=…] 1,5,8
   await done(); process.exit(0);
 }
 const dur = await page.evaluate(() => window.DURATION);
-// the cover is the first frame, and the thumbnail: saved at 1920 x 1080 and set as the file's cover art
+// the cover is the first frame, and the thumbnail: saved at 1080 x 1350 and set as the file's cover art
 const THUMB = path.join(HERE, 'thumbnails', path.basename(FILM.out, '.mp4') + '.png');
 if (!PREVIEW) {
   fs.mkdirSync(path.dirname(THUMB), { recursive: true });
   await page.evaluate(() => render(0));
   const big = await page.screenshot({ type: 'png' });
-  const sh = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-i', '-', '-vf', 'scale=1920:1080:flags=lanczos', THUMB], { stdio: ['pipe', 'inherit', 'inherit'] });
+  const sh = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-i', '-', '-vf', 'scale=1080:1350:flags=lanczos', THUMB], { stdio: ['pipe', 'inherit', 'inherit'] });
   sh.stdin.end(big); await new Promise(r => sh.on('close', r));
 }
 const SILENT = path.join(HERE, PREVIEW ? `preview-${path.basename(FILM.out)}` : 'silent.mp4');
-const ff = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-vf', 'scale=1920:1080:flags=lanczos', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', PREVIEW ? '24' : '14', '-preset', PREVIEW ? 'veryfast' : 'slow', '-movflags', '+faststart', SILENT], { stdio: ['pipe', 'inherit', 'inherit'] });
+const ff = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-vf', 'scale=1080:1350:flags=lanczos', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', PREVIEW ? '24' : '14', '-preset', PREVIEW ? 'veryfast' : 'slow', '-movflags', '+faststart', SILENT], { stdio: ['pipe', 'inherit', 'inherit'] });
 const N = Math.round(dur * FPS);
 for (let i = 0; i < N; i++) {
   await page.evaluate((t) => render(t), i / FPS);

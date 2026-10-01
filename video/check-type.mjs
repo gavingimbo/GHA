@@ -19,7 +19,7 @@ const server = http.createServer((req, res) => {
 });
 await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
-const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 2 });
+const page = await browser.newPage({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 2 });
 let problems = 0;
 for (const film of (process.argv[2] ? [process.argv[2]] : ['password.html', 'explainer.html'])) {
   await page.goto(`http://127.0.0.1:${server.address().port}/video/${film}?t=1`);
@@ -50,7 +50,7 @@ for (const film of (process.argv[2] ? [process.argv[2]] : ['password.html', 'exp
       if (l.text && l.h > l.lh * 1.5) { problems++; console.log(`${film} #${id}: wraps — "${l.text}"`); }
       if (l.w > l.col) { problems++; console.log(`${film} #${id}: ${Math.round(l.w)} px wide in a ${Math.round(l.col)} px column — "${l.text}"`); }
     }
-    const box = await page.evaluate((id) => { const r = document.getElementById(id).getBoundingClientRect(); return { x: 0, y: Math.max(0, r.top - 60), width: 1920, height: Math.min(1080 - Math.max(0, r.top - 60), r.height + 120) }; }, id);
+    const box = await page.evaluate((id) => { const r = document.getElementById(id).getBoundingClientRect(); return { x: 0, y: Math.max(0, r.top - 60), width: 1080, height: Math.min(1350 - Math.max(0, r.top - 60), r.height + 120) }; }, id);
     const masked = await page.screenshot({ clip: box });
     await page.evaluate(() => document.querySelectorAll('.ln').forEach((e) => { e.style.overflow = 'visible'; }));
     const open = await page.screenshot({ clip: box });

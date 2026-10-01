@@ -9,15 +9,15 @@
 @font-face{font-family:Ivy;src:url(../assets/fonts/ivymode-gha-semibold.woff2) format('woff2')}
 @font-face{font-family:Jost;src:url(../assets/fonts/jost-regular.woff) format('woff')}
 /* ---------------------------------------------------------------- the rules
-   16:9. Colour: ink for type, paper behind the product, purple for the brand
-   (the logo, the step, a ring). Everything else on screen is the product's own.
-   Ground: flat. No gradients, no blur.
-   Alignment: one statement, set left in its own column, the product beside it
-   and cropped by the frame; the POS, which is wide, sits under a centred
-   statement. The opening frame is the cover, and the thumbnail. */
+   4:5 (1080 x 1350). Colour: purple for the brand moments (the cover and the
+   close, white type, the white logo), ink for type, paper behind the product.
+   Everything else on screen is the product's own. Ground: flat. No gradients,
+   no blur. Alignment: one statement, centred at the top; the product below it,
+   large, cropped by the bottom of the frame. The opening frame is the cover,
+   and the thumbnail. */
 @font-face{font-family:PosSans;font-weight:400;src:url(assets/fonts/open-sans-400.woff2) format('woff2')}
 @font-face{font-family:PosSans;font-weight:600;src:url(assets/fonts/open-sans-600.woff2) format('woff2')}
-:root{--purple:#592A87;--ink:#14102E;--paper:#FAFAFA;--W:1920px;--H:1080px}
+:root{--purple:#592A87;--ink:#14102E;--paper:#FAFAFA;--W:1080px;--H:1350px}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)}
 #stage{position:relative;width:var(--W);height:var(--H);overflow:hidden;background:var(--paper);color:var(--ink);font-family:Jost,sans-serif;
@@ -27,20 +27,18 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
 /* each line is its own mask, generous above and below so no ascender, accent or
    descender is ever clipped; the lines stack in a column so those margins cancel
    instead of collapsing, and the pitch is the line height */
-.title{position:absolute;left:126px;width:900px;top:0;bottom:0;text-align:left;display:flex;flex-direction:column;justify-content:center}
-.title.mid{left:0;right:0;width:auto;text-align:center}
-.title.top{left:0;right:0;width:auto;bottom:auto;top:34px;text-align:center;justify-content:flex-start}
+.title{position:absolute;left:0;right:0;top:58px;text-align:center;display:flex;flex-direction:column}
+.title.mid{top:0;bottom:0;justify-content:center}
 .ln{display:block;overflow:hidden;padding:36px 24px;margin:-36px 0;line-height:1.18}
 .ln > *{display:inline-block;will-change:transform}
-.step{font-family:Jost,sans-serif;font-size:31px;letter-spacing:.2em;text-transform:uppercase;color:var(--purple)}
-.top .step{padding-left:.2em}
-.say{font-family:Ivy,serif;font-size:100px;letter-spacing:.035em;-webkit-text-stroke:.013em currentColor;font-kerning:normal}
-.sup{font-family:Jost,sans-serif;font-size:38px;color:rgba(20,16,46,.66);line-height:1.3;letter-spacing:.01em}
-.cover .say{font-size:104px}
-.mid .say{font-size:96px}
-.top .say{font-size:76px}
-.top .sup{font-size:34px}
-.logo img{display:inline-block;width:330px;height:auto;vertical-align:top}
+.step{font-family:Jost,sans-serif;font-size:27px;letter-spacing:.2em;padding-left:.2em;text-transform:uppercase;color:var(--purple)}
+.say{font-family:Ivy,serif;font-size:68px;letter-spacing:.035em;-webkit-text-stroke:.013em currentColor;font-kerning:normal}
+.sup{font-family:Jost,sans-serif;font-size:31px;color:rgba(20,16,46,.66);line-height:1.3;letter-spacing:.01em}
+.cover .say{font-size:74px}
+.cover{top:44px}
+.cover .gapL{margin-top:-18px}
+.mid .say{font-size:80px}
+.logo img{display:inline-block;width:300px;height:auto;vertical-align:top}
 /* the cover and the close: purple, white type, the white logo */
 .panel{position:absolute;left:0;top:0;width:var(--W);height:var(--H);background:var(--purple);overflow:hidden}
 .onPurple .say{color:#fff}
@@ -97,7 +95,7 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
        slide away as the film begins while the phone stays where it is -->
   <div id="cover" class="panel onPurple"><div id="coverIn" class="panel" style="background:none">
     <div id="c1" class="title cover"><span class="ln logo"><img src="assets/logo-white.svg" alt="Cinnamon DISCOVERY"></span>
-      <span class="ln gapL"><span class="say">When the</span></span><span class="ln"><span class="say">check is open</span></span><span class="ln"><span class="say">on the POS.</span></span>
+      <span class="ln gapL"><span class="say">When the check is open</span></span><span class="ln"><span class="say">on the POS.</span></span>
       <span class="ln gap"><span class="sup">Dine with DISCOVERY Dollars</span></span></div>
   </div></div>
 
@@ -139,25 +137,25 @@ html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--paper)
   <div id="liftBill" class="abs lift"><img src="../design/png/bill-card.png"><div class="mark" style="left:30px;top:84px;width:652px;height:50px"></div></div>
 
   <!-- words: one statement per shot, told from the team member's side -->
-  <div id="w1" class="title"><span class="ln"><span class="say">A guest shows</span></span><span class="ln"><span class="say">you this.</span></span>
-    <span class="ln gap"><span class="sup">Their member discount</span></span><span class="ln"><span class="sup">didn’t go through.</span></span></div>
-  <div id="w2" class="title"><span class="ln"><span class="say">The check is</span></span><span class="ln"><span class="say">open on another</span></span><span class="ln"><span class="say">terminal.</span></span>
+  <div id="w1" class="title"><span class="ln"><span class="say">A guest shows you this.</span></span>
+    <span class="ln gap"><span class="sup">Their member discount didn’t go through.</span></span></div>
+  <div id="w2" class="title"><span class="ln"><span class="say">The check is open</span></span><span class="ln"><span class="say">on another terminal.</span></span>
     <span class="ln gap"><span class="sup">While another terminal has it,</span></span><span class="ln"><span class="sup">the app can’t add the discount.</span></span></div>
-  <div id="w3" class="title top"><span class="ln"><span class="step">Step 1 of 3</span></span>
+  <div id="w3" class="title"><span class="ln"><span class="step">Step 1 of 3</span></span>
     <span class="ln gapS"><span class="say">Find the check on the POS.</span></span>
     <span class="ln gap"><span class="sup">Here it’s open on this terminal: Table B12/1.</span></span></div>
-  <div id="w4" class="title top"><span class="ln"><span class="step">Step 2 of 3</span></span>
+  <div id="w4" class="title"><span class="ln"><span class="step">Step 2 of 3</span></span>
     <span class="ln gapS"><span class="say">Tap Cancel/Exit.</span></span>
     <span class="ln gap"><span class="sup">Not Void. Not Make Payment.</span></span></div>
-  <div id="w5" class="title top"><span class="ln"><span class="step">Step 2 of 3</span></span>
+  <div id="w5" class="title"><span class="ln"><span class="step">Step 2 of 3</span></span>
     <span class="ln gapS"><span class="say">The check is minimised.</span></span>
     <span class="ln gap"><span class="sup">It stays open on Home, so the app can reach it.</span></span></div>
   <div id="w6" class="title"><span class="ln"><span class="step">Step 3 of 3</span></span>
-    <span class="ln gapS"><span class="say">Ask the guest</span></span><span class="ln"><span class="say">to tap Retry.</span></span></div>
-  <div id="w7" class="title"><span class="ln"><span class="say">The discount</span></span><span class="ln"><span class="say">is on the bill.</span></span>
-    <span class="ln gap"><span class="sup">The guest sees it on their phone</span></span><span class="ln"><span class="sup">straight away.</span></span></div>
-  <div id="w8" class="title"><span class="ln"><span class="say">Same fix for</span></span><span class="ln"><span class="say">DISCOVERY</span></span><span class="ln"><span class="say">Dollars.</span></span>
-    <span class="ln gap"><span class="sup">Minimise the check,</span></span><span class="ln"><span class="sup">then the guest taps Retry.</span></span></div>
+    <span class="ln gapS"><span class="say">Ask the guest to tap Retry.</span></span></div>
+  <div id="w7" class="title"><span class="ln"><span class="say">The discount is on the bill.</span></span>
+    <span class="ln gap"><span class="sup">The guest sees it on their phone straight away.</span></span></div>
+  <div id="w8" class="title"><span class="ln"><span class="say">Same fix for</span></span><span class="ln"><span class="say">DISCOVERY Dollars.</span></span>
+    <span class="ln gap"><span class="sup">Minimise the check, then the guest taps Retry.</span></span></div>
 
 
   <!-- the close: purple, rising over everything; the rule, centred, and the white logo -->
@@ -278,8 +276,8 @@ function spring(t, a, d, zeta = .85, w = 9) {
   return 1 - Math.exp(-zeta * wx) * (Math.cos(r * wx) + zeta / r * Math.sin(r * wx));
 }
 const glide = (t, a, d) => spring(t, a, d, 1, 7.5);
-const W = 1920, H = 1080;
-const COL = 1470;          // the product column's centre
+const W = 1080, H = 1350;
+const CX = 540;            // the product's centre line
 
 function lines(id, t, a, o, st = .08) {
   $(id).querySelectorAll('.ln > *').forEach((el, i) => {
@@ -339,8 +337,8 @@ const pmix = (A, B, k) => ({ s: Math.exp(lerp(Math.log(A.s), Math.log(B.s), k)),
 const PC_FULL = posCam(901, 507, 1), PC_EXIT = posCam(1290, 880, 1.9), PC_TILE = posCam(560, 430, 1.75);
 // the phone sits large under the words, cropped by the frame; the guest has scrolled the bill to the card
 const S = 1.45, SCROLL = 214;
-const REST = { x: COL - 417 * S / 2, y: 96 };
-const POSS = 1.22, POSX = (W - 1016 * POSS) / 2, POSY = 292;     // the POS, centred under its statement
+const REST = { x: CX - 417 * S / 2, y: 372 };
+const POSS = 1.0, POSX = (W - 1016 * POSS) / 2, POSY = 400;     // the POS, centred under its statement
 const onScreen = (x, pageY) => ({ x: REST.x + (12 + x) * S, y: REST.y + (12 + 54 - SCROLL + pageY) * S });
 
 /* ---------------------------------------------------------------- the film
@@ -358,29 +356,29 @@ const onScreen = (x, pageY) => ({ x: REST.x + (12 + x) * S, y: REST.y + (12 + 54
 function render(t) {
   // the phone: in place from the first frame; steps down so the error can stand alone;
   // returns from the right; steps down again
-  let px = 0, py = 0;
+  let px = 0, py = 44 * (1 - glide(t, 2.45, 1.0));   // on the cover it sits a little lower, under the words; it settles as they go
   if (t >= 5.75) py = 1100 * glide(t, 5.75, 1.1);
-  if (t >= 17.5) { py = 0; px = 900 * (1 - glide(t, 18.55, 1.0)); }
+  if (t >= 17.5) { py = 0; px = 1100 * (1 - glide(t, 18.55, 1.0)); }
   if (t >= 23.15) py = 1100 * glide(t, 23.15, 1.1);
   $('phone').style.transform = `translate3d(${(REST.x + px).toFixed(2)}px,${(REST.y + py).toFixed(2)}px,0) scale(${S})`;
-  $('phone').style.display = px > 880 || py > 1080 ? 'none' : 'block';
+  $('phone').style.display = px > 1080 || py > 1080 ? 'none' : 'block';
   $('page').style.transform = `translateY(${-SCROLL}px)`;
   fingertip($('dotR'), $('ripR'), t, 20.8, 196.5 + 95, 609.4 + 4);    // beside the label, so Retry stays readable
   bill(t);
 
-  // details lifted out of the phone into its column; each steps down when its shot ends
+  // details lifted out of the phone and enlarged; each steps down when its shot ends
   const errDy = t >= 9.35 ? 1100 * glide(t, 9.35, .9) : 0;
-  lift('liftErr', t, 5.6, { ...onScreen(20, 472), w: 353 * S }, 720, COL + 20, 540, 351, errDy);
+  lift('liftErr', t, 5.6, { ...onScreen(20, 472), w: 353 * S }, 900, CX, 820, 351, errDy);
   $('liftErr').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 6.6, .8)).toFixed(4)})`;
   const billDy = t >= 25.35 ? 1100 * glide(t, 25.35, .9) : 0;
-  lift('liftBill', t, 23.0, { ...onScreen(20, 506), w: 353 * S }, 720, COL + 20, 540, 347, billDy);
+  lift('liftBill', t, 23.0, { ...onScreen(20, 506), w: 353 * S }, 900, CX, 820, 347, billDy);
   $('liftBill').querySelector('.mark').style.transform = `scaleX(${clamp(glide(t, 23.8, .8)).toFixed(4)})`;
 
   // the POS: in from the right under its centred statement; steps down when the guest's turn comes
-  let qx = t < 9.5 ? 1800 : 1800 * (1 - glide(t, 9.5, 1.0)), qy = 0;
+  let qx = t < 9.5 ? 1200 : 1200 * (1 - glide(t, 9.5, 1.0)), qy = 0;
   if (t >= 18.35) qy = 1100 * glide(t, 18.35, .9);
   $('pos').style.transform = `translate3d(${(POSX + qx).toFixed(2)}px,${(POSY + qy).toFixed(2)}px,0) scale(${POSS})`;
-  $('pos').style.display = qx > 1750 || qy > 1080 ? 'none' : 'block';
+  $('pos').style.display = qx > 1150 || qy > 1080 ? 'none' : 'block';
   let pc = PC_FULL;
   if (t >= 11.7) pc = pmix(PC_FULL, PC_EXIT, glide(t, 11.7, 1.1));
   if (t >= 13.8) pc = pmix(PC_EXIT, PC_FULL, glide(t, 13.8, 1.0));
@@ -394,9 +392,9 @@ function render(t) {
   fingertip($('dotPos'), $('ripPos'), t, 13.45, 1411 + 62, 939 + 6, 1.9);   // pressed while the shot is close
 
   // the DISCOVERY Dollars dialog: in from the right, out to the right for the close
-  let gx = t < 25.5 ? 900 : 900 * (1 - glide(t, 25.5, 1.0));
-  $('dlg').style.transform = `translate3d(${(COL - 317 * 1.18 + gx).toFixed(2)}px,${(540 - 254 * 1.18).toFixed(2)}px,0) scale(1.18)`;
-  $('dlg').style.display = gx > 880 ? 'none' : 'block';
+  let gx = t < 25.5 ? 1100 : 1100 * (1 - glide(t, 25.5, 1.0));
+  $('dlg').style.transform = `translate3d(${(CX - 317 * 1.3 + gx).toFixed(2)}px,${(820 - 254 * 1.3).toFixed(2)}px,0) scale(1.3)`;
+  $('dlg').style.display = gx > 1080 ? 'none' : 'block';
 
   // the cover slides up and away, taking its words with it; the phone stays
   const cv = glide(t, 2.45, 1.0);
@@ -404,7 +402,7 @@ function render(t) {
   $('coverIn').style.transform = `translate3d(0,${(-140 * cv).toFixed(2)}px,0)`;
   $('cover').style.display = cv > .999 ? 'none' : 'block';
   lines('c1', t, -9, 99);                    // at rest on the first frame (the thumbnail)
-  lines('w1', t, 2.75, 5.5);
+  lines('w1', t, 3.0, 5.5);            // once the purple has cleared the top of the frame
   lines('w2', t, 5.85, 9.35);
   lines('w3', t, 9.6, 11.55);
   lines('w4', t, 11.75, 14.6);
@@ -423,7 +421,7 @@ window.SIZE = { w: W, h: H };
 /* the storyboard: one entry per shot (storyboard.mjs renders each at t) */
 window.SHOTS = [
   { t: 0, from: 0, to: 2.4, id: 'c1', kind: 'Cover · thumbnail', action: 'The opening frame is the thumbnail. Purple, the white logo and the situation, beside the guest’s phone showing “Failed to apply discount on POS”.', sound: 'Music opens on a question (marimba).' },
-  { t: 4.2, from: 2.75, to: 5.5, id: 'w1', action: 'The purple cover slides away with its words; the phone stays, scrolled to the error.', sound: 'Groove settles in.' },
+  { t: 4.2, from: 3.0, to: 5.5, id: 'w1', action: 'The purple cover slides away with its words; the phone stays, scrolled to the error.', sound: 'Groove settles in.' },
   { t: 7.6, from: 5.85, to: 9.35, id: 'w2', action: 'The error card lifts out of the phone, the reason marked: Check is open on another terminal.', sound: '' },
   { t: 10.8, from: 9.6, to: 11.55, id: 'w3', action: 'The POS slides in under a centred statement: Pick Up Check, Table B12/1.', sound: '' },
   { t: 13.5, from: 11.75, to: 14.6, id: 'w4', action: 'Close in on the bottom row. Cancel/Exit ringed and pressed, between Void and Make Payment.', sound: 'Tap.' },
