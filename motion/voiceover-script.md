@@ -16,9 +16,9 @@ For the 60-second film in `motion/storyboard.md`. Paste the lines below into the
 |---|---|---|---|---|
 | 1 | 0:04 | ~3s | Every great evening starts at the table. | 7 |
 | 2 | 0:09 | ~4s | Scan the code, sign in, and your bill opens on your phone. | 12 |
-| 3 | 0:23 | ~3s | Cinnamon recognised your bill. DISCOVERY recognised you. | 8 |
-| 4 | 0:30 | ~4s | Your member benefit is already on the bill. Nothing to ask for. | 12 |
-| 5 | 0:41 | ~4s | Decide how many DISCOVERY Dollars to use. Or none at all. | 11 |
+| 3 | 0:23 | ~3s | Cinnamon has your bill. DISCOVERY knows it's you. | 8 |
+| 4 | 0:30 | ~4s | Your benefit is already on the bill. Nothing to ask for. | 12 |
+| 5 | 0:41 | ~4s | Decide how many DISCOVERY Dollars to use, or none at all. Either way, you earn. | 11 |
 | 6 | 0:50 | ~3s | One tap to confirm, and you're done. | 7 |
 | 7 | 0:57 | ~3s | Cinnamon DISCOVERY. Dine with DISCOVERY Dollars. | 6 |
 
@@ -31,11 +31,11 @@ Every great evening starts at the table.
 
 Scan the code, sign in, and your bill opens on your phone.
 
-Cinnamon recognised your bill. DISCOVERY recognised you.
+Cinnamon has your bill. DISCOVERY knows it's you.
 
-Your member benefit is already on the bill. Nothing to ask for.
+Your benefit is already on the bill. Nothing to ask for.
 
-Decide how many DISCOVERY Dollars to use. Or none at all.
+Decide how many DISCOVERY Dollars to use, or none at all. Either way, you earn.
 
 One tap to confirm, and you're done.
 

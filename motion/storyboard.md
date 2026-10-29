@@ -91,13 +91,13 @@ Total: 60 seconds, 12 shots, average 5 seconds. Hard cuts, one whip (shot 5), an
 
 **Shot 5: Shared element (0:19–0:22).** The Sign in button stretches and becomes the bill card. It is one object changing shape, with no crossfade. This is the one whip, with the Gust sound.
 
-**Shot 6: Recognised (0:22–0:29).** The venue chip "Dreams & Beats" rises first. Then the Titanium tier card rises into place, using `assets/img/titanium.webp`. Beside the screen, "Cinnamon" and "DISCOVERY" split apart as they do in the lockup. Voice: "Cinnamon recognised your bill. DISCOVERY recognised you." (0:23–0:27)
+**Shot 6: Recognised (0:22–0:29).** The venue chip "Dreams & Beats" rises first. Then the Titanium tier card rises into place, using `assets/img/titanium.webp`. Beside the screen, "Cinnamon" and "DISCOVERY" split apart as they do in the lockup. Voice: "Cinnamon has your bill. DISCOVERY knows it's you." (0:23–0:27)
 
-**Shot 7: Benefit (0:29–0:37).** The camera moves onto the bill's discount line, which reads "GHA DISCOVERY 50%". The figure "−LKR 29,200" lifts off the screen, fills the frame in Jost Light, and counts up over about 2 seconds. Velvet lands on the final figure at about 0:32. Voice: "Your member benefit is already on the bill. Nothing to ask for." (0:30–0:35)
+**Shot 7: Benefit (0:29–0:37).** The camera moves onto the bill's discount line, which reads "GHA DISCOVERY 50%". The figure "−LKR 29,200" lifts off the screen, fills the frame in Jost Light, and counts up over about 2 seconds. Velvet lands on the final figure at about 0:32. Voice: "Your benefit is already on the bill. Nothing to ask for." (0:30–0:35)
 
 **Shot 8: Breath (0:37–0:41).** The figure settles back into the bill. The music pulls to one held note. The total, LKR 37,901.60, resolves at the bottom of the bill. Nothing else moves for about two seconds. This is the felt moment.
 
-**Shot 9: Choose (0:41–0:50).** The phone is centred. The D$ slider moves to zero and rests, so "or none at all" is visible. It then rises to a value, and the balance left to pay updates. Each detent clicks. Voice: "Decide how many DISCOVERY Dollars to use. Or none at all." (0:41–0:46)
+**Shot 9: Choose (0:41–0:50).** The phone is centred. The D$ slider moves to zero and rests, so "or none at all" is visible. It then rises to a value, and the balance left to pay updates. Each detent clicks. Voice: "Decide how many DISCOVERY Dollars to use, or none at all. Either way, you earn." (0:41–0:46)
 
 **Shot 10: Confirm (0:50–0:54).** One Confirm button with the amount. The press is at 0:52. The button compresses to about 96% and springs back over 120 milliseconds. Voice: "One tap to confirm, and you're done." (0:50–0:53)
 
@@ -113,9 +113,9 @@ Total: 60 seconds, 12 shots, average 5 seconds. Hard cuts, one whip (shot 5), an
 |---|---|---|---|
 | 1 | 0:04–0:07 | Every great evening starts at the table. | 7 |
 | 2 | 0:09–0:14 | Scan the code, sign in, and your bill opens on your phone. | 12 |
-| 3 | 0:23–0:27 | Cinnamon recognised your bill. DISCOVERY recognised you. | 8 |
-| 4 | 0:30–0:35 | Your member benefit is already on the bill. Nothing to ask for. | 12 |
-| 5 | 0:41–0:46 | Decide how many DISCOVERY Dollars to use. Or none at all. | 11 |
+| 3 | 0:23–0:27 | Cinnamon has your bill. DISCOVERY knows it's you. | 8 |
+| 4 | 0:30–0:35 | Your benefit is already on the bill. Nothing to ask for. | 12 |
+| 5 | 0:41–0:46 | Decide how many DISCOVERY Dollars to use, or none at all. Either way, you earn. | 11 |
 | 6 | 0:50–0:53 | One tap to confirm, and you're done. | 7 |
 | 7 | 0:57–1:00 | Cinnamon DISCOVERY. Dine with DISCOVERY Dollars. | 6 |
 
