@@ -31,37 +31,61 @@ export const Chat: React.FC<{t: number}> = ({t}) => {
   );
 };
 
-// The scale: editorial split. Headline on the left, the figures stacked on the right.
+// The scale: centred over the Colombo skyline. Headline, then the two figures side by side.
 const HOTEL_NAMES = ['Cinnamon Grand Colombo', 'Cinnamon Life at City of Dreams Sri Lanka', 'Cinnamon Lakeside Colombo', 'Cinnamon Red Colombo'];
 export const Stats: React.FC<{t: number}> = ({t}) => {
-  const drone = 1.03 - 0.03 * clamp((t - 4.9) / 3.1);
-  const row = (from: number, n: number, label: string, top: number) => {
+  const drone = 1.04 - 0.04 * clamp((t - 4.9) / 3.1);
+  const fig = (from: number, n: number, label: string) => {
     const v = Math.round(interpolate(t, [from, from + 0.9], [0, n], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE}));
-    const rule = EASE(clamp((t - from) / 0.7));
     return (
-      <div style={{position: 'absolute', left: 1060, top, width: 700}}>
-        <div style={{height: 1.5, width: 700 * rule, background: P, opacity: 0.35}} />
-        <div style={{display: 'flex', alignItems: 'baseline', gap: 36, marginTop: 18, ...reveal(t, from, 8.0)}}>
-          <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 200, lineHeight: 1, color: COLOUR.ink, letterSpacing: -6, width: 250}}>{v}</div>
-          <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 30, letterSpacing: 5, textTransform: 'uppercase', color: P}}>{label}</div>
-        </div>
+      <div style={{display: 'flex', alignItems: 'center', gap: 28, ...reveal(t, from, 8.0)}}>
+        <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 190, lineHeight: 1, color: COLOUR.ink, letterSpacing: -6}}>{v}</div>
+        <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 28, lineHeight: 1.35, letterSpacing: 5, textTransform: 'uppercase', color: P, width: 260}}>{label}</div>
       </div>
     );
   };
   return (
     <div style={{position: 'absolute', inset: 0, transform: `scale(${drone})`}}>
       <Skyline t={t} />
-      <div style={{position: 'absolute', left: 160, top: 300}}>
-        {['Colombo’s', 'hallmark', 'dining.'].map((w, i) => (
-          <div key={w} style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 132, lineHeight: 1.02, letterSpacing: -3, color: i === 2 ? P : COLOUR.ink, ...reveal(t, 5.0 + i * 0.12, 8.0)}}>{w}</div>
-        ))}
+      <div style={{position: 'absolute', left: 0, right: 0, top: 130, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 104, letterSpacing: -2, color: COLOUR.ink, ...reveal(t, 5.0, 8.0)}}>
+        Colombo's hallmark <span style={{color: P}}>dining.</span>
       </div>
-      {row(5.3, 4, 'Hotels', 250)}
-      {row(5.8, 24, 'Restaurants & bars', 540)}
-      <div style={{position: 'absolute', left: 1060, top: 830, width: 700, fontFamily: FONT.body, fontSize: 19, lineHeight: 1.8, letterSpacing: 1, color: COLOUR.ink, opacity: 0.7, ...reveal(t, 6.4, 8.0)}}>
-        {HOTEL_NAMES.join('  ·  ')}
+      <div style={{position: 'absolute', left: 0, right: 0, top: 330, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 90}}>
+        {fig(5.3, 4, 'Hotels')}
+        <div style={{width: 1.5, height: 150 * EASE(clamp((t - 5.6) / 0.6)), background: P, opacity: 0.35}} />
+        {fig(5.7, 24, 'Restaurants & bars')}
+      </div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 580, textAlign: 'center', fontFamily: FONT.body, fontSize: 21, letterSpacing: 1.5, color: COLOUR.ink, opacity: 0.7, ...reveal(t, 6.3, 8.0)}}>
+        {HOTEL_NAMES.join('   ·   ')}
       </div>
     </div>
+  );
+};
+
+// Behind the phone: a quiet, moving illustration of the table in outline. Faint, so the screen stays clear.
+export const Ambient: React.FC<{t: number; px: number}> = ({t, px}) => {
+  const vis = clamp((t - 14.2) / 0.8) * (1 - clamp((t - 52.6) / 0.6));
+  if (vis <= 0) return null;
+  const st = {fill: 'none', stroke: P, strokeWidth: 1.5, strokeLinecap: 'round' as const};
+  const items: [number, number, number, string][] = [
+    [180, 160, 1, 'plate'], [1650, 820, 1.2, 'plate'], [420, 880, 0.8, 'glass'], [1500, 170, 0.9, 'glass'],
+    [900, 980, 0.9, 'leaf'], [1760, 470, 1, 'leaf'], [120, 560, 1, 'cutlery'], [1150, 90, 0.8, 'cutlery'], [760, 120, 0.7, 'plate'], [1080, 900, 0.8, 'glass'],
+  ];
+  const draw = (k: string) =>
+    k === 'plate' ? <><circle r="70" {...st} /><circle r="48" {...st} /></> :
+    k === 'glass' ? <path d="M-28 -70 H28 Q30 -10 0 10 Q-30 -10 -28 -70 M0 10 V60 M-26 60 H26" {...st} /> :
+    k === 'leaf' ? <path d="M-60 40 Q-10 -60 60 -40 Q10 60 -60 40 Z M-60 40 L40 -30" {...st} /> :
+    <path d="M-20 -70 V70 M-30 -70 V-30 Q-20 -18 -10 -30 V-70 M20 -70 Q34 -40 20 -10 V70" {...st} />;
+  return (
+    <svg viewBox="0 0 1920 1080" style={{position: 'absolute', inset: 0, opacity: 0.16 * vis}}>
+      <defs>
+        <radialGradient id="glow"><stop offset="0" stopColor={P} stopOpacity="0.5" /><stop offset="1" stopColor={P} stopOpacity="0" /></radialGradient>
+      </defs>
+      <circle cx={px} cy={560} r={520} fill="url(#glow)" />
+      {items.map(([x, y, k, kind], i) => (
+        <g key={i} transform={`translate(${x + Math.sin(t * 0.3 + i) * 18} ${y + Math.cos(t * 0.25 + i * 2) * 14}) rotate(${(t * 4 + i * 37) % 360}) scale(${k})`}>{draw(kind)}</g>
+      ))}
+    </svg>
   );
 };
 
@@ -170,7 +194,7 @@ export const Skyline: React.FC<{t: number}> = ({t}) => {
   const drift = (t - 4.9) * -14;
   const st = {fill: 'none', stroke: P, strokeWidth: 1.6, strokeLinejoin: 'round' as const, strokeLinecap: 'round' as const, strokeDasharray: 3000, strokeDashoffset: 3000 * (1 - draw)};
   return (
-    <svg viewBox="0 0 2200 400" style={{position: 'absolute', left: -100, bottom: 0, width: 2200, height: 400, opacity: 0.22, transform: `translateX(${drift}px)`}}>
+    <svg viewBox="0 0 2200 400" style={{position: 'absolute', left: -100, bottom: 0, width: 2200, height: 400, opacity: 0.3, transform: `translateX(${drift}px)`}}>
       <path d="M0 380 H2200" {...st} />
       {/* low-rise run */}
       <path d="M40 380 V330 H120 V300 H190 V340 H260 V310 H330 V380" {...st} />

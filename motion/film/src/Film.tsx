@@ -7,7 +7,7 @@ import '@fontsource/figtree/500.css';
 import '@fontsource/figtree/600.css';
 import {DemoScreen, keys} from './Demo';
 import {PHONE_X, Phone} from './Phone';
-import {Chat, Outlets, Restaurant, Stats, Tiers} from './Scenes';
+import {Ambient, Chat, Outlets, Restaurant, Stats, Tiers} from './Scenes';
 import {COLOUR, FONT} from './theme';
 import {EASE, TextBlock, reveal} from './Words';
 
@@ -64,6 +64,7 @@ export const Film: React.FC = () => {
       </AbsoluteFill>
 
       <Restaurant t={t} />
+      <Ambient t={t} px={px} />
 
       {phoneOn && (
         <AbsoluteFill style={{transform: `translate(${px - PHONE_X * s}px, ${540 - cy * s}px) scale(${s})`, transformOrigin: '0 0', filter: `blur(${blur}px)`}}>
