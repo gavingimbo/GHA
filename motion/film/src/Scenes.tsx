@@ -62,32 +62,39 @@ export const Stats: React.FC<{t: number}> = ({t}) => {
   );
 };
 
-// Behind the phone: one table at a time. Between scenes the camera glides to the next table,
-// like a drone moving across the room, so the phone always sits over a table.
-const HOPS = [23.1, 30.1, 37.3, 47.1];
+// Behind the phone: a quiet, moving outline illustration of the table. Faint, so the screen stays clear.
 export const Ambient: React.FC<{t: number; px: number}> = ({t, px}) => {
   const vis = clamp((t - 14.2) / 0.8) * (1 - clamp((t - 52.6) / 0.6));
   if (vis <= 0) return null;
-  const hop = HOPS.reduce((n, h) => n + EASE(clamp((t - (h - 0.6)) / 1.2)), 0);
-  const GAP = 1500;
-  const st = {fill: 'none', stroke: P, strokeWidth: 2.4, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const};
-  const table = (i: number) => (
-    <g key={i} transform={`translate(${i * GAP} 0)`}>
-      <path d="M0 -700 V-430 M-80 -350 Q0 -450 80 -350 Z" {...st} />
-      <ellipse cx="0" cy="330" rx="330" ry="90" {...st} />
-      <ellipse cx="-130" cy="315" rx="70" ry="20" {...st} />
-      <ellipse cx="130" cy="315" rx="70" ry="20" {...st} />
-      <path d="M0 420 V600 M-110 600 H110" {...st} />
-      <path d="M-450 300 v-200 q0-26 26-26 h44 q26 0 26 26 v200 M-450 380 v220 M-354 380 v220" {...st} />
-      <path d="M450 300 v-200 q0-26 -26-26 h-44 q-26 0 -26 26 v200 M450 380 v220 M354 380 v220" {...st} />
-    </g>
-  );
+  const st = {fill: 'none', stroke: P, strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const};
+  const items: [number, number, number, string][] = [
+    [180, 160, 1, 'plate'], [1650, 840, 1.2, 'plate'], [760, 110, 0.7, 'plate'], [1880, 120, 0.8, 'plate'],
+    [420, 900, 0.8, 'glass'], [1500, 170, 0.9, 'glass'], [1080, 930, 0.8, 'glass'], [60, 980, 0.9, 'wine'],
+    [900, 990, 0.9, 'leaf'], [1770, 470, 1, 'leaf'], [300, 420, 0.7, 'leaf'], [1300, 60, 0.6, 'leaf'],
+    [120, 600, 1, 'cutlery'], [1150, 80, 0.8, 'cutlery'], [1860, 650, 0.8, 'spoon'], [620, 960, 0.8, 'spoon'],
+    [1400, 960, 0.9, 'cup'], [520, 70, 0.8, 'cup'], [1700, 300, 0.8, 'cinnamon'], [240, 760, 0.8, 'cinnamon'],
+    [980, 40, 0.7, 'anise'], [1260, 820, 0.7, 'anise'], [40, 330, 0.8, 'bottle'], [1560, 640, 0.6, 'anise'],
+  ];
+  const draw = (k: string) =>
+    k === 'plate' ? <><circle r="70" {...st} /><circle r="48" {...st} /></> :
+    k === 'glass' ? <path d="M-28 -70 H28 Q30 -10 0 10 Q-30 -10 -28 -70 M0 10 V60 M-26 60 H26" {...st} /> :
+    k === 'wine' ? <path d="M-34 -60 Q-40 10 0 20 Q40 10 34 -60 Z M-30 -30 H30 M0 20 V70 M-28 70 H28" {...st} /> :
+    k === 'leaf' ? <path d="M-60 40 Q-10 -60 60 -40 Q10 60 -60 40 Z M-60 40 L40 -30" {...st} /> :
+    k === 'spoon' ? <path d="M0 -70 Q22 -70 22 -40 Q22 -12 0 -12 Q-22 -12 -22 -40 Q-22 -70 0 -70 M0 -12 V70" {...st} /> :
+    k === 'cup' ? <path d="M-50 -30 H40 V10 Q40 40 -5 40 Q-50 40 -50 10 Z M40 -20 Q66 -20 66 0 Q66 16 40 16 M-80 52 H70" {...st} /> :
+    k === 'cinnamon' ? <path d="M-80 -14 H80 M-80 14 H80 M-80 -14 Q-94 0 -80 14 M80 -14 Q94 0 80 14 M-40 -14 Q-50 0 -40 14" {...st} /> :
+    k === 'anise' ? <path d={Array.from({length: 8}, (_, i) => { const a = (i / 8) * Math.PI * 2; return `M0 0 Q${Math.cos(a - 0.3) * 30} ${Math.sin(a - 0.3) * 30} ${Math.cos(a) * 50} ${Math.sin(a) * 50} Q${Math.cos(a + 0.3) * 30} ${Math.sin(a + 0.3) * 30} 0 0`; }).join(' ')} {...st} /> :
+    k === 'bottle' ? <path d="M-10 -90 H10 V-50 Q30 -36 30 -10 V80 H-30 V-10 Q-30 -36 -10 -50 Z M-30 10 H30" {...st} /> :
+    <path d="M-20 -70 V70 M-30 -70 V-30 Q-20 -18 -10 -30 V-70 M20 -70 Q34 -40 20 -10 V70" {...st} />;
   return (
-    <svg viewBox="-960 -540 1920 1080" style={{position: 'absolute', inset: 0, overflow: 'visible', opacity: 0.2 * vis}}>
-      <g transform={`translate(${px - 960 - hop * GAP} 0)`}>
-        <path d={`M-3000 610 H${GAP * 6}`} {...st} strokeWidth={1.4} />
-        {[0, 1, 2, 3, 4, 5].map(table)}
-      </g>
+    <svg viewBox="0 0 1920 1080" style={{position: 'absolute', inset: 0, opacity: 0.22 * vis}}>
+      <defs>
+        <radialGradient id="glow"><stop offset="0" stopColor={P} stopOpacity="0.5" /><stop offset="1" stopColor={P} stopOpacity="0" /></radialGradient>
+      </defs>
+      <circle cx={px} cy={560} r={520} fill="url(#glow)" />
+      {items.map(([x, y, k, kind], i) => (
+        <g key={i} transform={`translate(${x + Math.sin(t * 0.3 + i) * 18} ${y + Math.cos(t * 0.25 + i * 2) * 14}) rotate(${(t * 4 * (i % 2 ? 1 : -1) + i * 37) % 360}) scale(${k})`}>{draw(kind)}</g>
+      ))}
     </svg>
   );
 };
