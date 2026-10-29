@@ -1,43 +1,45 @@
-# Dine with DISCOVERY: voiceover script (v3)
+# Dine with DISCOVERY: voiceover script (v6)
 
-For the 60-second film in `motion/storyboard.md`. Paste the lines into the voice tool one at a time, or as one take with silence between them. Each line has a start time, so the picture can be cut to it. The film's words and demo are timed to these starts.
+Matches `motion/film/out/dine-with-discovery-v6.mp4`. Each line starts at the time shown, so the voice lands with the words and scenes on screen. The soundtrack (`the_mountain-restaurant`, about 98 BPM) runs under it.
 
 ## Recording notes
 
-- Tone: human, plain and calm, like a person at the table rather than a presenter. Short sentences. Warm, with energy in the first 12 seconds and settled from there.
-- British English. Say "DISCOVERY Dollars" in full. Do not use "D$" in the script, so the voice reads it cleanly.
-- No exclamation marks. Leave about half a second after each full stop.
-- Say "Twenty-four" in full. Do not stress any one word in line 8, but let "keep them" and "you earn" land.
-- Line 11 ends on a falling tone.
+- Human, warm and assured, like a host at your table rather than a presenter. Lift the energy in the first 12 seconds, then settle.
+- British English. Say "DISCOVERY Dollars" in full, never "D$". Say "Twenty-four" in full.
+- No exclamation marks. About half a second after each full stop.
+- The last line falls gently.
 
 ## Script
 
-| # | Starts | Line | Words |
-|---|---|---|---|
-| 1 | 0:00.3 | Long lunches. Late dinners. Sunday brunch. | 6 |
-| 2 | 0:05.2 | Four hotels. Twenty-four places to dine. | 6 |
-| 3 | 0:09.6 | Now every one of them rewards you. | 7 |
-| 4 | 0:12.4 | Take a seat. Scan the code. | 6 |
-| 5 | 0:17.4 | Sign in with your DISCOVERY email. | 6 |
-| 6 | 0:25.4 | We know it's you. We know your bill. | 8 |
-| 7 | 0:31.4 | Your member benefit is already on it. | 7 |
-| 8 | 0:37.8 | Use your DISCOVERY Dollars, or keep them. Either way, you earn. | 11 |
-| 9 | 0:47.4 | Tap to apply. That's it. | 5 |
-| 10 | 0:52.8 | Earn at one table. Spend at the next. | 8 |
-| 11 | 0:56.5 | Cinnamon DISCOVERY. Dine with DISCOVERY Dollars. | 6 |
+| # | Starts | Scene | Line | Words |
+|---|---|---|---|---|
+| 1 | 0:00.3 | Chat | Long lunches. Late dinners. Sunday brunch. | 6 |
+| 2 | 0:05.0 | Figures | Colombo's hallmark dining. Four hotels. Twenty-four restaurants and bars. | 10 |
+| 3 | 0:08.0 | Tiers | Four tiers. One table. | 4 |
+| 4 | 0:10.5 | Lockup | Now, every table rewards you. | 5 |
+| 5 | 0:12.4 | Restaurant | Take a seat. Your server shows you a code. Scan it. | 11 |
+| 6 | 0:17.4 | Sign in | Sign in with your DISCOVERY email. | 6 |
+| 7 | 0:24.0 | Recognised | We know it's you. We know your bill. | 8 |
+| 8 | 0:31.0 | Benefit | Your member benefit is already on it. | 7 |
+| 9 | 0:38.0 | D$ | Use your DISCOVERY Dollars, or keep them. Either way, you earn. | 11 |
+| 10 | 0:47.6 | Done | And you're done. | 3 |
+| 11 | 0:52.8 | Outlets | Earn at one table. Spend at the next. | 8 |
+| 12 | 0:57.0 | Close | Cinnamon DISCOVERY. Dine with DISCOVERY Dollars. | 6 |
 
-**Total:** 76 words, about 28 seconds of speech across 60 seconds.
+**Total:** 85 words, about 30 seconds of speech across 60 seconds.
 
 ## Plain text, for pasting
 
 ```
 Long lunches. Late dinners. Sunday brunch.
 
-Four hotels. Twenty-four places to dine.
+Colombo's hallmark dining. Four hotels. Twenty-four restaurants and bars.
 
-Now every one of them rewards you.
+Four tiers. One table.
 
-Take a seat. Scan the code.
+Now, every table rewards you.
+
+Take a seat. Your server shows you a code. Scan it.
 
 Sign in with your DISCOVERY email.
 
@@ -47,7 +49,7 @@ Your member benefit is already on it.
 
 Use your DISCOVERY Dollars, or keep them. Either way, you earn.
 
-Tap to apply. That's it.
+And you're done.
 
 Earn at one table. Spend at the next.
 

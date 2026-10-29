@@ -7,7 +7,7 @@ import '@fontsource/figtree/500.css';
 import '@fontsource/figtree/600.css';
 import {DemoScreen, keys} from './Demo';
 import {PHONE_X, Phone} from './Phone';
-import {Chat, Outlets, Restaurant, Stats} from './Scenes';
+import {Chat, Outlets, Restaurant, Stats, Tiers} from './Scenes';
 import {COLOUR, FONT} from './theme';
 import {EASE, TextBlock, reveal} from './Words';
 
@@ -44,19 +44,21 @@ export const Film: React.FC = () => {
   const phoneY = interpolate(rise, [0, 1], [1100, 0]) + ramp(t, 52.4, 53.4, 0, 1100) + Math.sin(t * 1.3) * 2.5;
   const phoneOn = t > 14.2 && t < 53.5;
 
-  const lockup1 = ramp(t, 9.4, 10.0, 0, 1) * ramp(t, 11.6, 12.0, 1, 0);
+  const lockup1 = ramp(t, 10.41, 10.9, 0, 1) * ramp(t, 11.7, 12.1, 1, 0);
   const lockup2 = ramp(t, 56.8, 57.6, 0, 1);
 
   return (
     <AbsoluteFill style={{background: `radial-gradient(ellipse at 70% 30%, rgba(89,42,125,0.07) 0%, rgba(89,42,125,0) 55%), radial-gradient(ellipse at 20% 90%, rgba(89,42,125,0.05) 0%, rgba(89,42,125,0) 50%), #ffffff`, overflow: 'hidden', fontFamily: FONT.body}}>
+      <Audio src={staticFile('audio/soundtrack.mp3')} volume={(fr) => 0.55 * interpolate(fr, [0, 15, 1740, 1800], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />
       <Audio src={staticFile('audio/bed.wav')} />
 
       {t < 5.2 && <Chat t={t} />}
-      {t > 5 && t < 9.6 && <Stats t={t} />}
+      {t > 4.8 && t < 8.2 && <Stats t={t} />}
+      {t > 7.9 && t < 10.5 && <Tiers t={t} />}
 
       <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: lockup1}}>
-        <Img src={staticFile('logo/cinnamon-discovery-logo-purple.svg')} style={{width: 900, height: 'auto', marginBottom: 80, transform: `scale(${1.08 - 0.08 * ramp(t, 9.4, 12, 0, 1)})`}} />
-        <div style={{position: 'absolute', top: 630, fontFamily: FONT.display, fontWeight: 300, fontSize: 58, color: COLOUR.ink, ...reveal(t, 9.8, 11.9)}}>
+        <Img src={staticFile('logo/cinnamon-discovery-logo-purple.svg')} style={{width: 900, height: 'auto', marginBottom: 80, transform: `scale(${1.08 - 0.08 * ramp(t, 10.41, 12, 0, 1)})`}} />
+        <div style={{position: 'absolute', top: 630, fontFamily: FONT.display, fontWeight: 300, fontSize: 58, color: COLOUR.ink, ...reveal(t, 10.6, 12.0)}}>
           Now, every table rewards you.
         </div>
       </AbsoluteFill>

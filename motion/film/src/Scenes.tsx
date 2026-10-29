@@ -34,30 +34,30 @@ export const Chat: React.FC<{t: number}> = ({t}) => {
 // The scale: Colombo's hallmark dining, with a slow drone push and the four hotels named
 const HOTEL_NAMES = ['Cinnamon Grand Colombo', 'Cinnamon Life at City of Dreams Sri Lanka', 'Cinnamon Lakeside Colombo', 'Cinnamon Red Colombo'];
 export const Stats: React.FC<{t: number}> = ({t}) => {
-  const drone = 1 + 0.06 * clamp((t - 5) / 4.6);
+  const drone = 1 + 0.06 * clamp((t - 4.9) / 3.1);
   const col = (from: number, n: number, label: string) => {
     const v = Math.round(interpolate(t, [from, from + 1.0], [0, n], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE}));
     return (
-      <div style={{width: 520, textAlign: 'center', ...reveal(t, from, 9.5)}}>
+      <div style={{width: 520, textAlign: 'center', ...reveal(t, from, 8.0)}}>
         <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 260, lineHeight: 1, color: COLOUR.ink, letterSpacing: -8}}>{v}</div>
         <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 34, color: P, letterSpacing: 6, textTransform: 'uppercase', marginTop: 18}}>{label}</div>
       </div>
     );
   };
-  const line = EASE(clamp((t - 5.8) / 0.6)) * (1 - clamp((t - 9.2) / 0.3));
+  const line = EASE(clamp((t - 5.8) / 0.6)) * (1 - clamp((t - 7.7) / 0.3));
   return (
     <div style={{position: 'absolute', inset: 0, transform: `scale(${drone})`}}>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 120, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 76, color: COLOUR.ink, letterSpacing: -1, ...reveal(t, 5.1, 9.5)}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 120, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 76, color: COLOUR.ink, letterSpacing: -1, ...reveal(t, 5.0, 8.0)}}>
         Colombo's hallmark <span style={{color: P}}>dining.</span>
       </div>
       <div style={{position: 'absolute', left: 0, right: 0, top: 300, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 70}}>
-        {col(5.5, 4, 'Hotels')}
+        {col(5.2, 4, 'Hotels')}
         <div style={{width: 2, height: 300 * line, background: P, opacity: 0.3}} />
-        {col(6.0, 24, 'Restaurants & bars')}
+        {col(5.6, 24, 'Restaurants & bars')}
       </div>
       <div style={{position: 'absolute', left: 0, right: 0, top: 820, display: 'flex', justifyContent: 'center', gap: 36}}>
         {HOTEL_NAMES.map((h, i) => (
-          <div key={h} style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 18, letterSpacing: 1.6, textTransform: 'uppercase', color: COLOUR.ink, opacity: 0.75, whiteSpace: 'nowrap', ...reveal(t, 7.0 + i * 0.15, 9.5)}}>{h}</div>
+          <div key={h} style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 18, letterSpacing: 1.6, textTransform: 'uppercase', color: COLOUR.ink, opacity: 0.75, whiteSpace: 'nowrap', ...reveal(t, 6.4 + i * 0.12, 8.0)}}>{h}</div>
         ))}
       </div>
     </div>
@@ -134,6 +134,30 @@ export const Outlets: React.FC<{t: number}> = ({t}) => {
           </div>
         ))}
       </div>
+    </div>
+  );
+};
+
+// Four tiers, one table: the real tier cards fan out, no percentages
+const TIERS: [string, string][] = [['silver', 'Silver'], ['gold', 'Gold'], ['platinum', 'Platinum'], ['titanium', 'Titanium']];
+export const Tiers: React.FC<{t: number}> = ({t}) => {
+  const fan = EASE(clamp((t - 8.1) / 0.9));
+  const out = clamp((t - 10.1) / 0.3);
+  return (
+    <div style={{position: 'absolute', inset: 0, opacity: 1 - out, transform: `scale(${1.04 - 0.04 * clamp((t - 7.96) / 2.4)})`}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 150, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 76, color: COLOUR.ink, letterSpacing: -1, ...reveal(t, 8.0, 10.4)}}>
+        Four tiers. <span style={{color: P}}>One table.</span>
+      </div>
+      {TIERS.map(([file, name], i) => {
+        const x = (i - 1.5) * 380 * fan;
+        const r = (i - 1.5) * 4 * fan;
+        return (
+          <div key={file} style={{position: 'absolute', left: 960 - 170 + x, top: 400, width: 340, transform: `rotate(${r}deg) translateY(${Math.abs(i - 1.5) * 14 * fan}px)`, opacity: clamp((t - 8.0 - i * 0.08) / 0.3)}}>
+            <img src={staticFile(`img/${file}.webp`)} style={{width: 340, height: 214, objectFit: 'cover', borderRadius: 18, boxShadow: '0 30px 60px rgba(40,20,60,0.25)'}} />
+            <div style={{textAlign: 'center', marginTop: 26, fontFamily: FONT.body, fontWeight: 500, fontSize: 24, letterSpacing: 4, textTransform: 'uppercase', color: P, opacity: fan}}>{name}</div>
+          </div>
+        );
+      })}
     </div>
   );
 };
