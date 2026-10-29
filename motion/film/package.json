@@ -1,0 +1,22 @@
+{
+  "name": "dine-with-discovery-film",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "remotion studio",
+    "render": "remotion render DineWithDiscovery out/dine-with-discovery.mp4",
+    "still": "remotion still DineWithDiscovery"
+  },
+  "dependencies": {
+    "@fontsource/figtree": "5.2.8",
+    "@fontsource/jost": "5.2.8",
+    "@remotion/cli": "4.0.539",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.539"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "typescript": "5.6.3"
+  }
+}
