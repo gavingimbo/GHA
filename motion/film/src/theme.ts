@@ -1,6 +1,6 @@
 // Cinnamon brand palette (cinnamon-brand skill) and the two typefaces used for the film.
 export const COLOUR = {
-  purple: '#612D87',
+  purple: '#592a7d',
   midnight: '#202A66',
   dune: '#A39383',
   sky: '#8DCBDB',

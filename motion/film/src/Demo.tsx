@@ -99,9 +99,7 @@ export const DemoScreen: React.FC<{t: number}> = ({t}) => {
         />
       )}
 
-      <Layer src={img('dialog')} opacity={win(t, 47.8, 49.75, 0.15)} />
-      <Layer src={img('dialog-submitting')} opacity={win(t, 49.7, 50.95, 0.1)} />
-      <Layer src={img('dialog-success')} opacity={win(t, 50.9, 52.8, 0.15)} />
+      <Layer src={img('dialog-success')} opacity={win(t, 47.0, 52.8, 0.2)} />
 
       <Taps t={t} />
     </>

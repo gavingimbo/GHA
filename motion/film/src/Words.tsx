@@ -36,7 +36,7 @@ export const TextBlock: React.FC<{
           fontSize: size,
           lineHeight: 1.04,
           letterSpacing: -2,
-          color: COLOUR.white,
+          color: COLOUR.ink,
           ...reveal(t, from, to, i * 0.14),
         }}
       >
@@ -50,7 +50,7 @@ export const TextBlock: React.FC<{
           fontFamily: FONT.body,
           fontWeight: 500,
           fontSize: 38,
-          color: COLOUR.sky,
+          color: COLOUR.purple,
           ...reveal(t, from, to, lines.length * 0.14 + 0.1),
         }}
       >
@@ -69,7 +69,7 @@ export const Statement: React.FC<{t: number; from: number; to: number; text: str
   size = 190,
   top = 410,
 }) => (
-  <div style={{position: 'absolute', left: 0, right: 0, top, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: size, letterSpacing: -3, color: COLOUR.white, ...reveal(t, from, to)}}>
+  <div style={{position: 'absolute', left: 0, right: 0, top, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: size, letterSpacing: -3, color: COLOUR.ink, ...reveal(t, from, to)}}>
     {text}
   </div>
 );
@@ -79,8 +79,8 @@ export const Figure: React.FC<{t: number; from: number; to: number; value: numbe
   const n = Math.round(interpolate(t, [from + 0.1, from + 1.1], [0, value], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE}));
   return (
     <div style={{position: 'absolute', left: 0, right: 0, top: 250, textAlign: 'center', ...reveal(t, from, to)}}>
-      <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 460, lineHeight: 1, letterSpacing: -10, color: COLOUR.white}}>{n}</div>
-      <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 92, color: COLOUR.sky, marginTop: 6}}>{label}</div>
+      <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 460, lineHeight: 1, letterSpacing: -10, color: COLOUR.ink}}>{n}</div>
+      <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 92, color: COLOUR.purple, marginTop: 6}}>{label}</div>
     </div>
   );
 };
