@@ -18,7 +18,7 @@ const MSGS: [number, boolean, string][] = [
 export const Chat: React.FC<{t: number}> = ({t}) => {
   const out = clamp((t - 4.7) / 0.4);
   return (
-    <div style={{position: 'absolute', left: 560, top: 150, width: 800, opacity: 1 - out, transform: `translateY(${-out * 40 - Math.max(0, t - 2) * 18}px)`}}>
+    <div style={{position: 'absolute', left: 560, top: 150, width: 800, opacity: 1 - out, transform: `translateY(${-out * 40 - Math.max(0, t - 2) * 18}px) scale(${1 + 0.03 * clamp(t / 5)})`}}>
       {MSGS.map(([at, me, text]) => {
         const p = EASE(clamp((t - at) / 0.35));
         return (
@@ -31,23 +31,35 @@ export const Chat: React.FC<{t: number}> = ({t}) => {
   );
 };
 
-// The scale, in a clean two-column layout
+// The scale: Colombo's hallmark dining, with a slow drone push and the four hotels named
+const HOTEL_NAMES = ['Cinnamon Grand Colombo', 'Cinnamon Life at City of Dreams Sri Lanka', 'Cinnamon Lakeside Colombo', 'Cinnamon Red Colombo'];
 export const Stats: React.FC<{t: number}> = ({t}) => {
+  const drone = 1 + 0.06 * clamp((t - 5) / 4.6);
   const col = (from: number, n: number, label: string) => {
-    const v = Math.round(interpolate(t, [from, from + 0.9], [0, n], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE}));
+    const v = Math.round(interpolate(t, [from, from + 1.0], [0, n], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE}));
     return (
-      <div style={{width: 560, textAlign: 'center', ...reveal(t, from, 9.4)}}>
-        <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 300, lineHeight: 1, color: COLOUR.ink, letterSpacing: -8}}>{v}</div>
-        <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 40, color: P, letterSpacing: 6, textTransform: 'uppercase', marginTop: 20}}>{label}</div>
+      <div style={{width: 520, textAlign: 'center', ...reveal(t, from, 9.5)}}>
+        <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 260, lineHeight: 1, color: COLOUR.ink, letterSpacing: -8}}>{v}</div>
+        <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 34, color: P, letterSpacing: 6, textTransform: 'uppercase', marginTop: 18}}>{label}</div>
       </div>
     );
   };
-  const line = EASE(clamp((t - 5.4) / 0.6)) * (1 - clamp((t - 9.1) / 0.3));
+  const line = EASE(clamp((t - 5.8) / 0.6)) * (1 - clamp((t - 9.2) / 0.3));
   return (
-    <div style={{position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 80}}>
-      {col(5.2, 4, 'Hotels')}
-      <div style={{width: 2, height: 360 * line, background: P, opacity: 0.35}} />
-      {col(5.7, 24, 'Restaurants & bars')}
+    <div style={{position: 'absolute', inset: 0, transform: `scale(${drone})`}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 120, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 76, color: COLOUR.ink, letterSpacing: -1, ...reveal(t, 5.1, 9.5)}}>
+        Colombo's hallmark <span style={{color: P}}>dining.</span>
+      </div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 300, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 70}}>
+        {col(5.5, 4, 'Hotels')}
+        <div style={{width: 2, height: 300 * line, background: P, opacity: 0.3}} />
+        {col(6.0, 24, 'Restaurants & bars')}
+      </div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 820, display: 'flex', justifyContent: 'center', gap: 36}}>
+        {HOTEL_NAMES.map((h, i) => (
+          <div key={h} style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 18, letterSpacing: 1.6, textTransform: 'uppercase', color: COLOUR.ink, opacity: 0.75, whiteSpace: 'nowrap', ...reveal(t, 7.0 + i * 0.15, 9.5)}}>{h}</div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -102,19 +114,23 @@ const HOTELS: [string, string[]][] = [
 ];
 export const Outlets: React.FC<{t: number}> = ({t}) => {
   let k = 0;
+  const drone = 1.05 - 0.05 * clamp((t - 52.6) / 4.2);
+  const widths = [330, 600, 340, 230];
   return (
-    <div style={{position: 'absolute', inset: 0}}>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 110, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 92, color: COLOUR.ink, letterSpacing: -2, ...reveal(t, 52.8, 56.7)}}>
+    <div style={{position: 'absolute', inset: 0, transform: `scale(${drone})`}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 100, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 88, color: COLOUR.ink, letterSpacing: -2, ...reveal(t, 52.8, 56.7)}}>
         Earn at one table. <span style={{color: P}}>Spend at the next.</span>
       </div>
-      <div style={{position: 'absolute', left: 150, right: 150, top: 330, display: 'flex', justifyContent: 'space-between'}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 300, display: 'flex', justifyContent: 'center', gap: 56}}>
         {HOTELS.map(([hotel, outlets], i) => (
-          <div key={hotel} style={{width: 370, ...reveal(t, 53.1 + i * 0.12, 56.7)}}>
-            <div style={{fontFamily: FONT.body, fontWeight: 600, fontSize: 19, letterSpacing: 2.5, textTransform: 'uppercase', color: P, borderBottom: `1.5px solid ${P}33`, paddingBottom: 14, marginBottom: 16, minHeight: 50}}>{hotel}</div>
-            {outlets.map((o) => {
-              const d = 53.4 + (k++) * 0.05;
-              return <div key={o} style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 34, lineHeight: 1.45, color: COLOUR.ink, ...reveal(t, d, 56.7)}}>{o}</div>;
-            })}
+          <div key={hotel} style={{width: widths[i], ...reveal(t, 53.0 + i * 0.12, 56.7)}}>
+            <div style={{fontFamily: FONT.body, fontWeight: 600, fontSize: 17, letterSpacing: 2.2, textTransform: 'uppercase', color: P, whiteSpace: 'nowrap', borderBottom: `1.5px solid ${P}33`, paddingBottom: 14, marginBottom: 18}}>{hotel}</div>
+            <div style={{columnCount: i === 1 ? 2 : 1, columnGap: 40}}>
+              {outlets.map((o) => {
+                const d = 53.3 + (k++) * 0.045;
+                return <div key={o} style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 34, lineHeight: 1.55, color: COLOUR.ink, whiteSpace: 'nowrap', ...reveal(t, d, 56.7)}}>{o}</div>;
+              })}
+            </div>
           </div>
         ))}
       </div>

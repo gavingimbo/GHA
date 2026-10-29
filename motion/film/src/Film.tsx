@@ -55,9 +55,9 @@ export const Film: React.FC = () => {
       {t > 5 && t < 9.6 && <Stats t={t} />}
 
       <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: lockup1}}>
-        <Img src={staticFile('logo/cinnamon-discovery-logo-purple.svg')} style={{width: 900, height: 'auto', marginBottom: 80}} />
+        <Img src={staticFile('logo/cinnamon-discovery-logo-purple.svg')} style={{width: 900, height: 'auto', marginBottom: 80, transform: `scale(${1.08 - 0.08 * ramp(t, 9.4, 12, 0, 1)})`}} />
         <div style={{position: 'absolute', top: 630, fontFamily: FONT.display, fontWeight: 300, fontSize: 58, color: COLOUR.ink, ...reveal(t, 9.8, 11.9)}}>
-          Now every one of them rewards you.
+          Now, every table rewards you.
         </div>
       </AbsoluteFill>
 
@@ -82,9 +82,9 @@ export const Film: React.FC = () => {
       {t > 52.6 && t < 57 && <Outlets t={t} />}
 
       <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: lockup2}}>
-        <Img src={staticFile('logo/cinnamon-discovery-logo-purple.svg')} style={{width: 900, height: 'auto', marginBottom: 80}} />
-        <div style={{position: 'absolute', top: 630, fontFamily: FONT.display, fontWeight: 300, fontSize: 58, color: COLOUR.ink, ...reveal(t, 57.3, 99)}}>
-          Dine with DISCOVERY Dollars.
+        <Img src={staticFile('logo/cinnamon-discovery-logo-purple.svg')} style={{width: 900, height: 'auto', marginBottom: 80, transform: `scale(${1.1 - 0.1 * ramp(t, 56.8, 60, 0, 1)})`}} />
+        <div style={{position: 'absolute', top: 630, fontFamily: FONT.display, fontWeight: 300, fontSize: 52, letterSpacing: 1, color: COLOUR.ink, ...reveal(t, 57.4, 99)}}>
+          Dine with <span style={{color: COLOUR.purple}}>DISCOVERY Dollars</span>
         </div>
       </AbsoluteFill>
     </AbsoluteFill>
