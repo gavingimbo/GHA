@@ -17,7 +17,7 @@ Status: storyboard only. No frames, music or voiceover have been made yet.
 | Imagery | No photography. The table is an abstract warm light field |
 | Phone | The guest's phone at real scale (393 × 852 logical px) from `design/` |
 | Voiceover | 7 lines, about 25 seconds of speech. Generated separately from `script` in section 5 |
-| Music | One bed at 100 BPM, in a single key, built to breathe at the benefit moment |
+| Music | Corporate and professional: one restrained instrumental bed at 100 BPM, no vocals, built to breathe at the benefit moment |
 | Loudness | About −17 LUFS integrated, true peak −2 dBTP |
 | Brand | Cinnamon Purple `#612D87`, Midnight `#202A66`, Dune `#A39383`, White. Sky Blue as a sparing accent |
 
@@ -55,7 +55,7 @@ Status: storyboard only. No frames, music or voiceover have been made yet.
 | 2 | 0:04 | 5s | Table | Warm abstract light, slow push-in (about 4% a second) | 1 | none |
 | 3 | 0:09 | 6s | Scan | Phone rises from below at real scale, with the table QR. A scan line passes over it at 0:12 | 2 | Plug at 0:12 |
 | 4 | 0:15 | 3s | Shared element | The QR changes shape and becomes the bill card | none | Gust (whip) |
-| 5 | 0:18 | 7s | Recognised | Venue chip enters. Type reads "Cinnamon" and "DISCOVERY" as the lockup splits. Tier card rises and settles | 3 | Glide on the chip, Arrive on the card |
+| 5 | 0:18 | 7s | Recognised | Venue chip enters. Type reads "Cinnamon" and "DISCOVERY" as the lockup splits. Silver tier card rises and settles | 3 | Glide on the chip, Arrive on the card |
 | 6 | 0:25 | 9s | Benefit | One large figure, "−LKR 8,760", counts up. Label: "GHA DISCOVERY discount applied" | 4 | Counter ticks, then Velvet on the final figure |
 | 7 | 0:34 | 4s | Breath | Music drops to a single held note. The total, LKR 64,433.00, resolves below the figure | none | Velvet on settle |
 | 8 | 0:38 | 8s | Choose | D$ slider in the bill. Slides to zero, rests, then rises to a value. Balance and total update | 5 | Notch on each detent |
@@ -89,7 +89,7 @@ Total: 60 seconds. Eleven shots. Hard cuts throughout, with one whip at shot 4 a
 - **Sound:** Gust, as the one whip of the first half.
 
 ### Shot 5: Recognised (0:18–0:25)
-- **Picture:** "Dreams & Beats" appears as the venue chip. Below it, the type "Cinnamon" and "DISCOVERY" splits apart as they do in the lockup. The Titanium tier card rises into place.
+- **Picture:** "Dreams & Beats" appears as the venue chip. Below it, the type "Cinnamon" and "DISCOVERY" splits apart as they do in the lockup. The Silver tier card rises into place.
 - **Type:** Jost Light, two words, aligned on the lockup's grid.
 - **Voice:** "Cinnamon recognised your bill. DISCOVERY recognised you." (0:19–0:23). Type appears about two frames before the word it names.
 
@@ -145,7 +145,8 @@ About 61 words across 25 seconds of speech. Fits the measured voice pace of abou
 
 ## 6. Music and sound
 
-- **Bed:** 100 BPM, one key, and sparse. It sits under the voice at a low level, so the lines stay clear.
+- **Style:** Corporate, professional and relevant to a hospitality leadership audience. Restrained modern instrumental (piano, light strings, soft percussion), confident rather than emotional. No vocals, no cinematic trailer build, no novelty sounds.
+- **Bed:** 100 BPM, one key, sparse. It sits under the voice at a low level, so the lines stay clear.
 - **Drop-out at 0:34:** The music pulls to one held note through the breath shot. It returns at 0:38 for the choose shot.
 - **Final hit:** The bed's closing hit lands on the logo at 0:55, which is also the Finale sting.
 - **Sound effects:** Only on actions and whips, as in section 3. Nothing decorative.
@@ -154,8 +155,7 @@ About 61 words across 25 seconds of speech. Fits the measured voice pace of abou
 
 ## 7. Open decisions
 
-1. **Figures.** "−LKR 8,760", "LKR 64,433.00" and the 15% come from the mockup's fixture (subtotal LKR 58,400, a 15% discount). Before this runs as a claim, confirm the 15% applies to this tier and venue. Otherwise label the figures as illustrative.
-2. **Name.** The bill and tier card show a placeholder name, not a real member.
-3. **Venue.** "Dreams & Beats" is the fixture venue. Swap it for a named outlet only if the team agrees.
-4. **Length.** 60 seconds with about 25 seconds of voice. A 45-second cut is possible by removing shot 7 and the second half of shot 8.
-5. **Music.** Commissioned, licensed or synthesised? The bed needs a licence cleared for a company event.
+1. **Silver discount rate.** The storyboard now shows a Silver member at 15%, so the figures are "−LKR 8,760" on a LKR 58,400 subtotal. The repo does not state per-tier rates. Its public terms say only "up to 15%, by tier", and its fixture member is Titanium. Please confirm the 15% for Silver before this is shown as fact. If it isn't confirmed, the figures should be labelled illustrative.
+2. **Name.** The member name is a placeholder, not a real member.
+3. **Music licence.** The bed needs a licence that covers a company event. Commissioned, licensed library, or synthesised?
+4. **Shot 4 timing.** Still open if you want the whip sound or a plain cut at the shared-element moment.
