@@ -96,6 +96,10 @@ const HIDE_MOCK = '.mock_fab, .mock_panel { display: none !important; }';
     if (!base) throw new Error('unknown state ' + id);
     const patch = custom && custom.patch ? { ...base.patch, ...custom.patch } : base.patch || {};
 
+    // Bill and spend screens are taller than the phone. Capture them at full length
+    // so the film can scroll the real screen, rather than cut it.
+    const tall = /^(burn-|member-landing)/.test(id) || (custom && custom.from && /^burn-/.test(custom.from));
+    await page.setViewportSize({ width, height: tall ? 1600 : height });
     await page.goto(`http://127.0.0.1:${PORT}/index.html?controls=0`, { waitUntil: 'load' });
     await page.addStyleTag({ content: HIDE_MOCK });
     await page.evaluate((p) => window.GHA_MOCK.set(p), patch);
