@@ -97,7 +97,7 @@ Total: 60 seconds, 12 shots, average 5 seconds. Hard cuts, one whip (shot 5), an
 
 **Shot 8: Breath (0:37–0:41).** The figure settles back into the bill. The music pulls to one held note. The total, LKR 37,901.60, resolves at the bottom of the bill. Nothing else moves for about two seconds. This is the felt moment.
 
-**Shot 9: Choose (0:41–0:50).** The phone is centred. The D$ slider moves to zero and rests, so "or none at all" is visible. It then rises to a value, and the balance left to pay updates. Each detent clicks. Voice: "Decide how many DISCOVERY Dollars to use, or none at all. Either way, you earn." (0:41–0:46)
+**Shot 9: Choose (0:41–0:50).** The phone is centred. The D$ slider moves to zero and rests, so "or none at all" is visible. It then rises to a value, and the balance left to pay updates. Each detent clicks. Voice: "Decide how many DISCOVERY Dollars to use, or none at all. Either way, you earn." (0:41–0:47)
 
 **Shot 10: Confirm (0:50–0:54).** One Confirm button with the amount. The press is at 0:52. The button compresses to about 96% and springs back over 120 milliseconds. Voice: "One tap to confirm, and you're done." (0:50–0:53)
 
@@ -114,12 +114,12 @@ Total: 60 seconds, 12 shots, average 5 seconds. Hard cuts, one whip (shot 5), an
 | 1 | 0:04–0:07 | Every great evening starts at the table. | 7 |
 | 2 | 0:09–0:14 | Scan the code, sign in, and your bill opens on your phone. | 12 |
 | 3 | 0:23–0:27 | Cinnamon has your bill. DISCOVERY knows it's you. | 8 |
-| 4 | 0:30–0:35 | Your benefit is already on the bill. Nothing to ask for. | 12 |
-| 5 | 0:41–0:46 | Decide how many DISCOVERY Dollars to use, or none at all. Either way, you earn. | 11 |
+| 4 | 0:30–0:35 | Your benefit is already on the bill. Nothing to ask for. | 11 |
+| 5 | 0:41–0:47 | Decide how many DISCOVERY Dollars to use, or none at all. Either way, you earn. | 15 |
 | 6 | 0:50–0:53 | One tap to confirm, and you're done. | 7 |
 | 7 | 0:57–1:00 | Cinnamon DISCOVERY. Dine with DISCOVERY Dollars. | 6 |
 
-63 words, about 22 seconds of speech at 2.5 to 3 words a second. The full script and recording notes are in `motion/voiceover-script.md`.
+66 words, about 23 seconds of speech at 2.5 to 3 words a second. The full script and recording notes are in `motion/voiceover-script.md`.
 
 ---
 
