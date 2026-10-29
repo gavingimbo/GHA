@@ -31,34 +31,35 @@ export const Chat: React.FC<{t: number}> = ({t}) => {
   );
 };
 
-// The scale: Colombo's hallmark dining, with a slow drone push and the four hotels named
+// The scale: editorial split. Headline on the left, the figures stacked on the right.
 const HOTEL_NAMES = ['Cinnamon Grand Colombo', 'Cinnamon Life at City of Dreams Sri Lanka', 'Cinnamon Lakeside Colombo', 'Cinnamon Red Colombo'];
 export const Stats: React.FC<{t: number}> = ({t}) => {
-  const drone = 1 + 0.06 * clamp((t - 4.9) / 3.1);
-  const col = (from: number, n: number, label: string) => {
-    const v = Math.round(interpolate(t, [from, from + 1.0], [0, n], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE}));
+  const drone = 1.03 - 0.03 * clamp((t - 4.9) / 3.1);
+  const row = (from: number, n: number, label: string, top: number) => {
+    const v = Math.round(interpolate(t, [from, from + 0.9], [0, n], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE}));
+    const rule = EASE(clamp((t - from) / 0.7));
     return (
-      <div style={{width: 520, textAlign: 'center', ...reveal(t, from, 8.0)}}>
-        <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 260, lineHeight: 1, color: COLOUR.ink, letterSpacing: -8}}>{v}</div>
-        <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 34, color: P, letterSpacing: 6, textTransform: 'uppercase', marginTop: 18}}>{label}</div>
+      <div style={{position: 'absolute', left: 1060, top, width: 700}}>
+        <div style={{height: 1.5, width: 700 * rule, background: P, opacity: 0.35}} />
+        <div style={{display: 'flex', alignItems: 'baseline', gap: 36, marginTop: 18, ...reveal(t, from, 8.0)}}>
+          <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 200, lineHeight: 1, color: COLOUR.ink, letterSpacing: -6, width: 250}}>{v}</div>
+          <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 30, letterSpacing: 5, textTransform: 'uppercase', color: P}}>{label}</div>
+        </div>
       </div>
     );
   };
-  const line = EASE(clamp((t - 5.8) / 0.6)) * (1 - clamp((t - 7.7) / 0.3));
   return (
     <div style={{position: 'absolute', inset: 0, transform: `scale(${drone})`}}>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 120, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 76, color: COLOUR.ink, letterSpacing: -1, ...reveal(t, 5.0, 8.0)}}>
-        Colombo's hallmark <span style={{color: P}}>dining.</span>
-      </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 300, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 70}}>
-        {col(5.2, 4, 'Hotels')}
-        <div style={{width: 2, height: 300 * line, background: P, opacity: 0.3}} />
-        {col(5.6, 24, 'Restaurants & bars')}
-      </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 820, display: 'flex', justifyContent: 'center', gap: 36}}>
-        {HOTEL_NAMES.map((h, i) => (
-          <div key={h} style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 18, letterSpacing: 1.6, textTransform: 'uppercase', color: COLOUR.ink, opacity: 0.75, whiteSpace: 'nowrap', ...reveal(t, 6.4 + i * 0.12, 8.0)}}>{h}</div>
+      <Skyline t={t} />
+      <div style={{position: 'absolute', left: 160, top: 300}}>
+        {['Colombo’s', 'hallmark', 'dining.'].map((w, i) => (
+          <div key={w} style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 132, lineHeight: 1.02, letterSpacing: -3, color: i === 2 ? P : COLOUR.ink, ...reveal(t, 5.0 + i * 0.12, 8.0)}}>{w}</div>
         ))}
+      </div>
+      {row(5.3, 4, 'Hotels', 250)}
+      {row(5.8, 24, 'Restaurants & bars', 540)}
+      <div style={{position: 'absolute', left: 1060, top: 830, width: 700, fontFamily: FONT.body, fontSize: 19, lineHeight: 1.8, letterSpacing: 1, color: COLOUR.ink, opacity: 0.7, ...reveal(t, 6.4, 8.0)}}>
+        {HOTEL_NAMES.join('  ·  ')}
       </div>
     </div>
   );
@@ -108,35 +109,35 @@ export const Restaurant: React.FC<{t: number}> = ({t}) => {
 // The close: every outlet in the programme, by hotel
 const HOTELS: [string, string[]][] = [
   ['Cinnamon Grand Colombo', ['The London Grill', 'Plates', 'Lagoon', 'Nuga Gama', 'Breeze Bar', 'Cheers']],
-  ['Cinnamon Life at City of Dreams Sri Lanka', ['Gatz', 'Staten', 'Bistro', 'Yoroko', 'Indya', 'Sapphire Dragon', 'Pool+Bar 09', 'Dreams & Beats', 'Flux', 'Cloud Wine', 'Quizine']],
+  ['Cinnamon Life at City of Dreams Sri Lanka', ['Gatz', 'Staten', 'Bistro', 'Yoroko', 'Indiya', 'Sapphire Dragon', 'Pool+Bar 09', 'Dreams & Beats', 'Flux', 'Cloud Wine', 'Quizine']],
   ['Cinnamon Lakeside Colombo', ['The Dining Room', 'Royal Thai', 'Long Feng', 'Colombar', 'Pool Bar']],
   ['Cinnamon Red Colombo', ['Flavoured', 'CloudRed']],
 ];
-export const Outlets: React.FC<{t: number}> = ({t}) => {
-  let k = 0;
-  const drone = 1.05 - 0.05 * clamp((t - 52.6) / 4.2);
-  const widths = [330, 600, 340, 230];
-  return (
-    <div style={{position: 'absolute', inset: 0, transform: `scale(${drone})`}}>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 100, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 88, color: COLOUR.ink, letterSpacing: -2, ...reveal(t, 52.8, 56.7)}}>
-        Earn at one table. <span style={{color: P}}>Spend at the next.</span>
-      </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 300, display: 'flex', justifyContent: 'center', gap: 56}}>
-        {HOTELS.map(([hotel, outlets], i) => (
-          <div key={hotel} style={{width: widths[i], ...reveal(t, 53.0 + i * 0.12, 56.7)}}>
-            <div style={{fontFamily: FONT.body, fontWeight: 600, fontSize: 17, letterSpacing: 2.2, textTransform: 'uppercase', color: P, whiteSpace: 'nowrap', borderBottom: `1.5px solid ${P}33`, paddingBottom: 14, marginBottom: 18}}>{hotel}</div>
-            <div style={{columnCount: i === 1 ? 2 : 1, columnGap: 40}}>
-              {outlets.map((o) => {
-                const d = 53.3 + (k++) * 0.045;
-                return <div key={o} style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 34, lineHeight: 1.55, color: COLOUR.ink, whiteSpace: 'nowrap', ...reveal(t, d, 56.7)}}>{o}</div>;
-              })}
+// The close: one row per hotel, its outlets gliding past like a slow drone pass
+export const Outlets: React.FC<{t: number}> = ({t}) => (
+  <div style={{position: 'absolute', inset: 0}}>
+    <div style={{position: 'absolute', left: 0, right: 0, top: 110, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 88, color: COLOUR.ink, letterSpacing: -2, ...reveal(t, 52.8, 56.7)}}>
+      Earn at one table. <span style={{color: P}}>Spend at the next.</span>
+    </div>
+    {HOTELS.map(([hotel, outlets], i) => {
+      const dir = i % 2 === 0 ? -1 : 1;
+      const shift = dir * (t - 52.6) * 70 + (dir > 0 ? -600 : 0);
+      const names = [...outlets, ...outlets, ...outlets];
+      return (
+        <div key={hotel} style={{position: 'absolute', left: 0, right: 0, top: 330 + i * 150, height: 120, ...reveal(t, 53.0 + i * 0.15, 56.7)}}>
+          <div style={{position: 'absolute', left: 140, top: 18, width: 470, whiteSpace: 'nowrap', fontFamily: FONT.body, fontWeight: 600, fontSize: 16, lineHeight: 1.5, letterSpacing: 2.4, textTransform: 'uppercase', color: P}}>{hotel}</div>
+          <div style={{position: 'absolute', left: 640, right: 0, top: -14, height: 90, overflow: 'hidden', WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 8%, #000 85%, transparent)'}}>
+            <div style={{whiteSpace: 'nowrap', transform: `translateX(${shift}px)`, fontFamily: FONT.display, fontWeight: 300, fontSize: 56, color: COLOUR.ink}}>
+              {names.map((n, k) => (
+                <span key={k}>{n}<span style={{color: P, opacity: 0.5, margin: '0 34px'}}>·</span></span>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+        </div>
+      );
+    })}
+  </div>
+);
 
 // Four tiers, one table: the real tier cards fan out, no percentages
 const TIERS: [string, string][] = [['silver', 'Silver'], ['gold', 'Gold'], ['platinum', 'Platinum'], ['titanium', 'Titanium']];
@@ -159,5 +160,33 @@ export const Tiers: React.FC<{t: number}> = ({t}) => {
         );
       })}
     </div>
+  );
+};
+
+// Colombo skyline in outline: Lotus Tower, the twin towers, Cinnamon Life's curved towers, the sea line.
+// It draws itself in behind the figures and drifts slowly, like a drone passing along Galle Face.
+export const Skyline: React.FC<{t: number}> = ({t}) => {
+  const draw = EASE(clamp((t - 4.9) / 1.8));
+  const drift = (t - 4.9) * -14;
+  const st = {fill: 'none', stroke: P, strokeWidth: 1.6, strokeLinejoin: 'round' as const, strokeLinecap: 'round' as const, strokeDasharray: 3000, strokeDashoffset: 3000 * (1 - draw)};
+  return (
+    <svg viewBox="0 0 2200 400" style={{position: 'absolute', left: -100, bottom: 0, width: 2200, height: 400, opacity: 0.22, transform: `translateX(${drift}px)`}}>
+      <path d="M0 380 H2200" {...st} />
+      {/* low-rise run */}
+      <path d="M40 380 V330 H120 V300 H190 V340 H260 V310 H330 V380" {...st} />
+      {/* Lotus Tower */}
+      <path d="M470 380 L478 150 L462 135 L475 128 L470 112 L486 120 L490 104 L494 120 L510 112 L505 128 L518 135 L502 150 L510 380 M490 104 V40" {...st} />
+      {/* World Trade Center twin towers */}
+      <path d="M640 380 V150 H700 V380 M730 380 V150 H790 V380 M640 190 H700 M730 190 H790" {...st} />
+      {/* Cinnamon Life towers, curved */}
+      <path d="M900 380 C900 260 930 160 960 110 H1020 C1010 170 1010 270 1020 380 M1060 380 C1060 270 1080 190 1110 150 H1170 C1160 210 1160 290 1170 380" {...st} />
+      {/* mid-rise towers */}
+      <path d="M1260 380 V200 H1320 V380 M1350 380 V240 L1380 220 L1410 240 V380 M1460 380 V170 H1500 V140 H1540 V380" {...st} />
+      {/* Galle Face Hotel and colonial front */}
+      <path d="M1640 380 V310 H1880 V380 M1660 310 L1760 270 L1860 310 M1690 380 V340 M1740 380 V340 M1790 380 V340" {...st} />
+      <path d="M1960 380 V260 H2020 V380 M2060 380 V300 H2140 V380" {...st} />
+      {/* sea */}
+      <path d="M0 392 Q60 386 120 392 T240 392 T360 392 T480 392 T600 392 T720 392 T840 392 T960 392 T1080 392 T1200 392 T1320 392 T1440 392 T1560 392 T1680 392 T1800 392 T1920 392 T2040 392 T2160 392" {...st} strokeWidth={1.2} />
+    </svg>
   );
 };
