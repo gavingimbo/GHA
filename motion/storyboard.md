@@ -52,8 +52,8 @@ Deliberate departure: Apple's recaps average about 1.9 seconds a shot. This film
 | 6 | 0:22 | 7s | Recognised | The Dreams & Beats venue chip and the Titanium tier card rise into place. "Cinnamon" and "DISCOVERY" split apart as in the lockup | 3 | Glide on the chip, Arrive on the card |
 | 7 | 0:29 | 8s | Benefit | Camera moves onto the bill's discount line, which reads 50%. Then the figure "−LKR 29,200" lifts off the screen and counts up | 4 | Counter ticks, then Velvet on the final figure |
 | 8 | 0:37 | 4s | Breath | Music drops to one held note. The total, LKR 37,901.60, resolves on the screen. Nothing else moves | none | Velvet on settle |
-| 9 | 0:41 | 9s | Choose | The D$ slider. It slides to zero and rests, then rises to a value. Balance left to pay updates | 5 | Notch on each detent |
-| 10 | 0:50 | 4s | Confirm | One Confirm button. A quiet press at 0:52 | 6 | Seal on the press |
+| 9 | 0:41 | 9s | Choose | The D$ field in the bill. The guest types 0, then types an amount. The limit is the lower of their balance and the eligible spend on the bill | 5 | Keypress ticks |
+| 10 | 0:50 | 4s | Apply | One APPLY D$ button. A quiet press at 0:52 | 6 | Seal on the press |
 | 11 | 0:54 | 3s | Done | The phone's success mark draws in: "Your DISCOVERY Dollars are on the way." | none | Settle |
 | 12 | 0:57 | 3s | Close | The phone recedes and shrinks into the white logo. Closing line in Jost Light | 7 | Finale on the logo |
 
@@ -72,9 +72,9 @@ Total: 60 seconds, 12 shots, average 5 seconds. Hard cuts, one whip (shot 5), an
 | 5 → 6 | The bill settles and the venue chip enters on the same card |
 | 6 → 7 | The camera moves onto the discount line, and the figure lifts off the screen. The phone leaves the frame |
 | 7 → 8 | The figure drops back into the bill and becomes the total. Music pulls back |
-| 8 → 9 | The total slides up, and the D$ slider rises from the bill's base |
-| 9 → 10 | The slider's chosen amount becomes the amount on the Confirm button |
-| 10 → 11 | The Confirm button morphs into the success mark |
+| 8 → 9 | The total slides up, and the D$ field rises from the bill's base |
+| 9 → 10 | The typed D$ amount becomes the amount on the APPLY D$ button |
+| 10 → 11 | The APPLY D$ button morphs into the success mark |
 | 11 → 12 | The phone recedes and shrinks into the logo |
 
 ---
@@ -97,9 +97,9 @@ Total: 60 seconds, 12 shots, average 5 seconds. Hard cuts, one whip (shot 5), an
 
 **Shot 8: Breath (0:37–0:41).** The figure settles back into the bill. The music pulls to one held note. The total, LKR 37,901.60, resolves at the bottom of the bill. Nothing else moves for about two seconds. This is the felt moment.
 
-**Shot 9: Choose (0:41–0:50).** The phone is centred. The D$ slider moves to zero and rests, so "or none at all" is visible. It then rises to a value, and the balance left to pay updates. Each detent clicks. Voice: "Decide how many DISCOVERY Dollars to use, or none at all. Either way, you earn." (0:41–0:47)
+**Shot 9: Choose (0:41–0:50).** The phone is centred on the bill. The D$ field shows the most the guest can use: the lower of their balance and the eligible spend. The guest types 0, so "or none at all" is visible, then types an amount. Each keypress ticks. Voice: "Decide how many DISCOVERY Dollars to use, or none at all. Either way, you earn." (0:41–0:47)
 
-**Shot 10: Confirm (0:50–0:54).** One Confirm button with the amount. The press is at 0:52. The button compresses to about 96% and springs back over 120 milliseconds. Voice: "One tap to confirm, and you're done." (0:50–0:53)
+**Shot 10: Apply (0:50–0:54).** One APPLY D$ button. The press is at 0:52. The button compresses to about 96% and springs back over 120 milliseconds. Voice: "Tap to apply, and you're done." (0:50–0:53)
 
 **Shot 11: Done (0:54–0:57).** The success mark draws in on the phone in one stroke. Below it: "Your DISCOVERY Dollars are on the way." No confetti. No exclamation mark, per brand rules.
 
@@ -116,10 +116,10 @@ Total: 60 seconds, 12 shots, average 5 seconds. Hard cuts, one whip (shot 5), an
 | 3 | 0:23–0:27 | Cinnamon has your bill. DISCOVERY knows it's you. | 8 |
 | 4 | 0:30–0:35 | Your benefit is already on the bill. Nothing to ask for. | 11 |
 | 5 | 0:41–0:47 | Decide how many DISCOVERY Dollars to use, or none at all. Either way, you earn. | 15 |
-| 6 | 0:50–0:53 | One tap to confirm, and you're done. | 7 |
+| 6 | 0:50–0:53 | Tap to apply, and you're done. | 7 |
 | 7 | 0:57–1:00 | Cinnamon DISCOVERY. Dine with DISCOVERY Dollars. | 6 |
 
-66 words, about 23 seconds of speech at 2.5 to 3 words a second. The full script and recording notes are in `motion/voiceover-script.md`.
+65 words, about 23 seconds of speech at 2.5 to 3 words a second. The full script and recording notes are in `motion/voiceover-script.md`.
 
 ---
 
