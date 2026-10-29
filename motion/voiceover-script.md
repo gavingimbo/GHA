@@ -4,7 +4,7 @@ For the 60-second film in `motion/storyboard.md`. Paste the lines below into the
 
 ## Recording notes
 
-- Tone: warm, calm, unhurried. Speak to one person at the table, not to a room.
+- Tone: human, plain and calm, like a person at the table rather than a presenter. Short sentences. Nothing sold, nothing shouted.
 - British English. Spell and say "DISCOVERY Dollars" in full. Do not use "D$" in the script, so the voice reads it cleanly.
 - No exclamation marks. Leave a clear pause of about half a second after each full stop.
 - Stress "DISCOVERY" and "Nothing" lightly. Do not push either.
