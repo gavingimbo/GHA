@@ -62,32 +62,32 @@ export const Stats: React.FC<{t: number}> = ({t}) => {
   );
 };
 
-// Behind the phone: a wide restaurant floor in outline, in the same camera space as the phone.
-// As the camera swings and zooms, the floor moves with it, like one drone pass from table to table.
-export const Ambient: React.FC<{t: number; px: number}> = ({t}) => {
+// Behind the phone: one table at a time. Between scenes the camera glides to the next table,
+// like a drone moving across the room, so the phone always sits over a table.
+const HOPS = [23.1, 30.1, 37.3, 47.1];
+export const Ambient: React.FC<{t: number; px: number}> = ({t, px}) => {
   const vis = clamp((t - 14.2) / 0.8) * (1 - clamp((t - 52.6) / 0.6));
   if (vis <= 0) return null;
-  const st = {fill: 'none', stroke: P, strokeWidth: 2.2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const};
-  const drift = (t - 14) * -18;
-  const table = (x: number, y: number, k: number, i: number) => (
-    <g key={i} transform={`translate(${x} ${y}) scale(${k})`}>
-      <ellipse rx="150" ry="46" {...st} />
-      <path d="M0 46 V170 M-60 170 H60" {...st} />
-      <path d="M-210 -10 v-110 q0-18 18-18 h28 q18 0 18 18 v110 M-210 50 v120 M-146 50 v120" {...st} />
-      <path d="M210 -10 v-110 q0-18 -18-18 h-28 q-18 0 -18 18 v110 M210 50 v120 M146 50 v120" {...st} />
-      <ellipse cx="-60" cy="-8" rx="34" ry="10" {...st} />
-      <ellipse cx="60" cy="-8" rx="34" ry="10" {...st} />
-      <path d="M0 -46 v-40 M-14 -86 h28 M-6 -86 Q-8 -112 0 -120 Q8 -112 6 -86" {...st} />
+  const hop = HOPS.reduce((n, h) => n + EASE(clamp((t - (h - 0.6)) / 1.2)), 0);
+  const GAP = 1500;
+  const st = {fill: 'none', stroke: P, strokeWidth: 2.4, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const};
+  const table = (i: number) => (
+    <g key={i} transform={`translate(${i * GAP} 0)`}>
+      <path d="M0 -700 V-430 M-80 -350 Q0 -450 80 -350 Z" {...st} />
+      <ellipse cx="0" cy="330" rx="330" ry="90" {...st} />
+      <ellipse cx="-130" cy="315" rx="70" ry="20" {...st} />
+      <ellipse cx="130" cy="315" rx="70" ry="20" {...st} />
+      <path d="M0 420 V600 M-110 600 H110" {...st} />
+      <path d="M-450 300 v-200 q0-26 26-26 h44 q26 0 26 26 v200 M-450 380 v220 M-354 380 v220" {...st} />
+      <path d="M450 300 v-200 q0-26 -26-26 h-44 q-26 0 -26 26 v200 M450 380 v220 M354 380 v220" {...st} />
     </g>
   );
-  const lamp = (x: number, i: number) => <path key={'l' + i} d={`M${x} -800 V-420 M${x - 70} -350 Q${x} -440 ${x + 70} -350 Z`} {...st} />;
-  const T: [number, number, number][] = [];
-  for (let r = 0; r < 3; r++) for (let c = 0; c < 7; c++) T.push([-1400 + c * 720 + (r % 2) * 360, -150 + r * 520, 0.85 + r * 0.15]);
   return (
-    <svg viewBox="-1800 -800 5200 2600" style={{position: 'absolute', left: -1800, top: -800, width: 5200, height: 2600, opacity: 0.15 * vis, transform: `translateX(${drift}px)`}}>
-      <path d="M-1800 1250 H3400 M-1800 -380 H3400" {...st} strokeWidth={1.4} opacity={0.6} />
-      {[-1200, -400, 400, 1200, 2000, 2800].map((x, i) => lamp(x, i))}
-      {T.map(([x, y, k], i) => table(x, y, k, i))}
+    <svg viewBox="-960 -540 1920 1080" style={{position: 'absolute', inset: 0, overflow: 'visible', opacity: 0.2 * vis}}>
+      <g transform={`translate(${px - 960 - hop * GAP} 0)`}>
+        <path d={`M-3000 610 H${GAP * 6}`} {...st} strokeWidth={1.4} />
+        {[0, 1, 2, 3, 4, 5].map(table)}
+      </g>
     </svg>
   );
 };

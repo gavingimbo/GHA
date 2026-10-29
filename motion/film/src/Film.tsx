@@ -13,7 +13,7 @@ import {COLOUR, FONT} from './theme';
 import {EASE, TextBlock, reveal} from './Words';
 
 export const FPS = 30;
-export const FILM_FRAMES = Math.round(64.5 * FPS);
+export const FILM_FRAMES = 60 * FPS;
 
 // Output time to story time: the opening is slowed so the voice parts fit, the rest shifts later.
 const warp = (o: number) => {
@@ -74,10 +74,10 @@ export const Film: React.FC = () => {
       </AbsoluteFill>
 
       <Restaurant t={t} />
+      <Ambient t={t} px={px} />
 
       {phoneOn && (
         <AbsoluteFill style={{transform: `translate(${px - PHONE_X * s}px, ${540 - cy * s}px) scale(${s})`, transformOrigin: '0 0', filter: `blur(${blur}px)`}}>
-          <Ambient t={t} px={px} />
           <Phone y={phoneY} opacity={1}>
             <DemoScreen t={t} />
           </Phone>
