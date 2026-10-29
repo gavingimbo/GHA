@@ -1,0 +1,14 @@
+{
+  "taps": [
+    { "t": 16.4, "x": 196, "y": 360, "note": "Landing: Sign in to continue" },
+    { "t": 17.2, "x": 196, "y": 163, "note": "Sign-in: email field" },
+    { "t": 19.3, "x": 196, "y": 246, "note": "Sign-in: password field" },
+    { "t": 20.9, "x": 196, "y": 360, "note": "Sign-in: SIGN IN" },
+    { "t": 29.4, "x": 196, "y": 800, "note": "Member: View Bill" },
+    { "t": 38.2, "x": 196, "y": 566, "note": "Bill: D$ field" },
+    { "t": 47.6, "x": 196, "y": 683, "note": "Bill: APPLY D$" },
+    { "t": 49.4, "x": 279, "y": 531, "note": "Dialog: Confirm" }
+  ],
+  "whooshes": [5.0, 9.4, 12.2, 29.6, 52.6, 56.6],
+  "hits": [56.8]
+}

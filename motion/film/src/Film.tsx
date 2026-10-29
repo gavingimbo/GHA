@@ -1,224 +1,150 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Easing, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import '@fontsource/jost/300.css';
 import '@fontsource/jost/400.css';
 import '@fontsource/figtree/400.css';
 import '@fontsource/figtree/500.css';
 import '@fontsource/figtree/600.css';
-import {PHONE_CX, PHONE_CY, Phone} from './Phone';
+import {DemoScreen, keys} from './Demo';
+import {PHONE_X, PHONE_Y, Phone} from './Phone';
 import {COLOUR, FONT} from './theme';
+import {EASE, Figure, Statement, TextBlock, reveal} from './Words';
 
 export const FPS = 30;
 export const FILM_FRAMES = 60 * FPS;
 
-// One continuous camera. Keys are [seconds, value] and each segment eases on its own.
-type K = [number, number];
-const CAM_EASE = Easing.bezier(0.45, 0, 0.2, 1);
-const kf = (f: number, keys: K[]): number => {
-  const t = f / FPS;
-  if (t <= keys[0][0]) return keys[0][1];
-  for (let i = 1; i < keys.length; i++) {
-    const [t1, v1] = keys[i];
-    if (t <= t1) {
-      const [t0, v0] = keys[i - 1];
-      return v0 + (v1 - v0) * CAM_EASE((t - t0) / (t1 - t0));
-    }
-  }
-  return keys[keys.length - 1][1];
-};
-
-// Camera: [seconds, centre x, centre y, scale]
-const CAM: [number, number, number, number][] = [
-  [0, 960, 540, 1],
-  [4.0, 960, 540, 1],
-  [9.0, 960, 300, 1],
-  [12.5, 960, 700, 0.85],
-  [14.0, 960, 740, 1.35],
-  [16.5, 960, 700, 1.0],
-  [18.5, 960, 700, 1.0],
-  [21.0, 960, 700, 1.05],
-  [23.5, 960, 690, 1.2],
-  [26.0, 960, 700, 1.0],
-  [28.5, 960, 848, 1.7],
-  [31.0, 960, 540, 1.0],
-  [37.0, 960, 540, 1.0],
-  [41.0, 960, 700, 1.0],
-  [44.0, 960, 800, 1.5],
-  [50.0, 960, 800, 1.5],
-  [52.0, 960, 900, 1.6],
-  [54.5, 960, 700, 1.0],
-  [57.0, 960, 700, 1.0],
-  [59.0, 960, 540, 1.0],
+// Camera: [seconds, scale, focus y]. The phone stays left of centre so the words keep their column.
+const CAM: [number, number, number][] = [
+  [0, 1.0, 560],
+  [12.0, 1.0, 560],
+  [15.6, 1.06, 540],
+  [17.0, 1.2, 500],
+  [21.2, 1.2, 520],
+  [23.0, 1.02, 560],
+  [29.2, 1.1, 640],
+  [30.2, 1.0, 560],
+  [31.2, 1.18, 500],
+  [35.0, 1.18, 540],
+  [37.0, 1.2, 690],
+  [41.0, 1.2, 700],
+  [47.0, 1.22, 740],
+  [50.8, 1.1, 640],
+  [52.6, 1.0, 560],
+  [60, 1.0, 560],
 ];
-const camX = (f: number) => kf(f, CAM.map((c) => [c[0], c[1]]));
-const camY = (f: number) => kf(f, CAM.map((c) => [c[0], c[2]]));
-const camS = (f: number) => kf(f, CAM.map((c) => [c[0], c[3]]));
+const camS = (t: number) => keys(t, CAM.map((c) => [c[0], c[1]]));
+const camY = (t: number) => keys(t, CAM.map((c) => [c[0], c[2]]));
 
-// Screen layers inside the phone: [src, from s, to s, kind]
-type Layer = {src: string; from: number; to: number; kind: 'fade' | 'slideUp' | 'slideIn' | 'through'};
-const LAYERS: Layer[] = [
-  {src: 'ui/guest-landing.png', from: 9.6, to: 14.2, kind: 'fade'},
-  {src: 'ui/guest-signin.png', from: 13.5, to: 14.6, kind: 'slideUp'},
-  {src: 'ui/signin-email.png', from: 14.6, to: 16.0, kind: 'fade'},
-  {src: 'ui/signin-password.png', from: 16.0, to: 17.0, kind: 'fade'},
-  {src: 'ui/guest-signin-submitting.png', from: 17.0, to: 19.2, kind: 'fade'},
-  {src: 'ui/member-landing-view-bill.png', from: 19.0, to: 26.0, kind: 'through'},
-  {src: 'ui/burn-default.png', from: 26.0, to: 41.0, kind: 'slideIn'},
-  {src: 'ui/burn-zero-earn.png', from: 41.0, to: 44.5, kind: 'fade'},
-  {src: 'ui/burn-spend-60.png', from: 44.5, to: 52.0, kind: 'fade'},
-  {src: 'ui/burn-confirm-dialog.png', from: 52.2, to: 53.6, kind: 'fade'},
-  {src: 'ui/burn-confirm-submitting.png', from: 53.6, to: 54.2, kind: 'fade'},
-  {src: 'ui/burn-confirm-success.png', from: 54.2, to: 57.0, kind: 'fade'},
-];
-
-const layerStyle = (l: Layer, f: number): React.CSSProperties => {
-  const t = f / FPS;
-  const inT = l.from;
-  const outT = l.to;
-  const fadeIn = interpolate(t, [inT - 0.25, inT], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const fadeOut = interpolate(t, [outT, outT + 0.25], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const opacity = Math.min(fadeIn, fadeOut);
-  let transform = 'none';
-  if (l.kind === 'slideUp') {
-    const y = interpolate(t, [inT, inT + 0.6], [852, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: CAM_EASE});
-    transform = `translateY(${y}px)`;
-  }
-  if (l.kind === 'slideIn') {
-    const x = interpolate(t, [inT, inT + 0.5], [393, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: CAM_EASE});
-    transform = `translateX(${x}px)`;
-  }
-  if (l.kind === 'through') {
-    const sc = interpolate(t, [inT, inT + 0.6], [0.92, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: CAM_EASE});
-    transform = `scale(${sc})`;
-  }
-  return {position: 'absolute', inset: 0, opacity, transform, width: 393, height: 852, objectFit: 'cover'};
-};
+const ramp = (t: number, a: number, b: number, from: number, to: number) =>
+  interpolate(t, [a, b], [from, to], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE});
 
 export const Film: React.FC = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
   const t = f / FPS;
 
-  // Camera and motion blur, from the camera's speed this frame
-  const cx = camX(f);
-  const cy = camY(f);
-  const cs = camS(f);
-  const speed = Math.abs(camX(f) - camX(f - 1)) + Math.abs(camY(f) - camY(f - 1)) + Math.abs(camS(f) - camS(f - 1)) * 800;
-  const blur = Math.min(5, speed * 0.12);
+  const s = camS(t);
+  const cy = camY(t);
+  const speed = Math.abs(camS(t) - camS(t - 1 / FPS)) * 900 + Math.abs(camY(t) - camY(t - 1 / FPS));
+  const blur = Math.min(3, speed * 0.1);
 
-  // Logo: opening and closing
-  const logoIn = interpolate(t, [0.2, 0.9], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const logoOut = interpolate(t, [3.8, 4.6], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const logoEnd = interpolate(t, [57.4, 58.5], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const logoOpacity = Math.min(logoIn, logoOut) + logoEnd;
-  const closingLine = interpolate(t, [58.0, 59.0], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  // Phone: rises at 12.2s, leaves at 52.6s
+  const rise = spring({frame: f - Math.round(12.2 * FPS), fps, config: {damping: 24, stiffness: 70, mass: 1}});
+  const phoneY = interpolate(rise, [0, 1], [1000, 0]) + ramp(t, 52.6, 53.8, 0, 120) + Math.sin(t * 1.3) * 2.5;
+  const phoneOpacity = ramp(t, 12.2, 12.8, 0, 1) * ramp(t, 52.6, 53.6, 1, 0);
 
-  // QR shown by staff: visible 4.4s to 9.4s, then it leaves as the camera moves to the phone
-  const qrOpacity = interpolate(t, [4.4, 5.0, 9.0, 9.6], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  // QR, shown by our team, flies into the phone when it is scanned
+  const qrIn = ramp(t, 12.4, 12.9, 0, 1);
+  const fly = ramp(t, 15.0, 15.7, 0, 1);
+  const qrX = 1330 + (700 - 1330) * fly;
+  const qrY = 650 + (560 - 650) * fly;
+  const qrScale = 1 - 0.78 * fly;
+  const qrOpacity = qrIn * (1 - ramp(t, 15.5, 15.8, 0, 1));
 
-  // Phone rises into place from below during the scan (spring)
-  const rise = spring({frame: f - s(9.0), fps, config: {damping: 30, stiffness: 60, mass: 1}});
-  const phoneY = interpolate(rise, [0, 1], [900, 0]);
-  const phoneOpacity =
-    interpolate(t, [8.8, 9.6], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) *
-    interpolate(t, [28.8, 29.4, 40.6, 41.0], [1, 0, 0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) *
-    interpolate(t, [56.6, 57.4], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  // Drifting light behind everything
+  const gx = 28 + Math.sin(t * 0.25) * 6;
 
-  // The benefit figure, lifted off the phone and counting up
-  const figureValue = Math.round(interpolate(t, [31.0, 33.6], [0, 29200], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: CAM_EASE}));
-  const figureOpacity = interpolate(t, [30.4, 31.0, 36.6, 37.2], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-
-  // Breath: the total resolves, nothing else moves
-  const totalOpacity = interpolate(t, [37.6, 38.4, 40.4, 41.0], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-
-  // Scroll the real bill screen so the discount line and spend field are in view
-  const scrollY = interpolate(t, [26.0, 28.5, 41.0, 44.0], [0, 0, 0, 430], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: CAM_EASE});
+  const lockup1 = ramp(t, 9.6, 10.3, 0, 1) * ramp(t, 11.8, 12.4, 1, 0);
+  const lockup2 = ramp(t, 56.8, 57.6, 0, 1);
 
   return (
-    <AbsoluteFill style={{background: COLOUR.midnight, overflow: 'hidden', fontFamily: FONT.body}}>
+    <AbsoluteFill
+      style={{
+        background: `radial-gradient(ellipse at ${gx}% 42%, #2c3a8e 0%, ${COLOUR.midnight} 48%, #141a47 100%)`,
+        overflow: 'hidden',
+        fontFamily: FONT.body,
+      }}
+    >
       <Audio src={staticFile('audio/bed.wav')} />
 
+      {/* Act 1: the tables Colombo already knows */}
+      <Statement t={t} from={0.2} to={1.9} text="Long lunches." />
+      <Statement t={t} from={1.7} to={3.4} text="Late dinners." />
+      <Statement t={t} from={3.2} to={5.1} text="Sunday brunch." />
+
+      {/* Marketing figures, the only large numbers in the film */}
+      <Figure t={t} from={5.2} to={7.3} value={4} label="hotels" />
+      <Figure t={t} from={7.1} to={9.5} value={24} label="restaurants and bars" />
+
+      {/* Logo lockup, then the promise */}
+      <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: lockup1}}>
+        <Img src={staticFile('logo/cinnamon-discovery-logo.svg')} style={{width: 1000, height: 'auto', marginBottom: 90}} />
+        <div style={{position: 'absolute', top: 640, fontFamily: FONT.display, fontWeight: 300, fontSize: 64, color: COLOUR.white}}>
+          Now every one of them rewards you.
+        </div>
+      </AbsoluteFill>
+
+      {/* The camera world: phone and its live demo */}
       <AbsoluteFill
         style={{
-          transform: `translate(${960 - cx * cs}px, ${540 - cy * cs}px) scale(${cs})`,
+          transform: `translate(${700 - PHONE_X * s}px, ${540 - cy * s}px) scale(${s})`,
           transformOrigin: '0 0',
           filter: `blur(${blur}px)`,
         }}
       >
-        {/* Logo */}
-        <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: logoOpacity}}>
-          <Img src={staticFile('logo/cinnamon-discovery-logo.svg')} style={{width: 1000, height: 'auto'}} />
-        </AbsoluteFill>
-        <div
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 880,
-            textAlign: 'center',
-            fontFamily: FONT.display,
-            fontWeight: 300,
-            fontSize: 64,
-            color: COLOUR.white,
-            opacity: closingLine,
-          }}
-        >
-          Dine with DISCOVERY Dollars.
-        </div>
-
-        {/* QR, shown by staff */}
-        <div
-          style={{
-            position: 'absolute',
-            left: 960 - 180,
-            top: 300 - 180,
-            width: 360,
-            height: 360,
-            padding: 18,
-            boxSizing: 'border-box',
-            borderRadius: 24,
-            background: COLOUR.white,
-            opacity: qrOpacity,
-          }}
-        >
-          <Img src={staticFile('qr.svg')} style={{width: '100%', height: '100%'}} />
-        </div>
-
-        {/* Phone with the production screens */}
         <Phone y={phoneY} opacity={phoneOpacity}>
-          {LAYERS.map((l) => (
-            <Img
-              key={l.src}
-              src={staticFile(l.src)}
-              style={{
-                ...layerStyle(l, f),
-                top: l.src.includes('burn-') ? -scrollY : 0,
-              }}
-            />
-          ))}
+          <DemoScreen t={t} />
         </Phone>
+      </AbsoluteFill>
 
-        {/* Benefit figure, in the camera's world above the phone */}
-        <div style={{position: 'absolute', left: 0, right: 0, top: 420, textAlign: 'center', opacity: figureOpacity}}>
-          <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 36, color: COLOUR.sky, marginBottom: 14}}>
-            Discount (GHA DISCOVERY 50%)
-          </div>
-          <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 240, color: COLOUR.white, letterSpacing: -4}}>
-            −LKR {figureValue.toLocaleString('en-US')}
-          </div>
-        </div>
+      {/* Act 2: take a seat, scan */}
+      <TextBlock t={t} from={12.4} to={14.3} lines={['Take a seat.']} top={240} />
+      <TextBlock t={t} from={14.0} to={17.0} lines={['Scan the code.']} top={240} />
+      <div
+        style={{
+          position: 'absolute',
+          left: qrX - 190,
+          top: qrY - 190,
+          width: 380,
+          height: 380,
+          padding: 20,
+          boxSizing: 'border-box',
+          borderRadius: 28,
+          background: COLOUR.white,
+          opacity: qrOpacity,
+          transform: `scale(${qrScale})`,
+          boxShadow: '0 30px 70px rgba(0,0,0,0.35)',
+        }}
+      >
+        <Img src={staticFile('qr.svg')} style={{width: '100%', height: '100%'}} />
+      </div>
 
-        {/* Total, after the breath */}
-        <div style={{position: 'absolute', left: 0, right: 0, top: 440, textAlign: 'center', opacity: totalOpacity}}>
-          <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 36, color: COLOUR.sky, marginBottom: 14}}>Total</div>
-          <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 200, color: COLOUR.white, letterSpacing: -3}}>
-            LKR 37,901.60
-          </div>
+      {/* Act 3: the journey on the phone */}
+      <TextBlock t={t} from={17.0} to={22.6} lines={['Sign in.']} sub="Your GHA DISCOVERY email and password." top={330} />
+      <TextBlock t={t} from={23.6} to={29.6} lines={['Recognised.']} sub="Your tier. Your bill. Ready." top={330} />
+      <TextBlock t={t} from={30.6} to={37.2} lines={['Your benefit.', 'Already there.']} top={270} />
+      <TextBlock t={t} from={37.6} to={46.8} lines={['Use D$.', 'Or keep them.']} sub="Either way, you earn." top={250} />
+      <TextBlock t={t} from={47.2} to={52.5} lines={['Tap to apply.']} sub="That's it." top={330} />
+
+      {/* Close */}
+      <Statement t={t} from={53.0} to={56.8} text="Earn at one table." top={330} size={150} />
+      <Statement t={t} from={54.2} to={56.8} text="Spend at the next." top={510} size={150} />
+      <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: lockup2}}>
+        <Img src={staticFile('logo/cinnamon-discovery-logo.svg')} style={{width: 1000, height: 'auto', marginBottom: 90}} />
+        <div style={{position: 'absolute', top: 640, fontFamily: FONT.display, fontWeight: 300, fontSize: 64, color: COLOUR.white, ...reveal(t, 57.2, 99)}}>
+          Dine with DISCOVERY Dollars.
         </div>
       </AbsoluteFill>
     </AbsoluteFill>
   );
 };
-
-// Frame helper for the phone rise spring
-const s = (sec: number) => Math.round(sec * FPS);
