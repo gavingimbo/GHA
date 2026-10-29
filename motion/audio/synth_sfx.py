@@ -7,7 +7,18 @@ from synth_bed import SR, DUR, add, whoosh, tick, pad, hz, write_wav
 
 T = json.load(open(sys.argv[2] if len(sys.argv) > 2 else '../film/src/timeline.json'))
 rng = np.random.default_rng(3)
+W = T.get('warp')
+def outt(x):
+    # story time to output time, the inverse of the film's warp
+    if not W: return x
+    for (o0, s0), (o1, s1) in zip(W, W[1:]):
+        if s0 <= x <= s1: return o0 + (x - s0) * (o1 - o0) / (s1 - s0)
+    return x
+_add = add
+def add(buf, start, sig): _add(buf, outt(start), sig)
+DUR = W[-1][0] if W else DUR
 out = np.zeros(int(DUR * SR) + SR)
+
 
 def tone(f, d, decay):
     t = np.arange(int(d * SR)) / SR

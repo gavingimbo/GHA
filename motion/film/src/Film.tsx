@@ -1,18 +1,22 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Img, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import '@fontsource/jost/300.css';
 import '@fontsource/jost/400.css';
 import '@fontsource/figtree/400.css';
 import '@fontsource/figtree/500.css';
 import '@fontsource/figtree/600.css';
 import {DemoScreen, keys} from './Demo';
+import timeline from './timeline.json';
 import {PHONE_X, Phone} from './Phone';
 import {Ambient, Chat, Outlets, Restaurant, Stats, Tiers} from './Scenes';
 import {COLOUR, FONT} from './theme';
 import {EASE, TextBlock, reveal} from './Words';
 
 export const FPS = 30;
-export const FILM_FRAMES = 60 * FPS;
+export const FILM_FRAMES = Math.round(64.5 * FPS);
+
+// Output time to story time: the opening is slowed so the voice parts fit, the rest shifts later.
+const warp = (o: number) => keys(o, timeline.warp as [number, number][]);
 
 // Camera: [seconds, scale, focus y]
 const CAM: [number, number, number][] = [
@@ -33,14 +37,14 @@ const ramp = (t: number, a: number, b: number, from: number, to: number) =>
 export const Film: React.FC = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const t = f / FPS;
+  const t = warp(f / FPS);
   const s = keys(t, CAM.map((c) => [c[0], c[1]]));
   const cy = keys(t, CAM.map((c) => [c[0], c[2]]));
   const px = keys(t, SIDE);
-  const vx = Math.abs(keys(t, SIDE) - keys(t - 1 / FPS, SIDE));
+  const vx = Math.abs(keys(t, SIDE) - keys(warp((f - 1) / FPS), SIDE));
   const blur = Math.min(4, vx * 0.12);
 
-  const rise = spring({frame: f - Math.round(14.3 * FPS), fps, config: {damping: 22, stiffness: 80, mass: 1}});
+  const rise = spring({frame: Math.round(t * FPS) - Math.round(14.3 * FPS), fps, config: {damping: 22, stiffness: 80, mass: 1}});
   const phoneY = interpolate(rise, [0, 1], [1100, 0]) + ramp(t, 52.4, 53.4, 0, 1100) + Math.sin(t * 1.3) * 2.5;
   const phoneOn = t > 14.2 && t < 53.5;
 
@@ -49,8 +53,13 @@ export const Film: React.FC = () => {
 
   return (
     <AbsoluteFill style={{background: `radial-gradient(ellipse at 70% 30%, rgba(89,42,125,0.07) 0%, rgba(89,42,125,0) 55%), radial-gradient(ellipse at 20% 90%, rgba(89,42,125,0.05) 0%, rgba(89,42,125,0) 50%), #ffffff`, overflow: 'hidden', fontFamily: FONT.body}}>
-      <Audio src={staticFile('audio/soundtrack.mp3')} volume={(fr) => 0.55 * interpolate(fr, [0, 15, 1740, 1800], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />
+      <Audio src={staticFile('audio/soundtrack.mp3')} volume={(fr) => 0.4 * interpolate(fr, [0, 15, FILM_FRAMES - 60, FILM_FRAMES], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />
       <Audio src={staticFile('audio/bed.wav')} />
+      {timeline.vo.map((at, i) => (
+        <Sequence key={i} from={Math.round(at * FPS)}>
+          <Audio src={staticFile(`vo/p${i + 1}.mp3`)} volume={1} />
+        </Sequence>
+      ))}
 
       {t < 5.2 && <Chat t={t} />}
       {t > 4.8 && t < 8.2 && <Stats t={t} />}
