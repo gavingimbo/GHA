@@ -26,7 +26,7 @@ export const TextBlock: React.FC<{
   size?: number;
   left?: number;
 }> = ({t, from, to, lines, sub, top, size = 124, left = 1080}) => (
-  <div style={{position: 'absolute', left, top, width: 780}}>
+  <div style={{position: 'absolute', left, top, width: 780, textShadow: '0 0 18px #fff, 0 0 36px #fff, 0 0 8px #fff'}}>
     {lines.map((line, i) => (
       <div
         key={line}

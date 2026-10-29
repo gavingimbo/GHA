@@ -16,7 +16,13 @@ export const FPS = 30;
 export const FILM_FRAMES = Math.round(64.5 * FPS);
 
 // Output time to story time: the opening is slowed so the voice parts fit, the rest shifts later.
-const warp = (o: number) => keys(o, timeline.warp as [number, number][]);
+const warp = (o: number) => {
+  const w = timeline.warp as [number, number][];
+  for (let i = 1; i < w.length; i++) {
+    if (o <= w[i][0]) return w[i - 1][1] + ((o - w[i - 1][0]) * (w[i][1] - w[i - 1][1])) / (w[i][0] - w[i - 1][0]);
+  }
+  return w[w.length - 1][1];
+};
 
 // Camera: [seconds, scale, focus y]
 const CAM: [number, number, number][] = [
@@ -55,11 +61,6 @@ export const Film: React.FC = () => {
     <AbsoluteFill style={{background: `radial-gradient(ellipse at 70% 30%, rgba(89,42,125,0.07) 0%, rgba(89,42,125,0) 55%), radial-gradient(ellipse at 20% 90%, rgba(89,42,125,0.05) 0%, rgba(89,42,125,0) 50%), #ffffff`, overflow: 'hidden', fontFamily: FONT.body}}>
       <Audio src={staticFile('audio/soundtrack.mp3')} volume={(fr) => 0.4 * interpolate(fr, [0, 15, FILM_FRAMES - 60, FILM_FRAMES], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />
       <Audio src={staticFile('audio/bed.wav')} />
-      {timeline.vo.map((at, i) => (
-        <Sequence key={i} from={Math.round(at * FPS)}>
-          <Audio src={staticFile(`vo/p${i + 1}.mp3`)} volume={1} />
-        </Sequence>
-      ))}
 
       {t < 5.2 && <Chat t={t} />}
       {t > 4.8 && t < 8.2 && <Stats t={t} />}
@@ -73,10 +74,10 @@ export const Film: React.FC = () => {
       </AbsoluteFill>
 
       <Restaurant t={t} />
-      <Ambient t={t} px={px} />
 
       {phoneOn && (
         <AbsoluteFill style={{transform: `translate(${px - PHONE_X * s}px, ${540 - cy * s}px) scale(${s})`, transformOrigin: '0 0', filter: `blur(${blur}px)`}}>
+          <Ambient t={t} px={px} />
           <Phone y={phoneY} opacity={1}>
             <DemoScreen t={t} />
           </Phone>
