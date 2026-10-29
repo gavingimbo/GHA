@@ -1,6 +1,6 @@
 # Dine with DISCOVERY: motion storyboard (v2)
 
-A 60-second film for the Cinnamon Hotels & Resorts Town Hall. One phone is the hero from the first frame to the last. It follows the guest journey at Dreams & Beats, Cinnamon Life at City of Dreams: scan the table code, sign in, see the bill, choose how many DISCOVERY Dollars to use, confirm, and done. New-guest sign-up is not shown.
+A 60-second film for the Cinnamon Hotels & Resorts Town Hall. The phone carries the story, but it is not on screen in every frame. Each cut hands off to the next through a shared element, so the journey feels continuous. It follows the guest journey at Dreams & Beats, Cinnamon Life at City of Dreams: scan the table code, sign in, see the bill, choose how many DISCOVERY Dollars to use, confirm, and done. New-guest sign-up is not shown.
 
 Status: storyboard only. No frames, music or voiceover have been made yet.
 
@@ -12,7 +12,7 @@ Status: storyboard only. No frames, music or voiceover have been made yet.
 |---|---|
 | Format | 1920 × 1080, 30 fps, 60 seconds |
 | Audience | Senior leadership, watching on a large screen in a room |
-| Hero | One phone, the same device in every shot. Screens are the real captured states from `reference/shots/` and the components in `design/` |
+| Hero | One phone, the same device wherever it appears. Screens are the real captured states from `reference/shots/` and the components in `design/` |
 | Fonts | Jost Light (display and key numbers), Figtree (labels and body). Unchanged |
 | Logo | `assets/logo/cinnamon-discovery-logo.svg`, white. Use the purple version on white backgrounds |
 | Imagery | No photography. The studio is a plain Midnight backdrop |
@@ -25,12 +25,12 @@ Status: storyboard only. No frames, music or voiceover have been made yet.
 
 ## 2. How the film is made, in Apple's terms
 
-- **The device is the protagonist.** It is the same phone in every shot. The camera moves around it, pushes into its screen, and lifts out of it. The screen content, not text, carries the story.
+- **The device is the protagonist, not a fixture.** It appears where the story needs it and leaves when the story moves on. The camera moves around it, pushes into its screen, and lifts out of it. The screen content, not text, carries the story.
 - **Real screens, real scale.** Every screen is a captured state from the live flow. Nothing is redrawn, so nothing drifts from what guests see.
 - **Clean studio.** A Midnight backdrop with one soft top light. No props, no table photograph, no clutter.
 - **One camera language.** Slow push-ins at about 4% a second. Lateral moves for transitions. A slight rotation (about 12° to 0°) when the phone first appears. Camera moves are about 1.5 to 2 seconds.
 - **Springs, not tweens.** UI moves on settled springs, roughly damping 15 and stiffness 115. No bounce.
-- **Hard cuts, with a shared-element move.** Most edits are cuts. One object changing shape (the QR becoming the bill) is the signature transition. One whip, used once.
+- **Continuous hand-offs.** Every cut carries one element into the next: a shape, a number or the camera. No unrelated slides. See section 3a. One whip, used once.
 - **Type is punctuation.** One or two words at a time, Jost Light, centred. Type appears about two frames before the spoken word it names.
 - **Silence is designed.** Music pulls back at the moment that matters most, the total.
 
@@ -42,7 +42,7 @@ Deliberate departure: Apple's recaps average about 1.9 seconds a shot. This film
 
 ## 3. Timeline
 
-| # | Time | Length | Beat | Picture (the phone is on screen throughout, except shots 1 and 11) | Voice | Sound |
+| # | Time | Length | Beat | Picture | Voice | Sound |
 |---|---|---|---|---|---|---|
 | 1 | 0:00 | 4s | Open | Midnight. The white lockup fades in and holds | none | Reveal |
 | 2 | 0:04 | 5s | Table | The phone rises into the studio, turning from about 12° to face on, showing the table QR | 1 | none |
@@ -61,6 +61,24 @@ Total: 60 seconds, 12 shots, average 5 seconds. Hard cuts, one whip (shot 5), an
 
 ---
 
+## 3a. How each cut hands off
+
+| From → to | What carries the move |
+|---|---|
+| 1 → 2 | The white lockup dissolves into the phone rising from the bottom edge |
+| 2 → 3 | The camera pushes into the QR until it fills the frame, then the screen takes over |
+| 3 → 4 | The scan line becomes the sign-in page's top edge. No cut |
+| 4 → 5 | The Sign in button stretches into the bill card (the one whip) |
+| 5 → 6 | The bill settles and the venue chip enters on the same card |
+| 6 → 7 | The camera moves onto the discount line, and the figure lifts off the screen. The phone leaves the frame |
+| 7 → 8 | The figure drops back into the bill and becomes the total. Music pulls back |
+| 8 → 9 | The total slides up, and the D$ slider rises from the bill's base |
+| 9 → 10 | The slider's chosen amount becomes the amount on the Confirm button |
+| 10 → 11 | The Confirm button morphs into the success mark |
+| 11 → 12 | The phone recedes and shrinks into the logo |
+
+---
+
 ## 4. Beat detail
 
 **Shot 1: Open (0:00–0:04).** Midnight backdrop. The white lockup fades in with a small upward drift. This is the frame the film returns to at the end.
@@ -69,7 +87,7 @@ Total: 60 seconds, 12 shots, average 5 seconds. Hard cuts, one whip (shot 5), an
 
 **Shot 3: Scan (0:09–0:14).** The camera pushes into the phone's screen. A scan line passes over the QR at 0:12, and the screen moves to the sign-in page. Voice: "Scan the code, sign in, and your bill opens on your phone." (0:09–0:14)
 
-**Shot 4: Sign in (0:14–0:19).** The real sign-in page. The member's username fills in, then the password, shown as dots. The Sign in button is pressed at 0:17. The terms require the member to authenticate before the discount applies, so this step is shown, not skipped.
+**Shot 4: Sign in (0:14–0:19).** The real GHA DISCOVERY sign-in page. The member's email address fills in, then the password, shown as dots. The Sign in button is pressed at 0:17. The terms require the member to authenticate before the discount applies, so this step is shown, not skipped.
 
 **Shot 5: Shared element (0:19–0:22).** The Sign in button stretches and becomes the bill card. It is one object changing shape, with no crossfade. This is the one whip, with the Gust sound.
 
@@ -121,4 +139,4 @@ About 64 words, around 25 seconds of speech at 2.5 to 3 words a second.
 2. **Silver 15%.** Earlier you said 15% is Silver. The repo does not state per-tier rates. The storyboard no longer uses Silver, so this only matters if you want Silver shown in another shot.
 3. **Phone.** The repo has no device frame. I'd draw a generic, flat-edged phone in code rather than use a real device outline, so it can't be read as an Apple product.
 4. **Music licence.** The bed needs a licence that covers a company event. Commissioned, licensed library, or synthesised?
-5. **Sign-in on screen.** Shot 4 shows a username and password. If members sign in another way at the venue, such as a one-time code, tell me and I'll change shot 4.
+5. **Sign-in on screen.** Shot 4 uses GHA DISCOVERY email and password, as you confirmed.
