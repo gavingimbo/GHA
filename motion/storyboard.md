@@ -112,14 +112,14 @@ Total: 60 seconds, 12 shots, average 5 seconds. Hard cuts, one whip (shot 5), an
 | # | Time | Line | Words |
 |---|---|---|---|
 | 1 | 0:04–0:07 | Every great evening starts at the table. | 7 |
-| 2 | 0:09–0:14 | Scan the code, sign in, and your bill opens on your phone. | 13 |
+| 2 | 0:09–0:14 | Scan the code, sign in, and your bill opens on your phone. | 12 |
 | 3 | 0:23–0:27 | Cinnamon recognised your bill. DISCOVERY recognised you. | 8 |
 | 4 | 0:30–0:35 | Your member benefit is already on the bill. Nothing to ask for. | 12 |
 | 5 | 0:41–0:46 | Decide how many DISCOVERY Dollars to use. Or none at all. | 11 |
 | 6 | 0:50–0:53 | One tap to confirm, and you're done. | 7 |
 | 7 | 0:57–1:00 | Cinnamon DISCOVERY. Dine with DISCOVERY Dollars. | 6 |
 
-About 64 words, around 25 seconds of speech at 2.5 to 3 words a second.
+63 words, about 22 seconds of speech at 2.5 to 3 words a second. The full script and recording notes are in `motion/voiceover-script.md`.
 
 ---
 
