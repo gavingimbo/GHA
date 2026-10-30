@@ -62,13 +62,15 @@ export const Film: React.FC = () => {
       <Audio src={staticFile('audio/soundtrack.mp3')} volume={(fr) => 0.4 * interpolate(fr, [0, 15, FILM_FRAMES - 60, FILM_FRAMES], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />
       <Audio src={staticFile('audio/bed.wav')} />
 
+      {/* Brand beats sit on purple: figures, tiers, lockup, and the close */}
+      <AbsoluteFill style={{background: `radial-gradient(ellipse at 70% 25%, #6e3a96 0%, ${COLOUR.purple} 55%, #45205f 100%)`, opacity: ramp(t, 4.6, 5.0, 0, 1) * ramp(t, 11.9, 12.3, 1, 0) + ramp(t, 52.4, 52.8, 0, 1)}} />
       {t < 5.2 && <Chat t={t} />}
       {t > 4.8 && t < 8.2 && <Stats t={t} />}
       {t > 7.9 && t < 10.5 && <Tiers t={t} />}
 
       <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: lockup1}}>
-        <Img src={staticFile('logo/cinnamon-discovery-logo-purple.svg')} style={{width: 900, height: 'auto', marginBottom: 80, transform: `scale(${1.08 - 0.08 * ramp(t, 10.41, 12, 0, 1)})`}} />
-        <div style={{position: 'absolute', top: 630, fontFamily: FONT.display, fontWeight: 300, fontSize: 58, color: COLOUR.ink, ...reveal(t, 10.6, 12.0)}}>
+        <Img src={staticFile('logo/cinnamon-discovery-logo.svg')} style={{width: 900, height: 'auto', marginBottom: 80, transform: `scale(${1.08 - 0.08 * ramp(t, 10.41, 12, 0, 1)})`}} />
+        <div style={{position: 'absolute', top: 630, fontFamily: FONT.display, fontWeight: 300, fontSize: 58, color: '#fff', ...reveal(t, 10.6, 12.0)}}>
           Now, every table rewards you.
         </div>
       </AbsoluteFill>
@@ -95,9 +97,9 @@ export const Film: React.FC = () => {
       {t > 52.6 && t < 57 && <Outlets t={t} />}
 
       <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: lockup2}}>
-        <Img src={staticFile('logo/cinnamon-discovery-logo-purple.svg')} style={{width: 900, height: 'auto', marginBottom: 80, transform: `scale(${1.1 - 0.1 * ramp(t, 56.8, 60, 0, 1)})`}} />
-        <div style={{position: 'absolute', top: 630, fontFamily: FONT.display, fontWeight: 300, fontSize: 52, letterSpacing: 1, color: COLOUR.ink, ...reveal(t, 57.4, 99)}}>
-          Dine with <span style={{color: COLOUR.purple}}>DISCOVERY Dollars</span>
+        <Img src={staticFile('logo/cinnamon-discovery-logo.svg')} style={{width: 900, height: 'auto', marginBottom: 80, transform: `scale(${1.1 - 0.1 * ramp(t, 56.8, 60, 0, 1)})`}} />
+        <div style={{position: 'absolute', top: 630, fontFamily: FONT.display, fontWeight: 300, fontSize: 52, letterSpacing: 1, color: '#fff', ...reveal(t, 57.4, 99)}}>
+          Dine with <span style={{color: '#cbb3e3'}}>DISCOVERY Dollars</span>
         </div>
       </AbsoluteFill>
     </AbsoluteFill>

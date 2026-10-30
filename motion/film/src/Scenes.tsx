@@ -31,32 +31,19 @@ export const Chat: React.FC<{t: number}> = ({t}) => {
   );
 };
 
-// The scale: centred over the Colombo skyline. Headline, then the two figures side by side.
-const HOTEL_NAMES = ['Cinnamon Grand Colombo', 'Cinnamon Life at City of Dreams Sri Lanka', 'Cinnamon Lakeside Colombo', 'Cinnamon Red Colombo'];
+// The scale, on purple: an eyebrow, then one large sentence with the figures counting in it.
+const LILAC = '#cbb3e3';
 export const Stats: React.FC<{t: number}> = ({t}) => {
   const drone = 1.04 - 0.04 * clamp((t - 4.9) / 3.1);
-  const fig = (from: number, n: number, label: string) => {
-    const v = Math.round(interpolate(t, [from, from + 0.9], [0, n], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE}));
-    return (
-      <div style={{display: 'flex', alignItems: 'center', gap: 28, ...reveal(t, from, 8.0)}}>
-        <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 190, lineHeight: 1, color: COLOUR.ink, letterSpacing: -6}}>{v}</div>
-        <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 28, lineHeight: 1.35, letterSpacing: 5, textTransform: 'uppercase', color: P, width: 260}}>{label}</div>
-      </div>
-    );
-  };
+  const n = (from: number, v: number) => Math.round(interpolate(t, [from, from + 0.9], [0, v], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE}));
+  const big = {fontFamily: FONT.display, fontWeight: 300, fontSize: 150, lineHeight: 1.08, letterSpacing: -3, color: '#fff'} as const;
   return (
     <div style={{position: 'absolute', inset: 0, transform: `scale(${drone})`}}>
       <Skyline t={t} />
-      <div style={{position: 'absolute', left: 0, right: 0, top: 130, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 104, letterSpacing: -2, color: COLOUR.ink, ...reveal(t, 5.0, 8.0)}}>
-        Colombo's hallmark <span style={{color: P}}>dining.</span>
-      </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 330, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 90}}>
-        {fig(5.3, 4, 'Hotels')}
-        <div style={{width: 1.5, height: 150 * EASE(clamp((t - 5.6) / 0.6)), background: P, opacity: 0.35}} />
-        {fig(5.7, 24, 'Restaurants & bars')}
-      </div>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 580, textAlign: 'center', fontFamily: FONT.body, fontSize: 21, letterSpacing: 1.5, color: COLOUR.ink, opacity: 0.7, ...reveal(t, 6.3, 8.0)}}>
-        {HOTEL_NAMES.join('   ·   ')}
+      <div style={{position: 'absolute', left: 200, top: 250}}>
+        <div style={{fontFamily: FONT.body, fontWeight: 600, fontSize: 26, letterSpacing: 8, textTransform: 'uppercase', color: LILAC, marginBottom: 40, ...reveal(t, 5.0, 8.0)}}>Colombo's hallmark dining</div>
+        <div style={{...big, ...reveal(t, 5.2, 8.0)}}><span style={{display: 'inline-block', minWidth: 90}}>{n(5.3, 4)}</span> hotels.</div>
+        <div style={{...big, color: LILAC, ...reveal(t, 5.6, 8.0)}}><span style={{display: 'inline-block', minWidth: 170, color: '#fff'}}>{n(5.7, 24)}</span> restaurants and bars.</div>
       </div>
     </div>
   );
@@ -150,8 +137,8 @@ const HOTELS: [string, string[]][] = [
 // The close: one row per hotel, its outlets gliding past like a slow drone pass
 export const Outlets: React.FC<{t: number}> = ({t}) => (
   <div style={{position: 'absolute', inset: 0}}>
-    <div style={{position: 'absolute', left: 0, right: 0, top: 110, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 88, color: COLOUR.ink, letterSpacing: -2, ...reveal(t, 52.8, 56.7)}}>
-      Earn at one table. <span style={{color: P}}>Spend at the next.</span>
+    <div style={{position: 'absolute', left: 0, right: 0, top: 110, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 88, color: '#fff', letterSpacing: -2, ...reveal(t, 52.8, 56.7)}}>
+      Earn at one table. <span style={{color: LILAC}}>Spend at the next.</span>
     </div>
     {HOTELS.map(([hotel, outlets], i) => {
       const dir = i % 2 === 0 ? -1 : 1;
@@ -159,11 +146,11 @@ export const Outlets: React.FC<{t: number}> = ({t}) => (
       const names = [...outlets, ...outlets, ...outlets];
       return (
         <div key={hotel} style={{position: 'absolute', left: 0, right: 0, top: 330 + i * 150, height: 120, ...reveal(t, 53.0 + i * 0.15, 56.7)}}>
-          <div style={{position: 'absolute', left: 140, top: 18, width: 470, whiteSpace: 'nowrap', fontFamily: FONT.body, fontWeight: 600, fontSize: 16, lineHeight: 1.5, letterSpacing: 2.4, textTransform: 'uppercase', color: P}}>{hotel}</div>
+          <div style={{position: 'absolute', left: 140, top: 18, width: 470, whiteSpace: 'nowrap', fontFamily: FONT.body, fontWeight: 600, fontSize: 16, lineHeight: 1.5, letterSpacing: 2.4, textTransform: 'uppercase', color: LILAC}}>{hotel}</div>
           <div style={{position: 'absolute', left: 640, right: 0, top: -14, height: 90, overflow: 'hidden', WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 8%, #000 85%, transparent)'}}>
-            <div style={{whiteSpace: 'nowrap', transform: `translateX(${shift}px)`, fontFamily: FONT.display, fontWeight: 300, fontSize: 56, color: COLOUR.ink}}>
+            <div style={{whiteSpace: 'nowrap', transform: `translateX(${shift}px)`, fontFamily: FONT.display, fontWeight: 300, fontSize: 56, color: '#fff'}}>
               {names.map((n, k) => (
-                <span key={k}>{n}<span style={{color: P, opacity: 0.5, margin: '0 34px'}}>·</span></span>
+                <span key={k}>{n}<span style={{color: LILAC, opacity: 0.5, margin: '0 34px'}}>·</span></span>
               ))}
             </div>
           </div>
@@ -180,8 +167,8 @@ export const Tiers: React.FC<{t: number}> = ({t}) => {
   const out = clamp((t - 10.1) / 0.3);
   return (
     <div style={{position: 'absolute', inset: 0, opacity: 1 - out, transform: `scale(${1.04 - 0.04 * clamp((t - 7.96) / 2.4)})`}}>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 150, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 76, color: COLOUR.ink, letterSpacing: -1, ...reveal(t, 8.0, 10.4)}}>
-        Four tiers. <span style={{color: P}}>One table.</span>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 150, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 76, color: '#fff', letterSpacing: -1, ...reveal(t, 8.0, 10.4)}}>
+        Four tiers. <span style={{color: LILAC}}>One table.</span>
       </div>
       {TIERS.map(([file, name], i) => {
         const x = (i - 1.5) * 380 * fan;
@@ -189,7 +176,7 @@ export const Tiers: React.FC<{t: number}> = ({t}) => {
         return (
           <div key={file} style={{position: 'absolute', left: 960 - 170 + x, top: 400, width: 340, transform: `rotate(${r}deg) translateY(${Math.abs(i - 1.5) * 14 * fan}px)`, opacity: clamp((t - 8.0 - i * 0.08) / 0.3)}}>
             <img src={staticFile(`img/${file}.webp`)} style={{width: 340, height: 214, objectFit: 'cover', borderRadius: 18, boxShadow: '0 30px 60px rgba(40,20,60,0.25)'}} />
-            <div style={{textAlign: 'center', marginTop: 26, fontFamily: FONT.body, fontWeight: 500, fontSize: 24, letterSpacing: 4, textTransform: 'uppercase', color: P, opacity: fan}}>{name}</div>
+            <div style={{textAlign: 'center', marginTop: 26, fontFamily: FONT.body, fontWeight: 500, fontSize: 24, letterSpacing: 4, textTransform: 'uppercase', color: LILAC, opacity: fan}}>{name}</div>
           </div>
         );
       })}
@@ -202,7 +189,7 @@ export const Tiers: React.FC<{t: number}> = ({t}) => {
 export const Skyline: React.FC<{t: number}> = ({t}) => {
   const draw = EASE(clamp((t - 4.9) / 1.8));
   const drift = (t - 4.9) * -14;
-  const st = {fill: 'none', stroke: P, strokeWidth: 1.6, strokeLinejoin: 'round' as const, strokeLinecap: 'round' as const, strokeDasharray: 3000, strokeDashoffset: 3000 * (1 - draw)};
+  const st = {fill: 'none', stroke: '#fff', strokeWidth: 1.6, strokeLinejoin: 'round' as const, strokeLinecap: 'round' as const, strokeDasharray: 3000, strokeDashoffset: 3000 * (1 - draw)};
   return (
     <svg viewBox="0 0 2200 400" style={{position: 'absolute', left: -100, bottom: 0, width: 2200, height: 400, opacity: 0.3, transform: `translateX(${drift}px)`}}>
       <path d="M0 380 H2200" {...st} />
