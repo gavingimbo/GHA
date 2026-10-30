@@ -90,7 +90,7 @@ export const Film: React.FC = () => {
       <TextBlock t={t} from={23.8} to={29.6} lines={['Recognised.']} sub="Your tier. Your bill. Ready." top={380} left={R} />
       <TextBlock t={t} from={30.8} to={37.0} lines={['Your benefit.', 'Already there.']} top={330} left={L} />
       <TextBlock t={t} from={38.0} to={46.8} lines={['Use D$.', 'Or keep them.']} sub="Either way, you earn." top={300} left={R} />
-      <TextBlock t={t} from={47.6} to={52.4} lines={["And you're done."]} sub="Settle with the restaurant as usual." top={380} left={L} />
+      <TextBlock t={t} from={47.6} to={52.4} lines={["And you're done."]} sub="Settle with the restaurant as usual." top={400} left={L} size={96} />
 
       {t > 52.6 && t < 57 && <Outlets t={t} />}
 

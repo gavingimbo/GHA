@@ -87,7 +87,7 @@ export const Ambient: React.FC<{t: number; px: number}> = ({t, px}) => {
     k === 'bottle' ? <path d="M-10 -90 H10 V-50 Q30 -36 30 -10 V80 H-30 V-10 Q-30 -36 -10 -50 Z M-30 10 H30" {...st} /> :
     <path d="M-20 -70 V70 M-30 -70 V-30 Q-20 -18 -10 -30 V-70 M20 -70 Q34 -40 20 -10 V70" {...st} />;
   return (
-    <svg viewBox="0 0 1920 1080" style={{position: 'absolute', inset: 0, opacity: 0.22 * vis}}>
+    <svg viewBox="0 0 1920 1080" style={{position: 'absolute', inset: 0, opacity: 0.15 * vis}}>
       <defs>
         <radialGradient id="glow"><stop offset="0" stopColor={P} stopOpacity="0.5" /><stop offset="1" stopColor={P} stopOpacity="0" /></radialGradient>
       </defs>

@@ -1,4 +1,10 @@
 import React from 'react';
+
+declare module 'react' {
+  interface CSSProperties {
+    textWrap?: 'wrap' | 'nowrap' | 'balance' | 'pretty';
+  }
+}
 import {Easing, interpolate} from 'remotion';
 import {COLOUR, FONT} from './theme';
 
@@ -36,7 +42,8 @@ export const TextBlock: React.FC<{
           fontSize: size,
           lineHeight: 1.04,
           letterSpacing: -2,
-          color: COLOUR.ink,
+          color: i > 0 ? COLOUR.purple : COLOUR.ink,
+          textWrap: 'balance',
           ...reveal(t, from, to, i * 0.14),
         }}
       >
@@ -51,6 +58,7 @@ export const TextBlock: React.FC<{
           fontWeight: 500,
           fontSize: 38,
           color: COLOUR.purple,
+          textWrap: 'balance',
           ...reveal(t, from, to, lines.length * 0.14 + 0.1),
         }}
       >
@@ -69,7 +77,7 @@ export const Statement: React.FC<{t: number; from: number; to: number; text: str
   size = 190,
   top = 410,
 }) => (
-  <div style={{position: 'absolute', left: 0, right: 0, top, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: size, letterSpacing: -3, color: COLOUR.ink, ...reveal(t, from, to)}}>
+  <div style={{position: 'absolute', left: 0, right: 0, top, textAlign: 'center', textWrap: 'balance', fontFamily: FONT.display, fontWeight: 300, fontSize: size, letterSpacing: -3, color: COLOUR.ink, ...reveal(t, from, to)}}>
     {text}
   </div>
 );
