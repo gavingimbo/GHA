@@ -31,8 +31,9 @@ export const TextBlock: React.FC<{
   top: number;
   size?: number;
   left?: number;
-}> = ({t, from, to, lines, sub, top, size = 124, left = 1080}) => (
-  <div style={{position: 'absolute', left, top, width: 780, textShadow: '0 0 18px #fff, 0 0 36px #fff, 0 0 8px #fff'}}>
+}> = ({t, from, to, lines, sub, size = 124, left = 1020}) => (
+  // Centred in its half of the frame, across and top to bottom, opposite the phone
+  <div style={{position: 'absolute', left, top: 0, bottom: 0, width: 840, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', textShadow: '0 0 18px #fff, 0 0 36px #fff, 0 0 8px #fff'}}>
     {lines.map((line, i) => (
       <div
         key={line}
