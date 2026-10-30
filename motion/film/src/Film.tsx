@@ -32,10 +32,10 @@ const CAM: [number, number, number][] = [
 ];
 // Phone's centre on screen: it moves side to side between scenes, words take the other side
 const SIDE: [number, number][] = [
-  [0, 1440], [22.6, 1440], [23.6, 480], [29.6, 480], [30.6, 1440], [36.8, 1440], [37.8, 480], [46.6, 480], [47.6, 1440], [60, 1440],
+  [0, 1340], [22.6, 1340], [23.6, 600], [29.6, 600], [30.6, 1320], [36.8, 1320], [37.8, 600], [46.6, 600], [47.6, 1320], [60, 1320],
 ];
-const R = 1020; // words half when the phone is left
-const L = 60; // words half when the phone is right
+const R = 1080; // words column when the phone is left
+const L = 150; // words column when the phone is right
 
 const ramp = (t: number, a: number, b: number, from: number, to: number) =>
   interpolate(t, [a, b], [from, to], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE});
@@ -45,8 +45,7 @@ export const Film: React.FC = () => {
   const {fps} = useVideoConfig();
   const t = warp(f / FPS);
   const s = keys(t, CAM.map((c) => [c[0], c[1]]));
-  // Vertical camera travel kept small so the phone stays near the middle, level with the words
-  const cy = 560 + (keys(t, CAM.map((c) => [c[0], c[2]])) - 560) * 0.4;
+  const cy = keys(t, CAM.map((c) => [c[0], c[2]]));
   const px = keys(t, SIDE);
   const vx = Math.abs(keys(t, SIDE) - keys(warp((f - 1) / FPS), SIDE));
   const blur = Math.min(4, vx * 0.12);
