@@ -1,7 +1,7 @@
 import React from 'react';
 import {interpolate, staticFile} from 'remotion';
 import {COLOUR, FONT} from './theme';
-import {EASE, reveal} from './Words';
+import {EASE, EYEBROW, GRID, reveal} from './Words';
 
 const clamp = (n: number) => Math.min(1, Math.max(0, n));
 const P = COLOUR.purple;
@@ -36,12 +36,12 @@ const LILAC = '#cbb3e3';
 export const Stats: React.FC<{t: number}> = ({t}) => {
   const drone = 1.04 - 0.04 * clamp((t - 4.9) / 3.1);
   const n = (from: number, v: number) => Math.round(interpolate(t, [from, from + 0.9], [0, v], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE}));
-  const big = {fontFamily: FONT.display, fontWeight: 300, fontSize: 150, lineHeight: 1.08, letterSpacing: -3, color: '#fff'} as const;
+  const big = {fontFamily: FONT.display, fontWeight: 300, fontSize: 156, lineHeight: 1.06, letterSpacing: -5, color: '#fff'} as const;
   return (
     <div style={{position: 'absolute', inset: 0, transform: `scale(${drone})`}}>
       <Skyline t={t} />
-      <div style={{position: 'absolute', left: 200, top: 250}}>
-        <div style={{fontFamily: FONT.body, fontWeight: 600, fontSize: 26, letterSpacing: 8, textTransform: 'uppercase', color: LILAC, marginBottom: 40, ...reveal(t, 5.0, 8.0)}}>Colombo's hallmark dining</div>
+      <div style={{position: 'absolute', left: GRID.margin, top: 262}}>
+        <div style={{...EYEBROW, marginBottom: 46, ...reveal(t, 5.0, 8.0)}}>Colombo's hallmark dining</div>
         <div style={{...big, ...reveal(t, 5.2, 8.0)}}><span style={{display: 'inline-block', minWidth: 90}}>{n(5.3, 4)}</span> hotels.</div>
         <div style={{...big, color: LILAC, ...reveal(t, 5.6, 8.0)}}><span style={{display: 'inline-block', minWidth: 170, color: '#fff'}}>{n(5.7, 24)}</span> restaurants and bars.</div>
       </div>
@@ -137,7 +137,8 @@ const HOTELS: [string, string[]][] = [
 // The close: one row per hotel, its outlets gliding past like a slow drone pass
 export const Outlets: React.FC<{t: number}> = ({t}) => (
   <div style={{position: 'absolute', inset: 0}}>
-    <div style={{position: 'absolute', left: 0, right: 0, top: 110, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 88, color: '#fff', letterSpacing: -2, ...reveal(t, 52.8, 56.7)}}>
+    <div style={{position: 'absolute', left: 0, right: 0, top: 96, textAlign: 'center', ...EYEBROW, ...reveal(t, 52.78, 56.7)}}>Twenty-four restaurants and bars</div>
+    <div style={{position: 'absolute', left: 0, right: 0, top: 152, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 92, color: '#fff', letterSpacing: -3, ...reveal(t, 52.86, 56.7)}}>
       Earn at one table. <span style={{color: LILAC}}>Spend at the next.</span>
     </div>
     {HOTELS.map(([hotel, outlets], i) => {
@@ -145,8 +146,8 @@ export const Outlets: React.FC<{t: number}> = ({t}) => (
       const shift = dir * (t - 52.6) * 70 + (dir > 0 ? -600 : 0);
       const names = [...outlets, ...outlets, ...outlets];
       return (
-        <div key={hotel} style={{position: 'absolute', left: 0, right: 0, top: 330 + i * 150, height: 120, ...reveal(t, 53.0 + i * 0.15, 56.7)}}>
-          <div style={{position: 'absolute', left: 140, top: 18, width: 470, whiteSpace: 'nowrap', fontFamily: FONT.body, fontWeight: 600, fontSize: 16, lineHeight: 1.5, letterSpacing: 2.4, textTransform: 'uppercase', color: LILAC}}>{hotel}</div>
+        <div key={hotel} style={{position: 'absolute', left: 0, right: 0, top: 356 + i * 148, height: 120, ...reveal(t, 53.0 + i * 0.15, 56.7)}}>
+          <div style={{position: 'absolute', left: GRID.margin, top: 18, width: 470, whiteSpace: 'nowrap', fontFamily: FONT.body, fontWeight: 600, fontSize: 16, lineHeight: 1.5, letterSpacing: 2.4, textTransform: 'uppercase', color: LILAC}}>{hotel}</div>
           <div style={{position: 'absolute', left: 640, right: 0, top: -14, height: 90, overflow: 'hidden', WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 8%, #000 85%, transparent)'}}>
             <div style={{whiteSpace: 'nowrap', transform: `translateX(${shift}px)`, fontFamily: FONT.display, fontWeight: 300, fontSize: 56, color: '#fff'}}>
               {names.map((n, k) => (
@@ -167,7 +168,8 @@ export const Tiers: React.FC<{t: number}> = ({t}) => {
   const out = clamp((t - 10.1) / 0.3);
   return (
     <div style={{position: 'absolute', inset: 0, opacity: 1 - out, transform: `scale(${1.04 - 0.04 * clamp((t - 7.96) / 2.4)})`}}>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 150, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 76, color: '#fff', letterSpacing: -1, ...reveal(t, 8.0, 10.4)}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 148, textAlign: 'center', ...EYEBROW, ...reveal(t, 7.98, 10.4)}}>Membership</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 206, textAlign: 'center', fontFamily: FONT.display, fontWeight: 300, fontSize: 96, color: '#fff', letterSpacing: -3, ...reveal(t, 8.06, 10.4)}}>
         Four tiers. <span style={{color: LILAC}}>One table.</span>
       </div>
       {TIERS.map(([file, name], i) => {

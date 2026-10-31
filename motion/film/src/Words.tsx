@@ -1,27 +1,69 @@
 import React from 'react';
+import {Easing} from 'remotion';
+import {COLOUR, FONT} from './theme';
 
 declare module 'react' {
   interface CSSProperties {
     textWrap?: 'wrap' | 'nowrap' | 'balance' | 'pretty';
   }
 }
-import {Easing, interpolate} from 'remotion';
-import {COLOUR, FONT} from './theme';
 
 export const EASE = Easing.bezier(0.45, 0, 0.2, 1);
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 
-// Words arrive with a short rise out of blur and leave with a small lift, on the film's easing.
-export const reveal = (t: number, from: number, to: number, delay = 0): React.CSSProperties => {
-  const inP = EASE(clamp01((t - from - delay) / 0.45));
-  const outP = EASE(clamp01((t - (to - 0.3)) / 0.3));
-  const opacity = inP * (1 - outP);
-  const y = (1 - inP) * 44 - outP * 26;
-  const blur = (1 - inP) * 14 + outP * 6;
-  return {opacity, transform: `translateY(${y}px)`, filter: `blur(${blur}px)`};
+// The grid. Everything on screen lines up to these.
+export const GRID = {
+  margin: 160,
+  colW: 700,
+  get left() {
+    return this.margin;
+  },
+  get right() {
+    return 1920 - this.margin - this.colW;
+  },
 };
 
-// A block of display lines on the right of the frame, with an optional supporting line
+/**
+ * Words arrive with a rise out of soft blur and leave with a small lift. Through the hold
+ * they keep drifting a couple of pixels, so a held frame is never quite frozen.
+ */
+export const reveal = (t: number, from: number, to: number, delay = 0): React.CSSProperties => {
+  const inP = EASE(clamp01((t - from - delay) / 0.55));
+  const outP = EASE(clamp01((t - (to - 0.3)) / 0.3));
+  const drift = -3 * clamp01((t - from - delay) / Math.max(0.5, to - from));
+  return {
+    opacity: inP * (1 - outP),
+    transform: `translateY(${(1 - inP) * 38 + drift - outP * 24}px)`,
+    filter: `blur(${(1 - inP) * 9 + outP * 5}px)`,
+  };
+};
+
+/** One line, revealed word by word. */
+const Line: React.FC<{text: string; t: number; from: number; to: number; delay: number; style: React.CSSProperties}> = ({
+  text,
+  t,
+  from,
+  to,
+  delay,
+  style,
+}) => {
+  const words = text.split(' ');
+  return (
+    <div style={{...style, display: 'flex', flexWrap: 'wrap'}}>
+      {words.map((w, i) => (
+        <span key={i} style={{display: 'inline-block', whiteSpace: 'pre', ...reveal(t, from, to, delay + i * 0.055)}}>
+          {i < words.length - 1 ? w + ' ' : w}
+        </span>
+      ))}
+    </div>
+  );
+};
+
+/**
+ * A beat of the story: a small step marker, a display headline of one or two lines, and an
+ * optional supporting line. Headline tracking is tight, the supporting line is quiet, so the
+ * hierarchy does the work rather than colour.
+ */
 export const TextBlock: React.FC<{
   t: number;
   from: number;
@@ -31,64 +73,59 @@ export const TextBlock: React.FC<{
   top: number;
   size?: number;
   left?: number;
-}> = ({t, from, to, lines, sub, top, size = 124, left = 1080}) => (
-  <div style={{position: 'absolute', left, top, width: 780, textShadow: '0 0 18px #fff, 0 0 36px #fff, 0 0 8px #fff'}}>
+  step?: string;
+}> = ({t, from, to, lines, sub, top, size = 120, left = GRID.right, step}) => (
+  <div style={{position: 'absolute', left, top, width: GRID.colW, textShadow: '0 0 18px #fff, 0 0 40px #fff, 0 0 8px #fff'}}>
+    {step && (
+      <div style={{display: 'flex', alignItems: 'center', gap: 20, marginBottom: 34, ...reveal(t, from, to)}}>
+        <span style={{fontFamily: FONT.body, fontWeight: 600, fontSize: 21, letterSpacing: 5, color: COLOUR.purple}}>{step}</span>
+        <span style={{height: 1, width: 72, background: COLOUR.purple, opacity: 0.4}} />
+      </div>
+    )}
     {lines.map((line, i) => (
-      <div
+      <Line
         key={line}
+        text={line}
+        t={t}
+        from={from}
+        to={to}
+        delay={(step ? 0.12 : 0) + i * 0.16}
         style={{
           fontFamily: FONT.display,
           fontWeight: 300,
           fontSize: size,
-          lineHeight: 1.04,
-          letterSpacing: -2,
+          lineHeight: 1.03,
+          letterSpacing: -size * 0.032,
           color: i > 0 ? COLOUR.purple : COLOUR.ink,
-          textWrap: 'balance',
-          ...reveal(t, from, to, i * 0.14),
         }}
-      >
-        {line}
-      </div>
+      />
     ))}
     {sub && (
-      <div
+      <Line
+        text={sub}
+        t={t}
+        from={from}
+        to={to}
+        delay={(step ? 0.12 : 0) + lines.length * 0.16 + 0.08}
         style={{
-          marginTop: 26,
+          marginTop: 30,
           fontFamily: FONT.body,
-          fontWeight: 500,
-          fontSize: 38,
-          color: COLOUR.purple,
-          textWrap: 'balance',
-          ...reveal(t, from, to, lines.length * 0.14 + 0.1),
+          fontWeight: 400,
+          fontSize: 33,
+          lineHeight: 1.4,
+          color: COLOUR.muted,
         }}
-      >
-        {sub}
-      </div>
+      />
     )}
   </div>
 );
 
-// Centred, full-frame statement
-export const Statement: React.FC<{t: number; from: number; to: number; text: string; size?: number; top?: number}> = ({
-  t,
-  from,
-  to,
-  text,
-  size = 190,
-  top = 410,
-}) => (
-  <div style={{position: 'absolute', left: 0, right: 0, top, textAlign: 'center', textWrap: 'balance', fontFamily: FONT.display, fontWeight: 300, fontSize: size, letterSpacing: -3, color: COLOUR.ink, ...reveal(t, from, to)}}>
-    {text}
-  </div>
-);
-
-// A marketing figure, counted up, with its label
-export const Figure: React.FC<{t: number; from: number; to: number; value: number; label: string}> = ({t, from, to, value, label}) => {
-  const n = Math.round(interpolate(t, [from + 0.1, from + 1.1], [0, value], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE}));
-  return (
-    <div style={{position: 'absolute', left: 0, right: 0, top: 250, textAlign: 'center', ...reveal(t, from, to)}}>
-      <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 460, lineHeight: 1, letterSpacing: -10, color: COLOUR.ink}}>{n}</div>
-      <div style={{fontFamily: FONT.display, fontWeight: 300, fontSize: 92, color: COLOUR.purple, marginTop: 6}}>{label}</div>
-    </div>
-  );
+/** The small wide-tracked label that opens a section. */
+export const EYEBROW: React.CSSProperties = {
+  fontFamily: FONT.body,
+  fontWeight: 600,
+  fontSize: 23,
+  letterSpacing: 9,
+  textTransform: 'uppercase',
+  color: '#cbb3e3',
 };
