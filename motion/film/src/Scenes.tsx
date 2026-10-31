@@ -213,3 +213,63 @@ export const Skyline: React.FC<{t: number}> = ({t}) => {
     </svg>
   );
 };
+
+/**
+ * A detail of the live screen, lifted off the phone and brought forward at a size the back of
+ * a room can read. The crop is taken from the same production capture the phone is showing,
+ * so nothing is redrawn or restated.
+ */
+export const Callout: React.FC<{
+  t: number;
+  from: number;
+  to: number;
+  src: string;
+  /** Region of the 393-wide screen to show, in screen pixels. */
+  y: number;
+  h: number;
+  x: number;
+  cy?: number;
+  k?: number;
+  /** Row to ring, relative to the region. */
+  mark?: [number, number];
+}> = ({t, from, to, src, y, h, x, cy = 520, k = 2.1, mark}) => {
+  const inP = EASE(clamp((t - from) / 0.6));
+  const outP = EASE(clamp((t - (to - 0.35)) / 0.35));
+  const o = inP * (1 - outP);
+  if (o <= 0.001) return null;
+  const w = 393 * k;
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: x - w / 2,
+        top: cy - (h * k) / 2,
+        width: w,
+        height: h * k,
+        borderRadius: 26,
+        overflow: 'hidden',
+        background: '#fff',
+        opacity: o,
+        transform: `translateY(${(1 - inP) * 48 - outP * 26}px) scale(${0.9 + 0.1 * inP})`,
+        boxShadow: '0 40px 90px rgba(40,20,60,0.18), 0 0 0 1px rgba(89,42,125,0.09)',
+      }}
+    >
+      <img src={staticFile(`ui/${src}.png`)} style={{position: 'absolute', left: 0, top: -y * k, width: w}} />
+      {mark && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 14 * k,
+            top: (mark[0] - y) * k,
+            width: w - 28 * k,
+            height: mark[1] * k,
+            borderRadius: 10,
+            border: `2.5px solid ${P}`,
+            boxShadow: `0 0 0 6px rgba(89,42,125,0.10)`,
+            opacity: EASE(clamp((t - from - 0.45) / 0.5)),
+          }}
+        />
+      )}
+    </div>
+  );
+};

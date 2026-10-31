@@ -8,7 +8,7 @@ import '@fontsource/figtree/600.css';
 import {DemoScreen, keys} from './Demo';
 import timeline from './timeline.json';
 import {PHONE_X, Phone} from './Phone';
-import {Ambient, Chat, Outlets, Restaurant, Stats, Tiers} from './Scenes';
+import {Ambient, Callout, Chat, Outlets, Restaurant, Stats, Tiers} from './Scenes';
 import {COLOUR, FONT} from './theme';
 import {EASE, EYEBROW, GRID, TextBlock, reveal} from './Words';
 
@@ -52,6 +52,12 @@ export const Film: React.FC = () => {
   const rise = spring({frame: Math.round(t * FPS) - Math.round(14.3 * FPS), fps, config: {damping: 22, stiffness: 80, mass: 1}});
   const phoneY = interpolate(rise, [0, 1], [1100, 0]) + ramp(t, 52.4, 53.4, 0, 1100) + Math.sin(t * 1.3) * 2.5;
   const phoneOn = t > 14.2 && t < 53.5;
+  // While a detail is forward, the phone recedes so there is one thing to look at.
+  const back = Math.max(
+    ramp(t, 25.4, 26.0, 0, 1) * ramp(t, 29.2, 29.6, 1, 0),
+    ramp(t, 32.4, 33.0, 0, 1) * ramp(t, 36.5, 36.9, 1, 0),
+    ramp(t, 39.4, 40.0, 0, 1) * ramp(t, 45.7, 46.1, 1, 0),
+  );
 
   const lockup1 = ramp(t, 10.41, 10.75, 0, 1) * ramp(t, 11.85, 12.15, 1, 0);
   const lockup2 = ramp(t, 56.8, 57.3, 0, 1);
@@ -87,7 +93,7 @@ export const Film: React.FC = () => {
 
       {phoneOn && (
         <AbsoluteFill style={{transform: `translate(${px - PHONE_X * s}px, ${540 - cy * s}px) scale(${s})`, transformOrigin: '0 0', filter: `blur(${blur}px)`}}>
-          <Phone y={phoneY} opacity={1}>
+          <Phone y={phoneY} opacity={1 - 0.82 * back}>
             <DemoScreen t={t} />
           </Phone>
         </AbsoluteFill>
@@ -108,6 +114,11 @@ export const Film: React.FC = () => {
       <TextBlock t={t} from={31.6} to={37.0} lines={['Your benefit.', 'Already there.']} sub="Nothing to ask for." top={392} left={GRID.right} size={104} />
       <TextBlock t={t} from={38.4} to={46.4} lines={['Your Dollars.', 'Spend or save.']} sub="You earn either way." top={392} left={GRID.right} size={104} />
       <TextBlock t={t} from={48.4} to={52.4} lines={['Done.']} sub="The rest is just dinner." top={448} left={GRID.left} size={148} />
+
+      {/* The parts that matter, at a size a room can read */}
+      <Callout t={t} from={25.6} to={29.4} src="member" y={258} h={215} x={px < 960 ? 520 : 1390} cy={520} />
+      <Callout t={t} from={32.6} to={36.7} src="bill-0" y={500} h={182} x={px < 960 ? 520 : 1390} cy={520} mark={[541, 36]} />
+      <Callout t={t} from={39.6} to={45.9} src="bill-60" y={868} h={112} x={px < 960 ? 520 : 1390} cy={520} mark={[872, 52]} />
 
       {t > 52.6 && t < 57 && <Outlets t={t} />}
 
