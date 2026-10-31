@@ -75,8 +75,19 @@ export const TextBlock: React.FC<{
   left?: number;
   /** When the supporting line arrives, if it should land later than the headline. */
   subFrom?: number;
-}> = ({t, from, to, lines, sub, top, size = 120, left = GRID.right, subFrom}) => (
-  <div style={{position: 'absolute', left, top, width: GRID.colW, textShadow: '0 0 18px #fff, 0 0 40px #fff, 0 0 8px #fff'}}>
+  width?: number;
+  /** 'dark' sets the film's light-on-deep palette. */
+  tone?: 'light' | 'dark';
+}> = ({t, from, to, lines, sub, top, size = 120, left = GRID.right, subFrom, width = GRID.colW, tone = 'light'}) => (
+  <div
+    style={{
+      position: 'absolute',
+      left,
+      top,
+      width,
+      textShadow: tone === 'dark' ? '0 2px 30px rgba(12,4,22,0.75)' : '0 0 18px #fff, 0 0 40px #fff, 0 0 8px #fff',
+    }}
+  >
     {lines.map((line, i) => (
       <Line
         key={line}
@@ -91,7 +102,7 @@ export const TextBlock: React.FC<{
           fontSize: size,
           lineHeight: 1.03,
           letterSpacing: -size * 0.032,
-          color: i > 0 ? COLOUR.purple : COLOUR.ink,
+          color: tone === 'dark' ? (i > 0 ? '#D8C8AE' : '#FFFFFF') : i > 0 ? COLOUR.purple : COLOUR.ink,
         }}
       />
     ))}
@@ -108,7 +119,7 @@ export const TextBlock: React.FC<{
           fontWeight: 400,
           fontSize: 33,
           lineHeight: 1.4,
-          color: COLOUR.muted,
+          color: tone === 'dark' ? '#C9B9D6' : COLOUR.muted,
         }}
       />
     )}

@@ -1,136 +1,97 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Img, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import '@fontsource/jost/300.css';
 import '@fontsource/jost/400.css';
 import '@fontsource/figtree/400.css';
 import '@fontsource/figtree/500.css';
 import '@fontsource/figtree/600.css';
-import {DemoScreen, keys} from './Demo';
-import timeline from './timeline.json';
-import {PHONE_X, Phone} from './Phone';
-import {Ambient, Callout, Chat, Outlets, Restaurant, Stats, Tiers} from './Scenes';
-import {COLOUR, FONT} from './theme';
-import {EASE, EYEBROW, GRID, TextBlock, reveal} from './Words';
+import {City, Dollars, Dusk, INK, Recognition, Reveal, Service, Setting} from './Luxe';
+import {FONT} from './theme';
+import {EASE, GRID, TextBlock, reveal} from './Words';
 
 export const FPS = 30;
 export const FILM_FRAMES = 60 * FPS;
 
-// Output time to story time. Kept so the beats can be stretched without moving every number.
-const warp = (o: number) => {
-  const w = timeline.warp as [number, number][];
-  for (let i = 1; i < w.length; i++) {
-    if (o <= w[i][0]) return w[i - 1][1] + ((o - w[i - 1][0]) * (w[i][1] - w[i - 1][1])) / (w[i][0] - w[i - 1][0]);
-  }
-  return w[w.length - 1][1];
-};
-
-// Camera: [seconds, scale, focus y]
-const CAM: [number, number, number][] = [
-  [0, 1, 560], [14.6, 1, 560], [17.4, 1.14, 505], [23.6, 1.14, 520], [25.4, 1.02, 560], [30.2, 1.02, 560],
-  [31.8, 1.13, 500], [36.8, 1.13, 530], [38.6, 1.15, 690], [46.2, 1.15, 700], [48.4, 1.05, 600], [60, 1, 560],
-];
-// Phone's centre on screen: it moves side to side between scenes, words take the other side
-const SIDE: [number, number][] = [
-  [0, 1330], [29.4, 1330], [31.4, 590], [46.0, 590], [48.0, 1330], [60, 1330],
-];
-
 const ramp = (t: number, a: number, b: number, from: number, to: number) =>
   interpolate(t, [a, b], [from, to], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE});
 
+const COL = {left: GRID.margin, width: 760};
 
 export const Film: React.FC = () => {
   const f = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const t = warp(f / FPS);
-  // A breath on the camera, so a held frame is never quite still.
-  const s = keys(t, CAM.map((c) => [c[0], c[1]])) + Math.sin(t * 0.34) * 0.004;
-  const cy = keys(t, CAM.map((c) => [c[0], c[2]]));
-  const px = keys(t, SIDE) + Math.sin(t * 0.21) * 9;
-  const vx = Math.abs(keys(t, SIDE) - keys(warp((f - 1) / FPS), SIDE));
-  const blur = Math.min(4, vx * 0.12);
+  const t = f / FPS;
 
-  const rise = spring({frame: Math.round(t * FPS) - Math.round(14.3 * FPS), fps, config: {damping: 22, stiffness: 80, mass: 1}});
-  const phoneY = interpolate(rise, [0, 1], [1100, 0]) + ramp(t, 52.4, 53.4, 0, 1100) + Math.sin(t * 1.3) * 2.5;
-  const phoneOn = t > 14.2 && t < 53.5;
-  // While a detail is forward, the phone recedes so there is one thing to look at.
-  const back = Math.max(
-    ramp(t, 25.4, 26.0, 0, 1) * ramp(t, 29.2, 29.6, 1, 0),
-    ramp(t, 32.4, 33.0, 0, 1) * ramp(t, 36.5, 36.9, 1, 0),
-    ramp(t, 39.4, 40.0, 0, 1) * ramp(t, 45.7, 46.1, 1, 0),
-  );
-
-  const lockup1 = ramp(t, 10.41, 10.75, 0, 1) * ramp(t, 11.85, 12.15, 1, 0);
-  const lockup2 = ramp(t, 56.8, 57.3, 0, 1);
-
-  // Colour blocks change on a near-cut, the way a keynote moves between sections.
-  const purple = ramp(t, 4.75, 4.9, 0, 1) * ramp(t, 12.0, 12.15, 1, 0) + ramp(t, 52.5, 52.65, 0, 1);
+  // One slow drift across the whole film, so the frame is never still.
+  const drift = Math.sin(t * 0.17) * 10;
+  const lockup = ramp(t, 53.8, 54.6, 0, 1);
 
   return (
-    <AbsoluteFill style={{background: `radial-gradient(ellipse at 70% 30%, rgba(89,42,125,0.07) 0%, rgba(89,42,125,0) 55%), radial-gradient(ellipse at 20% 90%, rgba(89,42,125,0.05) 0%, rgba(89,42,125,0) 50%), #ffffff`, overflow: 'hidden', fontFamily: FONT.body}}>
-      <Audio src={staticFile('audio/soundtrack.mp3')} volume={(fr) => 0.4 * interpolate(fr, [0, 15, FILM_FRAMES - 60, FILM_FRAMES], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />
-      <Audio src={staticFile('audio/bed.wav')} />
+    <AbsoluteFill
+      style={{
+        background: 'radial-gradient(ellipse at 64% 40%, #4A2468 0%, #2A1140 44%, #120718 100%)',
+        overflow: 'hidden',
+        fontFamily: FONT.body,
+      }}
+    >
+      <Audio src={staticFile('audio/soundtrack.mp3')} volume={(fr) => 0.55 * interpolate(fr, [0, 20, FILM_FRAMES - 70, FILM_FRAMES], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />
+      <Audio src={staticFile('audio/bed.wav')} volume={0.5} />
 
-      {/* Brand beats sit on purple: figures, tiers, lockup, and the close */}
-      <AbsoluteFill style={{background: `radial-gradient(ellipse at 70% 25%, #6e3a96 0%, ${COLOUR.purple} 55%, #45205f 100%)`, opacity: purple}} />
-      {t < 5.2 && <Chat t={t} />}
-      {t > 4.8 && t < 8.2 && <Stats t={t} />}
-      {t > 7.9 && t < 10.5 && <Tiers t={t} />}
+      {/* A grain of warmth over the whole film */}
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse at 70% 55%, rgba(240,222,184,0.07) 0%, rgba(240,222,184,0) 60%)'}} />
 
-      {/* The name, given its own moment */}
-      <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: lockup1}}>
-        <div style={{...EYEBROW, marginBottom: 54, ...reveal(t, 10.5, 12.0)}}>Introducing</div>
-        <Img
-          src={staticFile('logo/cinnamon-discovery-logo.svg')}
-          style={{width: 860, height: 'auto', transform: `scale(${1.06 - 0.06 * ramp(t, 10.41, 12, 0, 1)})`}}
-        />
-        <div style={{marginTop: 64, fontFamily: FONT.display, fontWeight: 300, fontSize: 56, letterSpacing: -1, color: '#fff', ...reveal(t, 10.85, 12.0)}}>
-          Now, every table rewards you.
-        </div>
+      <AbsoluteFill style={{transform: `translateX(${drift}px)`}}>
+        <Dusk t={t} />
+        <Setting t={t} />
+        <Service t={t} />
+        <Recognition t={t} />
+        <Reveal t={t} />
+        <Dollars t={t} />
+        <City t={t} />
       </AbsoluteFill>
 
-      <Restaurant t={t} />
-      <Ambient t={t} px={px} />
-
-      {phoneOn && (
-        <AbsoluteFill style={{transform: `translate(${px - PHONE_X * s}px, ${540 - cy * s}px) scale(${s})`, transformOrigin: '0 0', filter: `blur(${blur}px)`}}>
-          <Phone y={phoneY} opacity={1 - 0.82 * back}>
-            <DemoScreen t={t} />
-          </Phone>
-        </AbsoluteFill>
-      )}
-
-      {/* The journey as one moment: a scan, a long calm hold while it recognises you, then the choice */}
-      <TextBlock t={t} from={12.4} to={15.2} lines={['One scan.']} top={452} left={GRID.left} size={148} />
+      {/* The evening, told in fragments */}
+      <TextBlock t={t} from={1.6} to={6.9} tone="dark" lines={['The city sits', 'down to dinner.']} top={420} left={COL.left} width={COL.width} size={96} />
+      <TextBlock t={t} from={8.6} to={14.1} tone="dark" lines={['Your table', 'is ready.']} top={420} left={COL.left} width={COL.width} size={112} />
+      <TextBlock t={t} from={15.8} to={21.3} tone="dark" lines={['The evening', 'takes its time.']} top={420} left={COL.left} width={COL.width} size={96} />
       <TextBlock
         t={t}
-        from={17.8}
-        to={29.6}
-        lines={['From here,', 'it knows you.']}
-        sub="Your tier. Your balance. Your table."
-        subFrom={24.4}
-        top={392}
-        left={GRID.left}
+        from={23.0}
+        to={28.9}
+        tone="dark"
+        lines={['And it', 'knows you.']}
+        sub="Your tier. Your table. Your evening."
+        subFrom={25.6}
+        top={400}
+        left={COL.left}
+        width={COL.width}
+        size={112}
       />
-      <TextBlock t={t} from={31.6} to={37.0} lines={['Your benefit.', 'Already there.']} sub="Nothing to ask for." top={392} left={GRID.right} size={104} />
-      <TextBlock t={t} from={38.4} to={46.4} lines={['Your Dollars.', 'Spend or save.']} sub="You earn either way." top={392} left={GRID.right} size={104} />
-      <TextBlock t={t} from={48.4} to={52.4} lines={['Done.']} sub="The rest is just dinner." top={448} left={GRID.left} size={148} />
+      <TextBlock t={t} from={33.4} to={37.9} tone="dark" lines={['Your benefit,', 'already there.']} sub="Nothing to ask for." top={400} left={COL.left} width={COL.width} size={96} />
+      <TextBlock t={t} from={39.8} to={46.1} tone="dark" lines={['Spend them.', 'Or keep them.']} sub="You earn either way." top={400} left={COL.left} width={COL.width} size={104} />
+      <TextBlock
+        t={t}
+        from={47.8}
+        to={52.9}
+        tone="dark"
+        lines={['Earn at one table.', 'Spend at the next.']}
+        sub="Twenty-four restaurants and bars, across four hotels."
+        top={120}
+        left={COL.left}
+        width={1600}
+        size={84}
+      />
 
-      {/* The parts that matter, at a size a room can read */}
-      <Callout t={t} from={25.6} to={29.4} src="member" y={258} h={215} x={px < 960 ? 520 : 1390} cy={520} />
-      <Callout t={t} from={32.6} to={36.7} src="bill-0" y={500} h={182} x={px < 960 ? 520 : 1390} cy={520} mark={[541, 36]} />
-      <Callout t={t} from={39.6} to={45.9} src="bill-60" y={868} h={112} x={px < 960 ? 520 : 1390} cy={520} mark={[872, 52]} />
-
-      {t > 52.6 && t < 57 && <Outlets t={t} />}
-
-      <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: lockup2}}>
+      {/* The name, last */}
+      <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: lockup}}>
         <Img
           src={staticFile('logo/cinnamon-discovery-logo.svg')}
-          style={{width: 860, height: 'auto', transform: `scale(${1.08 - 0.08 * ramp(t, 56.8, 60, 0, 1)})`}}
+          style={{width: 880, height: 'auto', transform: `scale(${1.07 - 0.07 * ramp(t, 53.8, 60, 0, 1)})`}}
         />
-        <div style={{marginTop: 64, fontFamily: FONT.display, fontWeight: 300, fontSize: 52, letterSpacing: -0.5, color: '#fff', ...reveal(t, 57.3, 99)}}>
-          Dine with <span style={{color: '#cbb3e3'}}>DISCOVERY Dollars</span>
+        <div style={{marginTop: 66, fontFamily: FONT.display, fontWeight: 300, fontSize: 52, letterSpacing: -0.5, color: INK.white, ...reveal(t, 55.0, 99)}}>
+          Dine with <span style={{color: INK.lineBright}}>DISCOVERY Dollars</span>
         </div>
       </AbsoluteFill>
+
     </AbsoluteFill>
   );
 };
