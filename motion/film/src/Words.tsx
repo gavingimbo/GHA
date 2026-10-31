@@ -73,15 +73,10 @@ export const TextBlock: React.FC<{
   top: number;
   size?: number;
   left?: number;
-  step?: string;
-}> = ({t, from, to, lines, sub, top, size = 120, left = GRID.right, step}) => (
+  /** When the supporting line arrives, if it should land later than the headline. */
+  subFrom?: number;
+}> = ({t, from, to, lines, sub, top, size = 120, left = GRID.right, subFrom}) => (
   <div style={{position: 'absolute', left, top, width: GRID.colW, textShadow: '0 0 18px #fff, 0 0 40px #fff, 0 0 8px #fff'}}>
-    {step && (
-      <div style={{display: 'flex', alignItems: 'center', gap: 20, marginBottom: 34, ...reveal(t, from, to)}}>
-        <span style={{fontFamily: FONT.body, fontWeight: 600, fontSize: 21, letterSpacing: 5, color: COLOUR.purple}}>{step}</span>
-        <span style={{height: 1, width: 72, background: COLOUR.purple, opacity: 0.4}} />
-      </div>
-    )}
     {lines.map((line, i) => (
       <Line
         key={line}
@@ -89,7 +84,7 @@ export const TextBlock: React.FC<{
         t={t}
         from={from}
         to={to}
-        delay={(step ? 0.12 : 0) + i * 0.16}
+        delay={i * 0.16}
         style={{
           fontFamily: FONT.display,
           fontWeight: 300,
@@ -104,9 +99,9 @@ export const TextBlock: React.FC<{
       <Line
         text={sub}
         t={t}
-        from={from}
+        from={subFrom ?? from}
         to={to}
-        delay={(step ? 0.12 : 0) + lines.length * 0.16 + 0.08}
+        delay={subFrom ? 0 : lines.length * 0.16 + 0.08}
         style={{
           marginTop: 30,
           fontFamily: FONT.body,

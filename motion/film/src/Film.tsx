@@ -26,13 +26,12 @@ const warp = (o: number) => {
 
 // Camera: [seconds, scale, focus y]
 const CAM: [number, number, number][] = [
-  [0, 1, 560], [14.6, 1, 560], [16.2, 1.06, 540], [17.2, 1.16, 500], [21.2, 1.16, 520], [23.0, 1.02, 560],
-  [29.2, 1.08, 640], [30.2, 1.0, 560], [31.2, 1.14, 500], [35.0, 1.14, 540], [37.0, 1.16, 690], [45.5, 1.16, 700],
-  [47.4, 1.04, 580], [60, 1, 560],
+  [0, 1, 560], [14.6, 1, 560], [17.4, 1.14, 505], [23.6, 1.14, 520], [25.4, 1.02, 560], [30.2, 1.02, 560],
+  [31.8, 1.13, 500], [36.8, 1.13, 530], [38.6, 1.15, 690], [46.2, 1.15, 700], [48.4, 1.05, 600], [60, 1, 560],
 ];
 // Phone's centre on screen: it moves side to side between scenes, words take the other side
 const SIDE: [number, number][] = [
-  [0, 1340], [22.6, 1340], [23.6, 600], [29.6, 600], [30.6, 1320], [36.8, 1320], [37.8, 600], [46.6, 600], [47.6, 1320], [60, 1320],
+  [0, 1330], [29.4, 1330], [31.4, 590], [46.0, 590], [48.0, 1330], [60, 1330],
 ];
 
 const ramp = (t: number, a: number, b: number, from: number, to: number) =>
@@ -46,7 +45,7 @@ export const Film: React.FC = () => {
   // A breath on the camera, so a held frame is never quite still.
   const s = keys(t, CAM.map((c) => [c[0], c[1]])) + Math.sin(t * 0.34) * 0.004;
   const cy = keys(t, CAM.map((c) => [c[0], c[2]]));
-  const px = keys(t, SIDE);
+  const px = keys(t, SIDE) + Math.sin(t * 0.21) * 9;
   const vx = Math.abs(keys(t, SIDE) - keys(warp((f - 1) / FPS), SIDE));
   const blur = Math.min(4, vx * 0.12);
 
@@ -94,14 +93,21 @@ export const Film: React.FC = () => {
         </AbsoluteFill>
       )}
 
-      {/* The journey, one step at a time */}
-      <TextBlock t={t} from={12.3} to={14.6} lines={['Take a seat.']} top={430} left={GRID.left} />
-      <TextBlock t={t} from={14.6} to={17.0} step="01" lines={['Scan the code.']} sub="Shown by your server." top={432} left={GRID.left} />
-      <TextBlock t={t} from={17.0} to={22.6} step="02" lines={['Sign in.']} sub="Your GHA DISCOVERY email and password." top={432} left={GRID.left} />
-      <TextBlock t={t} from={23.8} to={29.6} step="03" lines={['Recognised.']} sub="Your tier. Your bill. Ready." top={432} left={GRID.right} />
-      <TextBlock t={t} from={30.8} to={37.0} step="04" lines={['Your benefit.', 'Already there.']} top={408} left={GRID.left} />
-      <TextBlock t={t} from={38.0} to={46.8} step="05" lines={['Use D$.', 'Or keep them.']} sub="Either way, you earn." top={370} left={GRID.right} />
-      <TextBlock t={t} from={47.6} to={52.4} step="06" lines={["And you're done."]} sub="Settle with the restaurant as usual." top={440} left={GRID.left} size={104} />
+      {/* The journey as one moment: a scan, a long calm hold while it recognises you, then the choice */}
+      <TextBlock t={t} from={12.4} to={15.2} lines={['One scan.']} top={452} left={GRID.left} size={148} />
+      <TextBlock
+        t={t}
+        from={17.8}
+        to={29.6}
+        lines={['From here,', 'it knows you.']}
+        sub="Your tier. Your balance. Your table."
+        subFrom={24.4}
+        top={392}
+        left={GRID.left}
+      />
+      <TextBlock t={t} from={31.6} to={37.0} lines={['Your benefit.', 'Already there.']} sub="Nothing to ask for." top={392} left={GRID.right} size={104} />
+      <TextBlock t={t} from={38.4} to={46.4} lines={['Your Dollars.', 'Spend or save.']} sub="You earn either way." top={392} left={GRID.right} size={104} />
+      <TextBlock t={t} from={48.4} to={52.4} lines={['Done.']} sub="The rest is just dinner." top={448} left={GRID.left} size={148} />
 
       {t > 52.6 && t < 57 && <Outlets t={t} />}
 
